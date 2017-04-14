@@ -1,5 +1,14 @@
 # Revision History
 
+## 0.0.3
+
+- Added python code that handles the sc, bcc, and fcc lattices using
+  Rod's divisor method.
+
+- Also added an jupyter notebook that shows the timing for the
+  generation of the grids for a single determinant at a time. It
+  scales really nicely.
+
 ## 0.0.2
 
 - Added the testing_codes dir. This directory contains the brute force
