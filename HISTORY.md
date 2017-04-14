@@ -1,5 +1,10 @@
 # Revision History
 
+## 0.0.4
+
+-Renamed the fcc and bcc subroutines so that they are called fcc and
+ bcc. Also changed the comments to reflect that change.
+
 ## 0.0.3
 
 - Added python code that handles the sc, bcc, and fcc lattices using

@@ -1,5 +1,5 @@
-def sc_srHNFs(n):
-    """Finds the symmetry preserving HNFs for the simple cubic lattices
+def fcc_srHNFs(n):
+    """Finds the symmetry preserving HNFs for the face centered cubic lattices
     with a determinant of n.
 
     Args:
