@@ -41,7 +41,7 @@ def sc_srHNFs(n):
                                 alpha11 = b+d
                                 beta11 = 2*b+b*(b+d)/float(a)
                                 g11 = d*(2-alpha11/float(a))
-                                g12 = a+b+2d
+                                g12 = a+b+2*d
                                 g21 = -d*alpha21/float(a)-e*beta21/float(c)
                                 if beta11%c==0 and alpha11%a==0 and g11%f==0 and g12%f==0 and g21%f==0:
                                     HNF = [[a,0,0],[b,c,0],[d,e,f]]
