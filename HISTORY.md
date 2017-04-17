@@ -1,5 +1,14 @@
 # Revision History
 
+## 0.0.5
+
+- Added the 'canonical' parent lattice to the documentation for each crystal class.
+- Fixed bugs in the conditions for bcc and fcc. They now find HNFs at
+  the correct volumes in the range (1-100).
+- Added jupyter-notebook that shows how to identify the lattice type for the code.
+- Added plots of the HNF and srHNF scaling the brute force way in
+  addition to the notebook that generated the plots.
+
 ## 0.0.4
 
 -Renamed the fcc and bcc subroutines so that they are called fcc and

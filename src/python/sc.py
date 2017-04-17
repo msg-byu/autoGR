@@ -1,6 +1,6 @@
 def sc_srHNFs(n):
     """Finds the symmetry preserving HNFs for the simple cubic lattices
-    with a determinant of n.
+    with a determinant of n. Assuming A = [[1,0,0],[0,1,0],[0,0,1]].
 
     Args:
         n (int): The determinant of the HNFs.

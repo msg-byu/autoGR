@@ -1,6 +1,6 @@
 def fcc_srHNFs(n):
     """Finds the symmetry preserving HNFs for the face centered cubic lattices
-    with a determinant of n.
+    with a determinant of n. Assuming A = [[0,1,1],[1,0,1],[1,1,0]].
 
     Args:
         n (int): The determinant of the HNFs.
@@ -39,16 +39,17 @@ def fcc_srHNFs(n):
                             #beta1 condition
                             while (d<f):
                                 alpha11 = b+d
+                                beta12 = b-d
                                 beta11 = 2*b+b*(b+d)/float(a)
-                                g11 = d*(2-alpha11/float(a))
-                                g12 = a+b+2*d
+                                g11 = d*(2-alpha11/float(a))-e*beta11/float(c)
+                                g12 = a+b+2*d-e*beta12/float(c)
                                 g21 = -d*alpha21/float(a)-e*beta21/float(c)
-                                if beta11%c==0 and alpha11%a==0 and g11%f==0 and g12%f==0 and g21%f==0:
+                                if beta11%c==0 and beta12%c == 0 and alpha11%a==0 and g11%f==0 and g12%f==0 and g21%f==0:
                                     HNF = [[a,0,0],[b,c,0],[d,e,f]]
                                     srHNFs.append(HNF)
                                 
                                 
-                                d += c
+                                d += a
                         e += c
                     b += a
     return srHNFs
