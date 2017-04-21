@@ -1,5 +1,14 @@
 # Revision History
 
+## 0.0.7
+- Added python modules for each of the remaining lattice types to the
+src/opf_python directory, as well as their unit tests (all modules
+agree to with the brute force method for volumes factors of 1 to 500
+in the tests except monoclinic lattices which have only been tested on
+volumes of 1 to 150 for time reasons).
+-Fixed error in notes/body_centered_ortho.nb.
+-Added lat_type.py to repo. It's a module that identifies the lattice type.
+
 ## 0.0.6
 - Added src/python/trig.py to the repo. It finds the srHNFs for the trigonal case.
 - Fixed a logic error in the simple, body centered, and face centered
