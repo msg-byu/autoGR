@@ -186,5 +186,9 @@ TSWLatexianTemp*
 *.x
 *.pyc
 *.ipynb_ch*
-#*
-.#*
+*#*
+*.#*
+*.tox*
+*.cache*
+*.coverage*
+dist/

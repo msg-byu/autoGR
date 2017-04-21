@@ -1,0 +1,4 @@
+tox
+numpy
+termcolor
+pyparsing

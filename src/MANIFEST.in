@@ -1,0 +1,5 @@
+include src/*.py
+include *.md LICENSE
+exclude tests
+exclude input
+exclude support
