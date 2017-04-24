@@ -1,5 +1,9 @@
 # Revision History
 
+## 0.0.8
+- Fixed some bugs in lat_type.py.
+- Impltemented unit tests for lat_type.py
+
 ## 0.0.7
 - Added python modules for each of the remaining lattice types to the
 src/opf_python directory, as well as their unit tests (all modules

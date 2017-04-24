@@ -11,7 +11,8 @@ def lat_type(lat):
     
     from phenum.vector_utils import _minkowski_reduce_basis
     from phenum.symmetry import _get_lattice_pointGroup
-    
+    import numpy as np
+
     clat = np.array(_minkowski_reduce_basis(lat,1E-10))
     #clat = lat
     
@@ -21,7 +22,7 @@ def lat_type(lat):
     a1 = clat[0]
     a2 = clat[1]
     a3 = clat[2]
-    
+
     a1n = np.sqrt(np.dot(a1,a1))
     a2n = np.sqrt(np.dot(a2,a2))
     a3n = np.sqrt(np.dot(a3,a3))
@@ -38,7 +39,7 @@ def lat_type(lat):
         p_count += 1
     if abs(a2ta3)<tiny:
         p_count += 1
-    
+
     ## find pg to determine crystial family
     ## once family is found go through possible lattice system
     fam = len(_get_lattice_pointGroup(clat))
@@ -65,9 +66,15 @@ def lat_type(lat):
             latType = 'stet'
             latBasis = np.array([[1,0,0],[0,1,0],[0,0,2]])
         else:
-            latTyp = 'btet'
+            latType = 'btet'
             latBasis = np.array([[-1,1,2],[1,-1,2],[1,1,-2]])
     elif fam == 8: #ortho
+        pa2ta1n = np.linalg.norm(np.dot(a2,a1)/np.dot(a1,a1))
+        pa2ta3n = np.linalg.norm(np.dot(a2,a3)/np.dot(a3,a3))
+        pa1ta2n = np.linalg.norm(np.dot(a1,a2)/np.dot(a2,a2))
+        pa1ta3n = np.linalg.norm(np.dot(a1,a3)/np.dot(a3,a3))
+        pa3ta1n = np.linalg.norm(np.dot(a3,a1)/np.dot(a1,a1))
+        pa3ta2n = np.linalg.norm(np.dot(a3,a2)/np.dot(a2,a2))
         if p_count == 3:
             latType = 'so'
             latBasis = np.array([[1,0,0],[0,2,0],[0,0,3]])
@@ -82,8 +89,6 @@ def lat_type(lat):
                 latBasis = np.array([[0.5,1,0],[0.5,-1,0],[0,0,3]])
         elif (p_count == 1 ):
             if abs(a1ta2)<tiny:
-                pa3ta1n = np.linalg.norm(np.dot(a3,a1)/np.dot(a1,a1))
-                pa3ta2n = np.linalg.norm(np.dot(a3,a2)/np.dot(a2,a2))
                 if (pa3ta1n-a1n/2.)<tiny and (pa3ta2n -a2n/2.)<tiny:
                     latType = 'bo'
                     latBasis = np.array([[0.5,1,1.5],[0,2,0],[0,0,3]])
@@ -91,8 +96,6 @@ def lat_type(lat):
                     latType = 'fo'
                     latBasis = np.array([[0,1,1.5],[0.5,0,1.5],[0,0,3]])
             elif abs(a1ta3)<tiny:
-                pa2ta1n = np.linalg.norm(np.dot(a2,a1)/np.dot(a1,a1))
-                pa2ta3n = np.linalg.norm(np.dot(a2,a3)/np.dot(a3,a3))
                 if (pa2ta1n-a1n/2.)<tiny and (pa2ta3n -a3n/2.)<tiny:
                     latType = 'bo'
                     latBasis = np.array([[0.5,1,1.5],[0,2,0],[0,0,3]])
@@ -100,15 +103,16 @@ def lat_type(lat):
                     latType = 'fo'                
                     latBasis = np.array([[0,1,1.5],[0.5,0,1.5],[0,0,3]])
             else:
-                pa1ta2n = np.linalg.norm(np.dot(a1,a2)/np.dot(a2,a2))
-                pa1ta3n = np.linalg.norm(np.dot(a1,a3)/np.dot(a3,a3))
                 if (pa1ta2n-a2n/2.)<tiny and (pa1ta3n -a3n/2.)<tiny:
                     latType = 'bo'
                     latBasis = np.array([[0.5,1,1.5],[0,2,0],[0,0,3]])
                 else:
                     latType = 'fo'
                     latBasis = np.array([[0,1,1.5],[0.5,0,1.5],[0,0,3]])
-        elif(abs(a1n-a2n)<tiny and abs(a2n-a3n)<tiny):
+        elif (abs(a1n-a2n)<tiny and abs(a2n-a3n)<tiny) or (
+                abs(pa3ta1n -pa2ta1n)<tiny and abs(a3n-a2n)<tiny) or (
+                    abs(pa3ta2n-pa1ta2n)<tiny and abs(a3n-a1n)<tiny)  or (
+                        abs(pa1ta3n-pa2ta3n)<tiny and abs(a1n-a2n)<tiny):
             latType = 'bo'
             latBasis = np.array([[0.5,1,1.5],[0,2,0],[0,0,3]])
         elif (abs(a1n-a2n)>tiny and abs(a1n-a3n)>tiny and abs(a2n-a3n)>tiny):
