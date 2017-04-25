@@ -23,3 +23,239 @@ def get_HNF_diagonals(n):
                     diags.append([i,j,q/j])
                     
     return diags
+
+def grid_gen(A,kpt):
+    """Generates the k-point grid vectors for the target k-point density
+    for the given lattice.
+
+    Args:
+        A (numpy.array): The lattice vectors as columns of a matrix.
+        kpt (int): The target k-point density desired.
+
+    Returns:
+        grid (numpy.array): The grid vectors for the k-points as columns of a matrix.
+
+    Raises:
+        ValueError if the lattice type can't be identified.
+    """
+
+    from lat_type import lat_type
+    from phenum.vector_utils import _minkowski_reduce_basis
+    
+    name, basis = lat_type(A)
+
+    ns, mult = find_volumes(name,kpt)
+
+    srHNFs = []
+    if name == "sc":
+        from sc import sc_srHNFs
+        for n in ns:
+            temp = sc_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)
+        
+    elif name == "bcc":
+        from bcc import bcc_srHNFs
+        for n in ns:
+            temp = bcc_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+            
+    elif name == "fcc":
+        from fcc import fcc_srHNFs
+        for n in ns:
+            temp = fcc_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "hex":
+        from hx import hex_srHNFs
+        for n in ns:
+            temp = hex_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "trig":
+        from trig import trig_srHNFs
+        for n in ns:
+            temp = trig_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "stet":
+        from stet import stet_srHNFs
+        for n in ns:
+            temp = stet_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+       
+    elif name == "btet":
+        from body_tet import body_tet_srHNFs
+        for n in ns:
+            temp = body_tet_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "so":
+        from so import so_srHNFs
+        for n in ns:
+            temp = so_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "co":
+        from base_ortho import base_ortho_srHNFs
+        for n in ns:
+            temp = base_ortho_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "bo":
+        from body_ortho import body_ortho_srHNFs
+        for n in ns:
+            temp = body_ortho_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "fo":
+        from face_ortho import face_ortho_srHNFs
+        for n in ns:
+            temp = face_ortho_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "sm":
+        from sm import sm_srHNFs
+        for n in ns:
+            temp = sm_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "cm":
+        from base_mono import base_mono_srHNFs
+        for n in ns:
+            temp = base_mono_srHNFs(n)
+            for t in temp:
+                srHNFs.append(t)        
+        
+    elif name == "tric":
+        for n in ns:
+            diags = get_HNF_diagonals(n)
+            for diag in diags:
+                a = diag[0]
+                c = diag[1]
+                f = diaf[2]
+                for b in range(c):
+                    for d in range(f):
+                        for e in range(f):
+                            HNF = [[a,0,0],[b,c,0],[d,e,f]]
+                            srHNFs.append(HNF)
+        
+    else:
+        raise ValueError("ERROR: unrecognized lattice type: ",name)
+
+
+    for HNF in srHNFs:
+
+        
+        
+def find_volumes(lat_type,kpd):
+    """Finds the allowed n's for a given lattice around the desired k-point density.
+    
+    Args:
+        lat_type (str): The type of lattice.
+        kpd (int): the target valume factor.
+
+    Returns:
+        ns (list of int): The target valume's to consider.
+        mult (int): multiplication factor for triclinic.
+
+    Raises:
+        ValueError if the lattice type can't be identified.
+    """
+
+    mult = None
+    ns = []
+    
+    nt = float(kpd)
+    if name == "sc":
+        nb = int(floor(nt**(1/3))-1)
+        nmin = kdp-1000
+        nmax = kpd+1000
+        while nb**3<nmax:
+            nc = nb***3
+            for m in [1,2,4]:
+                if m*nc>nmin and m*nc<nmax:
+                    ns.append(m*nc)
+            nb += 1   
+        
+    elif name == "bcc":
+        nb = int(floor(nt**(1/3))-1)
+        nmin = kdp-1000
+        nmax = kpd+1000
+        while nb**3<nmax:
+            nc = nb***3
+            for m in [1,2,4]:
+                if m*nc>nmin and m*nc<nmax:
+                    ns.append(m*nc)
+            nb += 1   
+            
+    elif name == "fcc":
+        nb = int(floor(nt**(1/3))-1)
+        nmin = kdp-1000
+        nmax = kpd+1000
+        while nb**3<nmax:
+            nc = nb***3
+            for m in [1,4,16]:
+                if m*nc>nmin and m*nc<nmax:
+                    ns.append(m*nc)
+            nb += 1   
+        
+    elif name == "hex":
+        ns = range(kpd-5,kpd+6)
+
+    elif name == "trig":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "stet":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "btet":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "so":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "co":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "bo":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "fo":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "sm":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "so":
+        ns = range(kpd-5,kpd+6)
+        
+    elif name == "tric":
+        tmult = 1
+        while mult == None:
+            test =nt/tmult**3
+            if np.allclose(test,100):
+                nu = int(ceil(test))
+                nl = int(floor(test))
+                if (nu-100)<(nl-100):
+                    ns = [nu]
+                else:
+                    ns = [nl]
+                mult = tmult
+            else:
+                tmult += 1
+    else:
+        raise ValueError("ERROR: unrecognized lattice type: ",name)
+
+    return ns, mult

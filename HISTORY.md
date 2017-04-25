@@ -1,5 +1,13 @@
 # Revision History
 
+## 0.0.9
+- Created driver for grid generation src/opf_python/gengrid.py. The
+  driver is still incomplete.
+- Created new subroutines in universal.py. The first is to find the
+  symmetry preserving grids given a lattice and target density. The
+  second returns the volume factors that will be used for generating
+  the srHNFs. Both subroutines still need work.
+
 ## 0.0.8
 - Fixed some bugs in lat_type.py.
 - Impltemented unit tests for lat_type.py
