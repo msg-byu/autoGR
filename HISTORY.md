@@ -7,6 +7,9 @@
   symmetry preserving grids given a lattice and target density. The
   second returns the volume factors that will be used for generating
   the srHNFs. Both subroutines still need work.
+- Added number and time scaling plots for face centered cubic and face
+  centered orthorhombic.
+- Added a module for Jeremy's test to use, jeremy.py.
 
 ## 0.0.8
 - Fixed some bugs in lat_type.py.

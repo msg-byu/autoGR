@@ -10,6 +10,7 @@ opf_python/body_ortho.py
 opf_python/body_tet.py
 opf_python/face_ortho.py
 opf_python/fcc.py
+opf_python/gengrid.py
 opf_python/hx.py
 opf_python/lat_type.py
 opf_python/sc.py

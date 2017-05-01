@@ -134,4 +134,4 @@ def lat_type(lat):
         print("Could not indentify lattice.")
 
 
-    return latType, latBasis
+    return latType, np.transpose(latBasis)

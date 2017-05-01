@@ -24,16 +24,17 @@ def get_HNF_diagonals(n):
                     
     return diags
 
-def grid_gen(A,kpt):
+def find_srBs(A,kpt,exact=False):
     """Generates the k-point grid vectors for the target k-point density
     for the given lattice.
 
     Args:
         A (numpy.array): The lattice vectors as columns of a matrix.
         kpt (int): The target k-point density desired.
+        exact (bool): True if only the target k-point density is to be used.
 
     Returns:
-        grid (numpy.array): The grid vectors for the k-points as columns of a matrix.
+        Bs (numpy.array): list of symmetry preserving supercells.
 
     Raises:
         ValueError if the lattice type can't be identified.
@@ -41,10 +42,14 @@ def grid_gen(A,kpt):
 
     from lat_type import lat_type
     from phenum.vector_utils import _minkowski_reduce_basis
+    import numpy as np
     
     name, basis = lat_type(A)
 
-    ns, mult = find_volumes(name,kpt)
+    if not exact:
+        ns, mult = find_volumes(name,kpt)
+    else:
+        ns, mult = kpt, 1.0
 
     srHNFs = []
     if name == "sc":
@@ -148,16 +153,18 @@ def grid_gen(A,kpt):
                 for b in range(c):
                     for d in range(f):
                         for e in range(f):
-                            HNF = [[a,0,0],[b,c,0],[d,e,f]]
-                            srHNFs.append(HNF)
+                            HNF = np.array([[a,0,0],[b,c,0],[d,e,f]])
+                            srHNFs.append(HNF*mult)
         
     else:
         raise ValueError("ERROR: unrecognized lattice type: ",name)
 
+    Bs = []
+    for H in srHNFs:
+        B = np.dot(basis,H)
+        Bs.append(B)
 
-    for HNF in srHNFs:
-
-        
+    return Bs        
         
 def find_volumes(lat_type,kpd):
     """Finds the allowed n's for a given lattice around the desired k-point density.
@@ -174,74 +181,76 @@ def find_volumes(lat_type,kpd):
         ValueError if the lattice type can't be identified.
     """
 
+    from math import floor, ceil
+
     mult = None
     ns = []
     
     nt = float(kpd)
-    if name == "sc":
+    if lat_type == "sc":
         nb = int(floor(nt**(1/3))-1)
-        nmin = kdp-1000
+        nmin = kpd-1000
         nmax = kpd+1000
         while nb**3<nmax:
-            nc = nb***3
+            nc = nb**3
             for m in [1,2,4]:
                 if m*nc>nmin and m*nc<nmax:
                     ns.append(m*nc)
             nb += 1   
         
-    elif name == "bcc":
+    elif lat_type == "bcc":
         nb = int(floor(nt**(1/3))-1)
-        nmin = kdp-1000
+        nmin = kpd-1000
         nmax = kpd+1000
         while nb**3<nmax:
-            nc = nb***3
+            nc = nb**3
             for m in [1,2,4]:
                 if m*nc>nmin and m*nc<nmax:
                     ns.append(m*nc)
             nb += 1   
             
-    elif name == "fcc":
+    elif lat_type == "fcc":
         nb = int(floor(nt**(1/3))-1)
-        nmin = kdp-1000
+        nmin = kpd-1000
         nmax = kpd+1000
         while nb**3<nmax:
-            nc = nb***3
+            nc = nb**3
             for m in [1,4,16]:
                 if m*nc>nmin and m*nc<nmax:
                     ns.append(m*nc)
             nb += 1   
         
-    elif name == "hex":
+    elif lat_type == "hex":
         ns = range(kpd-5,kpd+6)
 
-    elif name == "trig":
+    elif lat_type == "trig":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "stet":
+    elif lat_type == "stet":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "btet":
+    elif lat_type == "btet":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "so":
+    elif lat_type == "so":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "co":
+    elif lat_type == "co":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "bo":
+    elif lat_type == "bo":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "fo":
+    elif lat_type == "fo":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "sm":
+    elif lat_type == "sm":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "so":
+    elif lat_type == "so":
         ns = range(kpd-5,kpd+6)
         
-    elif name == "tric":
+    elif lat_type == "tric":
         tmult = 1
         while mult == None:
             test =nt/tmult**3
@@ -256,6 +265,7 @@ def find_volumes(lat_type,kpd):
             else:
                 tmult += 1
     else:
-        raise ValueError("ERROR: unrecognized lattice type: ",name)
+        raise ValueError("ERROR: unrecognized lattice type: ",lat_type)
 
+    print("n values used: ",ns)
     return ns, mult
