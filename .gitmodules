@@ -1,0 +1,3 @@
+[submodule "testing_codes/symlib"]
+	path = testing_codes/symlib
+	url = https://github.com/msg-byu/symlib

@@ -4,7 +4,6 @@
 *.log
 *.lot
 *.fls
-*.out
 *.toc
 *.fmt
 *.fot
@@ -178,3 +177,17 @@ TSWLatexianTemp*
 
 # KBibTeX
 *~[0-9]*
+
+# Other
+*~
+*.o
+*.mod
+*.x
+*.pyc
+*.ipynb_ch*
+*#*
+*.#*
+*.tox*
+*.cache*
+*.coverage*
+dist/
