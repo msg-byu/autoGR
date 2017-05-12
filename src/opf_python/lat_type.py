@@ -2,11 +2,11 @@ def lat_type(lat):
     """Finds the lattice type for the provided lattice vectors.
     
     Args:
-        lat (numpy.array): the lattice vectors as columns of the matrix.
+        lat (numpy.array): the lattice vectors as rows of the matrix.
         
     Returns:
         latType (str): the type of lattice, i.e., sc, bcc, fcc, st, so....
-        latBasis (numpy.array): The canonical basis for this lattice.
+        latBasis (numpy.array): The canonical basis for this lattice as columns of a matix.
     """
     
     from phenum.vector_utils import _minkowski_reduce_basis

@@ -1,5 +1,10 @@
 # Revision History
 
+## 0.0.10
+- Fixed bugs in jeremy.py and in universal.py.
+- Added some new unit tests to check for the bugs.
+- Added additional supporting info.
+
 ## 0.0.9
 - Created driver for grid generation src/opf_python/gengrid.py. The
   driver is still incomplete.

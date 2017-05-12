@@ -41,15 +41,22 @@ def find_srBs(A,kpt,exact=False):
     """
 
     from lat_type import lat_type
-    from phenum.vector_utils import _minkowski_reduce_basis
     import numpy as np
     
-    name, basis = lat_type(A)
+    name, basis = lat_type(np.transpose(A))
+
+    # # We need to find the difference in volume between the canonical
+    # # and the users basis.
+    # rat = (np.linalg.det(A)/np.linalg.det(basis))**(1/3.)
+    # basis = rat*basis
+    
+    # Find transformation matrix bteween basis.
+    M = np.dot(np.linalg.inv(A),basis)
 
     if not exact:
         ns, mult = find_volumes(name,kpt)
     else:
-        ns, mult = kpt, 1.0
+        ns, mult = [kpt], 1.0
 
     srHNFs = []
     if name == "sc":
@@ -161,7 +168,7 @@ def find_srBs(A,kpt,exact=False):
 
     Bs = []
     for H in srHNFs:
-        B = np.dot(basis,H)
+        B = np.dot(np.dot(basis,H),np.linalg.inv(M))
         Bs.append(B)
 
     return Bs        
