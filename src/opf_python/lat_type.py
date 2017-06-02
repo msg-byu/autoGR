@@ -14,7 +14,6 @@ def lat_type(lat):
     import numpy as np
 
     clat = np.array(_minkowski_reduce_basis(lat,1E-10))
-    #clat = lat
     
     latType = None
     latBasis = None
@@ -26,9 +25,9 @@ def lat_type(lat):
     a1n = np.sqrt(np.dot(a1,a1))
     a2n = np.sqrt(np.dot(a2,a2))
     a3n = np.sqrt(np.dot(a3,a3))
-    a1ta2 = np.dot(a1,a2)/abs(float(a1n*a2n))
-    a1ta3 = np.dot(a1,a3)/abs(float(a1n*a3n))
-    a2ta3 = np.dot(a2,a3)/abs(float(a2n*a3n))
+    a1ta2 = abs(np.dot(a1,a2)/abs(float(a1n*a2n)))
+    a1ta3 = abs(np.dot(a1,a3)/abs(float(a1n*a3n)))
+    a2ta3 = abs(np.dot(a2,a3)/abs(float(a2n*a3n)))
     
     tiny = 1E-6
     
@@ -47,7 +46,7 @@ def lat_type(lat):
         if p_count==3:
             latType = 'sc'
             latBasis = np.array([[1,0,0],[0,1,0],[0,0,1]])
-        elif abs(a1ta2 +1./3.) <tiny or abs(a1ta3+1./3.)<tiny or abs(a2ta3+1./3.)<tiny:
+        elif abs(a1ta2 -1./3.) <tiny or abs(a1ta3-1./3.)<tiny or abs(a2ta3-1./3.)<tiny:
             latType = 'bcc'
             latBasis = np.array([[-1,1,1],[1,-1,1],[1,1,-1]])
         elif abs(a1ta2-1./2.)<tiny or abs(a1ta3-1./2.)<tiny or abs(a2ta3-1./2.)<tiny:

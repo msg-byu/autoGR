@@ -261,7 +261,7 @@ Cell[BoxData[
 }, Open  ]]
 },
 WindowSize->{808, 911},
-WindowMargins->{{Automatic, 570}, {247, Automatic}},
+WindowMargins->{{Automatic, 808}, {Automatic, 143}},
 FrontEndVersion->"10.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (June 27, \
 2014)",
 StyleDefinitions->"Default.nb"
@@ -316,4 +316,3 @@ Cell[7576, 250, 395, 9, 47, "Output"]
 *)
 
 (* End of internal cache information *)
-

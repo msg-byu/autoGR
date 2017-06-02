@@ -15,12 +15,12 @@ def get_HNF_diagonals(n):
         if not n%i == 0:
             continue
         else:
-            q = n/i
+            q = n//i
             for j in range(1,q+1):
                 if not q%j == 0:
                     continue
                 else:
-                    diags.append([i,j,q/j])
+                    diags.append([i,j,q//j])
                     
     return diags
 
@@ -44,6 +44,8 @@ def find_srBs(A,kpt,exact=False):
     import numpy as np
     
     name, basis = lat_type(np.transpose(A))
+    # name_w, basis = lat_type(np.transpose(A))
+    # name, basis_w = lat_type(np.linalg.inv(A))
 
     # # We need to find the difference in volume between the canonical
     # # and the users basis.
@@ -274,5 +276,4 @@ def find_volumes(lat_type,kpd):
     else:
         raise ValueError("ERROR: unrecognized lattice type: ",lat_type)
 
-    print("n values used: ",ns)
     return ns, mult

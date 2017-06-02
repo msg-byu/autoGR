@@ -1,5 +1,12 @@
 # Revision History
 
+## 0.0.11
+- Implemented faster algorithms for bcc, fcc, sc, and body centered tetragonal cells.
+- Fixed integer division in universal.py for python 3.
+- Fixed a bug in lat_type.py that was caused by the appearance of
+  negative angles from the dot products.
+- Fixed jeremey.py. The loop over the grids was indented to far.
+
 ## 0.0.10
 - Fixed bugs in jeremy.py and in universal.py.
 - Added some new unit tests to check for the bugs.
