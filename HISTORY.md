@@ -1,5 +1,9 @@
 # Revision History
 
+## 0.0.12
+- Began implementing the fortran version of the code (created sc, bcc,
+  and fcc subroutines).
+
 ## 0.0.11
 - Implemented faster algorithms for bcc, fcc, sc, and body centered tetragonal cells.
 - Fixed integer division in universal.py for python 3.
