@@ -50,4 +50,89 @@
       </assignment>
     </group>
   </decorates>  
+
+  <decorates name="sp_hnfs.hex">
+    <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
+      <test identifier="original" description="Tests of symmetry preserving HNF generation"
+	    cases="hex[1-5]" timed="true">
+	<output folder="./tests/spHNFs"
+		file="spHNFs.out.{}" template="integer.xml"
+		identifier="spHNFs.out"/>
+	<target name="spHNFs" compareto="spHNFs.out"
+		varfile="spHNFs.out" when="each"/>
+      </test>
+      <assignment name="n" value="nfile">
+	<value identifier="nfile" file="n.in.{}"
+	       folder="./tests/spHNFs" rename="n.in"/>
+      </assignment>
+    </group>
+  </decorates>  
+
+  <decorates name="sp_hnfs.trig">
+    <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
+      <test identifier="original" description="Tests of symmetry preserving HNF generation"
+	    cases="trig[1-5]" timed="true">
+	<output folder="./tests/spHNFs"
+		file="spHNFs.out.{}" template="integer.xml"
+		identifier="spHNFs.out"/>
+	<target name="spHNFs" compareto="spHNFs.out"
+		varfile="spHNFs.out" when="each"/>
+      </test>
+      <assignment name="n" value="nfile">
+	<value identifier="nfile" file="n.in.{}"
+	       folder="./tests/spHNFs" rename="n.in"/>
+      </assignment>
+    </group>
+  </decorates>  
+
+  <decorates name="sp_hnfs.st">
+    <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
+      <test identifier="original" description="Tests of symmetry preserving HNF generation"
+	    cases="st[1-5]" timed="true">
+	<output folder="./tests/spHNFs"
+		file="spHNFs.out.{}" template="integer.xml"
+		identifier="spHNFs.out"/>
+	<target name="spHNFs" compareto="spHNFs.out"
+		varfile="spHNFs.out" when="each"/>
+      </test>
+      <assignment name="n" value="nfile">
+	<value identifier="nfile" file="n.in.{}"
+	       folder="./tests/spHNFs" rename="n.in"/>
+      </assignment>
+    </group>
+  </decorates>  
+
+  <decorates name="sp_hnfs.smallest_prime">
+    <group name="math" purpose="testing" staging="../../unittests/">
+      <test identifier="original" description="Tests of symmetry preserving HNF generation"
+	    cases="[1-11]" timed="true">
+	<output folder="./tests/aux"
+		file="sp.out.{}" template="integer.xml"
+		identifier="sp.out"/>
+	<target name="sp" compareto="sp.out"
+		varfile="sp.out" when="each"/>
+      </test>
+      <assignment name="a" value="afile">
+	<value identifier="afile" file="a.in.{}"
+	       folder="./tests/aux" rename="a.in"/>
+      </assignment>
+    </group>
+  </decorates>  
+
+  <decorates name="sp_hnfs.bt">
+    <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
+      <test identifier="original" description="Tests of symmetry preserving HNF generation"
+	    cases="bt[1-5]" timed="true">
+	<output folder="./tests/spHNFs"
+		file="spHNFs.out.{}" template="integer.xml"
+		identifier="spHNFs.out"/>
+	<target name="spHNFs" compareto="spHNFs.out"
+		varfile="spHNFs.out" when="each"/>
+      </test>
+      <assignment name="n" value="nfile">
+	<value identifier="nfile" file="n.in.{}"
+	       folder="./tests/spHNFs" rename="n.in"/>
+      </assignment>
+    </group>
+  </decorates>  
 </fortpy>

@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.0.13
+- Added hex, trigonal, simple tetragonal and body centered tetragonal
+  cases to sp_hnf.f90.
+
 ## 0.0.12
 - Began implementing the fortran version of the code (created sc, bcc,
   and fcc subroutines).
