@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.0.14
+- Added remaining crystal classes to sp_hnf.f90.
+- Added unit tests for all crystal classes.
+
 ## Revision 0.0.13
 - Added hex, trigonal, simple tetragonal and body centered tetragonal
   cases to sp_hnf.f90.
