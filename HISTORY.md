@@ -1,5 +1,10 @@
 # Revision History
 
+## Revision 0.1.0
+- Made a driver that makes a kpoints file from the POSCAR and a file
+  containing the desired k-point density and offset.
+- Implemented the rest of the code needed to find the optimal k_grid.
+
 ## Revision 0.0.14
 - Added remaining crystal classes to sp_hnf.f90.
 - Added unit tests for all crystal classes.

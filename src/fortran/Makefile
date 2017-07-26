@@ -8,20 +8,21 @@ SHELL		= /bin/bash
 
 # enumlib library paths
 LBD1 = ../../../symlib/src
+LBD2 = ../../../kgrid_gen/src
 
 FOUND = false
 ifeq (${F90},gfortran)  # gfortran compiler
   ifeq (${DEBUG},false)
-     FFLAGS = -O3 -ffree-line-length-none -fno-underscoring -I${LBD1} 
+     FFLAGS = -O3 -ffree-line-length-none -fno-underscoring -I${LBD1} ${LBD2}
      FOUND = true
   else
-     FFLAGS = -fPIC -g -fbounds-check -Wall -ffree-line-length-none -fno-underscoring -I${LBD1} 
+     FFLAGS = -fPIC -g -fbounds-check -Wall -ffree-line-length-none -fno-underscoring -I${LBD1} ${LBD2}
      FOUND = true
   endif
 endif
 
 ifeq (${F90},ifc)  # Intel compiler
-  FFLAGS = -fPIC -g -error-limit 7 -traceback -check bounds -warn  -I${LBD1}
+  FFLAGS = -fPIC -g -error-limit 7 -traceback -check bounds -warn  -I${LBD1} ${LBD2}
   FOUND = true
 endif
 
@@ -31,7 +32,7 @@ ifeq (${F90},ifort)  # Intel compiler
      FOUND = true
   else
 #  F90 =  /opt/intel/fc/10.0.016/bin/ifort
-     FFLAGS =  -fPIC -g -debug -error-limit 7 -heap-arrays -traceback -check bounds -warn -I${LBD1}
+     FFLAGS =  -fPIC -g -debug -error-limit 7 -heap-arrays -traceback -check bounds -warn -I${LBD1} ${LBD2}
      FOUND = true
 #-prof-use -prof-dir .
    endif
@@ -39,12 +40,12 @@ endif
 
 
 ifeq (${F90},xlf90) # IBM compiler
-  FFLAGS = -g -C -fPIC -qsuffix=f=f90  -I${LBD1}
+  FFLAGS = -g -C -fPIC -qsuffix=f=f90  -I${LBD1} ${LBD2}
   FOUND = true
 endif
 ifeq (${F90},f95) # Absoft PPC compiler
 #  FFLAGS =  -profile -p ${LBDR} 
-  FFLAGS = -g -Rb -Rc  -fPIC -nodefaultmod -p ${LBD1} #-ea
+  FFLAGS = -g -Rb -Rc  -fPIC -nodefaultmod -p ${LBD1} ${LBD2} #-ea
 # B80  show entry in subprograms ; Rb bounds; Rc array conformance;
 # z2 warning level
 # -O3 optimization
@@ -64,11 +65,11 @@ endif
 #     python irevision.py derivative_structure_generator.f90 version.enum	
 # fi
 
-SRC = sp_hnfs.f90
+SRC = sp_hnfs.f90 lat_types.f90 find_kgrids.f90
 
 OBJS = ${SRC:.f90=.o} 
 LIBS =  $(LBD1)/libcomparestructs.a $(LBD1)/libutils.a $(LBD1)/libsym.a \
-         $(LBD1)/librational.a $(LBD1)/libcombinatorics.a
+         $(LBD1)/librational.a $(LBD1)/libcombinatorics.a $(LBD2)/libkptgen.a
 
 .SUFFIXES :  
 .SUFFIXES :  .f .f90 .f95 .o
@@ -78,7 +79,13 @@ libsphnf.a: ${OBJS}
 	ar ru $@ $?
 	ranlib  $@
 
-all: libsphnf.a
+all: libsphnf.a lat_type.x make_kpoints.x
+
+lat_type.x: ${OBJS} lat_id_driver.o
+	${F90} ${LDFLAGS} -o $@ ${OBJS} lat_id_driver.o ${LIBS}
+
+make_kpoints.x: ${OBJS} driver.o
+	${F90} ${LDFLAGS} -o $@ ${OBJS} driver.o ${LIBS}
 
 .f95.o : 
 	${F90} ${FFLAGS} -c $<

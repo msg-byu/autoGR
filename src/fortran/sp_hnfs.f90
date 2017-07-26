@@ -3,7 +3,7 @@
 Module sp_hnfs
   implicit none
   private
-  public sc, fcc, bcc, hex, trig, st, bct
+  public sc, fcc, bcc, hex, trig, st, bct, so, baseco, bco, fco, sm, basecm, tric
 
   integer, parameter:: dp=selected_real_kind(15,307)
   integer, parameter:: sp=selected_real_kind(6,37)
@@ -162,7 +162,7 @@ CONTAINS
                0, 0, f/),(/3,3/))
           exit
        elseif ((a==c) .and. (real(f,dp)/real(a,dp)==2)) then
-          d = 0
+          b = 0
           d = a
           e = a
           nhnfs = nhnfs + 1          
@@ -515,7 +515,7 @@ CONTAINS
              z = 0
              do j = 1,size_count
                 bs(j) = z
-                z = z + a
+                z = z + int(a)
              end do
           end if
        end if
@@ -800,7 +800,7 @@ CONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     real(dp) :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, nhnfs, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
