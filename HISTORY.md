@@ -1,5 +1,8 @@
 # Revision History
 
+## Revision 0.1.1
+- Fixed the first few bugs in the make KPOINTS file routine.
+
 ## Revision 0.1.0
 - Made a driver that makes a kpoints file from the POSCAR and a file
   containing the desired k-point density and offset.

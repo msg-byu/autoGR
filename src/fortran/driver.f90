@@ -15,7 +15,7 @@ PROGRAM lat_id_driver
 
   character(300) :: line
 
-  eps = 1E-4
+  eps = 1E-6
   open(1,file="POSCAR",status="old")
 
   read(1,'(a300)') line

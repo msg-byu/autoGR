@@ -44,11 +44,7 @@ CONTAINS
     call canonical_basis(lat_id,lat_vecs,c_basis)
 
     call matrix_inverse(lat_vecs,pLVinv)
-    do i=1,3
-       do j=1,3
-          M(j,i) = dot_product(pLVinv(j,:),c_basis(:,i))
-       end do
-    end do
+    M = matmul(c_basis,pLVinv)
     call matrix_inverse(M,Minv)
 
     if ((lat_id==1) .or. (lat_id==2) .or. (lat_id==3)) then
@@ -168,19 +164,11 @@ CONTAINS
     allocate(grids(3,3,size(sp_hnfs,3)),STAT=status)
     if (status /=0) stop "Failed to allocate memory in find_kgrids."
 
-    
     do i=1,size(sp_hnfs,3)
-       do j=1,3
-          do k=1,3
-             temp(k,j) = dot_product(c_basis(k,:),sp_hnfs(:,j,i))
-          end do
-       end do
-       do j=1,3
-          do k=1,3
-             grids(k,j,i) = dot_product(temp(k,:),Minv(:,j))
-          end do
-       end do
-       call matrix_inverse(transpose(grids(:,:,i)),grids(:,:,i))
+       temp = matmul(c_basis,sp_hnfs(:,:,i))
+       grids(:,:,i) = matmul(Minv,temp)
+       grids(:,:,i) = transpose(grids(:,:,i))
+       call matrix_inverse(grids(:,:,i),grids(:,:,i))
     end do
     deallocate(sp_hnfs)
   end SUBROUTINE find_grids
@@ -254,29 +242,26 @@ CONTAINS
     
     do i=1,size(grids,3)
        call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
-       do j=1,3
-          norms(j) = norm(reduced_grid(:,j))
-       end do
        r_min = max(norms(1),norms(2),norms(3))
        pf = (4.0_dp/3.0_dp)*pi*(min(norms(1),norms(2),norms(3))**2)/(dot_product(reduced_grid(:,1),cross_product(reduced_grid(:,2),reduced_grid(:,3))))
        if (r_min_best==0) then
           r_min_best = r_min
           pf_best = pf
-          best_grid = reduced_grid
+          best_grid = grids(:,:,i)
        else
           if (r_min<r_min_best) then
              r_min_best = r_min
              pf_best = pf
-             best_grid = reduced_grid
+             best_grid = grids(:,:,i)
           elseif (abs(r_min-r_min_best)<1E-3) then
              if (pf <pf_best) then
                 r_min_best = r_min
                 pf_best = pf
-                best_grid = reduced_grid
+                best_grid = grids(:,:,i)
              end if
           end if
        end if
     end do
-    
+
   end SUBROUTINE grid_selection
 end Module find_kgrids
