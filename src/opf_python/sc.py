@@ -20,33 +20,27 @@ def sc_srHNFs(n):
         c = diag[1]
         f = diag[2]
 
-        #alpha3 condition
-        if f%a==0:
-            #beta3 condition
-            if f%c==0:
-                for b in range(c):
-                    #beta3 condition
-                    if (b*f)%(a*c)==0:
-                        #find e values alpha2 condition
-                        e = 0
-                        while (e<f):
-                            #beta2 condition
-                            g21 = -c+e*e/float(c)
-                            beta22 = b*e/float(a)
-                            if e%c==0 and g21%f ==0 and beta22%c==0:
-                                d = 0
-                                #alpha1 condition
-                                while (d<f):
-                                    beta11 = b-d
-                                    beta12 = -a-b*d/float(a)
-                                    g11 = -b-beta11*e/float(c)+d
-                                    g12 = b-beta12*e/float(c)-d*d/float(a)
-                                    g22 = c-d*e/float(a) +b*e*e/float(a*c)
-                                    if beta11%c==0 and beta12%c==0 and g11%f==0 and g12%f==0 and g22%f==0:
-                                        HNF = [[a,0,0],[b,c,0],[d,e,f]]
-                                        srHNFs.append(HNF)
-                                
-                                
-                                    d += a
-                            e += a
+
+        if a==c and c==f:
+            b = 0
+            d = 0
+            e = 0
+            HNF = [[a,0,0],[b,c,0],[d,e,f]]
+            srHNFs.append(HNF)
+            break
+        elif a==c and f/float(a)==2:
+            b = 0
+            d = a
+            e = a
+            HNF = [[a,0,0],[b,c,0],[d,e,f]]
+            srHNFs.append(HNF)
+            break
+        elif c==f and f/float(a)==2:
+            b = a
+            d = a
+            e = 0
+            HNF = [[a,0,0],[b,c,0],[d,e,f]]
+            srHNFs.append(HNF)
+            break
+        
     return srHNFs

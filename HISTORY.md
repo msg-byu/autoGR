@@ -1,5 +1,45 @@
 # Revision History
 
+## Revision 0.1.3
+- Fixed a bug in the python code concerning commencerate lattices.
+
+## Revision 0.1.2
+- Updated the driver to print the k-points in reciprocal lattice
+  coordinates instead of cartesian. Still needs to be tested to see if
+  VASP reads it in properly.
+
+## Revision 0.1.1
+- Fixed the first few bugs in the make KPOINTS file routine.
+
+## Revision 0.1.0
+- Made a driver that makes a kpoints file from the POSCAR and a file
+  containing the desired k-point density and offset.
+- Implemented the rest of the code needed to find the optimal k_grid.
+
+## Revision 0.0.14
+- Added remaining crystal classes to sp_hnf.f90.
+- Added unit tests for all crystal classes.
+
+## Revision 0.0.13
+- Added hex, trigonal, simple tetragonal and body centered tetragonal
+  cases to sp_hnf.f90.
+
+## 0.0.12
+- Began implementing the fortran version of the code (created sc, bcc,
+  and fcc subroutines).
+
+## 0.0.11
+- Implemented faster algorithms for bcc, fcc, sc, and body centered tetragonal cells.
+- Fixed integer division in universal.py for python 3.
+- Fixed a bug in lat_type.py that was caused by the appearance of
+  negative angles from the dot products.
+- Fixed jeremey.py. The loop over the grids was indented to far.
+
+## 0.0.10
+- Fixed bugs in jeremy.py and in universal.py.
+- Added some new unit tests to check for the bugs.
+- Added additional supporting info.
+
 ## 0.0.9
 - Created driver for grid generation src/opf_python/gengrid.py. The
   driver is still incomplete.

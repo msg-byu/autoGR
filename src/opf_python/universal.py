@@ -15,12 +15,12 @@ def get_HNF_diagonals(n):
         if not n%i == 0:
             continue
         else:
-            q = n/i
+            q = n//i
             for j in range(1,q+1):
                 if not q%j == 0:
                     continue
                 else:
-                    diags.append([i,j,q/j])
+                    diags.append([i,j,q//j])
                     
     return diags
 
@@ -41,15 +41,24 @@ def find_srBs(A,kpt,exact=False):
     """
 
     from lat_type import lat_type
-    from phenum.vector_utils import _minkowski_reduce_basis
     import numpy as np
     
-    name, basis = lat_type(A)
+    name, basis = lat_type(np.transpose(A))
+    # name_w, basis = lat_type(np.transpose(A))
+    # name, basis_w = lat_type(np.linalg.inv(A))
+
+    # # We need to find the difference in volume between the canonical
+    # # and the users basis.
+    # rat = (np.linalg.det(A)/np.linalg.det(basis))**(1/3.)
+    # basis = rat*basis
+    
+    # Find transformation matrix bteween basis.
+    M = np.dot(basis,np.linalg.inv(A))
 
     if not exact:
         ns, mult = find_volumes(name,kpt)
     else:
-        ns, mult = kpt, 1.0
+        ns, mult = [kpt], 1.0
 
     srHNFs = []
     if name == "sc":
@@ -161,10 +170,10 @@ def find_srBs(A,kpt,exact=False):
 
     Bs = []
     for H in srHNFs:
-        B = np.dot(basis,H)
+        B = np.dot(np.linalg.inv(M),np.dot(basis,H))
         Bs.append(B)
 
-    return Bs        
+    return Bs, srHNFs
         
 def find_volumes(lat_type,kpd):
     """Finds the allowed n's for a given lattice around the desired k-point density.
@@ -267,5 +276,4 @@ def find_volumes(lat_type,kpd):
     else:
         raise ValueError("ERROR: unrecognized lattice type: ",lat_type)
 
-    print("n values used: ",ns)
     return ns, mult

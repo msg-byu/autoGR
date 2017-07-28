@@ -14,7 +14,7 @@ def hex_srHNFs(n):
     diags = get_HNF_diagonals(n)
 
     srHNFs = []
-    
+
     for diag in diags:
         a = diag[0]
         c = diag[1]
