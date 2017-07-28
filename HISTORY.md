@@ -1,5 +1,8 @@
 # Revision History
 
+## Revision 0.1.3
+- Fixed a bug in the python code concerning commencerate lattices.
+
 ## Revision 0.1.2
 - Updated the driver to print the k-points in reciprocal lattice
   coordinates instead of cartesian. Still needs to be tested to see if

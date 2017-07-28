@@ -53,7 +53,7 @@ def find_srBs(A,kpt,exact=False):
     # basis = rat*basis
     
     # Find transformation matrix bteween basis.
-    M = np.dot(np.linalg.inv(A),basis)
+    M = np.dot(basis,np.linalg.inv(A))
 
     if not exact:
         ns, mult = find_volumes(name,kpt)
@@ -170,10 +170,10 @@ def find_srBs(A,kpt,exact=False):
 
     Bs = []
     for H in srHNFs:
-        B = np.dot(np.dot(basis,H),np.linalg.inv(M))
+        B = np.dot(np.linalg.inv(M),np.dot(basis,H))
         Bs.append(B)
 
-    return Bs        
+    return Bs, srHNFs
         
 def find_volumes(lat_type,kpd):
     """Finds the allowed n's for a given lattice around the desired k-point density.
