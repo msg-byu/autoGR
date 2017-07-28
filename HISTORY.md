@@ -1,5 +1,10 @@
 # Revision History
 
+## Revision 0.1.2
+- Updated the driver to print the k-points in reciprocal lattice
+  coordinates instead of cartesian. Still needs to be tested to see if
+  VASP reads it in properly.
+
 ## Revision 0.1.1
 - Fixed the first few bugs in the make KPOINTS file routine.
 

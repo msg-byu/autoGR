@@ -6,7 +6,7 @@ PROGRAM lat_id_driver
   ! use fortpy, only: pysave, fpy_read_f, fpy_read
   implicit none
 
-  real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3)
+  real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3), point(3), Rinv(3,3)
   real(dp), allocatable :: grids(:,:,:)
   real(dp) :: eps
   integer :: kpd, i
@@ -40,8 +40,10 @@ PROGRAM lat_id_driver
   write(4,*) "Our new kpoint method."
   write(4,*) size(IRKps,1)
   write(4,*) "Fractional"
+  call matrix_inverse(r_vecs,Rinv)
   do i = 1,size(IRKps,1)
-     write(4,'(F16.14,A1,F16.14,A1,F16.14,A1,I5.1)') IRKps(i,1), " ",IRKps(i,2), " ",IRKps(i,3), " ", weights(i)
+     point = matmul(Rinv,IRKps(i,:))
+     write(4,'(F16.14,A1,F16.14,A1,F16.14,A1,I5.1)') point(1), " ",point(2), " ",point(3), " ", weights(i)
   end do
 
   
