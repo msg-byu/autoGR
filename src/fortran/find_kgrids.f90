@@ -6,6 +6,7 @@ Module find_kgrids
   use sp_hnfs
   use vector_matrix_utilities, only: matrix_inverse, minkowski_reduce_basis, norm, cross_product
   use numerical_utilities, only: equal
+  use kpointgeneration, only: generateIrredKpointList
 
   implicit none
   private
@@ -225,42 +226,68 @@ CONTAINS
   !!vectors for the candidate grids.</parameter>
   !!<parameter name="best_grid" regular="true">The best grid given the
   !!criteria.</parameter>
-  SUBROUTINE grid_selection(grids, best_grid)
+  !!<parameter name="r_lattice" regular="true">The reciprocal cell
+  !!lattice vectors.</parameter>
+  !!<parameter name="offset" regular="true">The offset for the
+  !!grid.</parameter>
+  !!<parameter name="eps_" regular="true">Floating point tolerance.</parameter>
+  SUBROUTINE grid_selection(grids, best_grid, r_lattice, offset,eps_)
     real(dp), allocatable, intent(in) :: grids(:,:,:)
     real(dp), intent(out) :: best_grid(3,3)
+    real(dp), intent(in) :: r_lattice(3,3), offset(3)
+    real(dp), intent(in), optional :: eps_
 
     real(dp) :: reduced_grid(3,3), norms(3)
     integer :: i, j
-    real(dp) :: r_min, pf, r_min_best, pf_best, pi, eps
+    real(dp) :: r_min, pf, r_min_best, pf_best, pi, eps, nIrKpts, best_nirkpts
     
 
+    real(dp), pointer :: IRKps(:,:)
+    integer, pointer :: weights(:)
+
+    if (.not. present(eps_)) then
+       eps = 1E-6
+    else
+       eps = eps_
+    end if
     pi = 3.14159265358979323846
-    eps = 1E-6
     
     r_min_best = 0
     pf_best = 0
+    best_nirkpts = 0
     
     do i=1,size(grids,3)
        call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
        r_min = max(norms(1),norms(2),norms(3))
        pf = (4.0_dp/3.0_dp)*pi*(min(norms(1),norms(2),norms(3))**2)/(dot_product(reduced_grid(:,1),cross_product(reduced_grid(:,2),reduced_grid(:,3))))
-       if (r_min_best==0) then
-          r_min_best = r_min
-          pf_best = pf
+       call generateIrredKpointList(grids(:,:,i),r_lattice,offset,IRKps,weights,eps_=eps)
+       nIrKpts = size(IRKps,1)
+       if (best_nirkpts==0) then
+          best_nirkpts = nIrKpts
           best_grid = grids(:,:,i)
-       else
-          if (r_min<r_min_best) then
-             r_min_best = r_min
-             pf_best = pf
-             best_grid = grids(:,:,i)
-          elseif (abs(r_min-r_min_best)<1E-3) then
-             if (pf <pf_best) then
-                r_min_best = r_min
-                pf_best = pf
-                best_grid = grids(:,:,i)
-             end if
-          end if
+       elseif (nIrKpts < best_nirkpts) then
+          best_nirkpts = nIrKpts
+          best_grid = grids(:,:,i)
+       ! elseif (nIrKpts == best_nirkpts) then
+       !    stop "Grids with equal number of irreducibel k-poins found. Need heuristic to determine which to use."
        end if
+       ! if (r_min_best==0) then
+       !    r_min_best = r_min
+       !    pf_best = pf
+       !    best_grid = grids(:,:,i)
+       ! else
+       !    if (r_min<r_min_best) then
+       !       r_min_best = r_min
+       !       pf_best = pf
+       !       best_grid = grids(:,:,i)
+       !    elseif (abs(r_min-r_min_best)<1E-3) then
+       !       if (pf <pf_best) then
+       !          r_min_best = r_min
+       !          pf_best = pf
+       !          best_grid = grids(:,:,i)
+       !       end if
+       !    end if
+       ! end if
     end do
 
   end SUBROUTINE grid_selection

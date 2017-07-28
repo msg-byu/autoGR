@@ -1,5 +1,12 @@
 # Revision History
 
+## Revision 0.1.4
+- Fixed name of kgridGen repo in Makefile.
+- Added printing of total number of kpoints to driver and changed the
+  output so that the k-poits are mapped to the first BZ.
+- Changed grid selection so that it finds the grid with the smallest
+  number of irreducibel k-points.
+
 ## Revision 0.1.3
 - Fixed a bug in the python code concerning commencerate lattices.
 
