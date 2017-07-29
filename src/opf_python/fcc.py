@@ -9,7 +9,7 @@ def fcc_srHNFs(n):
         srHNFs (list of lists): The symmetry preserving HNFs.
     """
 
-    from universal import get_HNF_diagonals
+    from opf_python.universal import get_HNF_diagonals
 
     diags = get_HNF_diagonals(n)
 

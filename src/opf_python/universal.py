@@ -40,7 +40,7 @@ def find_srBs(A,kpt,exact=False):
         ValueError if the lattice type can't be identified.
     """
 
-    from lat_type import lat_type
+    from opf_python.lat_type import lat_type
     import numpy as np
     
     name, basis = lat_type(np.transpose(A))
@@ -62,91 +62,91 @@ def find_srBs(A,kpt,exact=False):
 
     srHNFs = []
     if name == "sc":
-        from sc import sc_srHNFs
+        from opf_python.sc import sc_srHNFs
         for n in ns:
             temp = sc_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)
         
     elif name == "bcc":
-        from bcc import bcc_srHNFs
+        from opf_python.bcc import bcc_srHNFs
         for n in ns:
             temp = bcc_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
             
     elif name == "fcc":
-        from fcc import fcc_srHNFs
+        from opf_python.fcc import fcc_srHNFs
         for n in ns:
             temp = fcc_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "hex":
-        from hx import hex_srHNFs
+        from opf_python.hx import hex_srHNFs
         for n in ns:
             temp = hex_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "trig":
-        from trig import trig_srHNFs
+        from opf_python.trig import trig_srHNFs
         for n in ns:
             temp = trig_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "stet":
-        from stet import stet_srHNFs
+        from opf_python.stet import stet_srHNFs
         for n in ns:
             temp = stet_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
        
     elif name == "btet":
-        from body_tet import body_tet_srHNFs
+        from opf_python.body_tet import body_tet_srHNFs
         for n in ns:
             temp = body_tet_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "so":
-        from so import so_srHNFs
+        from opf_python.so import so_srHNFs
         for n in ns:
             temp = so_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "co":
-        from base_ortho import base_ortho_srHNFs
+        from opf_python.base_ortho import base_ortho_srHNFs
         for n in ns:
             temp = base_ortho_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "bo":
-        from body_ortho import body_ortho_srHNFs
+        from opf_python.body_ortho import body_ortho_srHNFs
         for n in ns:
             temp = body_ortho_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "fo":
-        from face_ortho import face_ortho_srHNFs
+        from opf_python.face_ortho import face_ortho_srHNFs
         for n in ns:
             temp = face_ortho_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "sm":
-        from sm import sm_srHNFs
+        from opf_python.sm import sm_srHNFs
         for n in ns:
             temp = sm_srHNFs(n)
             for t in temp:
                 srHNFs.append(t)        
         
     elif name == "cm":
-        from base_mono import base_mono_srHNFs
+        from opf_python.base_mono import base_mono_srHNFs
         for n in ns:
             temp = base_mono_srHNFs(n)
             for t in temp:
