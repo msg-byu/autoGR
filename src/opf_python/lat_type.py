@@ -10,7 +10,7 @@ def lat_type(lat):
     """
     
     from phenum.vector_utils import _minkowski_reduce_basis
-    from phenum.symmetry import _get_lattice_pointGroup
+    from phenum.symmetry import get_lattice_pointGroup
     import numpy as np
 
     clat = np.array(_minkowski_reduce_basis(lat,1E-10))
@@ -41,7 +41,7 @@ def lat_type(lat):
 
     ## find pg to determine crystial family
     ## once family is found go through possible lattice system
-    fam = len(_get_lattice_pointGroup(clat))
+    fam = len(get_lattice_pointGroup(clat))
     if fam == 48: #cubic
         if p_count==3:
             latType = 'sc'
