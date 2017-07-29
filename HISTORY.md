@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.1.5 (JJ)
+- Renamed unit test test_jeremy.py test_sym_grids.py.
+- Fixed remaining import calls.
+
 ## Revision 0.1.4 (JJ)
 - Fixed import calls in a few modules but some are still missing.
 - Renamed jeremy.py sym_grids.py.
@@ -8,7 +12,7 @@
 - Added notebooks which will test our symmetry preserving grids on
   empirical pseudopotentials in python (must have BZI to run tests).
 - Started tests on empirical pseudopotentials in a notebook called
-  search for Figure of Merit.
+  Search for Figure of Merit.
 
 ## Revision 0.1.3
 - Fixed a bug in the python code concerning commencerate lattices.

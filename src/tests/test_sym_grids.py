@@ -6,7 +6,7 @@ import numpy as np
 
 def test_btet_grid():
     """Tests the grid generation of the grids."""
-    from opf_python.jeremy import spGrids
+    from opf_python.sym_grids import spGrids
     
     a1 = np.array([-1,1,2])
     a2 = np.array([1,-1,2])
@@ -26,7 +26,7 @@ def test_btet_grid():
 
 def test_fcc_grid():
     """Tests the grid generation of the grids."""
-    from opf_python.jeremy import spGrids
+    from opf_python.sym_grids import spGrids
     
     lat_param = np.random.rand()*10
     A = lat_param*np.transpose([[2,2,2],[1,1,2],[1,2,1]])
@@ -44,7 +44,7 @@ def test_fcc_grid():
         
 def test_bcc_grid():
     """Tests the grid generation of the grids."""
-    from opf_python.jeremy import spGrids
+    from opf_python.sym_grids import spGrids
     
     lat_param = np.random.rand()*10
     A = lat_param*np.transpose([[1,-1,3],[1,-1,1],[1,1,-1]])
