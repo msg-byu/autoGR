@@ -1,5 +1,10 @@
 # Revision History
 
+## Revision 0.1.5
+- Fixed the triclinic grid selection so that it uses smaller HNF determinants.
+- Fixed an allocation error in find_kgrids.f90, subroutine
+  find_grids. (The bcc offset was being assigned to the wrong memory).
+
 ## Revision 0.1.4
 - Fixed name of kgridGen repo in Makefile.
 - Added printing of total number of kpoints to driver and changed the

@@ -22,15 +22,17 @@ CONTAINS
   !!density.</parameter>
   !!<parameter name="grids" regular="true">The kpoint grids
   !!found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets allowed for
+  !!this system.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
-  SUBROUTINE find_grids(lat_vecs,kpd,grids,eps_)
+  SUBROUTINE find_grids(lat_vecs,kpd,grids,offsets,eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
     integer, intent(in) :: kpd
     real(dp), optional, intent(in) :: eps_
-    real(dp), allocatable, intent(out) :: grids(:,:,:)
+    real(dp), allocatable, intent(out) :: grids(:,:,:), offsets(:,:)
 
-    integer :: lat_id, a_kpd, c_kpd(3), i, status, larger, smaller, old, news, j, k
+    integer :: lat_id, a_kpd, c_kpd(3), i, status, larger, smaller, old, news, j, k, mult
     integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:), temp_hnfs2(:,:,:)
     real(dp) :: c_basis(3,3), M(3,3), pLVinv(3,3), Minv(3,3), temp(3,3)
     real(dp) :: eps
@@ -63,7 +65,16 @@ CONTAINS
           sp_hnfs(:,:,i) = temp_hnfs(:,:,1)
           deallocate(temp_hnfs)
        end do
-    else
+
+       if (lat_id ==2) then
+          allocate(offsets(1,3))
+          offsets(1,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+       else 
+          allocate(offsets(2,3))
+          offsets(1,:) = (/0.5_dp,0.5_dp,0.5_dp/)
+          offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+       end if
+    else if (lat_id /=14) then
        larger = 0
        smaller = 0
        a_kpd = kpd
@@ -88,8 +99,6 @@ CONTAINS
              call sm(a_kpd,temp_hnfs)
           else if (lat_id==13) then
              call basecm(a_kpd,temp_hnfs)
-          else if (lat_id==14) then
-             call tric(a_kpd,temp_hnfs)
           end if
           if (size(temp_hnfs,3)>1) then
              if (larger==0) then
@@ -136,8 +145,6 @@ CONTAINS
              call sm(a_kpd,temp_hnfs)
           else if (lat_id==13) then
              call basecm(a_kpd,temp_hnfs)
-          else if (lat_id==14) then
-             call tric(a_kpd,temp_hnfs)
           end if
           if (size(temp_hnfs,3)>1) then
              if (larger==0) then
@@ -160,6 +167,81 @@ CONTAINS
           end if
           deallocate(temp_hnfs)
        end do
+
+       if ((lat_id==4) .or. (lat_id==5) .or. (lat_id==7)) then
+          allocate(offsets(2,3))
+          offsets(1,:) = (/0.0_dp,0.0_dp,0.5_dp/)
+          offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+       else if (lat_id==6) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.5_dp,0.5_dp,0.5_dp/)
+          offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+          offsets(3,:) = (/0.0_dp,0.0_dp,0.5_dp/)
+          offsets(4,:) = (/0.5_dp,0.5_dp,0.0_dp/)
+       else if (lat_id==11) then
+          allocate(offsets(2,3))
+          offsets(1,:) = (/0.5_dp,0.5_dp,0.5_dp/)
+          offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+       else if (lat_id==10) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.5_dp,0.0_dp,0.0_dp/)
+          offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+          offsets(3,:) = (/0.0_dp,0.5_dp,0.0_dp/)
+          offsets(4,:) = (/0.0_dp,0.0_dp,0.5_dp/)
+       else if (lat_id==9) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.0_dp,0.5_dp,0.5_dp/)
+          offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+          offsets(3,:) = (/0.0_dp,0.5_dp,0.0_dp/)
+          offsets(4,:) = (/0.0_dp,0.0_dp,0.5_dp/)
+       else if (lat_id==13) then
+          allocate(offsets(8,3))
+          offsets(1,:) = (/-0.25_dp,0.25_dp,0.5_dp/)
+          offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+          offsets(3,:) = (/0.0_dp,0.0_dp,0.5_dp/)
+          offsets(4,:) = (/-0.25_dp,0.25_dp,0.0_dp/)
+          offsets(5,:) = (/0.0_dp,0.5_dp,0.0_dp/)
+          offsets(6,:) = (/0.25_dp,0.25_dp,0.0_dp/)
+          offsets(7,:) = (/0.25_dp,0.25_dp,0.5_dp/)
+          offsets(8,:) = (/0.0_dp,0.5_dp,0.5_dp/)
+       else
+          allocate(offsets(8,3))
+          offsets(1,:) = (/0.5_dp,0.5_dp,0.5_dp/)
+          offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+          offsets(3,:) = (/0.0_dp,0.5_dp,0.0_dp/)
+          offsets(4,:) = (/0.0_dp,0.0_dp,0.5_dp/)
+          offsets(5,:) = (/0.5_dp,0.0_dp,0.0_dp/)
+          offsets(6,:) = (/0.5_dp,0.5_dp,0.0_dp/)
+          offsets(7,:) = (/0.5_dp,0.0_dp,0.5_dp/)
+          offsets(8,:) = (/0.0_dp,0.5_dp,0.5_dp/)
+       end if
+    else
+
+       mult = 1
+       do while ((kpd/(mult**3)) > 500)
+          mult = mult + 1
+       end do
+
+       a_kpd = kpd/(mult**3)
+       
+       call tric(a_kpd,temp_hnfs)
+       
+       allocate(sp_hnfs(3,3,size(temp_hnfs,3)),STAT= status)
+       if (status /=0) stop "Failed to allocate memory in find_kgrids."
+
+       sp_hnfs = temp_hnfs*mult
+       deallocate(temp_hnfs)
+       
+       allocate(offsets(8,3))
+       offsets(1,:) = (/0.5_dp,0.5_dp,0.5_dp/)
+       offsets(2,:) = (/0.0_dp,0.0_dp,0.0_dp/)
+       offsets(3,:) = (/0.0_dp,0.5_dp,0.0_dp/)
+       offsets(4,:) = (/0.0_dp,0.0_dp,0.5_dp/)
+       offsets(5,:) = (/0.5_dp,0.0_dp,0.0_dp/)
+       offsets(6,:) = (/0.5_dp,0.5_dp,0.0_dp/)
+       offsets(7,:) = (/0.5_dp,0.0_dp,0.5_dp/)
+       offsets(8,:) = (/0.0_dp,0.5_dp,0.5_dp/)
+       
     end if
 
     allocate(grids(3,3,size(sp_hnfs,3)),STAT=status)
@@ -190,6 +272,11 @@ CONTAINS
     integer :: mults(3)
 
     temp1= int(real(kpd,dp)**(1.0_dp/3.0_dp))
+
+    if (abs((temp1**3)-kpd) > abs(((temp1+1)**3)-kpd)) then
+       temp1 = temp1 + 1
+    end if
+    
     a = 0
     b = temp1**3
     c = 0
@@ -200,7 +287,7 @@ CONTAINS
        mults = (/1,2,4/)
     end if
 
-    do i=1,temp1
+    do i=1,temp1+1
        do j=1,3
           temp2 = mults(j)*(i**3)
           if (temp2 /= b) then
@@ -226,15 +313,16 @@ CONTAINS
   !!vectors for the candidate grids.</parameter>
   !!<parameter name="best_grid" regular="true">The best grid given the
   !!criteria.</parameter>
+  !!<parameter name="best_grid" regular="true">The offset for the grid given.</parameter>
   !!<parameter name="r_lattice" regular="true">The reciprocal cell
   !!lattice vectors.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
+  !!<parameter name="offsets" regular="true">The possible offsets for the
   !!grid.</parameter>
   !!<parameter name="eps_" regular="true">Floating point tolerance.</parameter>
-  SUBROUTINE grid_selection(grids, best_grid, r_lattice, offset,eps_)
-    real(dp), allocatable, intent(in) :: grids(:,:,:)
-    real(dp), intent(out) :: best_grid(3,3)
-    real(dp), intent(in) :: r_lattice(3,3), offset(3)
+  SUBROUTINE grid_selection(grids, best_grid, best_offset, r_lattice, offsets,eps_)
+    real(dp), allocatable, intent(in) :: grids(:,:,:), offsets(:,:)
+    real(dp), intent(out) :: best_grid(3,3), best_offset(3)
+    real(dp), intent(in) :: r_lattice(3,3)
     real(dp), intent(in), optional :: eps_
 
     real(dp) :: reduced_grid(3,3), norms(3)
@@ -257,37 +345,62 @@ CONTAINS
     best_nirkpts = 0
     
     do i=1,size(grids,3)
+       ! print *, "checking grid ",i," of ",size(grids,3)
        call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
+       norms(1) = norm(reduced_grid(:,1))
+       norms(2) = norm(reduced_grid(:,2))
+       norms(3) = norm(reduced_grid(:,3))
        r_min = max(norms(1),norms(2),norms(3))
        pf = (4.0_dp/3.0_dp)*pi*(min(norms(1),norms(2),norms(3))**2)/(dot_product(reduced_grid(:,1),cross_product(reduced_grid(:,2),reduced_grid(:,3))))
-       call generateIrredKpointList(grids(:,:,i),r_lattice,offset,IRKps,weights,eps_=eps)
+       ! call generateIrredKpointList(grids(:,:,i),r_lattice,(/0.0_dp,0.0_dp,0.0_dp/),IRKps,weights,eps_=eps)
+       ! nIrKpts = size(IRKps,1)
+       ! if (best_nirkpts==0) then
+       !    best_nirkpts = nIrKpts
+       !    best_grid = grids(:,:,i)
+       ! elseif (nIrKpts < best_nirkpts) then
+       !    best_nirkpts = nIrKpts
+       !    best_grid = grids(:,:,i)
+       ! ! elseif (nIrKpts == best_nirkpts) then
+       ! !    stop "Grids with equal number of irreducibel k-poins found. Need heuristic to determine which to use."
+       ! end if
+       if (r_min_best==0) then
+          r_min_best = r_min
+          ! pf_best = pf
+          best_grid = grids(:,:,i)
+          call generateIrredKpointList(grids(:,:,i),r_lattice,(/0.0_dp,0.0_dp,0.0_dp/),IRKps,weights,eps_=eps)
+          best_nirkpts = size(IRKps,1)
+       else
+          if (r_min<r_min_best) then
+             r_min_best = r_min
+             ! pf_best = pf
+             best_grid = grids(:,:,i)
+             call generateIrredKpointList(grids(:,:,i),r_lattice,(/0.0_dp,0.0_dp,0.0_dp/),IRKps,weights,eps_=eps)
+             best_nirkpts = size(IRKps,1)
+          elseif (abs(r_min-r_min_best)<eps) then
+             call generateIrredKpointList(grids(:,:,i),r_lattice,(/0.0_dp,0.0_dp,0.0_dp/),IRKps,weights,eps_=eps)
+             nIrKpts = size(IRKps,1)
+             
+             if (nIrKpts < best_nirkpts) then
+                r_min_best = r_min
+                ! pf_best = pf
+                best_grid = grids(:,:,i)
+                best_nirkpts = nIrKpts
+             end if
+          end if
+       end if
+    end do
+
+    best_nirkpts = 0
+    do i=1,size(offsets,1)
+       call generateIrredKpointList(best_grid,r_lattice,offsets(i,:),IRKps,weights,eps_=eps)
        nIrKpts = size(IRKps,1)
        if (best_nirkpts==0) then
           best_nirkpts = nIrKpts
-          best_grid = grids(:,:,i)
-       elseif (nIrKpts < best_nirkpts) then
+          best_offset = offsets(i,:)
+       else if (nIrKpts < best_nirkpts) then
           best_nirkpts = nIrKpts
-          best_grid = grids(:,:,i)
-       ! elseif (nIrKpts == best_nirkpts) then
-       !    stop "Grids with equal number of irreducibel k-poins found. Need heuristic to determine which to use."
+          best_offset = offsets(i,:)
        end if
-       ! if (r_min_best==0) then
-       !    r_min_best = r_min
-       !    pf_best = pf
-       !    best_grid = grids(:,:,i)
-       ! else
-       !    if (r_min<r_min_best) then
-       !       r_min_best = r_min
-       !       pf_best = pf
-       !       best_grid = grids(:,:,i)
-       !    elseif (abs(r_min-r_min_best)<1E-3) then
-       !       if (pf <pf_best) then
-       !          r_min_best = r_min
-       !          pf_best = pf
-       !          best_grid = grids(:,:,i)
-       !       end if
-       !    end if
-       ! end if
     end do
 
   end SUBROUTINE grid_selection
