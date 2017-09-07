@@ -1,16 +1,28 @@
 # Revision History
 
-## Revision 0.1.5
-- Fixed the triclinic grid selection so that it uses smaller HNF determinants.
-- Fixed an allocation error in find_kgrids.f90, subroutine
-  find_grids. (The bcc offset was being assigned to the wrong memory).
+## Revision 0.1.6 (WSM)
+-Added second algorithm for generating the body centered tetragonal
+ HNFs.
+-Added new output to lat_type that may help the basis
+ transformation. It now also outputs the order of the basis vectors
+ according to size.
+-Fixed bug reported in [issue #4](https://github.com/msg-byu/opf_kgrids/issues/4).
+-Added a new text file where I'm writing the comparison between methods section.
+-Fixed and updated a number of unit tests.
 
-## Revision 0.1.4
-- Fixed name of kgridGen repo in Makefile.
-- Added printing of total number of kpoints to driver and changed the
-  output so that the k-poits are mapped to the first BZ.
-- Changed grid selection so that it finds the grid with the smallest
-  number of irreducibel k-points.
+## Revision 0.1.5 (JJ)
+- Renamed unit test test_jeremy.py test_sym_grids.py.
+- Fixed remaining import calls.
+
+## Revision 0.1.4 (JJ)
+- Fixed import calls in a few modules but some are still missing.
+- Renamed jeremy.py sym_grids.py.
+- Added latex code for the paper we will submit in the directory named
+  paper. Completed rough draft of introduction.
+- Added notebooks which will test our symmetry preserving grids on
+  empirical pseudopotentials in python (must have BZI to run tests).
+- Started tests on empirical pseudopotentials in a notebook called
+  Search for Figure of Merit.
 
 ## Revision 0.1.3
 - Fixed a bug in the python code concerning commencerate lattices.

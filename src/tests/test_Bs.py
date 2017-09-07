@@ -10,7 +10,7 @@ def test_sc():
     """
 
     A = np.transpose([[1,0,0],[0,1,1],[0,0,1]])
-    Bs = find_srBs(A,1000)
+    Bs, spHNFs = find_srBs(A,1000)
 
     brute = []
     with open("tests/test_output/sc_A1_1_2000_Bs.out","r") as f:
@@ -25,10 +25,11 @@ def test_sc():
     In = []
     for t in Bs:
         for j in brute:
-            temp = np.dot(np.linalg.inv(j),t)
+            temp = np.dot(t,np.linalg.inv(j))
             if np.allclose(abs(np.linalg.det(temp)),1) and np.allclose(temp%1,0):
                 In.append(True)
                 break
+        
 
     assert len(In) == len(Bs)
             

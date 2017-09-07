@@ -9,7 +9,7 @@ should specify the target k-point density.
 
 import os
 import numpy as np
-from universal import find_srBs
+from opf_python.universal import find_srBs
 
 if not os.path.isfile("POSCAR"):
     print("ERROR: The POSCAR file must be provided.")

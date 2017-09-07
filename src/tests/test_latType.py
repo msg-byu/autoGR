@@ -13,7 +13,7 @@ def test_sc():
           [[1,0,1],[1,1,0],[0,0,1]],[[1,1,1],[0,1,1],[1,0,1]],[[1,0,2],[0,1,0],[0,1,1]]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name=="sc"
 
@@ -27,7 +27,7 @@ def test_bcc():
           [[1,-1,3],[1,-1,1],[1,1,-1]]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name=="bcc"
 
@@ -43,7 +43,7 @@ def test_fcc():
            [3.82669513e+00,3.82669513e+00,0]]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name=="fcc"
 
@@ -58,7 +58,7 @@ def test_hex():
           [a1+a2+a3,a2+a3,a1+a3],[a1+a2+a2,a2,a3+a2],[a1,[-0.5, -0.866025, 0],a3]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "hex"
 
@@ -72,9 +72,9 @@ def test_trig():
 
     As = [[a1,a2,a3],[a2+a1,a2+a3,a1+a3],[-a1,a2+a1+a1,a3-a1],[a1+a2+a3,a1+a2,a2+a3],
           [a1+a1,a2+a2,a3+a3]]
-
+    
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "trig"
 
@@ -89,7 +89,7 @@ def test_simple_tet():
     As = [[a1,a2,a3],[a1+a2,a2,a3+a1],[a1+a2+a3,a2+a3,a1+a2],[a1,a2+a1,a3+a3],[-a1,-a2+a3,a3]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "stet"
 
@@ -105,7 +105,7 @@ def test_btet():
           [a1+a2,a2,a1+a3],[a1+a2+a3,-a2,a3],[a1,a2+a3,a1+a3]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "btet"
 
@@ -120,7 +120,7 @@ def test_so():
     As = [[a1,a2,a3],[a1+a2,a2,a3],[-a1,a2+a3,-a3],[a1+a2+a3,a2,a3],[a1,a2+a1+a2,a3]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "so"
 
@@ -136,7 +136,7 @@ def test_co():
           [a1+a2+a2,a2+a3,a3],[a1+a3,a2,a2+a3]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "co"
 
@@ -149,10 +149,11 @@ def test_bo():
     a3 = np.array([0.5,1,-1.5])
 
     As = [[a1,a2,a3],[[1,0,0],[0,2,0],a1],[[1,0,0],a1,[0,0,3]],[a1,[0,2,0],[0,0,3]],[a1+a2,a2,a3]
-          ,[a1+a2+a3,a2,a3],[a1+a3,a2+a3,a3],[a1+a2+a2,a2+a3,a3+a1]]
+          ,[a1+a2+a3,a2,a3],[a1+a3,a2+a3,a3],[a1+a2+a2,a2+a3,a3+a1],
+          [[0.28642524, -0.57285048, 2.57782715],[0.57285048, 0., 0.], [0., 1.14570096, 0.]]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "bo"
 
@@ -168,7 +169,7 @@ def test_fo():
           [a1,a2,[0,0,3]],[a1+a2,a2,a3],[a1+a2+a3,a2+a3,a3],[-a1,a2-a1,a3+a1],[a1,a2+a1,a2+a3]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "fo"
 
@@ -184,7 +185,7 @@ def test_sm():
           [a1,a2,a3+a2-a1]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "sm"
 
@@ -200,7 +201,7 @@ def test_cm():
           [a1-a2,a2,a3-a1],[a1,a2+a3,a3],[a1+a2+a2,a1+a3,a2]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "cm"
         
@@ -213,6 +214,6 @@ def test_tric():
           [[.1,2,2],[2,.3,2],[2,2,.5]],[[2,9,2],[1,3,5],[.1,4,11]],[[-2,3,4],[2,-3,1],[1,3,-1]]]
 
     for A in As:
-        name, basis = lat_type(A)
+        name, basis, order = lat_type(A)
 
         assert name == "tric"

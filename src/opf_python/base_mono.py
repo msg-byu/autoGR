@@ -12,7 +12,7 @@ def base_mono_srHNFs(n):
 
     """
 
-    from universal import get_HNF_diagonals
+    from opf_python.universal import get_HNF_diagonals
 
     diags = get_HNF_diagonals(n)
 
