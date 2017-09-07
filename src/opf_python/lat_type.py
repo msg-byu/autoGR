@@ -42,7 +42,9 @@ def lat_type(lat,eps=1E-10):
 
     ## find pg to determine crystial family
     ## once family is found go through possible lattice system
+
     fam = len(get_lattice_pointGroup(clat,eps=eps))
+    
     if fam == 48: #cubic
         if p_count==3:
             latType = 'sc'
