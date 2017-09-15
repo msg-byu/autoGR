@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.2.0 (WSM)
+- Added python niggli reduction code and identification script (still
+  needs unit testing).
+
 ## Revision 0.1.6 (WSM)
 -Added second algorithm for generating the body centered tetragonal
  HNFs.
