@@ -30,10 +30,9 @@ def test_fcc_grid():
     
     lat_param = np.random.rand()*10
     A = lat_param*np.transpose([[2,2,2],[1,1,2],[1,2,1]])
-    B = np.transpose(np.linalg.inv(A))
+    B = np.linalg.inv(np.transpose(A))
 
     kpd = np.random.choice([4,16,8,32,128,27,108,432])
-    grids = []
 
     grids = spGrids(A,kpd)
 
