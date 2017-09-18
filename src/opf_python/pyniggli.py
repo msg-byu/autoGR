@@ -157,7 +157,7 @@ class reduced_cell(object):
                                "because of floating point error, try providing a smaller eps "
                                "value.")
 
-        if not self._niggli_check(A,B,C,xi,eta,zeta): # pragma: no cover
+        if not self._niggli_check(A,B,C,xi,eta,zeta,self.eps): # pragma: no cover
             raise RuntimeError("Cell reduction incorroct A: {0}, B: {1}, C: {2}, "
                                "xi: {3}, eta: {4}, zeta: {5}. Please submit a bug "
                                "report to: https://github.com/wsmorgan/pyniggli/"
@@ -165,7 +165,7 @@ class reduced_cell(object):
 
 
     @staticmethod
-    def _niggli_check(A,B,C,xi,eta,zeta):
+    def _niggli_check(A,B,C,xi,eta,zeta,eps):
         """Checks that the niggli reduced cell satisfies the niggli conditions.
         Conditions listed at: https://arxiv.org/pdf/1203.5146.pdf.
 
@@ -181,51 +181,71 @@ class reduced_cell(object):
             False if niggli conditons aren't met.
         """
 
-        if not (A > 0 and (A < B or np.allclose(A,B)) and
-                (B < C or np.allclose(B,C))):
+        if not (A-eps > 0 and (A < B-eps or np.allclose(A,B,atol=eps)) and
+                (B < C-eps or np.allclose(B,C,atol=eps))):
+            print("1")
             return False
         
-        if np.allclose(A,B) and not (abs(xi) < abs(eta) or np.allclose(abs(xi),abs(eta))):
+        if np.allclose(A,B,atol=eps) and not (abs(xi) < abs(eta)-eps or
+                                              np.allclose(abs(xi),abs(eta),atol=eps)):
+            print("2")
             return False
             
-        if np.allclose(B,C) and not (abs(eta) < abs(zeta) or np.allclose(abs(eta),abs(zeta))):
+        if np.allclose(B,C,atol=eps) and not (abs(eta) < abs(zeta)-eps
+                                              or np.allclose(abs(eta),abs(zeta),atol=eps)):
+            print("3")
             return False
 
-        if not ((xi > 0 and eta > 0 and zeta > 0) or
-                ((xi < 0 or np.allclose(xi,0)) and (eta < 0 or np.allclose(eta,0))
-                 and (zeta < 0 or np.allclose(zeta,0)))):
+        if not ((xi-eps > 0 and eta-eps > 0 and zeta-eps > 0) or
+                ((xi < 0-eps or np.allclose(xi,0,atol=eps))
+                 and (eta < 0-eps or np.allclose(eta,0,atol=eps))
+                 and (zeta < 0-eps or np.allclose(zeta,0,atol=eps)))):
+            print("4")
             return False
 
-        if not (abs(xi) < B or np.allclose(abs(xi),B)):
+        if not (abs(xi) < B-eps or np.allclose(abs(xi),B,atol=eps)):
+            print("5")
             return False 
             
-        if not ((abs(eta) < A or np.allclose(abs(eta),A)) and (abs(zeta) < A or
-                                                               np.allclose(abs(zeta),A))):
+        if not ((abs(eta) < A-eps or np.allclose(abs(eta),A,atol=eps)) and (abs(zeta) < A-eps or
+                                                               np.allclose(abs(zeta),A,atol=eps))):
+            print("6")
             return False
 
-        if not (C < A+B+C+xi+eta+zeta or np.allclose(C, A+B+C+xi+eta+zeta)):
+        if not (C < A+B+C+xi+eta+zeta-eps or np.allclose(C, A+B+C+xi+eta+zeta,atol=eps)):
+            print("7")
             return False
 
-        if np.allclose(xi,B) and not (zeta < 2.*eta or np.allclose(zeta,2.*eta)):
+        if np.allclose(xi,B,atol=eps) and not (zeta < 2.*eta-eps or
+                                               np.allclose(zeta,2.*eta,atol=eps)):
+            print("8")
             return False
 
-        if np.allclose(eta,A) and not (zeta < 2.*xi or np.allclose(zeta,2.*xi)):
+        if np.allclose(eta,A,atol=eps) and not (zeta < 2.*xi-eps or
+                                                np.allclose(zeta,2.*xi,atol=eps)):
+            print("9")
             return False
 
-        if np.allclose(zeta,A) and not (eta < 2.*xi or np.allclose(eta,2.*xi)):
+        if np.allclose(zeta,A,atol=eps) and not (eta < 2.*xi-eps or
+                                                 np.allclose(eta,2.*xi,atol=eps)):
+            print("10")
             return False
 
-        if np.allclose(xi,-B) and not np.allclose(zeta,0):
+        if np.allclose(xi,-B,atol=eps) and not np.allclose(zeta,0,atol=eps):
+            print("11")
             return False
 
-        if np.allclose(eta,-A) and not np.allclose(zeta,0):
+        if np.allclose(eta,-A,atol=eps) and not np.allclose(zeta,0,atol=eps):
+            print("12")
             return False
 
-        if np.allclose(zeta,-A) and not np.allclose(eta,0):
+        if np.allclose(zeta,-A,atol=eps) and not np.allclose(eta,0,atol=eps):
+            print("13")
             return False
 
-        if np.allclose(C,A+B+C+xi+eta+zeta,rtol=0.0) and not ((2.*A+2.*eta+zeta) < 0 or
-                                                     np.allclose(2.*A+2.*eta+zeta,0)):
+        if np.allclose(C,A+B+C+xi+eta+zeta,rtol=0.0) and not ((2.*A+2.*eta+zeta) < 0-eps or
+                                                     np.allclose(2.*A+2.*eta+zeta,0,atol=eps)):
+            print("14")
             return False
 
         return True
