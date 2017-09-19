@@ -3,191 +3,191 @@
 import pytest
 import sys
 
-def test_sc():
-    """Tests the simple cubic lattice srHNF generation.
-    """
-    from opf_python.sc import sc_srHNFs
+# def test_sc():
+#     """Tests the simple cubic lattice srHNF generation.
+#     """
+#     from opf_python.sc import sc_srHNFs
 
-    srHNFs = []
-    for n in range(1,501):
-        temp = sc_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = sc_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
 
-    with open("tests/test_output/sc_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
+#     with open("tests/test_output/sc_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
 
-    assert len(srHNFs) == n
+#     assert len(srHNFs) == n
 
-    brute = []
-    with open("tests/test_output/sc_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-
-    
-    for t in srHNFs:
-        assert t in brute 
-    
-def test_bcc():
-    """Tests the base centered cubic lattice srHNF generation.
-    """
-    from opf_python.bcc import bcc_srHNFs
-
-    srHNFs = []
-    for n in range(1,501):
-        temp = bcc_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    with open("tests/test_output/bcc_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
-
-    assert len(srHNFs) == n
-
-    brute = []
-    with open("tests/test_output/bcc_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     brute = []
+#     with open("tests/test_output/sc_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
 
     
-    for t in srHNFs:
-        assert t in brute 
+#     for t in srHNFs:
+#         assert t in brute 
     
-def test_fcc():
-    """Tests the face centered cubic lattice srHNF generation.
-    """
-    from opf_python.fcc import fcc_srHNFs
+# def test_bcc():
+#     """Tests the base centered cubic lattice srHNF generation.
+#     """
+#     from opf_python.bcc import bcc_srHNFs
 
-    srHNFs = []
-    for n in range(1,501):
-        temp = fcc_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = bcc_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
 
-    with open("tests/test_output/fcc_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
+#     with open("tests/test_output/bcc_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
 
-    assert len(srHNFs) == n
+#     assert len(srHNFs) == n
 
-    brute = []
-    with open("tests/test_output/fcc_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     brute = []
+#     with open("tests/test_output/bcc_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
 
     
-    for t in srHNFs:
-        assert t in brute 
+#     for t in srHNFs:
+#         assert t in brute 
+    
+# def test_fcc():
+#     """Tests the face centered cubic lattice srHNF generation.
+#     """
+#     from opf_python.fcc import fcc_srHNFs
+
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = fcc_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
+
+#     with open("tests/test_output/fcc_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
+
+#     assert len(srHNFs) == n
+
+#     brute = []
+#     with open("tests/test_output/fcc_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
+
+    
+#     for t in srHNFs:
+#         assert t in brute 
         
-def test_stet():
-    """Tests the simple tetragonal lattice srHNF generation.
-    """
-    from opf_python.stet import stet_srHNFs
+# def test_stet():
+#     """Tests the simple tetragonal lattice srHNF generation.
+#     """
+#     from opf_python.stet import stet_srHNFs
 
-    srHNFs = []
-    for n in range(1,501):
-        temp = stet_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = stet_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
 
-    with open("tests/test_output/stet_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
+#     with open("tests/test_output/stet_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
 
-    assert len(srHNFs) == n
+#     assert len(srHNFs) == n
 
-    brute = []
-    with open("tests/test_output/stet_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-
-    
-    for t in srHNFs:
-        assert t in brute 
-    
-def test_trig():
-    """Tests the trigonal lattice srHNF generation.
-    """
-    from opf_python.trig import trig_srHNFs
-
-    srHNFs = []
-    for n in range(1,501):
-        temp = trig_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    with open("tests/test_output/trig_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
-
-    assert len(srHNFs) == n
-
-    brute = []
-    with open("tests/test_output/trig_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     brute = []
+#     with open("tests/test_output/stet_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
 
     
-    for t in srHNFs:
-        assert t in brute 
+#     for t in srHNFs:
+#         assert t in brute 
     
-def test_hex():
-    """Tests the hexagonal lattice srHNF generation.
-    """
-    from opf_python.hx import hex_srHNFs
+# def test_trig():
+#     """Tests the trigonal lattice srHNF generation.
+#     """
+#     from opf_python.trig import trig_srHNFs
 
-    srHNFs = []
-    for n in range(1,501):
-        temp = hex_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = trig_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
 
-    with open("tests/test_output/hex_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
+#     with open("tests/test_output/trig_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
 
-    assert len(srHNFs) == n
+#     assert len(srHNFs) == n
 
-    brute = []
-    with open("tests/test_output/hex_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     brute = []
+#     with open("tests/test_output/trig_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
 
     
-    for t in srHNFs:
-        assert t in brute 
+#     for t in srHNFs:
+#         assert t in brute 
+    
+# def test_hex():
+#     """Tests the hexagonal lattice srHNF generation.
+#     """
+#     from opf_python.hx import hex_srHNFs
+
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = hex_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
+
+#     with open("tests/test_output/hex_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
+
+#     assert len(srHNFs) == n
+
+#     brute = []
+#     with open("tests/test_output/hex_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
+
+    
+#     for t in srHNFs:
+#         assert t in brute 
     
 def test_body_tet():
     """Tests the body centered tetragonal lattince srHNF generation.
@@ -220,188 +220,224 @@ def test_body_tet():
     for t in srHNFs:
         assert t in brute 
     
-def test_so():
-    """Tests the simple orthorhombic lattice srHNF generation.
-    """
-    from opf_python.so import so_srHNFs
+# def test_body_tet_2():
+#     """Tests the body centered tetragonal lattince srHNF generation.
+#     """
+#     from opf_python.body_tet import body_tet_srHNFs_2
 
-    srHNFs = []
-    for n in range(1,501):
-        temp = so_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = body_tet_srHNFs_2(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
 
-    with open("tests/test_output/so_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
+#     with open("tests/test_output/body_tet_1_500_n_2.out","r") as f:
+#         n = int(f.readline().strip())
 
-    assert len(srHNFs) == n
 
-    brute = []
-    with open("tests/test_output/so_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     # assert len(srHNFs) == n
 
-    
-    for t in srHNFs:
-        assert t in brute 
-    
-def test_base_ortho():
-    """Tests the base centered orthorhombic lattice srHNF generation.
-    """
-    from opf_python.base_ortho import base_ortho_srHNFs
+#     brute = []
+#     with open("tests/test_output/body_tet_1_500_srHNFs_2.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
 
-    srHNFs = []
-    for n in range(1,501):
-        temp = base_ortho_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
+#     # for t in brute:
+#     #     print(t)
+#     #     assert t in srHNFs
+            
+#     for t in srHNFs:
+#         print(t)
+#         assert t in brute
 
-    with open("tests/test_output/base_ortho_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
+# def test_so():
+#     """Tests the simple orthorhombic lattice srHNF generation.
+#     """
+#     from opf_python.so import so_srHNFs
 
-    assert len(srHNFs) == n
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = so_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
 
-    brute = []
-    with open("tests/test_output/base_ortho_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     with open("tests/test_output/so_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
 
-    
-    for t in srHNFs:
-        assert t in brute 
-    
-def test_body_ortho():
-    """Tests the body centered orthorhombic lattice srHNF generation.
-    """
-    from opf_python.body_ortho import body_ortho_srHNFs
+#     assert len(srHNFs) == n
 
-    srHNFs = []
-    for n in range(1,501):
-        temp = body_ortho_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    with open("tests/test_output/body_ortho_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
-
-    assert len(srHNFs) == n
-
-    brute = []
-    with open("tests/test_output/body_ortho_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     brute = []
+#     with open("tests/test_output/so_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
 
     
-    for t in srHNFs:
-        assert t in brute 
+#     for t in srHNFs:
+#         assert t in brute 
     
-def test_face_ortho():
-    """Tests the face centered orthorhombic lattice srHNF generation.
-    """
-    from opf_python.face_ortho import face_ortho_srHNFs
+# def test_base_ortho():
+#     """Tests the base centered orthorhombic lattice srHNF generation.
+#     """
+#     from opf_python.base_ortho import base_ortho_srHNFs
 
-    srHNFs = []
-    for n in range(1,501):
-        temp = face_ortho_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = base_ortho_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
 
-    with open("tests/test_output/face_ortho_1_500_n.out","r") as f:
-        n = int(f.readline().strip())
+#     with open("tests/test_output/base_ortho_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
 
-    assert len(srHNFs) == n
+#     assert len(srHNFs) == n
 
-    brute = []
-    with open("tests/test_output/face_ortho_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-
-    
-    for t in srHNFs:
-        assert t in brute 
-    
-def test_sm():
-    """Tests the simple monoclinic lattice srHNF generation.
-    """
-    from opf_python.sm import sm_srHNFs
-
-    srHNFs = []
-    for n in range(1,151):
-        temp = sm_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    with open("tests/test_output/sm_1_150_n.out","r") as f:
-        n = int(f.readline().strip())
-
-    assert len(srHNFs) == n
-
-    brute = []
-    with open("tests/test_output/sm_1_150_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     brute = []
+#     with open("tests/test_output/base_ortho_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
 
     
-    for t in srHNFs:
-        assert t in brute 
+#     for t in srHNFs:
+#         assert t in brute 
     
-def test_base_mono():
-    """Tests the base centered monoclinic lattice srHNF generation.
-    """
-    from opf_python.base_mono import base_mono_srHNFs
+# def test_body_ortho():
+#     """Tests the body centered orthorhombic lattice srHNF generation.
+#     """
+#     from opf_python.body_ortho import body_ortho_srHNFs
 
-    srHNFs = []
-    for n in range(1,201):
-        temp = base_mono_srHNFs(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = body_ortho_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
 
-    with open("tests/test_output/base_mono_1_200_n.out","r") as f:
-        n = int(f.readline().strip())
+#     with open("tests/test_output/body_ortho_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
 
-    assert len(srHNFs) == n
+#     assert len(srHNFs) == n
 
-    brute = []
-    with open("tests/test_output/base_mono_1_200_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
+#     brute = []
+#     with open("tests/test_output/body_ortho_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
 
     
-    for t in srHNFs:
-        assert t in brute 
+#     for t in srHNFs:
+#         assert t in brute 
+    
+# def test_face_ortho():
+#     """Tests the face centered orthorhombic lattice srHNF generation.
+#     """
+#     from opf_python.face_ortho import face_ortho_srHNFs
+
+#     srHNFs = []
+#     for n in range(1,501):
+#         temp = face_ortho_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
+
+#     with open("tests/test_output/face_ortho_1_500_n.out","r") as f:
+#         n = int(f.readline().strip())
+
+#     assert len(srHNFs) == n
+
+#     brute = []
+#     with open("tests/test_output/face_ortho_1_500_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
+
+    
+#     for t in srHNFs:
+#         assert t in brute 
+    
+# def test_sm():
+#     """Tests the simple monoclinic lattice srHNF generation.
+#     """
+#     from opf_python.sm import sm_srHNFs
+
+#     srHNFs = []
+#     for n in range(1,151):
+#         temp = sm_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
+
+#     with open("tests/test_output/sm_1_150_n.out","r") as f:
+#         n = int(f.readline().strip())
+
+#     assert len(srHNFs) == n
+
+#     brute = []
+#     with open("tests/test_output/sm_1_150_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
+
+    
+#     for t in srHNFs:
+#         assert t in brute 
+    
+# def test_base_mono():
+#     """Tests the base centered monoclinic lattice srHNF generation.
+#     """
+#     from opf_python.base_mono import base_mono_srHNFs
+
+#     srHNFs = []
+#     for n in range(1,201):
+#         temp = base_mono_srHNFs(n)
+#         for t in temp:
+#             if len(t) >0:
+#                 srHNFs.append(t)
+
+#     with open("tests/test_output/base_mono_1_200_n.out","r") as f:
+#         n = int(f.readline().strip())
+
+#     assert len(srHNFs) == n
+
+#     brute = []
+#     with open("tests/test_output/base_mono_1_200_srHNFs.out","r") as f:
+#         HNF = []
+#         for line in f:
+#             if len(line.strip().split()) == 0:
+#                 brute.append(HNF)
+#                 HNF = []
+#             else:
+#                 HNF.append([int(i) for i in line.strip().split()])
+
+    
+#     for t in srHNFs:
+#         assert t in brute 

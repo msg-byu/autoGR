@@ -43,7 +43,7 @@ def find_srBs(A,kpt,exact=False):
     from opf_python.lat_type import lat_type
     import numpy as np
     
-    name, basis = lat_type(np.transpose(A))
+    name, basis, order = lat_type(np.transpose(A))
     # name_w, basis = lat_type(np.transpose(A))
     # name, basis_w = lat_type(np.linalg.inv(A))
 
