@@ -31,7 +31,6 @@ def niggli_id(lattice,eps_=None):
         
     temp = reduced_cell(lattice, eps = eps)
     niggli = temp.niggli
-    print("niggli",niggli)
     
     a = niggli[:,0]
     b = niggli[:,1]
@@ -50,10 +49,7 @@ def niggli_id(lattice,eps_=None):
 
     niggli_num = None
     if np.allclose(A,B,atol=eps) and np.allclose(B,C,atol=eps):
-        print("H")
         if positive:
-            print("H2")
-            print(D,E,F)
             if np.allclose(D,E,atol=eps) and np.allclose(D,F,atol=eps):
                 if np.allclose(A/2., D,atol=eps) and np.allclose(A/2., E,atol=eps) and np.allclose(A/2., F,atol=eps):
                     lat_fam = 1

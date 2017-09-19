@@ -1,5 +1,25 @@
 # Revision History
 
+## Revision 0.2.2 (WSM)
+- Fixed bugs in rhombohedral 24 and rhombohedral 9, the former works
+  correctly now and the latter had an incoorect basis, it now runs on
+  about the same time scale as rhombehdral 2 and 4.
+- Added contitions to rhombohedral_2_4 to make it faster.
+- Added function to find the symmetry preserving HNFs for both of the
+  hexagonal niggli cells.
+- Added the second simple tetragonal niggli basis.
+
+## Revision 0.2.1 (WSM)
+- Added tolerances to all comparisons in the niggli identification
+  script.
+- Added tolerances to all comparsions made in the niggli condition
+  checking code.
+- Added functions to find the symmetry preserving HNFs for all 4
+  niggli rhombohedral cells (rhombohedral 24 is wrong though and
+  rhombohedral 9 is painfully slow, rhombohedral 2_4 is about 20 times
+  slower than the standard trigonal approach).
+
+
 ## Revision 0.2.0 (WSM)
 - Added python niggli reduction code and identification script (still
   needs unit testing).
