@@ -1,5 +1,8 @@
 # Revision History
 
+## Revision 0.2.3 (WSM)
+-Added 4 body centered tetragonal cells to the repository.
+
 ## Revision 0.2.2 (WSM)
 - Fixed bugs in rhombohedral 24 and rhombohedral 9, the former works
   correctly now and the latter had an incoorect basis, it now runs on
