@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.2.4 (WSM)
+- Added body centered orthorhrombic cells for niggli cell 8 and 19. 19
+  still has bugs in it though and both are really slow.
+
 ## Revision 0.2.3 (WSM)
 -Added 4 body centered tetragonal cells to the repository.
 

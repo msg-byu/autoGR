@@ -3573,7 +3573,7 @@ Cell[BoxData["1.75`"], "Output",
 }, Open  ]]
 },
 WindowSize->{808, 775},
-WindowMargins->{{678, Automatic}, {299, Automatic}},
+WindowMargins->{{614, Automatic}, {316, Automatic}},
 FrontEndVersion->"10.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (June 27, \
 2014)",
 StyleDefinitions->"Default.nb"
