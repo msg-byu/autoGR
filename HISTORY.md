@@ -1,5 +1,10 @@
 # Revision History
 
+## Revision 0.2.5 (WSM)
+- Fixed cell number 19 though it's still really slow.
+- Implemented cell number 42, the last of the body centered
+  orthorhombic cells.
+
 ## Revision 0.2.4 (WSM)
 - Added body centered orthorhrombic cells for niggli cell 8 and 19. 19
   still has bugs in it though and both are really slow.

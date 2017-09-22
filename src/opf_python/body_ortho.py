@@ -162,7 +162,7 @@ def body_ortho_19(n):
         c = diag[1]
         f = diag[2]
         
-        if f%a==0:# and f%c==0:
+        if f%a==0 and f%c==0:
             es = range(f)
             ds = range(f)
             bs = range(c)
@@ -180,11 +180,60 @@ def body_ortho_19(n):
                                 b11 = b-b*a11/float(a)+d
                                 b12 = 2*b-b*a11/float(a)
                                 g11 = b+d-a11*d/float(a)-b11*e/float(c)
-                                g12 = 2*d -a11*d/float(a) -b12*e/float(c)
+                                g12 = 2*d-a11*d/float(a)-b12*e/float(c)
                                 g21 = c-d*a21/float(a)-e*b21/float(c)
-                                g22 = -d*a21/float(a)+e*b22/float(c)
+                                g22 = -d*a21/float(a)-e*b22/float(c)
                                 if a11%a==0 and b11%c==0 and b12%c==0 and g11%f==0 and g12%f==0 and g21%f==0 and g22%f==0:
                                     HNF = [[a,0,0],[b,c,0],[d,e,f]]
                                     spHNFs.append(HNF)
                                 
     return spHNFs                
+
+def body_ortho_42(n):
+    """Finds the symmetry preserving HNFs for the body centered
+    orthorhombic lattices with niggli setting 42 a determinant of
+    n. Assuming A = [[ 1.  , 1.  , 1.  ], [ 1.61803, -0.61803, -1.  ],
+    [-1.53633, 1.36706, -1.33073]].
+
+    Args:
+        n (int): The determinant of the HNFs.
+
+    Returns:
+        spHNFs (list of lists): The symmetry preserving HNFs.
+
+    """
+
+    from opf_python.universal import get_HNF_diagonals
+
+    diags = get_HNF_diagonals(n)
+
+    spHNFs = []
+    
+    for diag in diags:
+        a = diag[0]
+        c = diag[1]
+        f = diag[2]
+        
+        if f%a==0 and f%c==0:
+            bs = range(c)
+            ds = range(0,f,a)
+            es = range(0,f,c)
+            for b in bs:
+                b32 = f-b*f/float(a)
+                if b32%c==0:
+                    for e in es:
+                        g23 = -2*e+e*e/float(c)
+                        b22 = e-b*e/float(a)
+                        if g23%f==0 and b22%c==0 and e%a==0:
+                            for d in ds:
+                                b12 = d-b*d/float(a)
+                                b13 = 2*b-d
+                                g12 = 2*d-d*d/float(a)-b12*e/float(c)
+                                g13 = b13*e/float(c)
+                                g22 = 2*e-d*e/float(a)-e*b22/float(c)
+                                if b12%c==0 and b13%c==0 and g12%f==0 and g13%f==0 and g22%f==0:
+                                    HNF = [[a,0,0],[b,c,0],[d,e,f]]
+                                    spHNFs.append(HNF)
+                                
+    return spHNFs                
+                                    
