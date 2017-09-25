@@ -196,35 +196,35 @@ def niggli_id(lattice,eps_=None):
                     lat_type = 'triclinic'
                     niggli_num = 31
         else:
-            if np.allclose(E,F,atol=eps):
-                if np.allclose(D,0,atol=eps) and np.allclose(E,0,atol=eps):
+            if np.allclose(E,F,atol=eps) and np.allclose(E,0,atol=eps):
+                if np.allclose(D,0,atol=eps):
                     lat_fam = 5
                     lat_type = 'simple orthorhombic'
                     niggli_num = 32
-                elif np.allclose(D,-B/2.,atol=eps) and np.allclose(E,0,atol=eps):
+                elif np.allclose(D,-B/2.,atol=eps):
                     lat_fam = 5
                     lat_type = 'base centered orthorhombic'
                     niggli_num = 40
-                elif np.allclose(E,0,atol=eps):
+                else:
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 35
 
-            elif np.allclose(D,F,atol=eps):
-                if np.allclose(D,0,atol=eps) and np.allclose(E,-A/2.,atol=eps):
+            elif np.allclose(D,F,atol=eps) and np.allclose(D,0,atol=eps):
+                if np.allclose(E,-A/2.,atol=eps):
                     lat_fam = 5
                     lat_type = 'base centered orthorhombic'
                     niggli_num = 36
-                elif np.allclose(D,0,atol=eps):
+                else:
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 33
-            elif np.allclose(D,E,atol=eps):
-                if np.allclose(D,0,atol=eps) and np.allclose(F,-A/2.,atol=eps):
+            elif np.allclose(D,E,atol=eps) and np.allclose(D,0,atol=eps):
+                if np.allclose(F,-A/2.,atol=eps):
                     lat_fam = 5
                     lat_type = 'base centered orthorhombic'
                     niggli_num = 38
-                elif np.allclose(D,0,atol=eps):
+                else:
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 34

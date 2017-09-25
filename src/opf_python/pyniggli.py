@@ -58,11 +58,11 @@ class reduced_cell(object):
         if np.linalg.det(A) ==0:
             raise ValueError("The cell specified has a volume of zero.")
         else:
-            self.volume = np.linalg.det(A)
+            self.volume = abs(np.linalg.det(A))
             
         self.original = np.array(A)
         if eps is None:
-            self.eps = 1E-5
+            self.eps = (1E-5)*self.volume**(1./3.)
         else:
             self.eps = eps
 
@@ -86,7 +86,7 @@ class reduced_cell(object):
         eta = 2.0 * np.dot(self.original[:,2],self.original[:,0])
         zeta = 2.0 *np.dot(self.original[:,0],self.original[:,1])
 
-        while not reduced and count <=100:            
+        while not reduced and count <=1000:
             reduced = True
             count += 1
             #1
@@ -152,7 +152,7 @@ class reduced_cell(object):
                 continue
                 #go to 1
 
-        if count >= 100:
+        if count >= 1000:
             raise RuntimeError("Could not reduce the cell in 100 iterations. This could be "
                                "because of floating point error, try providing a smaller eps "
                                "value.")
@@ -183,69 +183,55 @@ class reduced_cell(object):
 
         if not (A-eps > 0 and (A < B-eps or np.allclose(A,B,atol=eps)) and
                 (B < C-eps or np.allclose(B,C,atol=eps))):
-            print("1")
             return False
         
         if np.allclose(A,B,atol=eps) and not (abs(xi) < abs(eta)-eps or
                                               np.allclose(abs(xi),abs(eta),atol=eps)):
-            print("2")
             return False
             
         if np.allclose(B,C,atol=eps) and not (abs(eta) < abs(zeta)-eps
                                               or np.allclose(abs(eta),abs(zeta),atol=eps)):
-            print("3")
             return False
 
         if not ((xi-eps > 0 and eta-eps > 0 and zeta-eps > 0) or
                 ((xi < 0-eps or np.allclose(xi,0,atol=eps))
                  and (eta < 0-eps or np.allclose(eta,0,atol=eps))
                  and (zeta < 0-eps or np.allclose(zeta,0,atol=eps)))):
-            print("4")
             return False
 
         if not (abs(xi) < B-eps or np.allclose(abs(xi),B,atol=eps)):
-            print("5")
             return False 
             
         if not ((abs(eta) < A-eps or np.allclose(abs(eta),A,atol=eps)) and (abs(zeta) < A-eps or
                                                                np.allclose(abs(zeta),A,atol=eps))):
-            print("6")
             return False
 
         if not (C < A+B+C+xi+eta+zeta-eps or np.allclose(C, A+B+C+xi+eta+zeta,atol=eps)):
-            print("7")
             return False
 
         if np.allclose(xi,B,atol=eps) and not (zeta < 2.*eta-eps or
                                                np.allclose(zeta,2.*eta,atol=eps)):
-            print("8")
             return False
 
         if np.allclose(eta,A,atol=eps) and not (zeta < 2.*xi-eps or
                                                 np.allclose(zeta,2.*xi,atol=eps)):
-            print("9")
             return False
 
         if np.allclose(zeta,A,atol=eps) and not (eta < 2.*xi-eps or
                                                  np.allclose(eta,2.*xi,atol=eps)):
-            print("10")
             return False
 
         if np.allclose(xi,-B,atol=eps) and not np.allclose(zeta,0,atol=eps):
-            print("11")
             return False
 
         if np.allclose(eta,-A,atol=eps) and not np.allclose(zeta,0,atol=eps):
-            print("12")
             return False
 
         if np.allclose(zeta,-A,atol=eps) and not np.allclose(eta,0,atol=eps):
-            print("13")
             return False
 
         if np.allclose(C,A+B+C+xi+eta+zeta,rtol=0.0) and not ((2.*A+2.*eta+zeta) < 0-eps or
                                                      np.allclose(2.*A+2.*eta+zeta,0,atol=eps)):
-            print("14")
             return False
 
         return True

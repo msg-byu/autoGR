@@ -1,5 +1,15 @@
 # Revision History
 
+## Revision 0.2.6 (WSM)
+- Fixed an error in the niggli lat id subroutine in which the wrong
+  logic was instituted on some angle comparisons.
+- Increased the number of iterations allowed by the niggli reduction
+  to allow for larger cells.
+- Made the default floating point tolerance dependent on cell volume
+  in the niggli reduction process.
+- Implemented face centered orthorhombic cell number 26.
+
+
 ## Revision 0.2.5 (WSM)
 - Fixed cell number 19 though it's still really slow.
 - Implemented cell number 42, the last of the body centered
