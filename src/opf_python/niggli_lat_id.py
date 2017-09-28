@@ -3,7 +3,7 @@ using the niggli reduced cell."""
 
 import numpy as np
 
-def niggli_id(lattice,eps_=None):
+def niggli_id(lattice,eps_=None,G=None):
     """Returns the lattice type, niggli cell number, and crystal family
     number, .i.e, cubic -> 1, hexagonal -> 2, rhombehedral -> 3,
     tetragonal -> 4, orthorhombic -> 5, monoclinic -> 6, and triclinic
@@ -28,20 +28,31 @@ def niggli_id(lattice,eps_=None):
         eps = 1E-5
     else:
         eps = eps_
-        
-    temp = reduced_cell(lattice, eps = eps)
-    niggli = temp.niggli
-    
-    a = niggli[:,0]
-    b = niggli[:,1]
-    c = niggli[:,2]
 
-    A = np.dot(a,a)
-    B = np.dot(b,b)
-    C = np.dot(c,c)
-    D = np.dot(b,c)
-    E = np.dot(a,c)
-    F = np.dot(a,b)
+    if G is None:
+        if eps_ is None:
+            temp = reduced_cell(lattice)
+        else: 
+            temp = reduced_cell(lattice, eps = eps)
+        niggli = temp.niggli
+        
+        a = niggli[:,0]
+        b = niggli[:,1]
+        c = niggli[:,2]
+
+        A = np.dot(a,a)
+        B = np.dot(b,b)
+        C = np.dot(c,c)
+        D = np.dot(b,c)
+        E = np.dot(a,c)
+        F = np.dot(a,b)
+    else:
+        A = G[0]
+        B = G[1]
+        C = G[2]
+        D = G[3]
+        E = G[4]
+        F = G[5]
 
     positive = False
     if D > 0 and E > 0 and F > 0:
@@ -151,7 +162,7 @@ def niggli_id(lattice,eps_=None):
                     lat_type = 'simple tetragonal'
                     niggli_num = 21
                 elif np.allclose(D,-B/2.,atol=eps) and np.allclose(E,0,atol=eps):
-                    lat_fam = 4
+                    lat_fam = 2
                     lat_type = 'hexagonal'
                     niggli_num = 22
                 elif np.allclose(E,0,atol=eps):

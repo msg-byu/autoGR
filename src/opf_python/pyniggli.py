@@ -36,12 +36,14 @@ class reduced_cell(object):
             array([[-0.5,0,-0.5],[-0.5,0,0.5],[0,-3,0]])
     """
 
-    def __init__(self,A,eps = None):
+    def __init__(self,A,eps = None, path=False):
         """Initial setup of cell.
         Args:
             A (numpy ndarray): A 3 by 3 matrix containing the lattice vectors as columns.
             eps (optional float): Floating point tollerance for comparisons, 
                 default is 1E-5.
+            path (optional bool): True if the path of the reduction should be printed
+                after the reduction, default False.
 
         Rasise:
             ValueError: if the input is not a 3 by 3 matrix.
@@ -65,13 +67,15 @@ class reduced_cell(object):
             self.eps = (1E-5)*self.volume**(1./3.)
         else:
             self.eps = eps
-
-        self._niggli_reduction()
+        self._niggli_reduction(path)
         self.niggli = np.dot(self.original,self.C)
 
 
-    def _niggli_reduction(self):
+    def _niggli_reduction(self,path):
         """Performs the niggli reduction of the given lattice.
+
+        Args:
+            path (bool): True if the path of the reduction should be printed.
 
         Raises:
             RuntimeError: if the niggli cell is not found within 100 iterations.
@@ -86,17 +90,29 @@ class reduced_cell(object):
         eta = 2.0 * np.dot(self.original[:,2],self.original[:,0])
         zeta = 2.0 *np.dot(self.original[:,0],self.original[:,1])
 
+        path = ""
         while not reduced and count <=1000:
+            if np.allclose(xi,0,atol=self.eps):
+                xi = 0
+            
+            if np.allclose(eta,0,atol=self.eps):
+                eta = 0
+                
+            if np.allclose(zeta,0,atol=self.eps):
+                zeta = 0
+                
             reduced = True
             count += 1
             #1
             if (A-self.eps)>B or (abs(abs(A)-abs(B))<self.eps and (abs(xi)-self.eps)>abs(eta)):
+                path += "1"
                 A, B = self._swap(A,B)
                 xi, eta = self._swap(xi,eta)
                 self.C = np.dot(self.C,[[0,-1,0],[-1,0,0],[0,0,-1]])
                 
             #2
             if (B-self.eps)>C or (abs(abs(C)-abs(B))<self.eps and (abs(eta)-self.eps)>abs(zeta)):
+                path += "2"
                 B, C = self._swap(B,C)
                 eta, zeta = self._swap(eta,zeta)
                 self.C = np.dot(self.C,[[-1,0,0],[0,0,-1],[0,-1,0]])
@@ -105,18 +121,21 @@ class reduced_cell(object):
                 #go to 1
             #3
             if (eta*xi*zeta-self.eps) > 0:
+                path += "3"
                 M = self._find_C3(xi,eta,zeta)
                 xi, eta, zeta = abs(xi), abs(eta), abs(zeta)
                 self.C = np.dot(self.C,M)
                 
             #4
             if not 0 < (eta*xi*zeta-self.eps) and not(xi<-self.eps and eta<-self.eps and zeta<-self.eps):
+                path += "4"
                 M = self._find_C4(xi,eta,zeta)
                 xi, eta, zeta = -abs(xi), -abs(eta), -abs(zeta)
                 self.C = np.dot(self.C,M)
                 
             #5
             if (abs(xi)-self.eps)>B or (np.allclose(xi,B) and 2*eta<(zeta-self.eps)) or (np.allclose(xi,-B) and zeta<(0-self.eps)):
+                path += "5"
                 self.C = np.dot(self.C,np.array([[1,0,0],[0,1,-np.sign(xi)],[0,0,1]]))
                 C = B+C-xi*np.sign(xi)
                 eta = eta-zeta*np.sign(xi)
@@ -126,6 +145,7 @@ class reduced_cell(object):
                 #go to 1
             #6
             if (abs(eta)-self.eps)>A or (np.allclose(eta,A) and (2*xi<(zeta-self.eps))) or (np.allclose(eta,-A) and zeta<(0-self.eps)):
+                path += "6"
                 self.C = np.dot(self.C,np.array([[1,0,-np.sign(eta)],[0,1,0],[0,0,1]]))
                 C = A+C-eta*np.sign(eta)
                 xi = xi-zeta*np.sign(eta)
@@ -135,6 +155,7 @@ class reduced_cell(object):
                 #go to 1
             #7
             if (abs(zeta)-self.eps)>A or (np.allclose(zeta,A) and (2*xi<(eta-self.eps))) or (np.allclose(zeta,-A) and eta<(0-self.eps)):
+                path += "7"
                 self.C = np.dot(self.C,np.array([[1,-np.sign(zeta),0],[0,1,0],[0,0,1]]))
                 B = A+B-zeta*np.sign(zeta)
                 xi = xi-eta*np.sign(zeta)
@@ -144,6 +165,7 @@ class reduced_cell(object):
                 #go to 1
             #8
             if xi+eta+zeta+A+B<(0-self.eps) or (abs(xi+eta+zeta+A+B)<self.eps and (2*(A+eta)+zeta-self.eps)>0):
+                path += "8"
                 C = A+B+C+xi+eta+zeta
                 xi = 2*B+xi+zeta
                 eta = 2*A+eta+zeta
@@ -151,6 +173,9 @@ class reduced_cell(object):
                 reduced = False
                 continue
                 #go to 1
+
+        if path:
+            print(path)
 
         if count >= 1000:
             raise RuntimeError("Could not reduce the cell in 100 iterations. This could be "

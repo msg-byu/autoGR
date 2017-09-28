@@ -98,5 +98,44 @@ def face_ortho_26(n):
                                 
     return spHNFs
                                     
+def face_ortho_16(n):
+    """Finds the symmetry preserving HNFs for the face centered
+    orthorhombic lattices with a niggli cell of 26 and a determinant
+    of n. Assuming A = [[ 1.  , 1.  , -1.  ], [-1.779796, 0.1798 , 0.
+    ], [ 0.735376, -1.61953 , -1.68415 ]].
+
+    Args:
+        n (int): The determinant of the HNFs.
+
+    Returns:
+        spHNFs (list of lists): The symmetry preserving HNFs.
+
+    """
+
+    from opf_python.universal import get_HNF_diagonals
+
+    diags = get_HNF_diagonals(n)
+
+    spHNFs = []
+    
+    for diag in diags:
+        a = diag[0]
+        c = diag[1]
+        f = diag[2]
+
+        if f%c==0:
+            for e in range(0,f,c):
+                g21 = -2*e+e*e/float(c)
+                if g21%f==0:
+                    for b in range(c):
+                        b12 = -a+2*b
+                        if b12%c==0:
+                            for d in range(f):
+                                b11 = b12-d
+                                g11 = -e*b11/float(c)
+                                g12 = 2*d-e*b12/float(c)
+                                if b11%c==0 and g11%f==0 and g12%f==0:
+                                    HNF = [[a,0,0],[b,c,0],[d,e,f]]
+                                    spHNFs.append(HNF)
                                 
-            
+    return spHNFs

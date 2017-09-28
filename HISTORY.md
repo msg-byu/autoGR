@@ -1,5 +1,14 @@
 # Revision History
 
+## Revision 0.2.7 (WSM)
+- Fixed an incerroctly labeled niggli cell hexagnoal cell to the correct family.
+- Added option to pass G vector directly into niggli_id.
+- Added additional basis options to the body centered orthorohmbic cases.
+- Added first additional basis for the face centered orthorhombic cases.
+- Identified a niggli cell for each of the remaining base centered
+  orthorhombic, simple monoclinic, and base centered monoclinic cells
+  in the mathematica notebooks.
+
 ## Revision 0.2.6 (WSM)
 - Fixed an error in the niggli lat id subroutine in which the wrong
   logic was instituted on some angle comparisons.
