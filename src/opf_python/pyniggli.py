@@ -36,13 +36,13 @@ class reduced_cell(object):
             array([[-0.5,0,-0.5],[-0.5,0,0.5],[0,-3,0]])
     """
 
-    def __init__(self,A,eps = None, path=False):
+    def __init__(self,A,eps = None, path_=None):
         """Initial setup of cell.
         Args:
             A (numpy ndarray): A 3 by 3 matrix containing the lattice vectors as columns.
             eps (optional float): Floating point tollerance for comparisons, 
                 default is 1E-5.
-            path (optional bool): True if the path of the reduction should be printed
+            path_ (optional bool): True if the path of the reduction should be printed
                 after the reduction, default False.
 
         Rasise:
@@ -51,6 +51,11 @@ class reduced_cell(object):
             RuntimeError: if the niggli cell is not found within 100 iterations.
         """
 
+        if path_ is None:
+            path = False
+        else:
+            path = path_
+            
         if not isinstance(A,np.ndarray):
             A = np.array(A)
         if A.shape != (3,3):
@@ -71,7 +76,7 @@ class reduced_cell(object):
         self.niggli = np.dot(self.original,self.C)
 
 
-    def _niggli_reduction(self,path):
+    def _niggli_reduction(self,print_path):
         """Performs the niggli reduction of the given lattice.
 
         Args:
@@ -174,7 +179,7 @@ class reduced_cell(object):
                 continue
                 #go to 1
 
-        if path:
+        if print_path:
             print(path)
 
         if count >= 1000:

@@ -1,5 +1,10 @@
 # Revision History
 
+## Revision 0.2.8 (WSM)
+- Implemented all basis options for base centered orthorhombic cells.
+- Improved/expanded the basis choices for face centered orthorohmbic cells.
+- Added option to print the 'path' of the Niggli Reduction.
+
 ## Revision 0.2.7 (WSM)
 - Fixed an incerroctly labeled niggli cell hexagnoal cell to the correct family.
 - Added option to pass G vector directly into niggli_id.

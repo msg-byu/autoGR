@@ -1,4 +1,4 @@
-def face_ortho_srHNFs(n):
+def face_ortho_26(n):
     """Finds the symmetry preserving HNFs for the face centered
     orthorhombic lattices with a determinant of n. Assuming A =
     [[0,1,1.5],[0.5,0,1.5],[0,0,3]] (10th basis choince in
@@ -44,7 +44,7 @@ def face_ortho_srHNFs(n):
                                 
     return spHNFs
 
-def face_ortho_26(n):
+def face_ortho_26_2(n):
     """Finds the symmetry preserving HNFs for the face centered
     orthorhombic lattices with a niggli cell of 26 and a determinant
     of n. Assuming A = [[ 1. , 0. , 0. ], [ 0.5, 1. , 0. ], [ 0.5,
