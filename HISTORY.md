@@ -1,5 +1,8 @@
 # Revision History
 
+## Revision 0.2.9 (WSM)
+- Implemented all the base centered monoclinic cells.
+
 ## Revision 0.2.8 (WSM)
 - Implemented all basis options for base centered orthorhombic cells.
 - Improved/expanded the basis choices for face centered orthorohmbic cells.
