@@ -1,4 +1,4 @@
-def body_tet_srHNFs(n):
+def body_tet_15(n):
     """Finds the symmetry preserving HNFs for the body centered tetragonal
     lattices with a determinant of n. Assuming A =
     [[-1,1,2],[1,-1,2],[1,1,-2]] (first basis choince in notes/body_centered_tet.nb).
@@ -87,136 +87,67 @@ def smallest_prime(a):
             if a%p==0:
                 return p
     
-def body_tet_srHNFs_2(n):
-    """Finds the symmetry preserving HNFs for the body centered tetragonal
-    lattices with a determinant of n. Assuming A =
-    [[2,0,0],[0,2,0],[1,1,2]] (second basis choince in notes/body_centered_tet.nb).
+# def body_tet_15(n):
+#     """Finds the symmetry preserving HNFs for the body centered tetragonal
+#     lattices with niggli setting 15 a determinant of n. Assuming A =
+#     [[2,0,0],[0,2,0],[-1,-1,2]].
 
-    Args:
-        n (int): The determinant of the HNFs.
+#     Args:
+#         n (int): The determinant of the HNFs.
 
-    Returns:
-        spHNFs (list of lists): The symmetry preserving HNFs.
+#     Returns:
+#         spHNFs (list of lists): The symmetry preserving HNFs.
 
-    """
+#     """
 
-    from opf_python.universal import get_HNF_diagonals
+#     from opf_python.universal import get_HNF_diagonals
 
-    diags = get_HNF_diagonals(n)
+#     diags = get_HNF_diagonals(n)
 
-    spHNFs = []
-    primes = 0
-    for diag in diags:
-        a = diag[0]
-        c = diag[1]
-        f = diag[2]
+#     spHNFs = []
 
-        #infered conditions
-        if a==c and a==f:
-            bs = [0]
-            ds = [0]
-            es = [0]
-        elif f==(a*c*f):
-            bs = [0]
-            # if (f//2)%2==0:
-            if f%2 == 0:
-                ds = [0,f//2]
-                es = [0,f//2]
-            else:
-                ds = [0]
-                es = [0]
-        else:
-            ds = list(range(0,f,a))
-            bs = list(range(0,c))
-            es = list(range(0,f,a))
-
-        #alpha3 condition
-        if f%a==0:
-            for e in es:
-                #alpha2  conditions
-                if (e%a==0) and ((c+e)%a==0):
-                    a23 = (-c-e)
-                    for b in bs:
-                        b23 = -(b*a23/a) -e
-                        b33 = -f+(b*f)/a
-                        #beta3 and beta2
-                        if ((b*f)%(a*c) == 0) and ((b*e)%(a*c)==0) and (b23%c ==0) and (b33%c ==0):
-
-                            for d in ds:
-                                a13 = -b-d
-                                b12 = 2*b+(b*d)/a
-                                b13 = -a -(b*a13)/a -d
-                                g12 = 2*d + d*d/a - (b12*e/c)
-                                g13 = d-a13*d/a - b13*e/c
-                                g22 = d*e/a - b*e*e/(a*c)
-                                g23 = -d*a23/a + e - b23*e/c
-                                if a13%a == 0 and b12%c == 0 and b13%c == 0 and g12%f==0 and g13%f==0 and g22%f==0 and g23%f==0:
-                                    HNF = [[a,0,0],[b,c,0],[d,e,f]]
-                                    spHNFs.append(HNF)
-
-    return spHNFs
-
-def body_tet_15(n):
-    """Finds the symmetry preserving HNFs for the body centered tetragonal
-    lattices with niggli setting 15 a determinant of n. Assuming A =
-    [[2,0,0],[0,2,0],[-1,-1,2]].
-
-    Args:
-        n (int): The determinant of the HNFs.
-
-    Returns:
-        spHNFs (list of lists): The symmetry preserving HNFs.
-
-    """
-
-    from opf_python.universal import get_HNF_diagonals
-
-    diags = get_HNF_diagonals(n)
-
-    spHNFs = []
-
-    for diag in diags:
-        a = diag[0]
-        c = diag[1]
-        f = diag[2]
+#     for diag in diags:
+#         a = diag[0]
+#         c = diag[1]
+#         f = diag[2]
     
-        if c%a==0 and f%c==0:
-            if a*f*c==f:
-                if f%2==0:
-                    es = [0,f//2]
-                    ds = [0,f//2]
-                else:
-                    es = [0]
-                    ds = [0]
-                bs = [0]
-            elif a==c and c==f:
-                es = [0]
-                ds = [0]
-                bs = [0]
-            elif a==c and c!=f:
-                bs = [0]
-                ds = range(0,f,c)
-                es = range(0,f,c)
-            else:
-                es = range(0,f,c)
-                ds = range(0,f)
-                bs = range(0,c,a)
-            for b in bs:
-                b13 = -a+b*b/float(a)
-                if b13%c==0:
-                    for e in es:
-                        g22 = -2*e+e*e/float(c)
-                        if g22%f==0:
-                            for d in ds:
-                                b12 = 2*b-d
-                                g12 = b12*e/float(c)
-                                g13 = -d+b*d/float(a)-b13*e/float(c)
-                                g23 = c*d/float(a) -e -b*e/float(a)
-                                if b12%c==0 and g12%f==0 and g13%f==0 and g23%f==0:
-                                    HNF = [[a,0,0],[b,c,0],[d,e,f]]
-                                    spHNFs.append(HNF)
+#         if c%a==0 and f%c==0:
+#             if a*f*c==f:
+#                 if f%2==0:
+#                     es = [0,f//2]
+#                     ds = [0,f//2]
+#                 else:
+#                     es = [0]
+#                     ds = [0]
+#                 bs = [0]
+#             elif a==c and c==f:
+#                 es = [0]
+#                 ds = [0]
+#                 bs = [0]
+#             elif a==c and c!=f:
+#                 bs = [0]
+#                 ds = range(0,f,c)
+#                 es = range(0,f,c)
+#             else:
+#                 es = range(0,f,c)
+#                 ds = range(0,f)
+#                 bs = range(0,c,a)
+#             for b in bs:
+#                 b13 = -a+b*b/float(a)
+#                 if b13%c==0:
+#                     for e in es:
+#                         g22 = -2*e+e*e/float(c)
+#                         if g22%f==0:
+#                             for d in ds:
+#                                 b12 = 2*b-d
+#                                 g12 = b12*e/float(c)
+#                                 g13 = -d+b*d/float(a)-b13*e/float(c)
+#                                 g23 = c*d/float(a) -e -b*e/float(a)
+#                                 if b12%c==0 and g12%f==0 and g13%f==0 and g23%f==0:
+#                                     HNF = [[a,0,0],[b,c,0],[d,e,f]]
+#                                     spHNFs.append(HNF)
 
-    return spHNFs
+#     return spHNFs
                                     
 def body_tet_7(n):
     """Finds the symmetry preserving HNFs for the body centered tetragonal
@@ -391,7 +322,7 @@ def body_tet_18(n):
                     es = [f-1]
                 if f>=2:
                     ds = [f-2]
-                else:
+                else: # pragma: no cover
                     ds = [0]
             else:
                 bs = range(0,c,smallest_prime(c))

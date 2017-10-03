@@ -1,4 +1,4 @@
-def so_srHNFs(n):
+def so_32(n):
     """Finds the symmetry preserving HNFs for the simple orthorhombic lattices
     with a determinant of n. Assuming A = [[1,0,0],[0,2,0],[0,0,3]].
 

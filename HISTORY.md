@@ -1,5 +1,27 @@
 # Revision History
 
+## Revision 0.2.10 (WSM)
+- Implemented unit tests for all niggli cases so far designed.
+- Renamed trig.py to rhom.py.
+- Removed body_tet_srHNFs_2 from body_tet.py as it is no longer useful.
+- Removed base_ortho_23_2 from base_ortho.py as it is no longer useful.
+- Removed body_ortho_8_2, body_ortho_42_2, and body_ortho_19_2 from
+  body_ortho.py as they are no longer useful.
+- Removed face_ortho_16_2 from face_ortho.py as it is no longer useful.
+- Renamed sc_srHNFs to sc_3, bcc_srHNFs to bcc_5, fcc_srHNFs to fcc_1,
+  trig_srHNFs to rhom_9, stet_srHNFs to stet_11, hex_srHNFs to hex_12,
+  body_tet_srHNFs to body_tet_15, base_ortho_srHNFs to
+  base_ortho_38_13, body_ortho_srHNFs to body_ortho_19,
+  face_ortho_srHNFs to face_ortho_26, and base_mono_srHNFs to
+  base_mono_14 to match niggli cell numbers and new naming convention.
+- Moved test_basis.py to basis_check.py.
+- Added .travis.yml to repo.
+- Removed lat_type.py from repo since it's been replaced by
+  niggli_lat_id.py.
+- Implemented unit tests on niggli_lat_id.py.
+- Implemented missing niggli basis 36.
+- Started implementing new symmetry preserving grid algorithm.
+
 ## Revision 0.2.9 (WSM)
 - Implemented all the base centered monoclinic cells.
 

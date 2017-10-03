@@ -24,12 +24,12 @@ def get_HNF_diagonals(n):
                     
     return diags
 
-def find_srBs(A,kpt,exact=False):
+def find_srBs(U,kpt,exact=False):
     """Generates the k-point grid vectors for the target k-point density
     for the given lattice.
 
     Args:
-        A (numpy.array): The lattice vectors as columns of a matrix.
+        U (numpy.array): The lattice vectors as columns of a matrix.
         kpt (int): The target k-point density desired.
         exact (bool): True if only the target k-point density is to be used.
 
@@ -40,23 +40,17 @@ def find_srBs(A,kpt,exact=False):
         ValueError if the lattice type can't be identified.
     """
 
-    from opf_python.lat_type import lat_type
+    from opf_python.niggli_lat_id import niggli_id
+    from opf_python.pyniggli import reduced_cell
     import numpy as np
     
-    name, basis, order = lat_type(np.transpose(A))
-    # name_w, basis = lat_type(np.transpose(A))
-    # name, basis_w = lat_type(np.linalg.inv(A))
-
-    # # We need to find the difference in volume between the canonical
-    # # and the users basis.
-    # rat = (np.linalg.det(A)/np.linalg.det(basis))**(1/3.)
-    # basis = rat*basis
+    lat_name, nig_n, lat_fam = niggli_id(U)
+    Bu = reduced_cell(U)
+    Nu = Bu.niggli
+    Cu = Bu.C
     
-    # Find transformation matrix bteween basis.
-    M = np.dot(basis,np.linalg.inv(A))
-
     if not exact:
-        ns, mult = find_volumes(name,kpt)
+        ns, mult = find_volumes(lat_fam,kpt)
     else:
         ns, mult = [kpt], 1.0
 
@@ -185,9 +179,6 @@ def find_volumes(lat_type,kpd):
     Returns:
         ns (list of int): The target valume's to consider.
         mult (int): multiplication factor for triclinic.
-
-    Raises:
-        ValueError if the lattice type can't be identified.
     """
 
     from math import floor, ceil
@@ -196,7 +187,7 @@ def find_volumes(lat_type,kpd):
     ns = []
     
     nt = float(kpd)
-    if lat_type == "sc":
+    if lat_type == 3:
         nb = int(floor(nt**(1/3))-1)
         nmin = kpd-1000
         nmax = kpd+1000
@@ -207,7 +198,7 @@ def find_volumes(lat_type,kpd):
                     ns.append(m*nc)
             nb += 1   
         
-    elif lat_type == "bcc":
+    elif lat_type == 5:
         nb = int(floor(nt**(1/3))-1)
         nmin = kpd-1000
         nmax = kpd+1000
@@ -218,7 +209,7 @@ def find_volumes(lat_type,kpd):
                     ns.append(m*nc)
             nb += 1   
             
-    elif lat_type == "fcc":
+    elif lat_type == 1:
         nb = int(floor(nt**(1/3))-1)
         nmin = kpd-1000
         nmax = kpd+1000
@@ -227,39 +218,9 @@ def find_volumes(lat_type,kpd):
             for m in [1,4,16]:
                 if m*nc>nmin and m*nc<nmax:
                     ns.append(m*nc)
-            nb += 1   
-        
-    elif lat_type == "hex":
-        ns = range(kpd-5,kpd+6)
-
-    elif lat_type == "trig":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "stet":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "btet":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "so":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "co":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "bo":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "fo":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "sm":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "so":
-        ns = range(kpd-5,kpd+6)
-        
-    elif lat_type == "tric":
+            nb += 1
+            
+    elif lat_type == 31 or lat_type == 44:
         tmult = 1
         while mult == None:
             test =nt/tmult**3
@@ -274,6 +235,6 @@ def find_volumes(lat_type,kpd):
             else:
                 tmult += 1
     else:
-        raise ValueError("ERROR: unrecognized lattice type: ",lat_type)
+        ns = range(kpd-5,kpd+6)
 
     return ns, mult

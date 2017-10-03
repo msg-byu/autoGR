@@ -11,7 +11,7 @@ import opf_python.stet as stet
 import opf_python.so as so
 
 
-def test_cell(U,eps=None):
+def cell_test(U,eps=None):
     """Tests the ability of the niggli basis to preserve the symmetry of
     the parent cell under action of the HNF.
 

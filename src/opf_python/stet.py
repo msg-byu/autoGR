@@ -1,4 +1,4 @@
-def stet_srHNFs(n):
+def stet_11(n):
     """Finds the symmetry preserving HNFs for the simple tetragonal lattices
     with a determinant of n. Assuming A = [[1,0,0],[0,1,0],[0,0,2]].
 

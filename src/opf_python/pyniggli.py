@@ -182,7 +182,7 @@ class reduced_cell(object):
         if print_path:
             print(path)
 
-        if count >= 1000:
+        if count >= 1000: #pragma: no cover
             raise RuntimeError("Could not reduce the cell in 100 iterations. This could be "
                                "because of floating point error, try providing a smaller eps "
                                "value.")
