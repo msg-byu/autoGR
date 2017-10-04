@@ -50,14 +50,16 @@ def stet_11(n):
     return spHNFs
 
 def stet_21(n):
-    """Finds the symmetry preserving HNFs for the simple tetragonal lattices
-    with a determinant of n in Niggli setting 21. Assuming A = [[0,0,0.5],[1,0,0],[0,1,0]].
+    """Finds the symmetry preserving HNFs for the simple tetragonal
+    lattices with a determinant of n in Niggli setting 21. Assuming A
+    = [[0,0,0.5],[1,0,0],[0,1,0]].
 
     Args:
         n (int): The determinant of the HNFs.
 
     Returns:
         spHNFs (list of lists): The symmetry preserving HNFs.
+
     """
 
     from opf_python.universal import get_HNF_diagonals

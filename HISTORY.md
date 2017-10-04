@@ -1,5 +1,17 @@
 # Revision History
 
+## Revision 0.2.11 (WSM)
+- Added correct basis to the output of the niggli lattice
+  identification subroutine (niggli_id).
+- Fixed typos.
+- Added new subroutine to universal.py to find the transformed
+  supercells.
+- Rewrote and added to basis_check.py to include all the basis and the
+  new transformation.
+- Fixed a bug in niggli_lat_id.py where the cell was considered
+  positive when the angles were effectively but not actually zero. The
+  problem was fixed by replace angle >0 by angle-eps>0.
+
 ## Revision 0.2.10 (WSM)
 - Implemented unit tests for all niggli cases so far designed.
 - Renamed trig.py to rhom.py.

@@ -1,5 +1,34 @@
 """Subtroutines needed by all the systems."""
 
+def transform_supercells(spHNFs, No, Nu, Co, Cu, O):
+    """Finds the symmetry preserving supercells in the users basis.
+    
+    Args:
+        spHNFs (list of lists): The symmetry preserving HNFs.
+        No (numpy array): The canonical niggli basis.
+        Nu (numpy array): The users niggli basis.
+        Co (numpy array): The transformation matrix to the canonical 
+            niggli cell.
+        Cu (numpy array): The transformation matrix to the users 
+            niggli cell.
+        O (numpy array): The canonical basis as columns of a matrix.
+
+    Returns:
+        spBu (list of lists): The symmetry preserving supercells.
+    """
+    
+    import numpy as np
+
+    spBu = []
+    
+    for H in spHNFs:
+        L = np.dot(np.dot(O,H),np.linalg.inv(O))
+        F = np.dot(np.linalg.inv(No),np.dot(np.dot(L,O),Co))
+        Bu = np.dot(np.dot(Nu,F),np.linalg.inv(Cu))
+        spBu.append(Bu)
+
+    return spBu
+
 def get_HNF_diagonals(n):
     """Finds the diagonals of the HNF that reach the target n value.
     
