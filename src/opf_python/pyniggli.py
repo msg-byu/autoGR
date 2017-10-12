@@ -71,11 +71,49 @@ class reduced_cell(object):
         if eps is None:
             self.eps = (1E-5)*self.volume**(1./3.)
         else:
-            self.eps = eps
+            self.eps = eps*self.volume**(1./3.)
         self._niggli_reduction(path)
         self.niggli = np.dot(self.original,self.C)
 
 
+    def _get_params(self):
+        """Gets the niggli parameters A, B, C, xi, eta, zeta, l, m, n.
+
+        Returns:
+            A, B, C, xi, eta, zeta, l, m, n (floatx6, intx3): The niggli
+                parameters.
+        """
+
+        mat = np.dot(self.original,self.C)
+
+        a = mat[:,0]
+        b = mat[:,1]
+        c = mat[:,2]
+
+        A = np.dot(a,a)
+        B = np.dot(b,b)
+        C = np.dot(c,c)
+        xi = 2.0*np.dot(b,c)
+        eta = 2.0*np.dot(c,a)
+        zeta = 2.0*np.dot(a,b)
+        l, m, n = 0, 0, 0
+        if xi<-self.eps:
+            l = -1
+        elif xi> self.eps:
+            l = 1
+            
+        if eta<-self.eps:
+            m = -1
+        elif eta> self.eps:
+            m = 1
+                
+        if zeta<-self.eps:
+            n = -1
+        elif zeta> self.eps:
+            n = 1
+
+        return A, B, C, xi, eta, zeta, l, m, n
+        
     def _niggli_reduction(self,print_path):
         """Performs the niggli reduction of the given lattice.
 
@@ -88,93 +126,75 @@ class reduced_cell(object):
 
         count, reduced, self.C = 0, False, np.array([[1,0,0],[0,1,0],[0,0,1]]) 
 
-        A = np.dot(self.original[:,0],self.original[:,0])
-        B = np.dot(self.original[:,1],self.original[:,1])
-        C = np.dot(self.original[:,2],self.original[:,2])
-        xi = 2.0 * np.dot(self.original[:,1],self.original[:,2])
-        eta = 2.0 * np.dot(self.original[:,2],self.original[:,0])
-        zeta = 2.0 *np.dot(self.original[:,0],self.original[:,1])
+        A, B, C, xi, eta, zeta, l, m, n = self._get_params()
 
         path = ""
         while not reduced and count <=1000:
-            if np.allclose(xi,0,atol=self.eps):
-                xi = 0
-            
-            if np.allclose(eta,0,atol=self.eps):
-                eta = 0
-                
-            if np.allclose(zeta,0,atol=self.eps):
-                zeta = 0
                 
             reduced = True
             count += 1
             #1
-            if (A-self.eps)>B or (abs(abs(A)-abs(B))<self.eps and (abs(xi)-self.eps)>abs(eta)):
+            if A > (B+self.eps) or (not (abs(A-B)>self.eps) and abs(xi)>(abs(eta)+self.eps)):
                 path += "1"
-                A, B = self._swap(A,B)
-                xi, eta = self._swap(xi,eta)
                 self.C = np.dot(self.C,[[0,-1,0],[-1,0,0],[0,0,-1]])
+                A, B, C, xi, eta, zeta, l, m, n = self._get_params()
+                reduced = False
                 
             #2
-            if (B-self.eps)>C or (abs(abs(C)-abs(B))<self.eps and (abs(eta)-self.eps)>abs(zeta)):
+            if B > (C+self.eps) or (not (abs(C-B)>self.eps) and abs(eta)>abs(zeta)+self.eps):
                 path += "2"
-                B, C = self._swap(B,C)
-                eta, zeta = self._swap(eta,zeta)
                 self.C = np.dot(self.C,[[-1,0,0],[0,0,-1],[0,-1,0]])
+                A, B, C, xi, eta, zeta, l, m, n = self._get_params()
                 reduced = False
                 continue
                 #go to 1
             #3
-            if (eta*xi*zeta-self.eps) > 0:
+            if l*m*n==1:
                 path += "3"
-                M = self._find_C3(xi,eta,zeta)
-                xi, eta, zeta = abs(xi), abs(eta), abs(zeta)
+                M = self._find_C3(l,m,n)
                 self.C = np.dot(self.C,M)
+                A, B, C, xi, eta, zeta, l, m, n = self._get_params()
+                if not np.allclose(M,[[1,0,0],[0,1,0],[0,0,1]]):
+                    reduced = False
                 
             #4
-            if not 0 < (eta*xi*zeta-self.eps) and not(xi<-self.eps and eta<-self.eps and zeta<-self.eps):
+            if l*m*n == 0 or l*m*n == (-1):
                 path += "4"
-                M = self._find_C4(xi,eta,zeta)
-                xi, eta, zeta = -abs(xi), -abs(eta), -abs(zeta)
+                M = self._find_C4(l,m,n)
                 self.C = np.dot(self.C,M)
+                if not np.allclose(M,[[1,0,0],[0,1,0],[0,0,1]]):
+                    reduced = False
+                A, B, C, xi, eta, zeta, l, m, n = self._get_params()
                 
             #5
-            if (abs(xi)-self.eps)>B or (np.allclose(xi,B) and 2*eta<(zeta-self.eps)) or (np.allclose(xi,-B) and zeta<(0-self.eps)):
+            if abs(xi)>(B+self.eps) or (not (abs(B-xi)>self.eps) and (2*eta<(zeta-self.eps))) or (not abs(B+xi)>self.eps and zeta<(-self.eps)):
                 path += "5"
                 self.C = np.dot(self.C,np.array([[1,0,0],[0,1,-np.sign(xi)],[0,0,1]]))
-                C = B+C-xi*np.sign(xi)
-                eta = eta-zeta*np.sign(xi)
-                xi = xi-2*B*np.sign(xi)
+                A, B, C, xi, eta, zeta, l, m, n = self._get_params()
                 reduced = False
                 continue
                 #go to 1
             #6
-            if (abs(eta)-self.eps)>A or (np.allclose(eta,A) and (2*xi<(zeta-self.eps))) or (np.allclose(eta,-A) and zeta<(0-self.eps)):
+            if abs(eta)>(A+self.eps) or (not abs(A-eta)>self.eps and (2*xi<(zeta-self.eps))) or (not abs(A+eta)>self.eps and zeta<(-self.eps)):
                 path += "6"
                 self.C = np.dot(self.C,np.array([[1,0,-np.sign(eta)],[0,1,0],[0,0,1]]))
-                C = A+C-eta*np.sign(eta)
-                xi = xi-zeta*np.sign(eta)
-                eta = eta-2*A*np.sign(eta)
+                A, B, C, xi, eta, zeta, l, m, n = self._get_params()
                 reduced = False
                 continue
                 #go to 1
             #7
-            if (abs(zeta)-self.eps)>A or (np.allclose(zeta,A) and (2*xi<(eta-self.eps))) or (np.allclose(zeta,-A) and eta<(0-self.eps)):
+            if abs(zeta)>(A+self.eps) or (not abs(A-zeta)>self.eps and (2*xi<(eta-self.eps))) or (not abs(A+zeta)>self.eps and eta<(-self.eps)):
                 path += "7"
                 self.C = np.dot(self.C,np.array([[1,-np.sign(zeta),0],[0,1,0],[0,0,1]]))
-                B = A+B-zeta*np.sign(zeta)
-                xi = xi-eta*np.sign(zeta)
-                zeta = zeta-2*A*np.sign(zeta)
+                A, B, C, xi, eta, zeta, l, m, n = self._get_params()
                 reduced = False
                 continue
                 #go to 1
             #8
-            if xi+eta+zeta+A+B<(0-self.eps) or (abs(xi+eta+zeta+A+B)<self.eps and (2*(A+eta)+zeta-self.eps)>0):
+            if xi+eta+zeta+A+B<(-self.eps) or (not abs(xi+eta+zeta+A+B)>self.eps and (2*(A+eta)+zeta)>self.eps):
                 path += "8"
-                C = A+B+C+xi+eta+zeta
-                xi = 2*B+xi+zeta
-                eta = 2*A+eta+zeta
                 self.C = np.dot(self.C,np.array([[1,0,1],[0,1,1],[0,0,1]]))
+                A, B, C, xi, eta, zeta, l, m, n = self._get_params()
                 reduced = False
                 continue
                 #go to 1
@@ -183,15 +203,15 @@ class reduced_cell(object):
             print(path)
 
         if count >= 1000: #pragma: no cover
-            raise RuntimeError("Could not reduce the cell in 100 iterations. This could be "
+            raise RuntimeError("Could not reduce the cell in 1000 iterations. This could be "
                                "because of floating point error, try providing a smaller eps "
-                               "value.")
+                               "value.", self.original)
 
         if not self._niggli_check(A,B,C,xi,eta,zeta,self.eps): # pragma: no cover
             raise RuntimeError("Cell reduction incorroct A: {0}, B: {1}, C: {2}, "
                                "xi: {3}, eta: {4}, zeta: {5}. Please submit a bug "
                                "report to: https://github.com/wsmorgan/pyniggli/"
-                               "issues".format(A,B,C,xi,eta,zeta))
+                               "issues".format(A,B,C,xi,eta,zeta), self.original)
 
 
     @staticmethod
@@ -280,14 +300,15 @@ class reduced_cell(object):
 
         return B,A
 
-    def _find_C3(self,xi,eta,zeta):
+    @staticmethod
+    def _find_C3(l,m,n):
         """Finds the correct transformation matrix given the values of xi, eta, 
         and zeta for step 3.
 
         Args:
-            xi (float): The value of xi.
-            eta (float): The value of eta.
-            zeta (float): The value of zeta.
+            l (int): Positive if xi is positive, negative if it isn't.
+            m (int): Positive if eta is positive, negative if it isn't.
+            n (int): Positive if zeta is positive, negative if it isn't.
 
         Returns:
             C (numpy ndarray): The transformation matrix.
@@ -296,25 +317,26 @@ class reduced_cell(object):
         i =1
         j = 1
         k = 1
-        if xi < (0-self.eps):
+        if l == (-1):
             i = -1
-        if eta <(0-self.eps):
+        if m == (-1):
             j = -1
-        if zeta <(0-self.eps):
+        if n == (-1):
             k = -1
 
         C = np.array([[i,0,0],[0,j,0],[0,0,k]])
             
         return C
 
-    def _find_C4(self,xi,eta,zeta):
+    @staticmethod
+    def _find_C4(l,m,n):
         """Finds the correct transformation matrix given the values of xi, eta, 
         and zeta for step 4.
 
         Args:
-            xi (float): The value of xi.
-            eta (float): The value of eta.
-            zeta (float): The value of zeta.
+            l (int): Positive if xi is positive, negative if it isn't.
+            m (int): Positive if eta is positive, negative if it isn't.
+            n (int): Positive if zeta is positive, negative if it isn't.
 
         Returns:
             C (numpy ndarray): The transformation matrix.
@@ -323,30 +345,35 @@ class reduced_cell(object):
         i = 1
         j = 1
         k = 1
-        p = None
-        if (xi-self.eps)>0:
+
+        if l == (-1) and m == (-1) and n == (-1):
+            C = np.array([[i,0,0],[0,j,0],[0,0,k]])
+            return C
+        
+        r = -1
+        if l == 1:
             i = -1
-        elif not xi<(0-self.eps):
-            p = 0
-            
-        if (eta-self.eps)>0:
+        elif l == 0:
+            r = 0
+
+        if m == 1:
             j = -1
-        elif not eta<(0-self.eps):
-            p = 1
+        elif m == 0:
+            r = 1
 
-        if (zeta-self.eps)>0:
+        if n == 1:
             k = -1
-        elif not zeta<(0-self.eps):
-            p = 2
+        elif n == 0:
+            r = 2
 
-        if i*j*k<0:
-            if p==0:
+        if i*j*k == (-1):
+            if r==0:
                 i = -1
-            elif p==1:
+            elif r==1:
                 j = -1
-            else:
+            elif r==2:
                 k = -1
-
+                
         C = np.array([[i,0,0],[0,j,0],[0,0,k]])
 
         return C   

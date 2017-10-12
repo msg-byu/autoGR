@@ -275,7 +275,8 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 35
-                    basis = None
+                    basis = np.transpose([[1,1,1],[1.61803,-0.618034,-1],
+                                          [-0.668912,1.96676,-1.29785]])
                     
             elif np.allclose(D,F,atol=eps) and np.allclose(D,0,atol=eps):
                 if np.allclose(E,-A/2.,atol=eps):
@@ -288,7 +289,7 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 33
-                    basis = None
+                    basis = np.transpose([[2,0,0],[0,2,0],[0.5,0,2]])
             elif np.allclose(D,E,atol=eps) and np.allclose(D,0,atol=eps):
                 if np.allclose(F,-A/2.,atol=eps):
                     lat_fam = 5
@@ -299,7 +300,8 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 34
-                    basis = None
+                    basis = np.transpose([[1,1,1],[1.22474487,-1.22474487,-2],
+                                          [-0.16598509,-1.64308297,1.80906806]])
             else:
                 if np.allclose(-B/2.,D,atol=eps) and np.allclose(-A/2.,E,atol=eps) and np.allclose(F,0,atol=eps):
                     lat_fam = 5

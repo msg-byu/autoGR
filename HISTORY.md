@@ -1,5 +1,14 @@
 # Revision History
 
+## Revision 0.2.13 (WSM)
+- Added the sm basis to niggli_id.
+- Improved the reliability and accuracy of the niggli reduction
+  code. It still needs a bit of work on finding an adaptive floating
+  point tolerance.
+
+## Revision 0.2.12 (PH)
+- Added the simple monoclinic algorithms.
+
 ## Revision 0.2.11 (WSM)
 - Added correct basis to the output of the niggli lattice
   identification subroutine (niggli_id).
