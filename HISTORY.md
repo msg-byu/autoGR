@@ -1,5 +1,12 @@
 # Revision History
 
+## Revision 0.3.0 (WSM)
+- Added the algorithms for each niggli basis to sp_hnfs.f90.
+- Added niggli.f90 to the code (reduces a cell to its niggli form and
+  identifies which niggli cell it is along with 'our' basis choince).
+- Modified the find_kgrids.f90 routine to use the new niggli basis
+  approach.
+
 ## Revision 0.2.13 (WSM)
 - Added the sm basis to niggli_id.
 - Improved the reliability and accuracy of the niggli reduction

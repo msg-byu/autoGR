@@ -80,7 +80,7 @@ class reduced_cell(object):
         """Gets the niggli parameters A, B, C, xi, eta, zeta, l, m, n.
 
         Returns:
-            A, B, C, xi, eta, zeta, l, m, n (floatx6, intx3): The niggli
+            A, B, C, xi, eta, zeta, l, m, n (float x 6, int x 3): The niggli
                 parameters.
         """
 
@@ -285,21 +285,7 @@ class reduced_cell(object):
             return False
 
         return True
-
-    @staticmethod
-    def _swap(A,B):
-        """Swaps the values of A and B.
-
-        Args:
-            A (float): A value.
-            B (float): Another value.
-
-        Returns:
-            B, A (float,float): The values of A and B swapped.
-        """
-
-        return B,A
-
+    
     @staticmethod
     def _find_C3(l,m,n):
         """Finds the correct transformation matrix given the values of xi, eta, 
