@@ -1,5 +1,11 @@
 # Revision History
 
+## Revision 0.3.1 (WSM)
+
+- Fixed a bug in the get_kpd routine, with the change to the new
+  niggli approach the lattice id for the fcc, bcc, and sc cases
+  changed, that change was not reflected in the get_kpd routine.
+
 ## Revision 0.3.0 (WSM)
 - Added the algorithms for each niggli basis to sp_hnfs.f90.
 - Added niggli.f90 to the code (reduces a cell to its niggli form and

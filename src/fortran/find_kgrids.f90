@@ -312,7 +312,7 @@ CONTAINS
     b = temp1**3
     c = 0
     
-    if (lat_id==3) then
+    if (lat_id==1) then
        mults = (/1,4,16/)
     else
        mults = (/1,2,4/)
