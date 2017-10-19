@@ -241,7 +241,7 @@ def base_mono_29_30(n):
 def base_mono_41(n):
     """Finds the symmetry preserving HNFs for the base centered monoclinic
     lattices with a determinant of n. Assuming A = [[-1.  , 0.  , -1.
-    ], [ 1.85397 , 0.854143, -1.35397 ], [-1.  , 1.41421 , 1.  ]] .
+    ], [ 1.85397 , 0.854143, -1.35397 ], [-1.  , 1.41421 , 1.  ]].
 
     Args:
         n (int): The determinant of the HNFs.

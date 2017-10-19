@@ -44,11 +44,11 @@ def cell_test(U,count,max_kpd_=None):
     Cu = temp.C
 
     U_lat_name, U_niggli_n, U_lat_fam, O = niggli_id(U)
-    print("U_niggli_n", U_niggli_n, "U_lat_fam", U_lat_fam)
 
-    tempo = reduced_cell(O)
-    No = tempo.niggli
-    Co = tempo.C
+    if O is not None:
+        tempo = reduced_cell(O)
+        No = tempo.niggli
+        Co = tempo.C
 
     count[str(U_niggli_n)] += 1
     
@@ -218,7 +218,7 @@ def cell_test(U,count,max_kpd_=None):
             
     if U_niggli_n == 24:
         for kpd in range(max_kpd):
-            HNFs = rhom.rhom_24
+            HNFs = rhom.rhom_24(kpd)
             test = _test_case(U,Nu,Cu,O,No,Co,U_lat_fam,HNFs)
             if not test:
                 return False, count
@@ -275,29 +275,26 @@ def cell_test(U,count,max_kpd_=None):
             if not test:
                 return False, count
     
-    if U_niggli_n == 33: # not implemented yet
-        return True, count 
-        # for kpd in range(max_kpd):
-        #     HNFs = sm.sm_33(kpd)
-        #     test = _test_case(U,Nu,Cu,O,No,Co,U_lat_fam,HNFs)
-        #     if not test:
-        #         return False, count
+    if U_niggli_n == 33:
+        for kpd in range(max_kpd):
+            HNFs = sm.sm_33(kpd)
+            test = _test_case(U,Nu,Cu,O,No,Co,U_lat_fam,HNFs)
+            if not test:
+                return False, count
             
-    if U_niggli_n == 34: # not implemented yet
-        return True, count 
-        # for kpd in range(max_kpd):
-        #     HNFs = sm.sm_34(kpd)
-        #     test = _test_case(U,Nu,Cu,O,No,Co,U_lat_fam,HNFs)
-        #     if not test:
-        #         return False, count
+    if U_niggli_n == 34:
+        for kpd in range(max_kpd):
+            HNFs = sm.sm_34(kpd)
+            test = _test_case(U,Nu,Cu,O,No,Co,U_lat_fam,HNFs)
+            if not test:
+                return False, count
     
-    if U_niggli_n == 35: # not implemented yet
-        return True, count 
-        # for kpd in range(max_kpd):
-        #     HNFs = sm.sm_35(kpd)
-        #     test = _test_case(U,Nu,Cu,O,No,Co,U_lat_fam,HNFs)
-        #     if not test:
-        #         return False, count
+    if U_niggli_n == 35:
+        for kpd in range(max_kpd):
+            HNFs = sm.sm_35(kpd)
+            test = _test_case(U,Nu,Cu,O,No,Co,U_lat_fam,HNFs)
+            if not test:
+                return False, count
             
     if U_niggli_n == 36:
         for kpd in range(max_kpd):
@@ -418,12 +415,16 @@ def _test_case(U,Nu,Cu,O,No,Co,crystal_fam,HNFs):
     Bs = transform_supercells(HNFs,No,Nu,Co,Cu,O)
     for i in range(len(Bs)):
         B = Bs[i]
-        lat_name, niggli_n, lat_fam, c_b = niggli_id(B)
+        # if crystal_fam in [3]:            
+        lat_name, niggli_n, lat_fam, c_b = niggli_id(B,eps_=1E-2)
+        # else:
+        #     lat_name, niggli_n, lat_fam, c_b = niggli_id(B)
         r = np.linalg.inv(np.transpose(U))
         g = np.linalg.inv(np.transpose(B))
         temp = np.round(np.dot(np.linalg.inv(g),r),3)
         if lat_fam > crystal_fam or not np.allclose(temp%1,0):
             print('lf',lat_fam,'cf',crystal_fam,'com',temp%1,"HNF",HNFs[i])
+            print("B",np.transpose(B))
             return False
 
     return True

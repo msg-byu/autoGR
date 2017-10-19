@@ -86,68 +86,6 @@ def smallest_prime(a):
         for p in range(2,a+1):
             if a%p==0:
                 return p
-    
-# def body_tet_15(n):
-#     """Finds the symmetry preserving HNFs for the body centered tetragonal
-#     lattices with niggli setting 15 a determinant of n. Assuming A =
-#     [[2,0,0],[0,2,0],[-1,-1,2]].
-
-#     Args:
-#         n (int): The determinant of the HNFs.
-
-#     Returns:
-#         spHNFs (list of lists): The symmetry preserving HNFs.
-
-#     """
-
-#     from opf_python.universal import get_HNF_diagonals
-
-#     diags = get_HNF_diagonals(n)
-
-#     spHNFs = []
-
-#     for diag in diags:
-#         a = diag[0]
-#         c = diag[1]
-#         f = diag[2]
-    
-#         if c%a==0 and f%c==0:
-#             if a*f*c==f:
-#                 if f%2==0:
-#                     es = [0,f//2]
-#                     ds = [0,f//2]
-#                 else:
-#                     es = [0]
-#                     ds = [0]
-#                 bs = [0]
-#             elif a==c and c==f:
-#                 es = [0]
-#                 ds = [0]
-#                 bs = [0]
-#             elif a==c and c!=f:
-#                 bs = [0]
-#                 ds = range(0,f,c)
-#                 es = range(0,f,c)
-#             else:
-#                 es = range(0,f,c)
-#                 ds = range(0,f)
-#                 bs = range(0,c,a)
-#             for b in bs:
-#                 b13 = -a+b*b/float(a)
-#                 if b13%c==0:
-#                     for e in es:
-#                         g22 = -2*e+e*e/float(c)
-#                         if g22%f==0:
-#                             for d in ds:
-#                                 b12 = 2*b-d
-#                                 g12 = b12*e/float(c)
-#                                 g13 = -d+b*d/float(a)-b13*e/float(c)
-#                                 g23 = c*d/float(a) -e -b*e/float(a)
-#                                 if b12%c==0 and g12%f==0 and g13%f==0 and g23%f==0:
-#                                     HNF = [[a,0,0],[b,c,0],[d,e,f]]
-#                                     spHNFs.append(HNF)
-
-#     return spHNFs
                                     
 def body_tet_7(n):
     """Finds the symmetry preserving HNFs for the body centered tetragonal
