@@ -1,7 +1,12 @@
 # Revision History
 
-## Revision 0.3.1 (WSM)
+## Revision 0.3.2 (WSM)
+- Added unit tests files on each of the niggli cell spHNF supercell
+  finding subroutines.
+- Fixed some initial bugs in spHNFs.f90 so that tests would compile
+  and run.
 
+## Revision 0.3.1 (WSM)
 - Fixed a bug in the get_kpd routine, with the change to the new
   niggli approach the lattice id for the fcc, bcc, and sc cases
   changed, that change was not reflected in the get_kpd routine.

@@ -447,7 +447,7 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta32, beta11, beta12, gamma11, gamma12, gamma21, gamma22
+    real(dp) :: beta32, beta22, beta11, beta12, gamma11, gamma12, gamma21, gamma22
     real(dp), allocatable :: bs(:), ds(:)
 
     call get_HNF_diagonals(n,diagonals)
@@ -474,7 +474,7 @@ CONTAINS
           else
              e = 0.0_dp
           end if
-          allocate(bs(c))
+          allocate(bs(int(c)))
           do j=0,int(c-1)
              bs(j) = real(j,dp)
           end do
@@ -592,19 +592,19 @@ CONTAINS
        if ((MOD(f,a)==0) .and. (MOD(f,c)==0)) then
           if (c==f) then
              allocate(es(1),ds(1))
-             es = (/0.0_dp)
-             ds = (/0.0_dp)
+             es = (/0.0_dp/)
+             ds = (/0.0_dp/)
           else
              allocate(es(1))
              es = (/f-c/)
              if ((c==1) .and. (f>3)) then
                 allocate(ds(1))
-                ds = (3.0_dp)
+                ds = (/3.0_dp/)
              else
-                allocate(temp(f))
+                allocate(temp(int(f)))
                 count = 0
                 do j=1,int(f)
-                   if ((MOD(j-1,c)==0) .and. ((j-1)<es(1))) then
+                   if ((MOD(j-1,int(c))==0) .and. ((j-1)<es(1))) then
                       count = count + 1
                       temp(count) = real(j-1,dp)
                    end if
@@ -802,9 +802,10 @@ CONTAINS
                       end if
                    end do
                 end if
-             deallocate(es)
+                deallocate(es)
+             end do
+             deallocate(bs)
           end do
-          deallocate(bs)
        end if
     end do
 
@@ -948,7 +949,8 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: alpha23, beta23, beta11, beta33
+    real(dp) :: beta11, beta33, beta23, alpha23, alpha13, beta13
+    real(dp) :: gamma13, gamma23, gamma11
     real(dp), allocatable :: bs(:), es(:), temp(:), ds(:)
     integer :: count
 
@@ -1017,7 +1019,7 @@ CONTAINS
                             allocate(ds(2))
                             ds = (/0.0_dp, a/)
                          else
-                            allocate(ds(f))
+                            allocate(ds(int(f)))
                             do z=0,int(f-1)
                                ds(z+1) = z
                             end do
@@ -1027,7 +1029,7 @@ CONTAINS
                             allocate(ds(1))
                             ds = (/(f/2.0_dp)+b/)
                          else 
-                            allocate(ds(f))
+                            allocate(ds(int(f)))
                             do z=0,int(f-1)
                                ds(z+1) = z
                             end do
@@ -1142,7 +1144,7 @@ CONTAINS
                    e = es(k)
                    gamma21 = c-e*e/c
                    beta22 = b*e/a
-                   if ((MOD(e,a)==0) .and. (MOD(gamma21,f)d=0) .and. (MOD(beta22,c)==0)) then
+                   if ((MOD(e,a)==0) .and. (MOD(gamma21,f)==0) .and. (MOD(beta22,c)==0)) then
                       do z=1,size(ds)
                          beta11 = -a+b+d
                          beta12 = -a+b-b*d/a
@@ -1187,7 +1189,8 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta11, beta12, beta22, gamma11, gamma12, gamma21, gamma22
+    real(dp) :: beta31, beta33, beta23, beta21, beta22, beta11, beta12, beta13
+    real(dp) :: gamma11, gamma12, gamma21, gamma23, gamma13, alpha11, alpha21
     real(dp), allocatable :: bs(:), es(:), ds(:)
 
     call get_HNF_diagonals(n,diagonals)
@@ -1217,7 +1220,7 @@ CONTAINS
                 bs = (/0.0_dp/)
                 ds = (/0.0_dp/)
              else
-                call smallest_prime(c,sp)
+                call smallest_prime(int(c),sp)
                 allocate(bs(int(c/sp)),ds(int(f/sp)))
                 do j=1,size(bs)
                    bs(j) = real((j-1)*sp,dp)
@@ -1243,7 +1246,7 @@ CONTAINS
                 ds = (/0.0_dp/)
              end if
           else
-             call smallest_prime(c,sp)
+             call smallest_prime(int(c),sp)
              allocate(bs(int(c/sp)))
              do j=1,size(bs)
                 bs(j) = real((j-1)*sp,dp)
@@ -1290,7 +1293,7 @@ CONTAINS
                          gamma12 = b+d+(b*d/a)-beta12*e/c
                          gamma13 = 2*d-(alpha11*d/a)-beta13*e/c
                          gamma21 = c-(d*alpha21/a)-e*beta21/c
-                         gamma23 = -(d*alpha21/a)-beta23*/c
+                         gamma23 = -(d*alpha21/a)-beta23*e/c
                          if ((MOD(alpha11,a)==0) .and. (MOD(beta11,c)==0) .and. (MOD(beta12,c)==0) .and. (MOD(beta13,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma13,f)==0)  .and. (MOD(gamma21,f)==0) .and. (MOD(gamma23,f)==0)) then
                             nhnfs = nhnfs + 1          
                             temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
@@ -1483,7 +1486,7 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta11, beta12, gamma11, gamma12 
+    real(dp) :: beta11, beta12, gamma11, gamma12, gamma21
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -1514,10 +1517,10 @@ CONTAINS
                    if (MOD(beta12,c)==0) then
                       do z=0,int(f-1.0_dp)
                          d = real(z,dp)
-                         beta11 = b12-d
+                         beta11 = beta12-d
                          gamma11 = -e*beta11/c
                          gamma12 = 2.0_dp*d-e*beta12/c
-                         if ((MOD(beta11,c)==0) .and. (MOD(gamma11,f)=0) .and. (MOD(gamma12,f)==0)) then
+                         if ((MOD(beta11,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0)) then
                             
                          end if
                       end do
@@ -1742,7 +1745,7 @@ CONTAINS
                    d = real(z,dp)
                    gamma11 = -a+(2.0_dp*d)-beta11*e/c
                    gamma13 = -a+2.0_dp*d
-                   if ((MOD(gamma11,f)==0) .and. (MOD(gamma13,f)g=0)) then
+                   if ((MOD(gamma11,f)==0) .and. (MOD(gamma13,f)==0)) then
                       nhnfs = nhnfs + 1          
                       temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
                            0, int(c), int(e), &
@@ -1862,8 +1865,8 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta13, gamma13, gamma23, 
-    real(dp), allocatable :: bs(:), ds(:)
+    real(dp) :: beta13, gamma13, gamma23
+    real(dp), allocatable :: es(:), bs(:)
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -2019,7 +2022,7 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta22, beta13, beta32, gamma13, gamma12, gamma22
+    real(dp) :: beta12, beta22, beta32, gamma13, gamma12, gamma22
     real(dp), allocatable :: bs(:), es(:)
 
     call get_HNF_diagonals(n,diagonals)
@@ -2627,7 +2630,7 @@ CONTAINS
        c = diagonals(2,i)
        f = diagonals(3,i)
 
-       if (MOD(f,c)==) then
+       if (MOD(f,c)==0) then
           do j=0,int(f-1.0_dp),int(c)
              e = real(j,dp)
              gamma21 = 2.0_dp*e+e*e/c
@@ -2635,7 +2638,7 @@ CONTAINS
                 do k=0,int(f-1.0_dp),int(c)
                    d = real(k,dp)
                    gamma11 = 2.0_dp*d+d*e/c
-                   if (MOD(gamma11,f)g=0) then
+                   if (MOD(gamma11,f)==0) then
                       do z=0,int(c-1.0_dp)
                          nhnfs = nhnfs + 1          
                          temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
