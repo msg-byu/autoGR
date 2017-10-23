@@ -312,17 +312,17 @@ CONTAINS
        c = diagonals(2,i)
        f = diagonals(3,i)
 
-       if (MOD(c,c) ==0) then
+       if (MOD(f,c) ==0) then
           do j=0,int(f-1),int(c)
              e = real(j,dp)
-             gamma21 = -c+(2.0_dp*e)
+             gamma21 = -c+(e*2.0_dp)
              gamma22 = -c+e-(e*e)/c
              if ((MOD(gamma21,f)==0) .and. (MOD(gamma22,f)==0)) then
                 do k=0,int(c-1)
                    b = real(k,dp)
                    do l=0,int(f-1),int(c)
                       d = real(l,dp)
-                      gamma11 = -b+2.0_dp*d
+                      gamma11 = -b+d*2.0_dp
                       gamma12 = -b+d-(d*e)/c
                       if ((MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0)) then
                          nhnfs = nhnfs + 1          
