@@ -1130,7 +1130,7 @@ CONTAINS
              if (MOD(c,2.0_dp)==0) then
                 allocate(ds(int(f/int(c/2.0_dp))))
                 do j=1,int(f/int(c/2.0_dp))
-                   ds(j) = (j-1)*(f/int(c/2.0_dp))
+                   ds(j) = (j-1)*(c/2.0_dp)
                 end do
              else
                 allocate(ds(int(f/c)))
@@ -1149,6 +1149,7 @@ CONTAINS
                    beta22 = b*e/a
                    if ((MOD(e,a)==0) .and. (MOD(gamma21,f)==0) .and. (MOD(beta22,c)==0)) then
                       do z=1,size(ds)
+                         d = ds(z)
                          beta11 = -a+b+d
                          beta12 = -a+b-b*d/a
                          gamma11 = beta11-beta11*e/c

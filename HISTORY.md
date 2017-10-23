@@ -1,7 +1,8 @@
 # Revision History
 
 ## Revision 0.3.3 (WSM)
-- Fixed basis rhom_4_2, baseco_40, basecm_43, basecm_37_39, and bct_7.
+- Fixed and debugged basis rhom_4_2, baseco_40, basecm_43,
+  basecm_37_39, bct_6, and bct_7.
 
 ## Revision 0.3.2 (WSM)
 - Added unit tests files on each of the niggli cell spHNF supercell
