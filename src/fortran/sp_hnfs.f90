@@ -476,7 +476,7 @@ CONTAINS
           end if
           allocate(bs(int(c)))
           do j=0,int(c-1)
-             bs(j) = real(j,dp)
+             bs(j+1) = real(j,dp)
           end do
           if (.not. e==0.0_dp) then
              if (a<c) then
@@ -527,7 +527,8 @@ CONTAINS
                       d = ds(k)
                       beta11 = b-d
                       beta12 = -a+b*d/a
-                      gamma11 = -b+(d*d/a)-beta11*e/c
+                      gamma11 = -b+d-beta11*e/c
+                      gamma12 = -b+(d*d/a)-beta12*e/c
                       gamma22 = -c+(d*e/a)-b*e*e/(a*c)
                       if ((MOD(beta11,c)==0) .and. (MOD(beta12,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma22,f)==0)) then 
                          nhnfs = nhnfs + 1          
@@ -539,8 +540,8 @@ CONTAINS
                 end if
              end do
           end if
+          deallocate(bs,ds)
        end if
-       deallocate(bs,ds)
     end do
 
     allocate(spHNFs(3,3,nhnfs))
@@ -988,6 +989,8 @@ CONTAINS
                 if (j==0) then
                    count = count + 1
                    temp(count) = j
+                   count = count + 1
+                   temp(count) = c
                 else if ((c+a*j)<f) then
                    count = count + 1
                    temp(count) = c+a*j
@@ -1974,11 +1977,11 @@ CONTAINS
 
        if (MOD(f,c)==0) then
           do j=0,int(f-1.0_dp),int(c)
-             e = j*c
+             e = j
              gamma22 = 2.0_dp*e-e*e/c
              if (MOD(gamma22,f)==0) then
                 do k=0,int(f-1.0_dp),int(c)
-                   d = k*c
+                   d = k
                    gamma12 = 2.0_dp*d-d*e/c
                    if (MOD(gamma12,f)==0) then
                       do z=0,int(c-1.0_dp)
