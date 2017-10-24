@@ -1,7 +1,7 @@
 # Revision History
 
 ## Revision 0.3.4 (WSM)
-- Fixed and debuged basis bco_42, baseco_23, bct_18, and basecm_27.
+- Fixed and debuged basis bco_42, baseco_23, bct_18, basecm_41, and basecm_27.
 
 ## Revision 0.3.3 (WSM)
 - Fixed and debugged basis rhom_4_2, baseco_40, basecm_43,
