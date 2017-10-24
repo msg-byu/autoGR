@@ -2,7 +2,8 @@
 
 ## Revision 0.3.3 (WSM)
 - Fixed and debugged basis rhom_4_2, baseco_40, basecm_43,
-  basecm_37_39, bct_6, hex_22, basecm_28, and bct_7.
+  basecm_37_39, bct_6, hex_22, basecm_28, baseco_36, and bct_7.
+- Added testing script for easier fortran to python comparison.
 
 ## Revision 0.3.2 (WSM)
 - Added unit tests files on each of the niggli cell spHNF supercell
