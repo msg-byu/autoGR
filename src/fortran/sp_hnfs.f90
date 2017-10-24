@@ -1194,7 +1194,7 @@ CONTAINS
     integer, allocatable :: temp_HNFs(:,:,:)
 
     real(dp) :: beta31, beta33, beta23, beta21, beta22, beta11, beta12, beta13
-    real(dp) :: gamma11, gamma12, gamma21, gamma23, gamma13, alpha11, alpha21
+    real(dp) :: gamma11, gamma12, gamma21, gamma23, gamma13, alpha11, alpha21, gamma22
     real(dp), allocatable :: bs(:), es(:), ds(:)
 
     call get_HNF_diagonals(n,diagonals)
@@ -1297,8 +1297,9 @@ CONTAINS
                          gamma12 = b+d+(b*d/a)-beta12*e/c
                          gamma13 = 2*d-(alpha11*d/a)-beta13*e/c
                          gamma21 = c-(d*alpha21/a)-e*beta21/c
+                         gamma22 = c+(c*d/a)-beta22*e/c
                          gamma23 = -(d*alpha21/a)-beta23*e/c
-                         if ((MOD(alpha11,a)==0) .and. (MOD(beta11,c)==0) .and. (MOD(beta12,c)==0) .and. (MOD(beta13,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma13,f)==0)  .and. (MOD(gamma21,f)==0) .and. (MOD(gamma23,f)==0)) then
+                         if ((MOD(alpha11,a)==0) .and. (MOD(beta11,c)==0) .and. (MOD(beta12,c)==0) .and. (MOD(beta13,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma13,f)==0)  .and. (MOD(gamma21,f)==0) .and. (MOD(gamma22,f)==0) .and. (MOD(gamma23,f)==0)) then
                             nhnfs = nhnfs + 1          
                             temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
                                  0, int(c), int(e), &
