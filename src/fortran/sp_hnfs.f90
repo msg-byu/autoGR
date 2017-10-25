@@ -1672,6 +1672,7 @@ CONTAINS
                 gamma21 = -beta21+beta21*e/c
                 if ((MOD(beta21,c)==0) .and. (MOD(gamma21,f)==0)) then
                    do z=0,int(f-1.0_dp)
+                      d = real(z,dp)
                       beta11 = -a+(2.0_dp*b)-2.0_dp*d
                       gamma11 = -beta11*e/c
                       gamma13 = a+(2.0_dp*d)-beta21*b/c

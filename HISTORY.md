@@ -3,7 +3,7 @@
 ## Revision 0.3.4 (WSM)
 
 - Fixed and debuged basis bco_42, baseco_23, bct_18, basecm_41,
-  basecm_20_25, rhom_24, and basecm_27.
+  basecm_20_25, rhom_24, bco_8, and basecm_27.
 
 - Fixed typo in documentation for rhom_24 in rhom.py.
 
