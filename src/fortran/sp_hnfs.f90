@@ -2450,6 +2450,7 @@ CONTAINS
              do k=0,int(f-1.0_dp)
                 d = real(k,dp)
                 do z=0,int(c-1.0_dp)
+                   b = real(z,dp)
                    gamma12 = b+2.0_dp*d
                    if (MOD(gamma12,f)==0) then
                       nhnfs = nhnfs + 1          
