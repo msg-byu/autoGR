@@ -1529,7 +1529,10 @@ CONTAINS
                          gamma11 = -e*beta11/c
                          gamma12 = 2.0_dp*d-e*beta12/c
                          if ((MOD(beta11,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0)) then
-                            
+                            nhnfs = nhnfs + 1          
+                            temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
+                                 0, int(c), int(e), &
+                                 0, 0, int(f)/),(/3,3/))
                          end if
                       end do
                    end if
@@ -1538,6 +1541,11 @@ CONTAINS
           end do
        end if
     end do
+
+    allocate(spHNFs(3,3,nhnfs))
+
+    spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
+    
   end SUBROUTINE fco_16
     
   !!<summary>Finds the symmetry preserving HNFs for the body centered
