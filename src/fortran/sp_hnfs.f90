@@ -806,10 +806,10 @@ CONTAINS
                       end if
                    end do
                 end if
-                deallocate(es)
              end do
-             deallocate(bs)
+             deallocate(es)
           end do
+          deallocate(bs)
        end if
     end do
 
