@@ -134,9 +134,9 @@ def rhom_4_2(n):
 
 def rhom_24(n):
     """Finds the symmetry preserving HNFs for the rhombohedral lattice
-    that matches niggli conditions for niggli cells number 2 and 4
+    that matches niggli conditions for niggli cell number 24
     with a determinant of n. Assuming A =
-    [[-1,0,-1],[1.51184,0,-0.845178],[-0.255922,-1.44338,0.92259].
+    [[-1,0,-1],[1.51184,0,-0.845178],[-0.255922,-1.44338,0.92259]].
 
     Args:
         n (int): The determinant of the HNFs.

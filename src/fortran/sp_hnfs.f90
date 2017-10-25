@@ -569,7 +569,7 @@ CONTAINS
     integer, allocatable :: temp_HNFs(:,:,:)
 
     real(dp) :: gamma11, gamma21, gamma22
-    real(dp), allocatable :: bs(:), ds(:), es(:), temp(:)
+    real(dp), allocatable :: ds(:), es(:), temp(:)
     integer :: count
 
     call get_HNF_diagonals(n,diagonals)
@@ -590,6 +590,8 @@ CONTAINS
        c = diagonals(2,i)
        f = diagonals(3,i)
 
+       b = 0.0_dp
+       
        if ((MOD(f,a)==0) .and. (MOD(f,c)==0)) then
           if (c==f) then
              allocate(es(1),ds(1))
@@ -605,7 +607,7 @@ CONTAINS
                 allocate(temp(int(f)))
                 count = 0
                 do j=1,int(f)
-                   if ((MOD(j-1,int(c))==0) .and. ((j-1)<es(1))) then
+                   if ((MOD(j-1,int(c))==0) .and. ((j-1)<(es(1)+1.0_dp))) then
                       count = count + 1
                       temp(count) = real(j-1,dp)
                    end if
@@ -620,6 +622,7 @@ CONTAINS
              e = es(j)
              if ((MOD(e,c)==0) .and. (MOD(e,a)==0)) then
                 do k=1,size(ds)
+                   d = ds(k)
                    if ((MOD(d,c)==0) .and. (MOD(d,a)==0)) then
                       gamma11 = 2*d-(d*d/a)-d*e/c
                       gamma21 = 2*e-(d*e/a)-e*e/c
@@ -634,8 +637,8 @@ CONTAINS
                 end do
              end if
           end do
+          deallocate(ds,es)
        end if
-       deallocate(bs,ds,es)
     end do
 
     allocate(spHNFs(3,3,nhnfs))
@@ -2507,6 +2510,7 @@ CONTAINS
        end if
 
        do j=0,int(f-1.0_dp)
+          e = real(j,dp)
           gamma22 = -c-2.0_dp*e
           if (MOD(gamma22,f)==0) then
              do k=1,size(bs)
@@ -2514,6 +2518,7 @@ CONTAINS
                 gamma12 = -b-2.0_dp*b*e/c
                 if (MOD(gamma12,f)==0) then
                    do z=0,int(f-1.0_dp)
+                      d = real(z,dp)
                       nhnfs = nhnfs + 1          
                       temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
                            0, int(c), int(e), &
