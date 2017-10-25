@@ -3,7 +3,8 @@
 ## Revision 0.3.4 (WSM)
 
 - Fixed and debuged basis bco_42, baseco_23, bct_18, basecm_41,
-  basecm_20_25, rhom_24, bco_8, st_21, fco_16, sm_34, and basecm_27.
+  basecm_20_25, rhom_24, bco_8, st_21, fco_16, sm_34, basecm_29_30,
+  and basecm_27.
 
 - Fixed typo in documentation for rhom_24 in rhom.py.
 - Added test output and input for smallest_prime function.

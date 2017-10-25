@@ -2727,6 +2727,7 @@ CONTAINS
                    gamma11 = 2.0_dp*d+d*e/c
                    if (MOD(gamma11,f)==0) then
                       do z=0,int(c-1.0_dp)
+                         b = real(z,dp)
                          nhnfs = nhnfs + 1          
                          temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
                               0, int(c), int(e), &
