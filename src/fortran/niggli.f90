@@ -28,7 +28,7 @@ CONTAINS
   !!<parameter name="trans" regular="true">The transformation
   !!matrix.</parameter>
   SUBROUTINE reduce_cell(IN,eps_,path_,n_cell,trans)
-    real(dp), intent(in) :: A(3,3)
+    real(dp), intent(in) :: IN(3,3)
     real(dp), intent(in), optional :: eps_
     logical, intent(in), optional :: path_
     real(dp), intent(out) :: n_cell(3,3)
@@ -149,7 +149,7 @@ CONTAINS
        if ((ABS(zeta)>(A+eps)) .or. ((.not. (ABS(A-zeta)>eps)) .and. (2.0_dp*xi<(eta-eps))) .or. ((.not. ABS(A+zeta)>eps) .and. (eta<(-eps)))) then
           path = trim(path) + "7"
           reduced = .False.
-          trans = matmul(trans,transpose(reshape((1, -get_sign(zeta), 0, 0, 1, 0, 0, 0, 1),(/3,3/))))
+          trans = matmul(trans,transpose(reshape((/1, -get_sign(zeta), 0, 0, 1, 0, 0, 0, 1/),(/3,3/))))
           temp_lat = matmul(IN,trans)
           call get_params(temp_lat,eps,A,B,C,xi,eta,zeta,l,m,n)
           cycle
@@ -194,7 +194,7 @@ CONTAINS
   !!tolerance.</parameter>
   function niggli_check(A,B,C,xi,eta,zeta,eps)
     logical :: niggli_check
-    real(dp), intent(in) :: A, B, C, xi, eta, zeta
+    real(dp), intent(in) :: A, B, C, xi, eta, zeta, eps
 
     niggli_check = .True.
     
@@ -324,7 +324,7 @@ CONTAINS
        end if
     end if
     
-    trans = transpose(reshape((/1, 0, 0, 0, 1, 0, 0, 0, 1/),(/3,3/)))
+    trans = transpose(reshape((/i, 0, 0, 0, j, 0, 0, 0, k/),(/3,3/)))
 
   end SUBROUTINE find_C4  
 
@@ -669,3 +669,5 @@ CONTAINS
     call reduce_cell(O,eps_=eps,No,Co)
 
   end SUBROUTINE id_cell
+  
+end Module niggli

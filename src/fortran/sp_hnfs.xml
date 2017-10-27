@@ -190,7 +190,7 @@
   <decorates name="sp_hnfs.bct_15">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
-	    cases="bt_15_[1-5]" timed="true">
+	    cases="bt_15_[1-7]" timed="true">
 	<output folder="./tests/spHNFs"
 		file="spHNFs.out.{}" template="integer.xml"
 		identifier="spHNFs.out"/>

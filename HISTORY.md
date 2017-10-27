@@ -1,11 +1,14 @@
 # Revision History
 
-## Revision 0.3.4 (WSM)
+## Revision 0.3.5 (WSM)
+- Fixed bug in bct_15 and added 2 more tests.
+- Fixed some minor bugs in niggli.f90.
+- Added niggli.xml.
 
+## Revision 0.3.4 (WSM)
 - Fixed and debuged basis bco_42, baseco_23, bct_18, basecm_41,
   basecm_20_25, rhom_24, bco_8, st_21, fco_16, sm_34, basecm_29_30,
   basecm_10_17, and basecm_27.
-
 - Fixed typo in documentation for rhom_24 in rhom.py.
 - Added test output and input for smallest_prime function.
 

@@ -884,7 +884,7 @@ CONTAINS
              es(j) = z
              z = z + spc
           end do
-          if (MOD(a,1.0_dp)==0) then
+          if (a==1) then
              allocate(bs(2))
              bs = (/1.0_dp,real((int(c)/2)+1,dp)/)
           else

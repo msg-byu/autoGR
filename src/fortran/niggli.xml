@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fortpy mode="docstring">
+  <decorates name="niggli.reduce_cell">
+    <group name="niggli" purpose="testing" staging="../../unittests/">
+      <test identifier="cell" description="Tests of niggli cell reduction."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="niggli_cell.out.{}" template="float.xml"
+		identifier="niggli_cell.out"/>
+	<target name="n_cell" compareto="niggli_cell.out"
+		varfile="niggli_cell.out" when="each"/>
+      </test>
+      <test identifier="transformation" description="Tests of niggli cell reduction."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="transformation.out.{}" template="integer.xml"
+		identifier="transformation.out"/>
+	<target name="trans" compareto="transformation.out"
+		varfile="transformation.out" when="each"/>
+      </test>
+      <assignment name="IN" value="INfile">
+	<value identifier="INfile" file="IN.in.{}"
+	       folder="./tests/spHNFs" rename="IN.in"/>
+      </assignment>
+    </group>
+  </decorates>
+  
+  <decorates name="niggli.niggli_check">
+    <group name="niggli" purpose="testing" staging="../../unittests/">
+      <test identifier="cell_check" description="Tests of niggli cell reduction."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="niggli_check.out.{}" template="string.xml"
+		identifier="niggli_check.out"/>
+	<target name="[default]" compareto="niggli_check.out"
+		varfile="niggli_check.out" when="each"/>
+      </test>
+      <assignment name="A" value="Afile">
+	<value identifier="Afile" file="A.in.{}"
+	       folder="./tests/niggli" rename="A.in"/>
+      </assignment>
+      <assignment name="C" value="Cfile">
+	<value identifier="Cfile" file="C.in.{}"
+	       folder="./tests/niggli" rename="C.in"/>
+      </assignment>
+      <assignment name="B" value="Bfile">
+	<value identifier="Bfile" file="B.in.{}"
+	       folder="./tests/niggli" rename="B.in"/>
+      </assignment>
+      <assignment name="xi" value="xifile">
+	<value identifier="xifile" file="xi.in.{}"
+	       folder="./tests/niggli" rename="xi.in"/>
+      </assignment>
+      <assignment name="eta" value="etafile">
+	<value identifier="etafile" file="eta.in.{}"
+	       folder="./tests/niggli" rename="eta.in"/>
+      </assignment>
+      <assignment name="zeta" value="zetafile">
+	<value identifier="zetafile" file="zeta.in.{}"
+	       folder="./tests/niggli" rename="zeta.in"/>
+      </assignment>
+      <assignment name="eps" value="epsfile">
+	<value identifier="epsfile" file="niggli_check_eps.in.{}"
+	       folder="./tests/niggli" rename="eps.in"/>
+      </assignment>
+    </group>
+  </decorates>
+  
+  <decorates name="niggli.get_sign">
+    <group name="niggli" purpose="testing" staging="../../unittests/">
+      <test identifier="get_sign" description="Tests of get sign function."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="get_sign.out.{}" template="integer.xml"
+		identifier="get_sign.out"/>
+	<target name="[default]" compareto="get_sign.out"
+		varfile="get_sign.out" when="each"/>
+      </test>
+      <assignment name="a" value="afile">
+	<value identifier="afile" file="get_sign_a.in.{}"
+	       folder="./tests/niggli" rename="a.in"/>
+      </assignment>
+    </group>
+  </decorates>
+  
+  <decorates name="niggli.find_C4">
+    <group name="niggli" purpose="testing" staging="../../unittests/">
+      <test identifier="find_C4" description="Tests of getting the C4 transformation."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="find_C4.out.{}" template="integer.xml"
+		identifier="find_C4.out"/>
+	<target name="trans" compareto="find_C4.out"
+		varfile="find_C4.out" when="each"/>
+      </test>
+      <assignment name="l" value="lfile">
+	<value identifier="lfile" file="find_C4_l.in.{}"
+	       folder="./tests/niggli" rename="l.in"/>
+      </assignment>
+      <assignment name="m" value="mfile">
+	<value identifier="mfile" file="find_C4_m.in.{}"
+	       folder="./tests/niggli" rename="m.in"/>
+      </assignment>
+      <assignment name="n" value="nfile">
+	<value identifier="nfile" file="find_C4_n.in.{}"
+	       folder="./tests/niggli" rename="n.in"/>
+      </assignment>
+    </group>
+  </decorates>
+  
+  <decorates name="niggli.find_C3">
+    <group name="niggli" purpose="testing" staging="../../unittests/">
+      <test identifier="find_C3" description="Tests of getting the C3 transformation."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="find_C3.out.{}" template="integer.xml"
+		identifier="find_C3.out"/>
+	<target name="trans" compareto="find_C3.out"
+		varfile="find_C3.out" when="each"/>
+      </test>
+      <assignment name="l" value="lfile">
+	<value identifier="lfile" file="find_C3_l.in.{}"
+	       folder="./tests/niggli" rename="l.in"/>
+      </assignment>
+      <assignment name="m" value="mfile">
+	<value identifier="mfile" file="find_C3_m.in.{}"
+	       folder="./tests/niggli" rename="m.in"/>
+      </assignment>
+      <assignment name="n" value="nfile">
+	<value identifier="nfile" file="find_C3_n.in.{}"
+	       folder="./tests/niggli" rename="n.in"/>
+      </assignment>
+    </group>
+  </decorates>
+  
+  <decorates name="niggli.get_params">
+    <group name="niggli" purpose="testing" staging="../../unittests/">
+      <test identifier="get_params_A" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="A.out.{}" template="float.xml"
+		identifier="A.out"/>
+	<target name="A" compareto="A.out"
+		varfile="A.out" when="each"/>
+      </test>
+      <test identifier="get_params_B" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="B.out.{}" template="float.xml"
+		identifier="B.out"/>
+	<target name="B" compareto="B.out"
+		varfile="B.out" when="each"/>
+      </test>
+      <test identifier="get_params_C" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="C.out.{}" template="float.xml"
+		identifier="C.out"/>
+	<target name="C" compareto="C.out"
+		varfile="C.out" when="each"/>
+      </test>
+      <test identifier="get_params_xi" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="xi.out.{}" template="float.xml"
+		identifier="xi.out"/>
+	<target name="xi" compareto="xi.out"
+		varfile="xi.out" when="each"/>
+      </test>
+      <test identifier="get_params_eta" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="eta.out.{}" template="float.xml"
+		identifier="eta.out"/>
+	<target name="eta" compareto="eta.out"
+		varfile="eta.out" when="each"/>
+      </test>
+      <test identifier="get_params_zeta" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="zeta.out.{}" template="float.xml"
+		identifier="zeta.out"/>
+	<target name="zeta" compareto="zeta.out"
+		varfile="zeta.out" when="each"/>
+      </test>
+      <test identifier="get_params_l" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="l.out.{}" template="integer.xml"
+		identifier="l.out"/>
+	<target name="l" compareto="l.out"
+		varfile="l.out" when="each"/>
+      </test>
+      <test identifier="get_params_n" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="n.out.{}" template="integer.xml"
+		identifier="n.out"/>
+	<target name="n" compareto="n.out"
+		varfile="n.out" when="each"/>
+      </test>
+      <test identifier="get_params_m" description="Tests of getting niggli parameters."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="m.out.{}" template="integer.xml"
+		identifier="m.out"/>
+	<target name="m" compareto="m.out"
+		varfile="m.out" when="each"/>
+      </test>
+      <assignment name="IN" value="INfile">
+	<value identifier="INfile" file="IN.in.{}"
+	       folder="./tests/niggli" rename="IN.in"/>
+      </assignment>
+      <assignment name="eps" value="epsfile">
+	<value identifier="epsfile" file="eps.in.{}"
+	       folder="./tests/niggli" rename="eps.in"/>
+      </assignment>
+    </group>
+  </decorates>
+  
+  <decorates name="niggli.id_cell">
+    <group name="niggli" purpose="testing" staging="../../unittests/">
+      <test identifier="id_cell_O" description="Tests of niggli cell identification."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="O.out.{}" template="float.xml"
+		identifier="O.out"/>
+	<target name="O" compareto="O.out"
+		varfile="O.out" when="each"/>
+      </test>
+      <test identifier="id_cell_Nu" description="Tests of niggli cell identification."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="Nu.out.{}" template="float.xml"
+		identifier="Nu.out"/>
+	<target name="Nu" compareto="Nu.out"
+		varfile="Nu.out" when="each"/>
+      </test>
+      <test identifier="id_cell_No" description="Tests of niggli cell identification."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="No.out.{}" template="float.xml"
+		identifier="No.out"/>
+	<target name="No" compareto="No.out"
+		varfile="No.out" when="each"/>
+      </test>
+      <test identifier="id_cell_Co" description="Tests of niggli cell identification."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="Co.out.{}" template="integer.xml"
+		identifier="Co.out"/>
+	<target name="Co" compareto="Co.out"
+		varfile="Co.out" when="each"/>
+      </test>
+      <test identifier="id_cell_Cu" description="Tests of niggli cell identification."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="Cu.out.{}" template="integer.xml"
+		identifier="Cu.out"/>
+	<target name="Cu" compareto="Cu.out"
+		varfile="Cu.out" when="each"/>
+      </test>
+      <test identifier="id_cell_id" description="Tests of niggli cell identification."
+	    cases="" timed="true">
+	<output folder="./tests/niggli"
+		file="id.out.{}" template="integer.xml"
+		identifier="id.out"/>
+	<target name="id" compareto="id.out"
+		varfile="id.out" when="each"/>
+      </test>
+      <assignment name="U" value="Ufile">
+	<value identifier="Ufile" file="U.in.{}"
+	       folder="./tests/niggli" rename="U.in"/>
+      </assignment>
+    </group>
+  </decorates>
+  
+</fortpy>
