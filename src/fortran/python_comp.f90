@@ -10,7 +10,7 @@ PROGRAM py_comp
 
   count = 0
   do i=1,max_size
-     call sc_3(i,sphnfs)
+     call bct_15(i,sphnfs)
      if (allocated(sphnfs)) then
         count = count + size(sphnfs,3)
         deallocate(sphnfs)
