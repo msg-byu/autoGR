@@ -192,3 +192,4 @@ TSWLatexianTemp*
 *.coverage*
 dist/
 *.egg-info*
+htmlcov/
