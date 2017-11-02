@@ -713,11 +713,11 @@ def test_face_ortho():
 def test_sm():
     """Tests the simple monoclinic lattice srHNF generation.
     """
-    from opf_python.sm import sm_srHNFs
+    from opf_python.sm import sm_33
 
     srHNFs = []
     for n in range(1,151):
-        temp = sm_srHNFs(n)
+        temp = sm_33(n)
         for t in temp:
             if len(t) >0:
                 srHNFs.append(t)

@@ -3,7 +3,7 @@
   <decorates name="niggli.reduce_cell">
     <group name="niggli" purpose="testing" staging="../../unittests/">
       <test identifier="cell" description="Tests of niggli cell reduction."
-	    cases="" timed="true">
+	    cases="[1-60]" timed="true">
 	<output folder="./tests/niggli"
 		file="niggli_cell.out.{}" template="float.xml"
 		identifier="niggli_cell.out"/>
