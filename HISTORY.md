@@ -1,5 +1,8 @@
 # Revision History
 
+## Revision 0.3.6 (WSW)
+- Added the initial unit testse for the fortran niggli reduction.
+
 ## Revision 0.3.5 (WSM)
 - Fixed bug in bct_15 and added 2 more tests.
 - Fixed some minor bugs in niggli.f90.

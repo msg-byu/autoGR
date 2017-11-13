@@ -9,25 +9,6 @@ def test_bo():
     lat_t, nig_n, lat_f, basis = niggli_id(A)
     assert nig_n == 19
 
-    B = reduced_cell(A)
-    N = B.niggli
-    T = B.C
-    f = open("/Users/wileymorgan/codes/opf_kgrids/src/fortran/tests/niggli/IN.in.{}".format(nig_n),'w+')
-    w = csv.writer(f,delimiter='\t')
-    for i in A:
-        w.writerow(i)
-    f.close()
-    f = open("/Users/wileymorgan/codes/opf_kgrids/src/fortran/tests/niggli/niggli_cell.out.{}".format(nig_n),'w+')
-    w = csv.writer(f,delimiter='\t')
-    for i in N:
-        w.writerow(i)
-    f.close()
-    f = open("/Users/wileymorgan/codes/opf_kgrids/src/fortran/tests/niggli/transformation.out.{}".format(nig_n),'w+')
-    w = csv.writer(f,delimiter='\t')
-    for i in T:
-        w.writerow(i)
-    f.close()
-    
     A = np.transpose([[1, 1, 2],[1.41144,0.0885622,-2],
                  [-1.99868,1.21232,-0.731822]])
     lat_t, nig_n, lat_f, basis = niggli_id(A)
