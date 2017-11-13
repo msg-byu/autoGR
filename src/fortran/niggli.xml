@@ -144,7 +144,7 @@
 		varfile="A.out" when="each"/>
       </test>
       <test identifier="get_params_B" description="Tests of getting niggli parameters."
-	    cases="" timed="true">
+	    cases="[1-16]" timed="true">
 	<output folder="./tests/niggli"
 		file="B.out.{}" template="float.xml"
 		identifier="B.out"/>
@@ -152,7 +152,7 @@
 		varfile="B.out" when="each"/>
       </test>
       <test identifier="get_params_C" description="Tests of getting niggli parameters."
-	    cases="" timed="true">
+	    cases="[1-16]" timed="true">
 	<output folder="./tests/niggli"
 		file="C.out.{}" template="float.xml"
 		identifier="C.out"/>
@@ -160,7 +160,7 @@
 		varfile="C.out" when="each"/>
       </test>
       <test identifier="get_params_xi" description="Tests of getting niggli parameters."
-	    cases="" timed="true">
+	    cases="[1-16]" timed="true">
 	<output folder="./tests/niggli"
 		file="xi.out.{}" template="float.xml"
 		identifier="xi.out"/>
@@ -168,7 +168,7 @@
 		varfile="xi.out" when="each"/>
       </test>
       <test identifier="get_params_eta" description="Tests of getting niggli parameters."
-	    cases="" timed="true">
+	    cases="[1-16]" timed="true">
 	<output folder="./tests/niggli"
 		file="eta.out.{}" template="float.xml"
 		identifier="eta.out"/>
@@ -176,7 +176,7 @@
 		varfile="eta.out" when="each"/>
       </test>
       <test identifier="get_params_zeta" description="Tests of getting niggli parameters."
-	    cases="" timed="true">
+	    cases="[1-16]" timed="true">
 	<output folder="./tests/niggli"
 		file="zeta.out.{}" template="float.xml"
 		identifier="zeta.out"/>
@@ -184,7 +184,7 @@
 		varfile="zeta.out" when="each"/>
       </test>
       <test identifier="get_params_l" description="Tests of getting niggli parameters."
-	    cases="" timed="true">
+	    cases="[1-16]" timed="true">
 	<output folder="./tests/niggli"
 		file="l.out.{}" template="integer.xml"
 		identifier="l.out"/>
@@ -192,7 +192,7 @@
 		varfile="l.out" when="each"/>
       </test>
       <test identifier="get_params_n" description="Tests of getting niggli parameters."
-	    cases="" timed="true">
+	    cases="[1-16]" timed="true">
 	<output folder="./tests/niggli"
 		file="n.out.{}" template="integer.xml"
 		identifier="n.out"/>
@@ -200,7 +200,7 @@
 		varfile="n.out" when="each"/>
       </test>
       <test identifier="get_params_m" description="Tests of getting niggli parameters."
-	    cases="" timed="true">
+	    cases="[1-16]" timed="true">
 	<output folder="./tests/niggli"
 		file="m.out.{}" template="integer.xml"
 		identifier="m.out"/>

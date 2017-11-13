@@ -1,5 +1,20 @@
 # Revision History
 
+## Revision 0.3.7 (WSM)
+- Changed M to temp_M in niggli.f90 to fix compiler errors.
+- Removed the manually entered parameters in favor of using num_types.
+- Fixed various array declaration typos.
+- Fixed several syntax errors.
+- Changed a, b, and c in id_cell to temp_a, temp_b, temp_c to fix
+  compiler errors.
+- Fixed several type declarations.
+- Removed ```if ((.not. equal(size(IN,1),3,0))
+  .or. (.not. equal(size(IN,2),3,0))) stop "Input matrix must be
+  3x3."``` from niggli.f90 since it is redudnant with the array
+  declation.
+- Changed others
+
+
 ## Revision 0.3.6 (WSW)
 - Added the initial unit testse for the fortran niggli reduction.
 

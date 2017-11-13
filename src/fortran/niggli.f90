@@ -4,15 +4,12 @@
 Module niggli
   use vector_matrix_utilities, only: determinant
   use numerical_utilities
+  use num_types
   implicit none
   private
   public reduce_cell, id_cell
 
-  integer, parameter:: dp=selected_real_kind(15,307)
-  integer, parameter:: sp=selected_real_kind(6,37)
-  integer, parameter:: si=selected_int_kind(1) ! very short integer -10..10 range
-  integer, parameter:: li=selected_int_kind(18) ! Big integer -10^18..10^18 range
-
+  
 CONTAINS
 
   !!<summary>Finds the niggli reduced cell from the users given
@@ -27,7 +24,7 @@ CONTAINS
   !!cell.</parameter>
   !!<parameter name="trans" regular="true">The transformation
   !!matrix.</parameter>
-  SUBROUTINE reduce_cell(IN,eps_,path_,n_cell,trans)
+  SUBROUTINE reduce_cell(IN,n_cell,trans,eps_,path_)
     real(dp), intent(in) :: IN(3,3)
     real(dp), intent(in), optional :: eps_
     logical, intent(in), optional :: path_
@@ -53,14 +50,12 @@ CONTAINS
     !!<local name="count">The number of passes through the steps that
     !!have been taken.</local>
     !!<local name="temp_lat">A temporary lattice.</local>
-    !!<local name="M">Temporary transoframtion matrix.</local>
+    !!<local name="temp_M">Temporary transoframtion matrix.</local>
     real(dp) :: vol, eps, temp_lat(3,3)
-    character:: path(2000)
+    character(len=2000):: path
     real(dp) :: A, B, C, xi, eta, zeta
-    integer :: l, m, n, count, M(3,3)
+    integer :: l, m, n, count, temp_M(3,3)
     logical :: reduced
-
-    if ((.not. equal(size(IN,1),3,0)) .or. (.not. equal(size(IN,2),3,0))) stop "Input matrix must be 3x3."
 
     vol = determinant(IN)
     
@@ -84,7 +79,7 @@ CONTAINS
        count = count + 1
        ! step #1 
        if ((A>(B+eps)) .or. ((.not. (ABS(A-B)>eps)) .and. (ABS(xi)>(ABS(eta)+eps))))then
-          path = trim(path) + "1"
+          path = trim(path) // "1"
           reduced = .False. 
           trans = matmul(trans,transpose(reshape((/0, -1, 0, -1, 0, 0, 0, 0, -1/),(/3,3/))))
           temp_lat = matmul(IN,trans) 
@@ -93,9 +88,9 @@ CONTAINS
 
        ! step #2
        if ((B>(C+eps)) .or. ((.not. (ABS(C-B)>eps) .and. (ABS(eta)>ABS(zeta)+eps)))) then
-          path = trim(path) + "2"
+          path = trim(path) // "2"
           reduced = .False.
-          trans = matmul(trans, transpose(reshape((/-1, 0, 0, 0, 0, -1, 0, -1, 0),(/3,3/))))
+          trans = matmul(trans, transpose(reshape((/-1, 0, 0, 0, 0, -1, 0, -1, 0/),(/3,3/))))
           temp_lat = matmul(IN,trans)
           call get_params(temp_lat,eps,A,B,C,xi,eta,zeta,l,m,n)
           cycle
@@ -103,31 +98,31 @@ CONTAINS
 
        ! step #3
        if (l*m*n==1) then
-          path = trim(path) + "3"
-          call find_C3(l,m,n,M)
-          if (.not. equal(M,transpose(reshape((/1, 0, 0, 0, 1, 0, 0, 0, 1/),(/3,3/))))) then
+          path = trim(path) // "3"
+          call find_C3(l,m,n,temp_M)
+          if (.not. (all(abs(temp_M-transpose(reshape((/1, 0, 0, 0, 1, 0, 0, 0, 1/),(/3,3/))))==0))) then
              reduced = .False. 
           end if
-          trans = matmul(trans,M)
+          trans = matmul(trans,temp_M)
           temp_lat = matmul(IN,trans)
           call get_params(temp_lat,eps,A,B,C,xi,eta,zeta,l,m,n)
        end if
 
        ! step #4
        if ((l*m*n==0) .or. (l*m*n==(-1))) then
-          path = trim(path) + "4"
-          call find_C4(l,m,n,M)
-          if (.not. equal(M,transpose(reshape((/1, 0, 0, 0, 1, 0, 0, 0, 1/),(/3,3/))))) then
+          path = trim(path) // "4"
+          call find_C4(l,m,n,temp_M)
+          if (.not. (all(abs(temp_M-transpose(reshape((/1, 0, 0, 0, 1, 0, 0, 0, 1/),(/3,3/))))==0))) then
              reduced = .False. 
           end if
-          trans = matmul(trans,M)
+          trans = matmul(trans,temp_M)
           temp_lat = matmul(IN,trans)
           call get_params(temp_lat,eps,A,B,C,xi,eta,zeta,l,m,n)
        end if
 
        ! step #5
        if ((ABS(xi)>(B+eps)) .or. ((.not. (ABS(B-xi)>eps)) .and. (2.0_dp*eta<(zeta-eps))) .or. ((.not. (ABS(B+xi)>eps)) .and. (zeta<(-eps)))) then
-          path = trim(path) + "5"
+          path = trim(path) // "5"
           reduced = .False.
           trans = matmul(trans,transpose(reshape((/1, 0, 0, 0, 1, -get_sign(xi), 0, 0, 1/),(/3,3/))))
           temp_lat = matmul(IN,trans)
@@ -137,9 +132,9 @@ CONTAINS
 
        ! step #6
        if ((ABS(eta)>(A+eps)) .or. ((.not. (ABS(A-eta)>eps)) .and. (2.0_dp*xi<(zeta-eps))) .or. ((.not. (ABS(A+eta)>eps)) .and. (zeta<(-eps)))) then
-          path = trim(path) + "6"
+          path = trim(path) // "6"
           reduced = .False.
-          trans = matmul(trans,transpose(reshape(,(/1, 0, -get_sign(eta), 0, 1, 0, 0, 0, 1/),(/3,3/))))
+          trans = matmul(trans,transpose(reshape((/1, 0, -get_sign(eta), 0, 1, 0, 0, 0, 1/),(/3,3/))))
           temp_lat = matmul(IN,trans)
           call get_params(temp_lat,eps,A,B,C,xi,eta,zeta,l,m,n)
           cycle
@@ -147,7 +142,7 @@ CONTAINS
 
        ! step #7
        if ((ABS(zeta)>(A+eps)) .or. ((.not. (ABS(A-zeta)>eps)) .and. (2.0_dp*xi<(eta-eps))) .or. ((.not. ABS(A+zeta)>eps) .and. (eta<(-eps)))) then
-          path = trim(path) + "7"
+          path = trim(path) // "7"
           reduced = .False.
           trans = matmul(trans,transpose(reshape((/1, -get_sign(zeta), 0, 0, 1, 0, 0, 0, 1/),(/3,3/))))
           temp_lat = matmul(IN,trans)
@@ -157,7 +152,7 @@ CONTAINS
 
        ! step #8
        if (((xi+eta+zeta+A+B)<(-eps)) .or. ((.not. (ABS(xi+eta+zeta+A+B)>eps)) .and. ((2.0_dp*(A+eta)+zeta)>eps))) then
-          path = trim(path) + "8"
+          path = trim(path) // "8"
           reduced = .False.
           trans = matmul(trans,transpose(reshape((/1, 0, 1, 0, 1, 1, 0, 0, 1/),(/3,3/))))
           temp_lat = matmul(IN,trans)
@@ -343,19 +338,19 @@ CONTAINS
 
     if (l==(-1)) then
        i = -1
-    else:
+    else
        i = 1
     end if
 
     if (m==(-1)) then
        j = -1
-    else:
+    else
        j = 1
     end if
 
     if (n==(-1)) then
        k = -1
-    else:
+    else
        k = 1
     end if
 
@@ -450,7 +445,7 @@ CONTAINS
     integer, intent(out) :: id
 
     real(dp) :: eps
-    real(dp) :: a, b, c, A, B, C, D, E, F
+    real(dp) :: temp_a(3), temp_b(3), temp_c(3), A, B, C, D, E, F
     logical :: positive
         
     if (present(eps_)) then
@@ -459,18 +454,18 @@ CONTAINS
        eps = (10.0_dp**(-5.0_dp))
     end if
     
-    call reduce_cell(U,eps_=eps,Nu,Cu)
+    call reduce_cell(U,Nu,Cu,eps_=eps)
 
-    a = Nu(:,1)
-    b = Nu(:,2)
-    c = Nu(:,3)
+    temp_a = Nu(:,1)
+    temp_b = Nu(:,2)
+    temp_c = Nu(:,3)
 
-    A = dot_product(a,a)
-    B = dot_product(b,b)
-    C = dot_product(c,c)
-    D = dot_product(b,c)
-    E = dot_product(a,c)
-    F = dot_product(a,b)
+    A = dot_product(temp_a,temp_a)
+    B = dot_product(temp_b,temp_b)
+    C = dot_product(temp_c,temp_c)
+    D = dot_product(temp_b,temp_c)
+    E = dot_product(temp_a,temp_c)
+    F = dot_product(temp_a,temp_b)
 
     positive = .False.
     if (((D-eps)>0) .and. ((E-eps)>0) .and. ((F-eps)>0)) then
@@ -479,7 +474,7 @@ CONTAINS
 
     id = (-1)
     if ((ABS(A-B)<eps) .and. (ABS(B-C)<eps)) then
-       if (positive .eq. .True.) then
+       if (positive .eqv. .True.) then
           if ((ABS(D-E)<eps) .and. (ABS(D-F)<eps)) then
              if (ABS((A/2.0_dp)-D)<eps) then
                 id = 1
@@ -517,7 +512,7 @@ CONTAINS
     end if
     
     if ((ABS(A-B)<eps) .and. (id==(-1))) then
-       if (positive .eq. .True.) then
+       if (positive .eqv. .True.) then
           if ((ABS(D-E)<eps) .and. (ABS(D-F)<eps) .and. (ABS((A/2.0_dp)-D)<eps)) then
              id = 9
              O = transpose(reshape((/1.0_dp,2.0_dp,2.0_dp,2.0_dp,1.0_dp,2.0_dp,4.0_dp,3.0_dp,3.0_dp/),(/3,3/)))
@@ -548,13 +543,13 @@ CONTAINS
              end if
           else if (ABS((2.0_dp*ABS(D+E+F))-(A+B))<eps) then
              id = 17
-             O = transpose(reshape((/-0.05387_dp,-0.61088_dp,2.51474,1.0_dp,1.0_dp,1.0_dp,1.809568_dp,-0.15957_dp,0.0_dp/),(/3,3/)))
+             O = transpose(reshape((/-0.05387_dp,-0.61088_dp,2.51474_dp,1.0_dp,1.0_dp,1.0_dp,1.809568_dp,-0.15957_dp,0.0_dp/),(/3,3/)))
           end if
        end if
     end if
     
     if ((ABS(B-C)<eps) .and. (id==(-1))) then
-       if (positive .eq. .True.) then
+       if (positive .eqv. .True.) then
           if (ABS(E-F)<eps) then
              if ((ABS((A/4.0_dp)-D)<eps) .and. (ABS((A/2.0_dp)-E)<eps)) then
                 id = 18
@@ -590,7 +585,7 @@ CONTAINS
     end if
 
     if (id==(-1)) then
-       if (positive .eq. .True.) then
+       if (positive .eqv. .True.) then
           if (ABS(E-F)<eps) then
              if ((ABS((A/4.0_dp)-D)<eps) .and. (ABS((A/2.0_dp)-E)<eps)) then
                 id = 26
@@ -666,7 +661,7 @@ CONTAINS
        end if
     end if
 
-    call reduce_cell(O,eps_=eps,No,Co)
+    call reduce_cell(O,No,Co,eps_=eps)
 
   end SUBROUTINE id_cell
   
