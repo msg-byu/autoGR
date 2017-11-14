@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fortpy mode="docstring">
   <decorates name="niggli.reduce_cell">
-    <group name="niggli" purpose="testing" staging="../../unittests/">
+    <group name="niggli1" purpose="testing" staging="../../unittests/">
       <test identifier="cell" description="Tests of niggli cell reduction."
 	    cases="[1-60]" timed="true">
 	<output folder="./tests/niggli"
@@ -11,7 +11,7 @@
 		varfile="niggli_cell.out" when="each"/>
       </test>
       <test identifier="transformation" description="Tests of niggli cell reduction."
-	    cases="" timed="true">
+	    cases="[1-60]" timed="true">
 	<output folder="./tests/niggli"
 		file="transformation.out.{}" template="integer.xml"
 		identifier="transformation.out"/>
@@ -20,13 +20,16 @@
       </test>
       <assignment name="IN" value="INfile">
 	<value identifier="INfile" file="IN.in.{}"
-	       folder="./tests/spHNFs" rename="IN.in"/>
+	       folder="./tests/niggli" rename="IN.in"/>
+      </assignment>
+      <assignment name="eps_" value="epsfile">
+	<value identifier="epsfile" constant="0.00001"/>
       </assignment>
     </group>
   </decorates>
   
-  <decorates name="niggli.niggli_check">
-    <group name="niggli" purpose="testing" staging="../../unittests/">
+  <decorates name="niggli.condition_check">
+    <group name="niggli2" purpose="testing" staging="../../unittests/">
       <test identifier="cell_check" description="Tests of niggli cell reduction."
 	    cases="[1-14]" timed="true">
 	<output folder="./tests/niggli"

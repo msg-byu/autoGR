@@ -62,9 +62,9 @@ CONTAINS
     if (equal(vol,0._dp,0.000001_dp)) stop "Input matrix is linearly dependent."
     
     if (present(eps_)) then
-       eps = eps_*vol**(1.0_dp/3.0_dp)
+       eps = eps_*abs(vol)**(1.0_dp/3.0_dp)
     else
-       eps = (10.0_dp**(-5.0_dp))*vol**(1.0_dp/3.0_dp)
+       eps = (10.0_dp**(-5.0_dp))*abs(vol)**(1.0_dp/3.0_dp)
     end if
     
     path = ''
@@ -167,7 +167,9 @@ CONTAINS
 
     if (count >= 1000) stop "Could not reduce the cell in 1000 iterations. This could be because of floating point error, try providing a smaller eps."
 
-    if (niggli_check(A,B,C,xi,eta,zeta,eps)) stop "Cell reduction failed to satisfy niggli conditions."
+    if (.not. (condition_check(A,B,C,xi,eta,zeta,eps))) stop "Cell reduction failed to satisfy niggli conditions."
+
+    n_cell = matmul(IN,trans)
 
   end SUBROUTINE reduce_cell
 
@@ -187,69 +189,69 @@ CONTAINS
   !!2*IN(:,1).IN(:,2)</parameter>
   !!<parameter name="eps" regular="true">The floating point
   !!tolerance.</parameter>
-  function niggli_check(A,B,C,xi,eta,zeta,eps)
-    logical :: niggli_check
+  function condition_check(A,B,C,xi,eta,zeta,eps)
+    logical :: condition_check
     real(dp), intent(in) :: A, B, C, xi, eta, zeta, eps
 
-    niggli_check = .True.
+    condition_check = .True.
     
     if (.not. (((A-eps)>0.0_dp) .and. ((A<(B-eps)) .or. (ABS(A-B)<eps)) .and. ((B<(C-eps)) .or. (ABS(B-C)<eps)))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(A-B)<eps) .and. (.not. ((ABS(xi)<(ABS(eta)-eps)) .or. (ABS(ABS(xi)-ABS(eta))<eps)))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(B-C)<eps) .and. (.not. ((ABS(eta)<(ABS(zeta)-eps)) .or. (ABS(ABS(eta)-ABS(zeta))<eps)))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if (.not. ((((xi-eps)>0.0_dp) .and. ((eta-eps)>0.0_dp) .and. ((zeta-eps)>0.0_dp)) .or. (((xi<0.0_dp) .or. (ABS(xi)<eps)) .and. ((eta<0.0_dp) .or. (ABS(eta)<eps)) .and. ((zeta<0.0_dp) .or. (ABS(zeta)<eps))))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if (.not. ((ABS(xi)<(B-eps)) .or. (ABS(ABS(xi)-B)<eps))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if (.not. (((ABS(eta)<(A-eps)) .or. (ABS(ABS(eta)-A)<eps)) .and. ((ABS(zeta)<(A-eps)) .or. (ABS(ABS(zeta)-A)<eps)))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if (.not. ((C<(A+B+C+xi+eta+zeta-eps)) .or. (ABS(C-(A+B+C+xi+eta+zeta))<eps))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(xi-B)<eps) .and. (.not. ((zeta<((2.0_dp*eta)-eps)) .or. (ABS(zeta-(2.0_dp*eta))<eps)))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(eta-A)<eps) .and. (.not. ((zeta<((2.0_dp*xi)-eps)) .or. (ABS(zeta-(2.0_dp*xi))<eps)))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(zeta-A)<eps) .and. (.not. ((eta<((2.0_dp*xi)-eps)) .or. (ABS(eta-(2.0_dp*xi))<eps)))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(xi+B)<eps) .and. (.not. (ABS(zeta)<eps))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(eta+A)<eps) .and. (.not. (ABS(zeta)<eps))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(zeta+A)<eps) .and. (.not. (ABS(eta)<eps))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
 
     if ((ABS(C-(A+B+C+xi+eta+zeta))<eps) .and. (.not. (((2.0_dp*A+2.0_dp*eta+zeta)<(-eps)) .or. (ABS(2.0_dp*A+2.0_dp*eta+zeta)<eps)))) then
-       niggli_check = .False.
+       condition_check = .False.
     end if
        
-  end function niggli_check
+  end function condition_check
   
   !!<summary>Finds the sign (-1,0,0) of a real number.</summary>
   !!<parameter name="a" regular="true">A real number.</parameter>
@@ -394,7 +396,7 @@ CONTAINS
     eta  = 2.0_dp*dot_product(IN(:,3),IN(:,1))
     zeta  = 2.0_dp*dot_product(IN(:,1),IN(:,2))
 
-    if (xi<eps) then
+    if (xi<-eps) then
        l = -1
     else if (xi>eps) then
        l = 1
@@ -402,7 +404,7 @@ CONTAINS
        l = 0
     end if
 
-    if (eta<eps) then
+    if (eta<-eps) then
        m = -1
     else if (eta>eps) then
        m = 1
@@ -410,7 +412,7 @@ CONTAINS
        m = 0
     end if
 
-    if (zeta<eps) then
+    if (zeta<-eps) then
        n = -1
     else if (zeta>eps) then
        n = 1

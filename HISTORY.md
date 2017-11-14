@@ -1,5 +1,15 @@
 # Revision History
 
+## Revision 0.3.8 (WSM)
+- Fixed sign error in get_params subroutine.
+- Fixed unit tests outputs for get_params subroutine (python hadn't
+  saved enough digits of precision).
+- Fixed the assignment of eps in reduce_cell to be related to abs(vol)
+  instead of (vol).
+- Fixed logical error when checking to see if the reduced cell
+  satisfies the niggli conditions in reduce_cell.
+- Changed name of niggli_check to condition_check.
+
 ## Revision 0.3.7 (WSM)
 - Changed M to temp_M in niggli.f90 to fix compiler errors.
 - Removed the manually entered parameters in favor of using num_types.
