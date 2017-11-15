@@ -161,8 +161,10 @@ CONTAINS
        end if
     end do
 
-    if (path_) then
-       print *, path
+    if (present(path_)) then
+       if (path_) then
+          print *, path
+       end if
     end if
 
     if (count >= 1000) stop "Could not reduce the cell in 1000 iterations. This could be because of floating point error, try providing a smaller eps."
@@ -475,112 +477,113 @@ CONTAINS
     end if
 
     id = (-1)
-    if ((ABS(A-B)<eps) .and. (ABS(B-C)<eps)) then
+    if (isclose(A,B,atol_=eps) .and. isclose(B,C,atol_=eps)) then
        if (positive .eqv. .True.) then
-          if ((ABS(D-E)<eps) .and. (ABS(D-F)<eps)) then
-             if (ABS((A/2.0_dp)-D)<eps) then
+          if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps)) then
+             if (isclose((A/2.0_dp),D,atol_=eps)) then
                 id = 1
-                O = transpose(reshape((/0.0_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp/),(/3,3/)))
+                O = reshape((/0.0_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp/),(/3,3/))
              else
                 id = 2
-                O = transpose(reshape((/-1.0_dp,0.0_dp,-1.0_dp,0.0_dp,-1.32288_dp,-0.5_dp,-1.11652_dp,-0.610985_dp,0.616515_dp/),(/3,3/)))
+                O = reshape((/-1.0_dp,0.0_dp,-1.0_dp,0.0_dp,-1.32288_dp,-0.5_dp,-1.11652_dp,-0.610985_dp,0.616515_dp/),(/3,3/))
              end if
           end if
        else
-          if ((ABS(D-E)<eps) .and. (ABS(D-F)<eps)) then
-             if (ABS(D)<eps) then
+          if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps)) then
+             if (isclose(0.0_dp,D,atol_=eps)) then
                 id = 3
-                O = transpose(reshape((/1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp/),(/3,3/)))
-             else if (ABS((-A/3.0_dp)-D)<eps) then
+                O = reshape((/1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp/),(/3,3/))
+             else if (isclose((-A/3.0_dp),D,atol_=eps)) then
                 id = 5
-                O = transpose(reshape((/-1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp/),(/3,3/)))
+                O = reshape((/-1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp/),(/3,3/))
              else
                 id = 4
-                O = transpose(reshape((/-1.0_dp,0.0_dp,-1.0_dp,0.0_dp,-1.32288_dp,0.5_dp,-0.548584_dp,0.774292_dp,1.04858_dp/),(/3,3/)))
+                O = reshape((/-1.0_dp,0.0_dp,-1.0_dp,0.0_dp,-1.32288_dp,0.5_dp,-0.548584_dp,0.774292_dp,1.04858_dp/),(/3,3/))
              end if
-          else if (ABS((2.0_dp*ABS(D+E+F))-(A+B))<eps) then
-             if (ABS(D-E)<eps) then
+          else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
+             if (isclose(D,E,atol_=eps)) then
                 id = 6
-                O = transpose(reshape((/-1.0_dp,1.0_dp,2.0_dp,1.0_dp,1.60788_dp,-1.55394_dp,1.80278_dp,-1.47253_dp,0.762655_dp/),(/3,3/)))
-             else if (ABS(E-F)<eps) then
+                O = reshape((/-1.0_dp,1.0_dp,2.0_dp,1.0_dp,1.60788_dp,-1.55394_dp,1.80278_dp,-1.47253_dp,0.762655_dp/),(/3,3/))
+             else if (isclose(E,F,atol_=eps)) then
                 id = 7
-                O = transpose(reshape((/-1.95095_dp,1.41625_dp,-0.433603_dp,1.0_dp,-1.0_dp,-2.0_dp,1.95095_dp,1.19163_dp,0.879663_dp/),(/3,3/)))
+                O = reshape((/-1.95095_dp,1.41625_dp,-0.433603_dp,1.0_dp,-1.0_dp,-2.0_dp,1.95095_dp,1.19163_dp,0.879663_dp/),(/3,3/))
              else
                 id = 8
-                O = transpose(reshape((/1.41144_dp,0.0885622_dp,-2.0_dp,-0.99868_dp,2.21232_dp,1.268178_dp,3.41012_dp,-1.1237578_dp,-1.268178_dp/),(/3,3/)))
+                O = reshape((/1.41144_dp,0.0885622_dp,-2.0_dp,-0.99868_dp,2.21232_dp,1.268178_dp,3.41012_dp,-1.1237578_dp,-1.268178_dp/),(/3,3/))
              end if
           end if
        end if
     end if
     
-    if ((ABS(A-B)<eps) .and. (id==(-1))) then
+    if (isclose(A,B,atol_=eps) .and. (id==(-1))) then
        if (positive .eqv. .True.) then
-          if ((ABS(D-E)<eps) .and. (ABS(D-F)<eps) .and. (ABS((A/2.0_dp)-D)<eps)) then
+          if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps) .and. isclose((A/2.0_dp),D,atol_=eps)) then
              id = 9
-             O = transpose(reshape((/1.0_dp,2.0_dp,2.0_dp,2.0_dp,1.0_dp,2.0_dp,4.0_dp,3.0_dp,3.0_dp/),(/3,3/)))
-          else if (ABS(D-E)<eps) then
+             O = reshape((/1.0_dp,2.0_dp,2.0_dp,2.0_dp,1.0_dp,2.0_dp,4.0_dp,3.0_dp,3.0_dp/),(/3,3/))
+          else if (isclose(D,E,atol_=eps)) then
              id = 10
-             O = transpose(reshape((/-1.46391_dp,0.0_dp,1.96391_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp,2.0_dp,0.0_dp/),(/3,3/)))
+             O = reshape((/-1.46391_dp,0.0_dp,1.96391_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp,2.0_dp,0.0_dp/),(/3,3/))
           end if
        else
-          if ((ABS(D-E)<eps) .and. (ABS(D-F)<eps) .and. (ABS(D)<eps)) then
+          
+          if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps) .and. isclose(0.0_dp,D,atol_=eps)) then
              id = 11
-             O = transpose(reshape((/1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp/),(/3,3/)))
-          else if (ABS(D-E)<eps) then
-             if ((ABS(D)<eps) .and. (ABS((-A/2.0_dp)-F)<eps)) then
+             O = reshape((/1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp/),(/3,3/))
+          else if (isclose(D,E,atol_=eps)) then
+             if (isclose(0.0_dp,D,atol_=eps) .and. isclose((-A/2.0_dp),F,atol_=eps)) then
                 id = 12
-                O = transpose(reshape((/1.0_dp,0.0_dp,0.0_dp,0.5_dp,-0.8660254037844386_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp/),(/3,3/)))
-             else if ((ABS((-A/2.0_dp)-D)<eps) .and. (ABS(F)<eps)) then 
+                O = reshape((/1.0_dp,0.0_dp,0.0_dp,0.5_dp,-0.8660254037844386_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp/),(/3,3/))
+             else if (isclose((-A/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,F,atol_= eps)) then 
                 id = 15
-                O = transpose(reshape((/-1.0_dp,1.0_dp,2.0_dp,1.0_dp,-1.0_dp,2.0_dp,1.0_dp,1.0_dp,-2.0_dp/),(/3,3/)))
-             else if (ABS(D)<eps) then
+                O = reshape((/-1.0_dp,1.0_dp,2.0_dp,1.0_dp,-1.0_dp,2.0_dp,1.0_dp,1.0_dp,-2.0_dp/),(/3,3/))
+             else if (isclose(0.0_dp,D,atol_=eps)) then
                 id = 13
-                O = transpose(reshape((/1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp,-1.0_dp,0.0_dp,-1.73205_dp,1.73205_dp/),(/3,3/)))
-             else if (ABS((2.0_dp*(D+E+F))-(A+B))<eps) then
+                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp,-1.0_dp,0.0_dp,-1.73205_dp,1.73205_dp/),(/3,3/))
+             else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
                 id = 16
-                O = transpose(reshape((/1.0_dp,1.0_dp,-1.0_dp,-1.779796_dp,0.1798_dp,0.0_dp,0.735376_dp,-1.61953_dp,-1.68415_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,-1.0_dp,-1.779796_dp,0.1798_dp,0.0_dp,0.735376_dp,-1.61953_dp,-1.68415_dp/),(/3,3/))
              else
                 id = 14
-                O = transpose(reshape((/1.0_dp,1.0_dp,0.0_dp,0.0_dp,2.0_dp,0.0_dp,0.5_dp,0.0_dp,2.0_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,0.0_dp,0.0_dp,2.0_dp,0.0_dp,0.5_dp,0.0_dp,2.0_dp/),(/3,3/))
              end if
-          else if (ABS((2.0_dp*ABS(D+E+F))-(A+B))<eps) then
+          else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
              id = 17
-             O = transpose(reshape((/-0.05387_dp,-0.61088_dp,2.51474_dp,1.0_dp,1.0_dp,1.0_dp,1.809568_dp,-0.15957_dp,0.0_dp/),(/3,3/)))
+             O = reshape((/-0.05387_dp,-0.61088_dp,2.51474_dp,1.0_dp,1.0_dp,1.0_dp,1.809568_dp,-0.15957_dp,0.0_dp/),(/3,3/))
           end if
        end if
     end if
     
-    if ((ABS(B-C)<eps) .and. (id==(-1))) then
+    if (isclose(B,C,atol_=eps) .and. (id==(-1))) then
        if (positive .eqv. .True.) then
-          if (ABS(E-F)<eps) then
-             if ((ABS((A/4.0_dp)-D)<eps) .and. (ABS((A/2.0_dp)-E)<eps)) then
+          if (isclose(E,F,atol_=eps)) then
+             if (isclose((A/4.0_dp),D,atol_=eps) .and. isclose((A/2.0_dp),E,atol_=eps)) then
                 id = 18
-                O = transpose(reshape((/0.0_dp,0.0_dp,2.0_dp,1.0_dp,-2.0_dp,1.0_dp,-2.0_dp,-1.0_dp,1.0_dp/),(/3,3/)))
-             else if (ABS((A/2.0_dp)-E)<eps) then
+                O = reshape((/0.0_dp,0.0_dp,2.0_dp,1.0_dp,-2.0_dp,1.0_dp,-2.0_dp,-1.0_dp,1.0_dp/),(/3,3/))
+             else if (isclose((A/2.0_dp),E,atol_=eps)) then
                 id = 19
-                O = transpose(reshape((/0.5_dp,1.0_dp,1.5_dp,0.0_dp,2.0_dp,0.0_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/)))
+                O = reshape((/0.5_dp,1.0_dp,1.5_dp,0.0_dp,2.0_dp,0.0_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/))
              else
                 id = 20
-                O = transpose(reshape((/1.0_dp,1.0_dp,1.0_dp,1.70119_dp,-1.45119_dp,1.0_dp,0.69779_dp,-1.4322505_dp,3.23446_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.70119_dp,-1.45119_dp,1.0_dp,0.69779_dp,-1.4322505_dp,3.23446_dp/),(/3,3/))
              end if
           end if
        else
-          if (ABS(E-F)<eps) then 
-             if ((ABS(D)<eps) .and. (ABS(E)<eps)) then
+          if (isclose(E,F,atol_= eps)) then 
+             if (isclose(0.0_dp,D,atol_=eps) .and. isclose(0.0_dp,E,atol_=eps)) then
                 id = 21
-                O = transpose(reshape((/0.0_dp,0.0_dp,0.5_dp,1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp,0.0_dp/),(/3,3/)))
-             else if ((ABS((-B/2.0_dp)-D)<eps) .and. (ABS(E)<eps)) then
+                O = reshape((/0.0_dp,0.0_dp,0.5_dp,1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp,0.0_dp/),(/3,3/))
+             else if (isclose((-B/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,E,atol_=eps)) then
                 id = 22
-                O = transpose(reshape((/0.0_dp,0.0_dp,-0.5_dp,1.0_dp,0.0_dp,0.0_dp,-0.5_dp,0.8660254037844386_dp,0.0_dp/),(/3,3/)))
-             else if (ABS(E)<eps) then
+                O = reshape((/0.0_dp,0.0_dp,-0.5_dp,1.0_dp,0.0_dp,0.0_dp,-0.5_dp,0.8660254037844386_dp,0.0_dp/),(/3,3/))
+             else if (isclose(0.0_dp,E,atol_=eps)) then
                 id = 23
-                O = transpose(reshape((/-0.3333333_dp,-1.54116_dp,1.87449_dp,1.0_dp,1.0_dp,1.0_dp,2.0_dp,-1.0_dp,-1.0_dp/),(/3,3/)))
-             else if ((ABS((2.0_dp*ABS(D+E+F))-(A+B))<eps) .and. (ABS((-A/3.0_dp)-E)<eps)) then
+                O = reshape((/-0.3333333_dp,-1.54116_dp,1.87449_dp,1.0_dp,1.0_dp,1.0_dp,2.0_dp,-1.0_dp,-1.0_dp/),(/3,3/))
+             else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps) .and. isclose((-A/3.0_dp),E,atol_=eps)) then
                 id = 24
-                O = transpose(reshape((/-1.0_dp,0.0_dp,-1.0_dp,1.51184_dp,0.0_dp,-0.845178_dp,-0.255922_dp,-1.44338_dp,0.92259_dp/),(/3,3/)))
+                O = reshape((/-1.0_dp,0.0_dp,-1.0_dp,1.51184_dp,0.0_dp,-0.845178_dp,-0.255922_dp,-1.44338_dp,0.92259_dp/),(/3,3/))
              else
                 id = 25
-                O = transpose(reshape((/1.0_dp,1.0_dp,1.0_dp,1.45119_dp,-1.70119_dp,-1.0_dp,0.28878_dp,-3.26895_dp,0.48018_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.45119_dp,-1.70119_dp,-1.0_dp,0.28878_dp,-3.26895_dp,0.48018_dp/),(/3,3/))
              end if
           end if
        end if
@@ -588,73 +591,73 @@ CONTAINS
 
     if (id==(-1)) then
        if (positive .eqv. .True.) then
-          if (ABS(E-F)<eps) then
-             if ((ABS((A/4.0_dp)-D)<eps) .and. (ABS((A/2.0_dp)-E)<eps)) then
+          if (isclose(E,F,atol_=eps)) then
+             if ((ABS((A/4.0_dp)-D)<= ABS(eps*D)) .and. (ABS((A/2.0_dp)-E)<= ABS(eps*E))) then
                 id = 26
-                O = transpose(reshape((/0.0_dp,1.0_dp,1.5_dp,0.5_dp,0.0_dp,1.5_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/)))
-             else if (ABS((A/2.0_dp)-E)<eps) then
+                O = reshape((/0.0_dp,1.0_dp,1.5_dp,0.5_dp,0.0_dp,1.5_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/))
+             else if (isclose((A/2.0_dp),E,atol_=eps)) then
                 id = 27
-                O = transpose(reshape((/0.464824_dp,-1.464824_dp,-1.907413_dp,-1.618033_dp,0.618033_dp,-1.0_dp,-1.0_dp,-1.0_dp,0.0_dp/),(/3,3/)))
+                O = reshape((/0.464824_dp,-1.464824_dp,-1.907413_dp,-1.618033_dp,0.618033_dp,-1.0_dp,-1.0_dp,-1.0_dp,0.0_dp/),(/3,3/))
              end if
           else
-             if ((ABS((A/2.0_dp)-E)<eps) .and. (ABS((2.0_dp*D)-F)<eps)) then
+             if (isclose((A/2.0_dp),E,atol_=eps) .and. isclose((2.0_dp*D),F,atol_=eps)) then
                 id = 28
-                O = transpose(reshape((/-1.44896_dp,0.948958_dp,-1.0_dp,-1.0_dp,-1.0_dp,0.0_dp,0.342424_dp,-1.342424_dp,-2.02006_dp/),(/3,3/)))
-             else if ((ABS((A/2.0_dp)-F)<eps) .and. (ABS((2.0_dp*D)-E)<eps)) then
+                O = reshape((/-1.44896_dp,0.948958_dp,-1.0_dp,-1.0_dp,-1.0_dp,0.0_dp,0.342424_dp,-1.342424_dp,-2.02006_dp/),(/3,3/))
+             else if (isclose((A/2.0_dp),F,atol_=eps) .and. isclose((2.0_dp*D),E,atol_=eps)) then
                 id = 29
-                O = transpose(reshape((/-0.666125_dp,1.16613_dp,2.04852_dp,1.0_dp,1.0_dp,0.0_dp,1.61803_dp,-0.618034_dp,1.0_dp/),(/3,3/)))
-             else if ((ABS((B/2.0_dp)-D)<eps) .and. (ABS((2.0_dp*E)-F)<eps)) then
+                O = reshape((/-0.666125_dp,1.16613_dp,2.04852_dp,1.0_dp,1.0_dp,0.0_dp,1.61803_dp,-0.618034_dp,1.0_dp/),(/3,3/))
+             else if (isclose((B/2.0_dp),D,atol_=eps) .and. isclose((2.0_dp*E),F,atol_=eps)) then
                 id = 30
-                O = transpose(reshape((/1.0_dp,1.0_dp,0.0_dp,1.61803_dp,-0.618034_dp,1.0_dp,-0.0361373_dp,0.536137_dp,2.38982_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,0.0_dp,1.61803_dp,-0.618034_dp,1.0_dp,-0.0361373_dp,0.536137_dp,2.38982_dp/),(/3,3/))
              else
                 id = 31
                 O = U
              end if
           end if
        else
-          if ((ABS(E-F)<eps) .and. (ABS(E)<eps)) then
-             if (ABS(D)<eps) then
+          if (isclose(E,F,atol_=eps) .and. isclose(0.0_dp,E,atol_=eps)) then
+             if (isclose(0.0_dp,D,atol_=eps)) then
                 id = 32
-                O = transpose(reshape((/1.0_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp,0.0_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/)))
-             else if (ABS((-B/2.0_dp)-D)<eps) then
+                O = reshape((/1.0_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp,0.0_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/))
+             else if (isclose(D,(-B/2.0_dp),atol_=eps)) then
                 id = 40
-                O = transpose(reshape((/1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.618034_dp,-1.0_dp,-1.05557_dp,1.99895_dp,-0.943376_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.618034_dp,-1.0_dp,-1.05557_dp,1.99895_dp,-0.943376_dp/),(/3,3/))
              else
                 id = 35
-                O = transpose(reshape((/1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.618034_dp,-1.0_dp,-0.668912_dp,1.96676_dp,-1.29785_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.618034_dp,-1.0_dp,-0.668912_dp,1.96676_dp,-1.29785_dp/),(/3,3/))
              end if
-          else if ((ABS(D-F)<eps) .and. (ABS(D)<eps)) then
-             if (ABS((-A/2.0_dp)-E)<eps) then
+          else if (isclose(D,F,atol_=eps) .and. isclose(0.0_dp,D,atol_=eps)) then
+             if (isclose((-A/2.0_dp),E,atol_=eps)) then
                 id = 36
-                O = transpose(reshape((/1.0_dp,1.0_dp,1.0_dp,1.41421_dp,-1.41421_dp,0.0_dp,-1.43541_dp,-1.43541_dp,1.37083_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.41421_dp,-1.41421_dp,0.0_dp,-1.43541_dp,-1.43541_dp,1.37083_dp/),(/3,3/))
              else
                 id = 33
-                O = transpose(reshape((/2.0_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp,0.0_dp,0.5_dp,0.0_dp,2.0_dp/),(/3,3/)))
+                O = reshape((/2.0_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp,0.0_dp,0.5_dp,0.0_dp,2.0_dp/),(/3,3/))
              end if
-          else if ((ABS(D-E)<eps) .and. (ABS(D)<eps)) then
-             if (ABS((-A/2.0_dp)-F)<eps) then
+          else if (isclose(D,E,atol_=eps) .and. isclose(0.0_dp,D,atol_=eps)) then
+             if (ABS((-A/2.0_dp)-F)<= ABS(eps*F)) then
                 id = 38
-                O = transpose(reshape((/0.5_dp,1.0_dp,0.0_dp,0.5_dp,-1.0_dp,0.0_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/)))
+                O = reshape((/0.5_dp,1.0_dp,0.0_dp,0.5_dp,-1.0_dp,0.0_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/))
              else
                 id = 34
-                O = transpose(reshape((/1.0_dp,1.0_dp,1.0_dp,1.22474487_dp,-1.22474487_dp,-2.0_dp,-0.16598509_dp,-1.64308297_dp,1.80906806_dp/),(/3,3/)))
+                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.22474487_dp,-1.22474487_dp,-2.0_dp,-0.16598509_dp,-1.64308297_dp,1.80906806_dp/),(/3,3/))
              end if
           else
-             if ((ABS((-B/2.0_dp)-D)<eps) .and. (ABS((-A/2.0_dp)-E)<eps) .and. (ABS(F)<eps)) then
+             if (isclose((-B/2.0_dp),D,atol_=eps) .and. isclose((-A/2.0_dp),E,atol_=eps) .and. isclose(0.0_dp,F,atol_=eps)) then
                 id = 42
-                O = transpose(reshape((/-1.53633_dp,1.36706_dp,-1.33073_dp,1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.61803_dp,-1.0_dp/),(/3,3/)))
-             else if ((ABS((-B/2.0_dp)-D)<eps) .and. (ABS(F)<eps)) then
+                O = reshape((/-1.53633_dp,1.36706_dp,-1.33073_dp,1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.61803_dp,-1.0_dp/),(/3,3/))
+             else if (isclose((-B/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,F,atol_=eps)) then
                 id = 41
-                O = transpose(reshape((/-1.0_dp,0.0_dp,-1.0_dp,1.85397_dp,0.854143_dp,-1.35397_dp,-1.0_dp,1.41421_dp,1.0_dp/),(/3,3/)))
-             else if ((ABS((-A/2.0_dp)-E)<eps) .and. (ABS(F)<eps)) then
+                O = reshape((/-1.0_dp,0.0_dp,-1.0_dp,1.85397_dp,0.854143_dp,-1.35397_dp,-1.0_dp,1.41421_dp,1.0_dp/),(/3,3/))
+             else if (isclose((-A/2.0_dp),E,atol_=eps) .and. isclose(0.0_dp,F,atol_=eps)) then
                 id = 37
-                O = transpose(reshape((/-1.79092_dp,-1.47209_dp,0.790922_dp,1.0_dp,0.0_dp,1.0_dp,1.0_dp,-1.41421_dp,-1.0_dp/),(/3,3/)))
-             else if ((ABS(E)<eps) .and. (ABS((-A/2.0_dp)-F)<eps)) then
+                O = reshape((/-1.79092_dp,-1.47209_dp,0.790922_dp,1.0_dp,0.0_dp,1.0_dp,1.0_dp,-1.41421_dp,-1.0_dp/),(/3,3/))
+             else if (isclose(0.0_dp,E,atol_=eps) .and. isclose((-A/2.0_dp),F,atol_=eps)) then
                 id = 39
-                O = transpose(reshape((/0.0_dp,1.73205_dp,1.0_dp,-1.0_dp,0.0_dp,-1.0_dp,1.66542_dp,0.672857_dp,-1.66542_dp/),(/3,3/)))
-             else if ((ABS((2.0_dp*ABS(D+E+F))-(A+B))<eps) .and. (ABS(ABS(2.0_dp*D+F)-B)<eps)) then
+                O = reshape((/0.0_dp,1.73205_dp,1.0_dp,-1.0_dp,0.0_dp,-1.0_dp,1.66542_dp,0.672857_dp,-1.66542_dp/),(/3,3/))
+             else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps) .and. isclose(ABS(2.0_dp*D+F),B,atol_=eps)) then
                 id = 43
-                O = transpose(reshape((/-0.39716_dp,-0.34718_dp,2.49434_dp,2.64194_dp,-0.14194_dp,0.0_dp,-1.39716_dp,-1.34718_dp,1.49434_dp/),(/3,3/)))
+                O = reshape((/-0.39716_dp,-0.34718_dp,2.49434_dp,2.64194_dp,-0.14194_dp,0.0_dp,-1.39716_dp,-1.34718_dp,1.49434_dp/),(/3,3/))
              else
                 id = 44
                 O = U
@@ -666,5 +669,37 @@ CONTAINS
     call reduce_cell(O,No,Co,eps_=eps)
 
   end SUBROUTINE id_cell
+
+  !!<summary>Matches the numpy allclose function for single floats.</summary>
+  !!<parameter name="A" regular="true">The first value to compare.</parameter>
+  !!<parameter name="B" regular="true">The second value to compare.</parameter>
+  !!<parameter name="rtol_" regular="true">Relative tollerance.</parameter>
+  !!<parameter name="atol_" regular="true">Absolute tolerance.</parameter>
+  Function isclose(A,B,rtol_,atol_)
+    logical :: isclose
+    real(dp), intent(in) :: A, B
+    real(dp), optional, intent(in) :: rtol_, atol_
+
+    real(dp) :: rtol, atol 
+
+    if (present(rtol_)) then
+       rtol = rtol_
+    else
+       rtol = 10.0_dp**(-5.0_dp)
+    end if
+
+    if (present(atol_)) then
+       atol = atol_
+    else
+       atol = 10.0_dp**(-8.0_dp)
+    end if
+
+    if (ABS(A-B) <= (atol+rtol*ABS(B))) then
+       isclose = .True.
+    else
+       isclose = .False.
+    end if
+    
+  end Function isclose
   
 end Module niggli

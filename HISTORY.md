@@ -1,6 +1,12 @@
 # Revision History
 
 ## Revision 0.3.8 (WSM)
+- Removed the transpose statements from our basis assignments in
+  id_cell.
+- Replaced eps*D with eps for the tolerance for niggli case 40 in
+  niggli_id.
+
+## Revision 0.3.8 (WSM)
 - Fixed sign error in get_params subroutine.
 - Fixed unit tests outputs for get_params subroutine (python hadn't
   saved enough digits of precision).
