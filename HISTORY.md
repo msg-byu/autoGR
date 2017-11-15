@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.3.9 (WSM)
+- Fixed some bugs in the find_volumes subroutine in universal.py.
+- Added unit tests for some of the functions in universal.py.
+
 ## Revision 0.3.8 (WSM)
 - Removed the transpose statements from our basis assignments in
   id_cell.
@@ -27,7 +31,7 @@
 - Removed ```if ((.not. equal(size(IN,1),3,0))
   .or. (.not. equal(size(IN,2),3,0))) stop "Input matrix must be
   3x3."``` from niggli.f90 since it is redudnant with the array
-  declation.
+  declaration.
 - Changed others
 
 

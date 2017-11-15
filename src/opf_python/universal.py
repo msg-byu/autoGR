@@ -1,5 +1,7 @@
 """Subtroutines needed by all the systems."""
 
+import numpy as np
+
 def transform_supercells(spHNFs, No, Nu, Co, Cu, O):
     """Finds the symmetry preserving supercells in the users basis.
     
@@ -216,25 +218,14 @@ def find_volumes(lat_type,kpd):
     ns = []
     
     nt = float(kpd)
-    if lat_type == 3:
+    if lat_type == 3 or lat_type == 5:
         nb = int(floor(nt**(1/3))-1)
         nmin = kpd-1000
         nmax = kpd+1000
         while nb**3<nmax:
             nc = nb**3
             for m in [1,2,4]:
-                if m*nc>nmin and m*nc<nmax:
-                    ns.append(m*nc)
-            nb += 1   
-        
-    elif lat_type == 5:
-        nb = int(floor(nt**(1/3))-1)
-        nmin = kpd-1000
-        nmax = kpd+1000
-        while nb**3<nmax:
-            nc = nb**3
-            for m in [1,2,4]:
-                if m*nc>nmin and m*nc<nmax:
+                if m*nc>nmin and m*nc<nmax and m*nc>0:
                     ns.append(m*nc)
             nb += 1   
             
@@ -245,7 +236,7 @@ def find_volumes(lat_type,kpd):
         while nb**3<nmax:
             nc = nb**3
             for m in [1,4,16]:
-                if m*nc>nmin and m*nc<nmax:
+                if m*nc>nmin and m*nc<nmax and m*nc>0:
                     ns.append(m*nc)
             nb += 1
             
@@ -253,17 +244,16 @@ def find_volumes(lat_type,kpd):
         tmult = 1
         while mult == None:
             test =nt/tmult**3
-            if np.allclose(test,100):
-                nu = int(ceil(test))
+            if test<=100:
                 nl = int(floor(test))
-                if (nu-100)<(nl-100):
-                    ns = [nu]
-                else:
-                    ns = [nl]
+                ns = [nl]
                 mult = tmult
             else:
                 tmult += 1
     else:
-        ns = range(kpd-5,kpd+6)
+        if (kpd-5) > 0:
+            ns = range(kpd-5,kpd+6)
+        else:
+            ns = range(1,kpd+10)
 
     return ns, mult
