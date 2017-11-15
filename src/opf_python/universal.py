@@ -55,9 +55,9 @@ def get_HNF_diagonals(n):
                     
     return diags
 
-def find_srBs(U,kpt,exact=False):
-    """Generates the k-point grid vectors for the target k-point density
-    for the given lattice.
+def find_supercells(U,kpt,exact=False):
+    """Generates the symmetry preserving supercells for the users lattice and
+    k-point density.
 
     Args:
         U (numpy.array): The lattice vectors as columns of a matrix.
@@ -65,119 +65,220 @@ def find_srBs(U,kpt,exact=False):
         exact (bool): True if only the target k-point density is to be used.
 
     Returns:
-        Bs (numpy.array): list of symmetry preserving supercells.
+        supercells (numpy.array): list of symmetry preserving supercells.
 
     Raises:
         ValueError if the lattice type can't be identified.
+
     """
 
     from opf_python.niggli_lat_id import niggli_id
     from opf_python.pyniggli import reduced_cell
     import numpy as np
     
-    lat_name, nig_n, lat_fam = niggli_id(U)
+    lat_name, nig_n, lat_fam, basis = niggli_id(U)
     Bu = reduced_cell(U)
     Nu = Bu.niggli
     Cu = Bu.C
+    Bo = reduced_cell(basis)
+    No = Bu.niggli
+    Co = Bu.C
     
     if not exact:
-        ns, mult = find_volumes(lat_fam,kpt)
+        ns, mult = find_volumes(nig_n,kpt)
     else:
         ns, mult = [kpt], 1.0
 
-    srHNFs = []
-    if name == "sc":
-        from opf_python.sc import sc_srHNFs
+    spHNFs = []
+    if nig_n == 3:
+        from opf_python.sc import sc_3
         for n in ns:
-            temp = sc_srHNFs(n)
+            temp = sc_3(n)
             for t in temp:
-                srHNFs.append(t)
+                spHNFs.append(t)
         
-    elif name == "bcc":
-        from opf_python.bcc import bcc_srHNFs
+    elif nig_n == 5:
+        from opf_python.bcc import bcc_5
         for n in ns:
-            temp = bcc_srHNFs(n)
+            temp = bcc_5(n)
             for t in temp:
-                srHNFs.append(t)        
+                spHNFs.append(t)        
             
-    elif name == "fcc":
-        from opf_python.fcc import fcc_srHNFs
+    elif nig_n == 1:
+        from opf_python.fcc import fcc_1
         for n in ns:
-            temp = fcc_srHNFs(n)
+            temp = fcc_1(n)
             for t in temp:
-                srHNFs.append(t)        
+                spHNFs.append(t)        
         
-    elif name == "hex":
-        from opf_python.hx import hex_srHNFs
+    elif nig_n in [12,22]:
+        from opf_python.hx import hex_12, hex_22
         for n in ns:
-            temp = hex_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 12:
+                temp = hex_12(n)
+            else:
+                temp = hex_22(n)
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "trig":
-        from opf_python.trig import trig_srHNFs
+    elif nig_n in [9,4,2,24]:
+        from opf_python.rhom import rhom_9, rhom_4_2, rhom_24
         for n in ns:
-            temp = trig_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 9:
+                temp = rhom_9(n)
+            elif nig_n == 24:
+                temp = rhom_24(n)
+            else:
+                temp = rhom_4_2(n)                                
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "stet":
-        from opf_python.stet import stet_srHNFs
+    elif nig_n in [11,21]:
+        from opf_python.stet import stet_11, stet_21
         for n in ns:
-            temp = stet_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 11:
+                temp = stet_11(n)
+            else:
+                temp = stet_21(n)                
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
        
-    elif name == "btet":
-        from opf_python.body_tet import body_tet_srHNFs
+    elif nig_n in [15,7,6,18]:
+        from opf_python.body_tet import body_tet_15, body_tet_7, body_tet_6, body_tet_18
         for n in ns:
-            temp = body_tet_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 15:
+                temp = body_tet_15(n)
+            elif nig_n == 18:
+                temp = body_tet_18(n)
+            elif nig_n == 6:
+                temp = body_tet_6(n)
+            else:
+                temp = body_tet_7(n)
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "so":
-        from opf_python.so import so_srHNFs
+    elif nig_n == 32:
+        from opf_python.so import so_32
         for n in ns:
-            temp = so_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            temp = so_32(n)
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "co":
-        from opf_python.base_ortho import base_ortho_srHNFs
+    elif nig_n in [38,13,23,40,36,]:
+        from opf_python.base_ortho import base_ortho_38_13, base_ortho_23, base_ortho_36, base_ortho_40
         for n in ns:
-            temp = base_ortho_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 23:
+                temp = base_ortho_23(n)
+            elif nig_n == 36:
+                temp = base_ortho_36(n)
+            elif nig_n == 40:
+                temp = base_ortho_40(n)
+            else:
+                temp = base_ortho_38_13(n)
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "bo":
-        from opf_python.body_ortho import body_ortho_srHNFs
+    elif nig_n in [19,8,42]:
+        from opf_python.body_ortho import body_ortho_19, body_ortho_8, body_ortho_42
         for n in ns:
-            temp = body_ortho_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 19:
+                temp = body_ortho_19(n)
+            elif nig_n == 8:
+                temp = body_ortho_8(n)
+            else:
+                temp = body_ortho_42(n)
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "fo":
-        from opf_python.face_ortho import face_ortho_srHNFs
+    elif nig_n in [26,16]:
+        from opf_python.face_ortho import face_ortho_26, face_ortho_16
         for n in ns:
-            temp = face_ortho_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 26:
+                temp = face_ortho_26(n)
+            else:
+                temp = face_ortho_16(n)
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "sm":
-        from opf_python.sm import sm_srHNFs
+    elif nig_n in [33,34,35]:
+        from opf_python.sm import sm_33, sm_34, sm_35
         for n in ns:
-            temp = sm_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 33:
+                temp = sm_33(n)
+            elif nig_n == 34:
+                temp = sm_34(n)
+            else:
+                temp = sm_35(n)
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "cm":
-        from opf_python.base_mono import base_mono_srHNFs
+    elif nig_n in [14,10,17,20,25,27,28,29,30,41,37,39,43]:
+        from opf_python.base_mono import base_mono_14, base_mono_27, base_mono_28, base_mono_41, base_mono_43, base_mono_10_17, base_mono_20_25, base_mono_29_30, base_mono_37_39
         for n in ns:
-            temp = base_mono_srHNFs(n)
-            for t in temp:
-                srHNFs.append(t)        
+            if nig_n == 14:
+                temp = base_mono_14(n)
+            elif nig_n == 27:
+                temp = base_mono_27(n)
+            elif nig_n == 27:
+                temp = base_mono_27(n)
+            elif nig_n == 28:
+                temp = base_mono_28(n)
+            elif nig_n == 41:
+                temp = base_mono_41(n)
+            elif nig_n == 43:
+                temp = base_mono_43(n)
+            elif nig_n in [10,17]:
+                temp = base_mono_10_17(n)
+            elif nig_n in [20,25]:
+                temp = base_mono_20_25(n)
+            elif nig_n in [29,30]:
+                temp = base_mono_29_30(n)
+            else:
+                temp = base_mono_37_39(n)
+            if len(temp)> 1 and not exact:
+                for t in temp:
+                    spHNFs.append(t)
+            elif exact:
+                for t in temp:
+                    spHNFs.append(t)
         
-    elif name == "tric":
+    elif nig_n in [31,44]:
         for n in ns:
             diags = get_HNF_diagonals(n)
             for diag in diags:
@@ -188,17 +289,14 @@ def find_srBs(U,kpt,exact=False):
                     for d in range(f):
                         for e in range(f):
                             HNF = np.array([[a,0,0],[b,c,0],[d,e,f]])
-                            srHNFs.append(HNF*mult)
+                            spHNFs.append(HNF*mult)
         
     else:
-        raise ValueError("ERROR: unrecognized lattice type: ",name)
+        raise ValueError("ERROR: unrecognized lattice type")
 
-    Bs = []
-    for H in srHNFs:
-        B = np.dot(np.linalg.inv(M),np.dot(basis,H))
-        Bs.append(B)
+    supercells = transform_supercells(spHNFs, No, Nu, Co, Cu, basis)
 
-    return Bs, srHNFs
+    return supercells
         
 def find_volumes(lat_type,kpd):
     """Finds the allowed n's for a given lattice around the desired k-point density.

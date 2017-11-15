@@ -95,3 +95,39 @@ def test_find_volemus():
     a,b = find_volumes(20,4)
     assert np.allclose(a,[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
     assert b is None
+
+def test_find_supers():
+    """Finds the supercells of the given cell."""
+
+    from opf_python.universal import find_supercells
+
+    #hex_12
+    A = [[ 0.       ,  1.5      ,  1.       ],
+       [ 0.       , -0.8660254,  0.       ],
+       [ 2.       ,  2.       ,  2.       ]]
+    Bs = find_supercells(A,10)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_hex_12_13_3_3.txt").reshape(13,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+
+    #hex_22
+    A = [[-0.5      ,  0.5      , -0.5      ],
+       [ 0.8660254,  0.8660254,  0.8660254],
+       [ 0.       , -0.5      , -0.5      ]]
+    Bs = find_supercells(A,10,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_hex_22_1_3_3.txt").reshape(1,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+    
+    #sc_3
+    A = [[0, 1, 1],
+       [0, 1, 0],
+       [1, 1, 1]]
+    Bs = find_supercells(A,10)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_sc_3_23.txt").reshape(23,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+    

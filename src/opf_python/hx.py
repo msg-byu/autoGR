@@ -49,51 +49,6 @@ def hex_12(n):
                                 
     return spHNFs
 
-# def hex_12(n):
-#     """Finds the symmetry preserving HNFs for the hexagonal lattices
-#     with a determinant of n. Assuming A = [[1,0,0],[-0.5,0.8660254037844386,0],[0,0,-2]].
-
-#     Args:
-#         n (int): The determinant of the HNFs.
-
-#     Returns:
-#         spHNFs (list of lists): The symmetry preserving HNFs.
-#     """
-
-#     from opf_python.universal import get_HNF_diagonals
-
-#     diags = get_HNF_diagonals(n)
-
-#     spHNFs = []
-
-#     for diag in diags:
-#         a = diag[0]
-#         c = diag[1]
-#         f = diag[2]
-
-#         if c%a==0:
-#             bs = range(0,c,a)
-#             for b in bs:
-#                 b11 = -a+2*b
-#                 b13 = 2*b-b*b/float(a)
-#                 if b11%c==0 and b13%c==0:
-#                     if f%2==0:
-#                         es = [0,f/2]
-#                     else:
-#                         es = [0]
-#                     for e in es:
-#                         g11 = b11*e/float(c)
-#                         if g11%f==0:
-#                             for d in range(f):
-#                                 g12 = 2*d -b11*e/float(c)
-#                                 g13 = -b*d/float(a)-b13*e/float(c)
-#                                 g23 = -c*d/float(a) -2*e+b*e/float(a)
-#                                 if g12%f==0 and g13%f==0 and g23%f==0:
-#                                     HNF = [[a,0,0],[b,c,0],[d,e,f]]
-#                                     spHNFs.append(HNF)
-                                    
-#     return spHNFs
-
 def hex_22(n):
     """Finds the symmetry preserving HNFs for the hexagonal lattices
     with a determinant of n. Assuming A = [[0,0,-0.5],[1,0,0],[-0.5,0.8660254037844386,0]].

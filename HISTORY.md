@@ -3,6 +3,11 @@
 ## Revision 0.3.9 (WSM)
 - Fixed some bugs in the find_volumes subroutine in universal.py.
 - Added unit tests for some of the functions in universal.py.
+- Changed universal.py so that it only keeps the symmetry presereving
+  HNFs of a given size if there are more than 1 of them.
+- Fixed bug in the volume finding algorithm.
+- Removed deprecated code from hex.py.
+- Started adding tests of the find_suprcells python algorithm.
 
 ## Revision 0.3.8 (WSM)
 - Removed the transpose statements from our basis assignments in
