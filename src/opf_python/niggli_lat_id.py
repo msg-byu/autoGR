@@ -153,9 +153,9 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 5
                     lat_type = 'face centered orthorhombic'
                     niggli_num = 16                    
-                    basis = np.transpose([[1, 1, -1],
-                                          [-1.779796, 0.1798, 0],
-                                          [0.735376, -1.61953, -1.68415]])
+                    basis = np.transpose([[1.04442, 1.43973, 1.68415],
+                                          [0.779796, -1.1789, 1.0],
+                                          [1.779796, 0.1789, 0]])
                 else:
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'

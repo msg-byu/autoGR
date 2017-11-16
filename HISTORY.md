@@ -1,5 +1,15 @@
 # Revision History
 
+## Revision 0.3.10 (WSM)
+- Changed how find_volumes works in universal.py so that all valume
+  factors are greater than or equal to the desired k-point
+  density. Also made it so that in the cumbic cases only 3 values are
+  returned and for all other cases 11 values are returned.
+- Updated our basis for face centered orthorhombic case 16 in
+  niggli_lat_id.py to match the new one we found.
+- Changed find_supercells in universal.py so that it only returns
+  supercells for the first 5 non-trivial determinant sizes tried.
+
 ## Revision 0.3.9 (WSM)
 - Fixed some bugs in the find_volumes subroutine in universal.py.
 - Added unit tests for some of the functions in universal.py.

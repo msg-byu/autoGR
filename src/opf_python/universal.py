@@ -89,6 +89,7 @@ def find_supercells(U,kpt,exact=False):
     else:
         ns, mult = [kpt], 1.0
 
+    count = 0
     spHNFs = []
     if nig_n == 3:
         from opf_python.sc import sc_3
@@ -119,12 +120,15 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = hex_22(n)
             if len(temp)> 1 and not exact:
+                count +=1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
-        
+            if count == 5:
+                break
+                    
     elif nig_n in [9,4,2,24]:
         from opf_python.rhom import rhom_9, rhom_4_2, rhom_24
         for n in ns:
@@ -135,11 +139,14 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = rhom_4_2(n)                                
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
         
     elif nig_n in [11,21]:
         from opf_python.stet import stet_11, stet_21
@@ -149,11 +156,14 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = stet_21(n)                
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
        
     elif nig_n in [15,7,6,18]:
         from opf_python.body_tet import body_tet_15, body_tet_7, body_tet_6, body_tet_18
@@ -167,22 +177,28 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = body_tet_7(n)
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
         
     elif nig_n == 32:
         from opf_python.so import so_32
         for n in ns:
             temp = so_32(n)
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
         
     elif nig_n in [38,13,23,40,36,]:
         from opf_python.base_ortho import base_ortho_38_13, base_ortho_23, base_ortho_36, base_ortho_40
@@ -196,11 +212,14 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = base_ortho_38_13(n)
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
         
     elif nig_n in [19,8,42]:
         from opf_python.body_ortho import body_ortho_19, body_ortho_8, body_ortho_42
@@ -212,11 +231,14 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = body_ortho_42(n)
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
         
     elif nig_n in [26,16]:
         from opf_python.face_ortho import face_ortho_26, face_ortho_16
@@ -226,11 +248,14 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = face_ortho_16(n)
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
         
     elif nig_n in [33,34,35]:
         from opf_python.sm import sm_33, sm_34, sm_35
@@ -242,11 +267,14 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = sm_35(n)
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
         
     elif nig_n in [14,10,17,20,25,27,28,29,30,41,37,39,43]:
         from opf_python.base_mono import base_mono_14, base_mono_27, base_mono_28, base_mono_41, base_mono_43, base_mono_10_17, base_mono_20_25, base_mono_29_30, base_mono_37_39
@@ -272,11 +300,14 @@ def find_supercells(U,kpt,exact=False):
             else:
                 temp = base_mono_37_39(n)
             if len(temp)> 1 and not exact:
+                count += 1
                 for t in temp:
                     spHNFs.append(t)
             elif exact:
                 for t in temp:
                     spHNFs.append(t)
+            if count == 5:
+                break
         
     elif nig_n in [31,44]:
         for n in ns:
@@ -318,25 +349,27 @@ def find_volumes(lat_type,kpd):
     nt = float(kpd)
     if lat_type == 3 or lat_type == 5:
         nb = int(floor(nt**(1/3))-1)
-        nmin = kpd-1000
         nmax = kpd+1000
         while nb**3<nmax:
             nc = nb**3
             for m in [1,2,4]:
-                if m*nc>nmin and m*nc<nmax and m*nc>0:
+                if m*nc>=kpd:
                     ns.append(m*nc)
-            nb += 1   
+            nb += 1
+        ns.sort()
+        ns = ns[:3]
             
     elif lat_type == 1:
         nb = int(floor(nt**(1/3))-1)
-        nmin = kpd-1000
         nmax = kpd+1000
         while nb**3<nmax:
             nc = nb**3
             for m in [1,4,16]:
-                if m*nc>nmin and m*nc<nmax and m*nc>0:
+                if m*nc>=kpd:
                     ns.append(m*nc)
             nb += 1
+        ns.sort()
+        ns = ns[:3]
             
     elif lat_type == 31 or lat_type == 44:
         tmult = 1
@@ -349,9 +382,7 @@ def find_volumes(lat_type,kpd):
             else:
                 tmult += 1
     else:
-        if (kpd-5) > 0:
-            ns = range(kpd-5,kpd+6)
-        else:
-            ns = range(1,kpd+10)
+        ns = range(kpd,kpd+11)
 
+    ns.sort()
     return ns, mult

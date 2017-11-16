@@ -1,6 +1,6 @@
 def bcc_5(n):
     """Finds the symmetry preserving HNFs for the base centered cubic lattices
-    with a determinant of n. Assuming A = [[-1,1,1],[1,-1,1],[1,1,-1]]
+    with a determinant of n. Assuming A = [[-1,1,1],[1,-1,1],[1,1,-1]].
 
 
     Args:
