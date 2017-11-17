@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.3.11 (WSM)
+- Fixed a sign error in the lattice definition for face centered
+  orthorhombic cell 16.
+
 ## Revision 0.3.10 (WSM)
 - Changed how find_volumes works in universal.py so that all valume
   factors are greater than or equal to the desired k-point

@@ -257,3 +257,93 @@ def test_find_supers():
 
     assert np.allclose(Bs,true_Bs)
                 
+    #base_ortho_38_13
+    A = [[ 0. ,  1. ,  0.5],
+         [ 0. ,  0. ,  1. ],
+         [ 3. ,  3. ,  3. ]]
+    Bs = find_supercells(A,10,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_ortho_38_9.txt").reshape(9,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_ortho_23
+    A = [[ 2.       ,  2.6666667,  1.6666667],
+         [-1.       , -1.54116  , -2.54116  ],
+         [-1.       ,  1.87449  ,  0.87449  ]]
+    Bs = find_supercells(A,5)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_ortho_23_42.txt").reshape(42,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_ortho_40
+    A = [[-1.05557 ,  1.56246 , -0.05557 ],
+         [ 1.99895 ,  2.380916,  2.99895 ],
+         [-0.943376, -0.943376,  0.056624]]
+    Bs = find_supercells(A,5)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_ortho_40_42.txt").reshape(42,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_ortho_36
+    A = [[-1.43541,  0.9788 , -0.43541],
+         [-1.43541, -1.84962, -0.43541],
+         [ 1.37083,  2.37083,  2.37083]]
+    Bs = find_supercells(A,5)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_ortho_36_42.txt").reshape(42,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #body_ortho_19
+    A = [[ 0. ,  0.5,  0.5],
+         [ 0. ,  3. ,  1. ],
+         [ 3. ,  4.5,  4.5]]
+    Bs = find_supercells(A,10,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_body_ortho_19_3.txt").reshape(3,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #body_ortho_38
+    A = [[ 3.41012  ,  3.82288  ,  4.82156  ],
+         [-1.1237578,  1.1771244, -1.0351956],
+         [-1.268178 , -2.       , -3.268178 ]]
+    Bs = find_supercells(A,5)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_body_ortho_8_34.txt").reshape(34,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #body_ortho_42
+    A = [[ 1.61803,  1.0817 ,  0.0817 ],
+         [-0.61803,  1.74903,  0.74903],
+         [-1.     , -1.33073, -2.33073]]
+    Bs = find_supercells(A,5)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_body_ortho_42_34.txt").reshape(34,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #face_ortho_26
+    A = [[ 0. ,  0.5,  0. ],
+         [ 0. ,  1. ,  1. ],
+         [ 3. ,  6. ,  4.5]]
+    Bs = find_supercells(A,10,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_face_ortho_26_9.txt").reshape(9,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #face_ortho_16
+    A = [[ 1.04442 ,  1.515172,  2.824216],
+         [ 1.43973 , -2.79933 ,  1.25993 ],
+         [ 1.68415 , -0.68415 ,  1.68415 ]]
+    Bs = find_supercells(A,5)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_face_ortho_16_34.txt").reshape(34,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
