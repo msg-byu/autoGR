@@ -80,6 +80,8 @@ def find_supercells(U,kpt,exact=False):
     Bu = reduced_cell(U)
     Nu = Bu.niggli
     Cu = Bu.C
+    if nig_n in [31,44]:
+        basis = U
     Bo = reduced_cell(basis)
     No = Bu.niggli
     Co = Bu.C
@@ -283,8 +285,6 @@ def find_supercells(U,kpt,exact=False):
                 temp = base_mono_14(n)
             elif nig_n == 27:
                 temp = base_mono_27(n)
-            elif nig_n == 27:
-                temp = base_mono_27(n)
             elif nig_n == 28:
                 temp = base_mono_28(n)
             elif nig_n == 41:
@@ -315,14 +315,14 @@ def find_supercells(U,kpt,exact=False):
             for diag in diags:
                 a = diag[0]
                 c = diag[1]
-                f = diaf[2]
+                f = diag[2]
                 for b in range(c):
                     for d in range(f):
                         for e in range(f):
                             HNF = np.array([[a,0,0],[b,c,0],[d,e,f]])
                             spHNFs.append(HNF*mult)
         
-    else:
+    else: # pragma: no cover
         raise ValueError("ERROR: unrecognized lattice type")
 
     supercells = transform_supercells(spHNFs, No, Nu, Co, Cu, basis)

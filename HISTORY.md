@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.3.12 (WSM)
+- Removed redundandt call to base_mono_27 in universal.py.
+- Fixed basis determination for triclinic cases in universal.py.
+
 ## Revision 0.3.11 (WSM)
 - Fixed a sign error in the lattice definition for face centered
   orthorhombic cell 16.

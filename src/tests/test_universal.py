@@ -347,3 +347,133 @@ def test_find_supers():
 
     assert np.allclose(Bs,true_Bs)
                 
+    #simple_mono 33
+    A = [[ 2. , -1.5,  2.5],
+         [ 0. ,  2. ,  0. ],
+         [ 0. ,  2. ,  2. ]]
+    Bs = find_supercells(A,10,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_simple_mono_33_49.txt").reshape(49,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #simple_mono 35
+    A = [[ 1.      , -0.050882,  0.331088],
+         [ 1.      ,  0.348726,  2.96676 ],
+         [ 1.      , -3.29785 , -0.29785 ]]
+    Bs = find_supercells(A,10,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_simple_mono_35_49.txt").reshape(49,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #simple_mono 34
+    A = [[ 1.        ,  0.05875978,  0.83401491],
+         [ 1.        , -3.86782784, -0.64308297],
+         [ 1.        , -0.19093194,  2.80906806]]
+    Bs = find_supercells(A,1)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_simple_mono_34_77.txt").reshape(77,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 14
+    A = [[ 1. , -0.5,  1.5],
+         [ 1. ,  1. ,  1. ],
+         [ 0. ,  2. ,  2. ]]
+    Bs = find_supercells(A,8,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_14_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 10 17
+    A = [[-1.46391,  2.46391, -1.46391],
+         [ 0.     ,  3.     ,  2.     ],
+         [ 1.96391, -0.96391,  1.96391]]
+    Bs = find_supercells(A,8,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_10_17_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 20 25
+    A = [[ 1.       ,  1.39898  ,  1.69779  ],
+         [ 1.       , -3.8834405, -0.4322505],
+         [ 1.       ,  3.23446  ,  4.23446  ]]
+    Bs = find_supercells(A,8,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_20_25_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 27
+    A = [[ 0.464824, -3.082857, -0.535176],
+         [-1.464824,  1.082857, -2.464824],
+         [-1.907413,  0.907413, -1.907413]]
+    Bs = find_supercells(A,8,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_27_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 28
+    A = [[-1.44896 ,  0.791384, -1.106536],
+         [ 0.948958, -3.291382, -0.393466],
+         [-1.      , -1.02006 , -3.02006 ]]
+    Bs = find_supercells(A,8,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_28_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 29 30
+    A = [[-0.666125,  3.284155,  0.951905],
+         [ 1.16613 , -0.784164,  0.548096],
+         [ 2.04852 , -1.04852 ,  3.04852 ]]
+    Bs = find_supercells(A,8,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_29_30_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 41
+    A = [[-1.      ,  1.85397 , -2.      ],
+         [ 0.      ,  2.268353,  1.41421 ],
+         [-1.      ,  0.64603 ,  0.      ]]
+    Bs = find_supercells(A,8,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_41_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 37 39
+    A = [[-1.79092 ,  3.79092 , -0.79092 ],
+         [-1.47209 ,  0.05788 , -2.8863  ],
+         [ 0.790922, -0.790922, -0.209078]]
+    Bs = find_supercells(A,8,exact=True)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_37_39_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #base_mono 43
+    A = [[-0.39716,  1.64194, -1.79432],
+         [-0.34718, -1.14194, -1.69436],
+         [ 2.49434, -1.     ,  3.98868]]
+    Bs = find_supercells(A,1)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_43_41.txt").reshape(41,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                
+    #triclinic
+    A = [[ 2.24478,  3.48956, -1.79432],
+         [-0.48912, -1.97824, -1.69436],
+         [ 2.49434,  3.98868,  3.98868]]
+    Bs = find_supercells(A,5)
+
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_base_mono_44_31.txt").reshape(31,3,3)
+
+    assert np.allclose(Bs,true_Bs)
+                

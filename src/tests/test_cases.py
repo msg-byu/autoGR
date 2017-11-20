@@ -977,14 +977,3 @@ def test_base_mono():
         assert len(s1)==len(s7)
         assert len(s1)==len(s8)
         assert len(s1)==len(s9)
-    
-
-
-
-
-
-
-
-
-
-

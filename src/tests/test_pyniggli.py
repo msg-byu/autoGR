@@ -15,12 +15,6 @@ def test_reduction():
     assert np.allclose(B.C,np.array([[1,0,0],[0,1,0],[0,0,1]]))
     assert np.allclose(B.niggli,A)
     assert np.allclose(B.niggli,np.dot(A,B.C))
-
-    f = open("/Users/wileymorgan/codes/opf_kgrids/src/fortran/tests/niggli/U.in.{}".format(i),"w+")
-    f_w = csv.writer(f,delimiter='\t')
-    for j in A:
-        f_w.writerow(j)
-    f.close()
     
     #2
     A = np.transpose([[0.5,0,0.5],[0,3,0],[0.5,0,-0.5]])
