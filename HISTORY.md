@@ -1,5 +1,13 @@
 # Revision History
 
+## Revision 0.3.13 (WSM)
+- Re-wrote the get_kpd_cubic subroutine in find_kgrds.f90 to match the
+  python functions.
+- Fixed bugs in find_kgrids.f90 that prevented it from compiling.
+- Added subroutine to find_kgrids.f90 find the kpd and ratio to use
+  for triclinic cases.
+- Fixed bug with floating point division in universal.py.
+
 ## Revision 0.3.12 (WSM)
 - Removed redundandt call to base_mono_27 in universal.py.
 - Fixed basis determination for triclinic cases in universal.py.

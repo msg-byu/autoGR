@@ -348,7 +348,7 @@ def find_volumes(lat_type,kpd):
     
     nt = float(kpd)
     if lat_type == 3 or lat_type == 5:
-        nb = int(floor(nt**(1/3))-1)
+        nb = int(floor(nt**(1.0/3.0))-1)
         nmax = kpd+1000
         while nb**3<nmax:
             nc = nb**3
@@ -360,7 +360,7 @@ def find_volumes(lat_type,kpd):
         ns = ns[:3]
             
     elif lat_type == 1:
-        nb = int(floor(nt**(1/3))-1)
+        nb = int(floor(nt**(1.0/3.0))-1)
         nmax = kpd+1000
         while nb**3<nmax:
             nc = nb**3

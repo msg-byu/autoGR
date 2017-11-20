@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fortpy mode="docstring">
+  <decorates name="find_kgrids.get_kpd_cubic">
+    <group name="find_kgrids1" purpose="testing" staging="../../unittests/">
+      <test identifier="original" description="Tests of the k-point density generation."
+	    cases="[1-4]" timed="true">
+	<output folder="./tests/find_kgrids"
+		file="get_kpd_cubic.out.{}" template="integer.xml"
+		identifier="get_kpd_cubic.out"/>
+	<target name="densities" compareto="get_kpd_cubic.out"
+		varfile="get_kpd_cubic.out" when="each"/>
+      </test>
+      <assignment name="lat_id" value="idfile">
+	<value identifier="idfile" file="lat_id.in.{}"
+	       folder="./tests/find_kgrids" rename="lat_id.in"/>
+      </assignment>
+      <assignment name="kpd" value="kpdfile">
+	<value identifier="kpdfile" file="kpd.in.{}"
+	       folder="./tests/find_kgrids" rename="kpd.in"/>
+      </assignment>
+    </group>
+  </decorates>  
+
+  <decorates name="find_kgrids.get_kpd_tric">
+    <group name="find_kgrids1" purpose="testing" staging="../../unittests/">
+      <test identifier="kpd" description="Tests of the k-point density generation."
+	    cases="[1-3]" timed="true">
+	<output folder="./tests/find_kgrids"
+		file="get_kpd_tric.out.{}" template="integer.xml"
+		identifier="get_kpd_tric.out"/>
+	<target name="r_kpd" compareto="get_kpd_tric.out"
+		varfile="get_kpd_tric.out" when="each"/>
+      </test>
+      <test identifier="mult" description="Tests of the k-point density generation."
+	    cases="[1-3]" timed="true">
+	<output folder="./tests/find_kgrids"
+		file="get_kpd_tric_mult.out.{}" template="integer.xml"
+		identifier="get_kpd_tric_mult.out"/>
+	<target name="mult" compareto="get_kpd_tric_mult.out"
+		varfile="get_kpd_tric_mult.out" when="each"/>
+      </test>
+      <assignment name="kpd" value="kpdfile">
+	<value identifier="kpdfile" file="tric_kpd.in.{}"
+	       folder="./tests/find_kgrids" rename="kpd.in"/>
+      </assignment>
+    </group>
+  </decorates>  
+</fortpy>
