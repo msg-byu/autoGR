@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.3.14 (WSM)
+-Changed the type of the L matrix in transform_supercell in find_kgrid.f90.
+-Implemented unit tests of transform_supercell.
+
 ## Revision 0.3.13 (WSM)
 - Re-wrote the get_kpd_cubic subroutine in find_kgrds.f90 to match the
   python functions.

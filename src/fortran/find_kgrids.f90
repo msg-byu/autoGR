@@ -34,8 +34,8 @@ CONTAINS
     real(dp), intent(out) :: UB(3,3)
 
     integer :: i
-    integer :: L(3,3), F(3,3), B(3,3)
-    real(dp) :: Oinv(3,3), Noinv(3,3), Cuinv(3,3)
+    integer :: F(3,3), B(3,3)
+    real(dp) :: Oinv(3,3), Noinv(3,3), Cuinv(3,3), L(3,3)
 
     call matrix_inverse(O,Oinv)
     call matrix_inverse(No,Noinv)
@@ -288,35 +288,24 @@ CONTAINS
 
     real(dp) :: reduced_grid(3,3), norms(3)
     integer :: i, j
-    real(dp) :: r_min, pf, r_min_best, pf_best, pi, eps
+    real(dp) :: r_min, r_min_best, eps
     
-
-    pi = 3.14159265358979323846
     eps = 1E-6
     
     r_min_best = 0
-    pf_best = 0
     
     do i=1,size(grids,3)
        call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
-       r_min = max(norms(1),norms(2),norms(3))
-       pf = (4.0_dp/3.0_dp)*pi*(min(norms(1),norms(2),norms(3))**2)/(dot_product(reduced_grid(:,1),cross_product(reduced_grid(:,2),reduced_grid(:,3))))
+       norms(1) = sqrt(dot_product(reduced_grid(:,1),reduced_grid(:,1)))
+       norms(2) = sqrt(dot_product(reduced_grid(:,2),reduced_grid(:,2)))
+       norms(3) = sqrt(dot_product(reduced_grid(:,3),reduced_grid(:,3)))
+       r_min = min(norms(1),norms(2),norms(3))
        if (r_min_best==0) then
           r_min_best = r_min
-          pf_best = pf
           best_grid = grids(:,:,i)
-       else
-          if (r_min<r_min_best) then
-             r_min_best = r_min
-             pf_best = pf
-             best_grid = grids(:,:,i)
-          elseif (abs(r_min-r_min_best)<1E-3) then
-             if (pf <pf_best) then
-                r_min_best = r_min
-                pf_best = pf
-                best_grid = grids(:,:,i)
-             end if
-          end if
+       else if (r_min>r_min_best) then
+          r_min_best = r_min
+          best_grid = grids(:,:,i)
        end if
     end do
 

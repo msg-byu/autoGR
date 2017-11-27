@@ -2,7 +2,7 @@
 <fortpy mode="docstring">
   <decorates name="find_kgrids.get_kpd_cubic">
     <group name="find_kgrids1" purpose="testing" staging="../../unittests/">
-      <test identifier="original" description="Tests of the k-point density generation."
+      <test identifier="kpd_cubic" description="Tests of the k-point density generation."
 	    cases="[1-4]" timed="true">
 	<output folder="./tests/find_kgrids"
 		file="get_kpd_cubic.out.{}" template="integer.xml"
@@ -22,8 +22,8 @@
   </decorates>  
 
   <decorates name="find_kgrids.get_kpd_tric">
-    <group name="find_kgrids1" purpose="testing" staging="../../unittests/">
-      <test identifier="kpd" description="Tests of the k-point density generation."
+    <group name="find_kgrids2" purpose="testing" staging="../../unittests/">
+      <test identifier="kpd_tric" description="Tests of the k-point density generation."
 	    cases="[1-3]" timed="true">
 	<output folder="./tests/find_kgrids"
 		file="get_kpd_tric.out.{}" template="integer.xml"
@@ -42,6 +42,44 @@
       <assignment name="kpd" value="kpdfile">
 	<value identifier="kpdfile" file="tric_kpd.in.{}"
 	       folder="./tests/find_kgrids" rename="kpd.in"/>
+      </assignment>
+    </group>
+  </decorates>  
+
+  <decorates name="find_kgrids.transform_supercell">
+    <group name="find_kgrids3" purpose="testing" staging="../../unittests/">
+      <test identifier="transformation" description="Tests of the transformation from
+						     our basis to the users basis."
+	    cases="[1-5]" timed="true">
+	<output folder="./tests/find_kgrids"
+		file="transform_supercell_Bu.out.{}" template="float.xml"
+		identifier="transform_supercell_UB.out"/>
+	<target name="UB" compareto="transform_supercell_UB.out"
+		varfile="transform_supercell_UB.out" when="each"/>
+      </test>
+      <assignment name="No" value="Nofile">
+	<value identifier="Nofile" file="transform_supercell_No.in.{}"
+	       folder="./tests/find_kgrids" rename="No.in"/>
+      </assignment>
+      <assignment name="Nu" value="Nufile">
+	<value identifier="Nufile" file="transform_supercell_Nu.in.{}"
+	       folder="./tests/find_kgrids" rename="Nu.in"/>
+      </assignment>
+      <assignment name="Co" value="Cofile">
+	<value identifier="Cofile" file="transform_supercell_Co.in.{}"
+	       folder="./tests/find_kgrids" rename="Co.in"/>
+      </assignment>
+      <assignment name="Cu" value="Cufile">
+	<value identifier="Cufile" file="transform_supercell_Cu.in.{}"
+	       folder="./tests/find_kgrids" rename="Cu.in"/>
+      </assignment>
+      <assignment name="O" value="Ofile">
+	<value identifier="Ofile" file="transform_supercell_O.in.{}"
+	       folder="./tests/find_kgrids" rename="O.in"/>
+      </assignment>
+      <assignment name="spHNF" value="HNFfile">
+	<value identifier="HNFfile" file="transform_supercell_HNF.in.{}"
+	       folder="./tests/find_kgrids" rename="HNF.in"/>
       </assignment>
     </group>
   </decorates>  
