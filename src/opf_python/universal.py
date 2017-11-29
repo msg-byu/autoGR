@@ -75,17 +75,18 @@ def find_supercells(U,kpt,exact=False):
     from opf_python.niggli_lat_id import niggli_id
     from opf_python.pyniggli import reduced_cell
     import numpy as np
-    
+
     lat_name, nig_n, lat_fam, basis = niggli_id(U)
     Bu = reduced_cell(U)
     Nu = Bu.niggli
     Cu = Bu.C
     if nig_n in [31,44]:
         basis = U
+
     Bo = reduced_cell(basis)
-    No = Bu.niggli
-    Co = Bu.C
-    
+    No = Bo.niggli
+    Co = Bo.C
+
     if not exact:
         ns, mult = find_volumes(nig_n,kpt)
     else:
@@ -130,7 +131,7 @@ def find_supercells(U,kpt,exact=False):
                     spHNFs.append(t)
             if count == 5:
                 break
-                    
+
     elif nig_n in [9,4,2,24]:
         from opf_python.rhom import rhom_9, rhom_4_2, rhom_24
         for n in ns:
@@ -321,6 +322,7 @@ def find_supercells(U,kpt,exact=False):
                         for e in range(f):
                             HNF = np.array([[a,0,0],[b,c,0],[d,e,f]])
                             spHNFs.append(HNF*mult)
+                            count += 1
         
     else: # pragma: no cover
         raise ValueError("ERROR: unrecognized lattice type")

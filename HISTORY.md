@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.3.15 (WSM)
+- Fixed a bug in the python code where the users basis and our basis
+  got switched.
+
 ## Revision 0.3.14 (WSM)
 -Changed the type of the L matrix in transform_supercell in find_kgrid.f90.
 -Implemented unit tests of transform_supercell.
