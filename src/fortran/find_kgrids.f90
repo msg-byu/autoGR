@@ -6,6 +6,8 @@ Module find_kgrids
   use sp_hnfs
   use vector_matrix_utilities, only: matrix_inverse, minkowski_reduce_basis, norm, cross_product
   use numerical_utilities, only: equal
+  use kpointgeneration, only: generateIrredKpointList
+  use symmetry, only : get_lattice_pointGroup
 
   implicit none
   private
@@ -41,7 +43,7 @@ CONTAINS
     call matrix_inverse(No,Noinv)
     call matrix_inverse(real(Cu,dp),Cuinv)
     L = matmul(matmul(O,spHNF),Oinv)
-    F = matmul(Noinv,matmul(matmul(L,O),Co))
+    F = nint(matmul(Noinv,matmul(matmul(L,O),Co)))
     UB = matmul(matmul(Nu,F),Cuinv)
 
   end SUBROUTINE transform_supercell
@@ -65,13 +67,13 @@ CONTAINS
     integer :: lat_id, a_kpd, c_kpd(3), i, status, count, old, news, j, k
     integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:), temp_hnfs2(:,:,:)
     real(dp) :: O(3,3), Nu(3,3), No(3,3), UB(3,3)
-    integer :: Cu(3,3), Co(3,3)
+    integer :: Cu(3,3), Co(3,3), mult
     real(dp) :: eps
     
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-5
     end if
 
     call id_cell(lat_vecs,Nu,Cu,O,No,Co,lat_id,eps_=eps)
@@ -92,11 +94,13 @@ CONTAINS
           deallocate(temp_hnfs)
        end do
     else if ((lat_id==44) .or. (lat_id==31)) then
-       call tric_31_44(a_kpd,temp_hnfs)
+       call get_kpd_tric(kpd,a_kpd,mult)
+       call tric_31_44(a_kpd,sp_hnfs)
+       sp_hnfs = sp_hnfs*mult
     else
        count = 0
        a_kpd = kpd
-       do while ((count <5) .and. (a_kpd-kpd<=11))
+       do while ((count <5) .and. (a_kpd-kpd<=10))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd,temp_hnfs)
           else if (lat_id==6) then
@@ -141,7 +145,7 @@ CONTAINS
              call basecm_27(a_kpd,temp_hnfs)
           else if (lat_id==28) then
              call basecm_28(a_kpd,temp_hnfs)
-          else if ((lat_id==21) .or. (lat_id==30)) then
+          else if ((lat_id==29) .or. (lat_id==30)) then
              call basecm_29_30(a_kpd,temp_hnfs)
           else if (lat_id==32) then
              call so_32(a_kpd,temp_hnfs)
@@ -180,6 +184,7 @@ CONTAINS
                 deallocate(temp_hnfs2)                
              end if
              count = count + 1
+             a_kpd = a_kpd + 1
           else
              a_kpd = a_kpd + 1
           end if
@@ -278,34 +283,65 @@ CONTAINS
   end SUBROUTINE get_kpd_tric
 
   !!<summary>Selects the best grid from the list of grids.</summary>
+  !!<parameter name="lat_vecs" regular="true">The lattice vectors for
+  !!the crystal.</parameter>
   !!<parameter name="grids" regular="true">The list of generating
   !!vectors for the candidate grids.</parameter>
   !!<parameter name="best_grid" regular="true">The best grid given the
   !!criteria.</parameter>
-  SUBROUTINE grid_selection(grids, best_grid)
+  !!<parameter name="shift" regular="true">The shift off gamma to be
+  !!used.</parameter>
+  !!<parameter name="eps_" regular="true">Floating point
+  !!tolerance.</parameter>
+  SUBROUTINE grid_selection(lat_vecs, grids, shift, best_grid,eps_)
+    real(dp), intent(in) :: lat_vecs(3,3), shift(3)
     real(dp), allocatable, intent(in) :: grids(:,:,:)
+    real(dp), optional, intent(in) :: eps_
     real(dp), intent(out) :: best_grid(3,3)
 
     real(dp) :: reduced_grid(3,3), norms(3)
-    integer :: i, j
+    integer :: i, j, n_irreducible
     real(dp) :: r_min, r_min_best, eps
+
+    real(dp)              :: R(3,3), invLat(3,3)
+    real(dp), allocatable :: klist(:,:)
+    real(dp), pointer     :: pgOps(:,:,:), rdKlist(:,:)
+    integer, pointer      :: weights(:)
     
-    eps = 1E-6
+    
+    if (present(eps_)) then
+       eps = eps_
+    else
+       eps = 1E-3
+    end if
+
+    call matmul(lat_vecs, invLat)
+    R = transpose(invLat)
     
     r_min_best = 0
-    
+    n_irreducible = 0
     do i=1,size(grids,3)
        call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
        norms(1) = sqrt(dot_product(reduced_grid(:,1),reduced_grid(:,1)))
        norms(2) = sqrt(dot_product(reduced_grid(:,2),reduced_grid(:,2)))
        norms(3) = sqrt(dot_product(reduced_grid(:,3),reduced_grid(:,3)))
        r_min = min(norms(1),norms(2),norms(3))
-       if (r_min_best==0) then
+       if ((r_min_best==0) .or. (r_min>r_min_best)) then
           r_min_best = r_min
           best_grid = grids(:,:,i)
-       else if (r_min>r_min_best) then
-          r_min_best = r_min
-          best_grid = grids(:,:,i)
+          call generateFullKpointList(grids(:,:,i), R, shift, klist)
+          call get_lattice_pointGroup(R, pgOps, eps)
+          call symmetryReduceKpointList(K, R, shift,  klist, pgOps, rdKlist, weights, eps)
+          n_irreducible = size(rdKlist,1)
+       else if (abs(r_min-r_min_best)<eps) then
+          call generateFullKpointList(K, R, shift, klist)
+          call get_lattice_pointGroup(R, pgOps, eps)
+          call symmetryReduceKpointList(K, R, shift,  klist, pgOps, rdKlist, weights, eps)
+          if (size(rdKlist,1) < n_irreducible) then
+             r_min_best = r_min
+             best_grid = grids(:,:,i)
+             n_irreducible = size(rdKlist,1)
+          end if
        end if
     end do
 

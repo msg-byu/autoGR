@@ -3,6 +3,16 @@
 ## Revision 0.3.15 (WSM)
 - Fixed a bug in the python code where the users basis and our basis
   got switched.
+- Fixed integer rounding errors in fortran code.
+- Swapped order of d and e placement in the HNF of baseco_38_13 to
+  match the python code.
+- Fixed base centered monoclinic 28 for fortran code in sphnfs.f90. It
+  was looping over the values of b but not placing them in the HNF.
+- Fixed a bug in find_grids.f90 that was preventing the code from
+  finding HNFs for basis 29.
+- Finished implementing code for grid selection.
+- Changed the niggli code so that the path taken to reduce the cell is
+  not printed with extra white space.
 
 ## Revision 0.3.14 (WSM)
 -Changed the type of the L matrix in transform_supercell in find_kgrid.f90.

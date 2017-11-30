@@ -8,7 +8,7 @@ SHELL		= /bin/bash
 
 # enumlib library paths
 LBD1 = ../../../symlib/src
-LBD2 = ../../../kgrid_gen/src
+LBD2 = ../../../kgridGen/src
 
 FOUND = false
 ifeq (${F90},gfortran)  # gfortran compiler

@@ -1838,9 +1838,9 @@ CONTAINS
              beta13 = -a +b*b/a
              if (MOD(beta13,c)==0) then
                 do j = 1,size(es)
-                   d = ds(j)
+                   e = es(j)
                    do k = 1,size(ds)
-                      e = es(k)
+                      d = ds(k)
                       gamma13 = -d + b*d/a -e*beta13/c
                       gamma23 = c*d/a -e -b*e/a
                       if ((MOD(gamma13,f)==0) .and. (MOD(gamma23,f)==0)) then
@@ -2660,6 +2660,7 @@ CONTAINS
                    gamma11 = 2.0_dp*d+d*e/c
                    if (MOD(gamma11,f)==0) then
                       do z=0,int(c-1.0_dp)
+                         b = real(z,dp)
                          nhnfs = nhnfs + 1          
                          temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
                               0, int(c), int(e), &

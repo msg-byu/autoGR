@@ -50,7 +50,7 @@
     <group name="find_kgrids3" purpose="testing" staging="../../unittests/">
       <test identifier="transformation" description="Tests of the transformation from
 						     our basis to the users basis."
-	    cases="[1-5]" timed="true">
+	    cases="[1-6]" timed="true">
 	<output folder="./tests/find_kgrids"
 		file="transform_supercell_Bu.out.{}" template="float.xml"
 		identifier="transform_supercell_UB.out"/>
@@ -80,6 +80,58 @@
       <assignment name="spHNF" value="HNFfile">
 	<value identifier="HNFfile" file="transform_supercell_HNF.in.{}"
 	       folder="./tests/find_kgrids" rename="HNF.in"/>
+      </assignment>
+    </group>
+  </decorates>  
+
+  <decorates name="find_kgrids.find_grids">
+    <group name="find_kgrids4" purpose="testing" staging="../../unittests/">
+      <test identifier="grids" description="Tests of the grid generation."
+	    cases="[1-37]" timed="true">
+	<output folder="./tests/find_kgrids"
+		file="grids.out.{}" template="fpyarray.xml"
+		identifier="grids.out"/>
+	<target name="grids" compareto="grids.out"
+		varfile="grids.out" when="each"/>
+      </test>
+      <assignment name="lat_vecs" value="latfile">
+	<value identifier="latfile" file="find_grids_lat_vecs.in.{}"
+	       folder="./tests/find_kgrids" rename="lat_vecs.in"/>
+      </assignment>
+      <assignment name="kpd" value="kpdfile">
+	<value identifier="kpdfile" file="find_grids_kpd.in.{}"
+	       folder="./tests/find_kgrids" rename="kpd.in"/>
+      </assignment>
+      <assignment name="eps_" value="epsfile">
+	<value identifier="epsfile" constant="1E-5"/>
+      </assignment>
+    </group>
+  </decorates>  
+
+  <decorates name="find_kgrids.grid_selection">
+    <group name="find_kgrids5" purpose="testing" staging="../../unittests/">
+      <test identifier="selection" description="Tests of the grid selection."
+	    cases="[1-3]" timed="true">
+	<output folder="./tests/find_kgrids"
+		file="grid_selection_best_grid.out.{}" template="fpyarray.xml"
+		identifier="best_grid.out"/>
+	<target name="best_grid" compareto="best_grid.out"
+		varfile="best_grid.out" when="each"/>
+      </test>
+      <assignment name="lat_vecs" value="latfile">
+	<value identifier="latfile" file="grid_selection_lat_vecs.in.{}"
+	       folder="./tests/find_kgrids" rename="lat_vecs.in"/>
+      </assignment>
+      <assignment name="shift" value="shiftfile">
+	<value identifier="shiftfile" file="grid_selection_shift.in.{}"
+	       folder="./tests/find_kgrids" rename="shift.in"/>
+      </assignment>
+      <assignment name="grids" value="gridsfile">
+	<value identifier="gridsfile" file="grid_selection_grids.in.{}"
+	       folder="./tests/find_kgrids" rename="grids.in"/>
+      </assignment>
+      <assignment name="eps_" value="epsfile">
+	<value identifier="epsfile" constant="1E-3"/>
       </assignment>
     </group>
   </decorates>  

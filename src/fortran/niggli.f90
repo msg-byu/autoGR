@@ -163,7 +163,7 @@ CONTAINS
 
     if (present(path_)) then
        if (path_) then
-          print *, path
+          print *, trim(path)
        end if
     end if
 
@@ -457,7 +457,7 @@ CONTAINS
     else
        eps = (10.0_dp**(-5.0_dp))
     end if
-    
+
     call reduce_cell(U,Nu,Cu,eps_=eps)
 
     temp_a = Nu(:,1)
