@@ -384,7 +384,7 @@ def find_volumes(lat_type,kpd):
             else:
                 tmult += 1
     else:
-        ns = range(kpd,kpd+11)
+        ns = list(range(kpd,kpd+11))
 
     ns.sort()
     return ns, mult
