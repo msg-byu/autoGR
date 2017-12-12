@@ -13,16 +13,16 @@ LBD2 = ../../../kgridGen/src
 FOUND = false
 ifeq (${F90},gfortran)  # gfortran compiler
   ifeq (${DEBUG},false)
-     FFLAGS = -O3 -ffree-line-length-none -fno-underscoring -I${LBD1} ${LBD2}
+     FFLAGS = -O3 -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}
      FOUND = true
   else
-     FFLAGS = -fPIC -g -fbounds-check -Wall -ffree-line-length-none -fno-underscoring -I${LBD1} ${LBD2}
+     FFLAGS = -fPIC -g -fbounds-check -Wall -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}
      FOUND = true
   endif
 endif
 
 ifeq (${F90},ifc)  # Intel compiler
-  FFLAGS = -fPIC -g -error-limit 7 -traceback -check bounds -warn  -I${LBD1} ${LBD2}
+  FFLAGS = -fPIC -g -error-limit 7 -traceback -check bounds -warn  -I${LBD1} -I${LBD2}
   FOUND = true
 endif
 
@@ -32,7 +32,7 @@ ifeq (${F90},ifort)  # Intel compiler
      FOUND = true
   else
 #  F90 =  /opt/intel/fc/10.0.016/bin/ifort
-     FFLAGS =  -fPIC -g -debug -error-limit 7 -heap-arrays -traceback -check bounds -warn -I${LBD1} ${LBD2}
+     FFLAGS =  -fPIC -g -debug -error-limit 7 -heap-arrays -traceback -check bounds -warn -I${LBD1} -I${LBD2}
      FOUND = true
 #-prof-use -prof-dir .
    endif
@@ -40,7 +40,7 @@ endif
 
 
 ifeq (${F90},xlf90) # IBM compiler
-  FFLAGS = -g -C -fPIC -qsuffix=f=f90  -I${LBD1} ${LBD2}
+  FFLAGS = -g -C -fPIC -qsuffix=f=f90  -I${LBD1} -I${LBD2}
   FOUND = true
 endif
 ifeq (${F90},f95) # Absoft PPC compiler
@@ -65,7 +65,7 @@ endif
 #     python irevision.py derivative_structure_generator.f90 version.enum	
 # fi
 
-SRC = sp_hnfs.f90 lat_types.f90 find_kgrids.f90
+SRC = sp_hnfs.f90 niggli.f90 find_kgrids.f90
 
 OBJS = ${SRC:.f90=.o} 
 LIBS =  $(LBD1)/libcomparestructs.a $(LBD1)/libutils.a $(LBD1)/libsym.a \
@@ -84,7 +84,7 @@ all: libsphnf.a lat_type.x make_kpoints.x
 lat_type.x: ${OBJS} lat_id_driver.o
 	${F90} ${LDFLAGS} -o $@ ${OBJS} lat_id_driver.o ${LIBS}
 
-make_kpoints.x: ${OBJS} driver.o
+kpoints.x: ${OBJS} driver.o
 	${F90} ${LDFLAGS} -o $@ ${OBJS} driver.o ${LIBS}
 
 .f95.o : 

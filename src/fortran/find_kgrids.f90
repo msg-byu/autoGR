@@ -35,8 +35,7 @@ CONTAINS
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3) 
     real(dp), intent(out) :: UB(3,3)
 
-    integer :: i
-    integer :: F(3,3), B(3,3)
+    integer :: F(3,3)
     real(dp) :: Oinv(3,3), Noinv(3,3), Cuinv(3,3), L(3,3)
 
     call matrix_inverse(O,Oinv)
@@ -64,7 +63,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
     real(dp), allocatable, intent(out) :: grids(:,:,:)
 
-    integer :: lat_id, a_kpd, c_kpd(3), i, status, count, old, news, j, k
+    integer :: lat_id, a_kpd, c_kpd(3), i, status, count, old, news
     integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:), temp_hnfs2(:,:,:)
     real(dp) :: O(3,3), Nu(3,3), No(3,3), UB(3,3)
     integer :: Cu(3,3), Co(3,3), mult
@@ -215,7 +214,7 @@ CONTAINS
     integer, intent(in) :: lat_id, kpd
     integer, intent(out) :: densities(3)
 
-    integer :: i, j, a, b, c , nb, nmax, nc, temp
+    integer :: j, a, b, c , nb, nmax, nc, temp
     integer :: mults(3)
 
     nb = int(real(kpd,dp)**(1.0_dp/3.0_dp))-1
@@ -300,12 +299,11 @@ CONTAINS
     real(dp), intent(out) :: best_grid(3,3)
 
     real(dp) :: reduced_grid(3,3), norms(3)
-    integer :: i, j, n_irreducible
+    integer :: i, n_irreducible
     real(dp) :: r_min, r_min_best, eps
 
     real(dp)              :: R(3,3), invLat(3,3)
-    real(dp), allocatable :: klist(:,:)
-    real(dp), pointer     :: pgOps(:,:,:), rdKlist(:,:)
+    real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
     
     
@@ -315,7 +313,7 @@ CONTAINS
        eps = 1E-3
     end if
 
-    call matmul(lat_vecs, invLat)
+    call matrix_inverse(lat_vecs, invLat)
     R = transpose(invLat)
     
     r_min_best = 0
@@ -329,14 +327,10 @@ CONTAINS
        if ((r_min_best==0) .or. (r_min>r_min_best)) then
           r_min_best = r_min
           best_grid = grids(:,:,i)
-          call generateFullKpointList(grids(:,:,i), R, shift, klist)
-          call get_lattice_pointGroup(R, pgOps, eps)
-          call symmetryReduceKpointList(K, R, shift,  klist, pgOps, rdKlist, weights, eps)
+          call generateIrredKpointList(best_grid, R, shift, rdKlist, weights, eps_=eps)
           n_irreducible = size(rdKlist,1)
        else if (abs(r_min-r_min_best)<eps) then
-          call generateFullKpointList(K, R, shift, klist)
-          call get_lattice_pointGroup(R, pgOps, eps)
-          call symmetryReduceKpointList(K, R, shift,  klist, pgOps, rdKlist, weights, eps)
+          call generateIrredKpointList(best_grid, R, shift, rdKlist, weights, eps_=eps)
           if (size(rdKlist,1) < n_irreducible) then
              r_min_best = r_min
              best_grid = grids(:,:,i)

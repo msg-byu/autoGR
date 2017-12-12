@@ -292,7 +292,6 @@ CONTAINS
     integer, allocatable :: temp_HNFs(:,:,:)
 
     real(dp) :: gamma21, gamma22, gamma11, gamma12
-    real(dp), allocatable :: es(:)
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -447,7 +446,7 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta32, beta22, beta11, beta12, gamma11, gamma12, gamma21, gamma22
+    real(dp) :: beta32, beta22, beta11, beta12, gamma11, gamma12, gamma22
     real(dp), allocatable :: bs(:), ds(:)
 
     call get_HNF_diagonals(n,diagonals)
@@ -2277,7 +2276,6 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: gamma12
     real(dp), allocatable :: ds(:), es(:)
 
     call get_HNF_diagonals(n,diagonals)
@@ -2906,7 +2904,6 @@ CONTAINS
     integer, allocatable :: temp_HNFs(:,:,:)
 
     real(dp) :: beta12, gamma12, gamma22
-    real(dp), allocatable :: es(:)
 
     call get_HNF_diagonals(n,diagonals)
 

@@ -1,21 +1,20 @@
 PROGRAM lat_id_driver
   use find_kgrids, only: grid_selection, find_grids
-  use kpointgeneration, only: generateIrredKpointList
-  use vector_matrix_utilities, only: matrix_inverse
+  use kpointgeneration, only: generateIrredKpointList, mapKptsIntoFirstBZ
+  use vector_matrix_utilities, only: matrix_inverse, volume
   use num_types
   ! use fortpy, only: pysave, fpy_read_f, fpy_read
   implicit none
 
   real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3), point(3), Rinv(3,3)
   real(dp), allocatable :: grids(:,:,:)
-  real(dp) :: eps
-  integer :: kpd, i
+  real(dp) :: kpd
+  integer :: i, nkpts
   real(dp), pointer :: IRKps(:,:)
   integer, pointer :: weights(:)
 
   character(300) :: line
 
-  eps = 1E-6
   open(1,file="POSCAR",status="old")
 
   read(1,'(a300)') line
@@ -30,12 +29,16 @@ PROGRAM lat_id_driver
   read(2,*) offset
   close(2)
 
-  call find_grids(lat_vecs,kpd,grids)
-  call grid_selection(grids, grid)
-
   call matrix_inverse(transpose(lat_vecs),r_vecs)
-  call generateIrredKpointList(grid,r_vecs,offset,IRKps,weights,eps_=eps)
 
+  nkpts = int(volume(r_vecs(:,1),r_vecs(:,2),r_vecs(:,3))*kpd)
+
+  call find_grids(lat_vecs,nkpts,grids)
+  call grid_selection(lat_vecs, grids, offset, grid)
+
+  call generateIrredKpointList(grid,r_vecs,offset,IRKps,weights)
+  call mapKptsIntoFirstBZ(r_vecs,IRKps)
+  
   open(4,file="KPOINTS")
   write(4,*) "Our new kpoint method."
   write(4,*) size(IRKps,1)

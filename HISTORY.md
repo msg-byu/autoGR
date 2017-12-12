@@ -1,5 +1,10 @@
 # Revision History
 
+## Revision 0.4.0 (WSM)
+- Fixed the driver to work with the new code setup.
+- Fixed the issues in the makefile.
+- Cleaned up code so it compiles without warnings.
+
 ## Revision 0.3.15 (WSM)
 - Fixed a bug in the python code where the users basis and our basis
   got switched.
