@@ -68,8 +68,8 @@ endif
 SRC = sp_hnfs.f90 niggli.f90 find_kgrids.f90
 
 OBJS = ${SRC:.f90=.o} 
-LIBS =  $(LBD1)/libcomparestructs.a $(LBD1)/libutils.a $(LBD1)/libsym.a \
-         $(LBD1)/librational.a $(LBD1)/libcombinatorics.a $(LBD2)/libkptgen.a
+LIBS =  $(LBD2)/libkptgen.a $(LBD1)/libcomparestructs.a $(LBD1)/libutils.a $(LBD1)/libsym.a \
+         $(LBD1)/librational.a $(LBD1)/libcombinatorics.a 
 
 .SUFFIXES :  
 .SUFFIXES :  .f .f90 .f95 .o
@@ -79,7 +79,7 @@ libsphnf.a: ${OBJS}
 	ar ru $@ $?
 	ranlib  $@
 
-all: libsphnf.a lat_type.x make_kpoints.x
+all: libsphnf.a lat_type.x kpoints.x
 
 lat_type.x: ${OBJS} lat_id_driver.o
 	${F90} ${LDFLAGS} -o $@ ${OBJS} lat_id_driver.o ${LIBS}

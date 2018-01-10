@@ -36,7 +36,7 @@ PROGRAM lat_id_driver
   call find_grids(lat_vecs,nkpts,grids)
   call grid_selection(lat_vecs, grids, offset, grid)
 
-  call generateIrredKpointList(grid,r_vecs,offset,IRKps,weights)
+  call generateIrredKpointList(grid,r_vecs,offset,IRKps,weights,eps_=1E-6_dp)
   call mapKptsIntoFirstBZ(r_vecs,IRKps)
   
   open(4,file="KPOINTS")

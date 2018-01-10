@@ -222,7 +222,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in hex."
+    if (status/=0) stop "Failed to allocate memory in hex_12."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -304,7 +304,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in hex."
+    if (status/=0) stop "Failed to allocate memory in hex_22."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -373,7 +373,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in trig."
+    if (status/=0) stop "Failed to allocate memory in rhom_9."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -460,7 +460,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in trig."
+    if (status/=0) stop "Failed to allocate memory in rhom_4_2."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -582,7 +582,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in trig."
+    if (status/=0) stop "Failed to allocate memory in rhom_24."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -677,7 +677,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in st."
+    if (status/=0) stop "Failed to allocate memory in st_11."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -764,7 +764,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in st."
+    if (status/=0) stop "Failed to allocate memory in st_21."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -849,7 +849,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bct."
+    if (status/=0) stop "Failed to allocate memory in bct_15."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -968,7 +968,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bct."
+    if (status/=0) stop "Failed to allocate memory in bct_7."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1101,7 +1101,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bct."
+    if (status/=0) stop "Failed to allocate memory in bct_6."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1210,7 +1210,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bct."
+    if (status/=0) stop "Failed to allocate memory in bct_18."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1352,7 +1352,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in so."
+    if (status/=0) stop "Failed to allocate memory in so_32."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1431,7 +1431,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in fco."
+    if (status/=0) stop "Failed to allocate memory in fco_26."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1506,7 +1506,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in fco."
+    if (status/=0) stop "Failed to allocate memory in fco_16."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1578,7 +1578,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bco."
+    if (status/=0) stop "Failed to allocate memory in bco_19."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1656,7 +1656,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bco."
+    if (status/=0) stop "Failed to allocate memory in bco_8."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1735,7 +1735,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bco."
+    if (status/=0) stop "Failed to allocate memory in bco_42."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1814,7 +1814,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in baseco."
+    if (status/=0) stop "Failed to allocate memory in baseco_38_13."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1895,7 +1895,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in baseco."
+    if (status/=0) stop "Failed to allocate memory in baseco_23."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -1981,7 +1981,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in baseco."
+    if (status/=0) stop "Failed to allocate memory in baseco_40."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2052,7 +2052,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in baseco."
+    if (status/=0) stop "Failed to allocate memory in baseco_36."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2141,7 +2141,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in sm."
+    if (status/=0) stop "Failed to allocate memory in sm_33."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2219,7 +2219,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in sm."
+    if (status/=0) stop "Failed to allocate memory in sm_35."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2289,7 +2289,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in sm."
+    if (status/=0) stop "Failed to allocate memory in sm_34."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2359,7 +2359,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_14."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2434,7 +2434,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_10_17."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2502,7 +2502,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_20_25."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2576,7 +2576,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_27."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2641,7 +2641,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_28."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2710,7 +2710,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_29_30."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2777,7 +2777,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_41."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2844,7 +2844,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_37_39."
     
     do i =1,nds
        a = diagonals(1,i)
@@ -2916,7 +2916,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in basecm."
+    if (status/=0) stop "Failed to allocate memory in basecm_43."
     
     do i =1,nds
        a = diagonals(1,i)

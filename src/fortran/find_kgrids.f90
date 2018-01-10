@@ -310,7 +310,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-6
     end if
 
     call matrix_inverse(lat_vecs, invLat)
