@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fortpy mode="template" versions="1">
+  <comments versions="1">#</comments>
+  <body stop="EOF" versions="1">
+    <line id="array" type="float" values="*" versions="1" names="components" />
+  </body>
+  <comparisons versions="1" mode="default">
+    <compare id="array.components" operator="finite" tolerance="1E-05" />
+  </comparisons>
+</fortpy>

@@ -1,4 +1,4 @@
-def hex_srHNFs(n):
+def hex_12(n):
     """Finds the symmetry preserving HNFs for the hexagonal lattices
     with a determinant of n. Assuming A = [[1,0,0],[0.5,-0.8660254037844386,0],[0,0,2]].
 
@@ -6,14 +6,14 @@ def hex_srHNFs(n):
         n (int): The determinant of the HNFs.
 
     Returns:
-        srHNFs (list of lists): The symmetry preserving HNFs.
+        spHNFs (list of lists): The symmetry preserving HNFs.
     """
 
     from opf_python.universal import get_HNF_diagonals
 
     diags = get_HNF_diagonals(n)
 
-    srHNFs = []
+    spHNFs = []
 
     for diag in diags:
         a = diag[0]
@@ -44,7 +44,44 @@ def hex_srHNFs(n):
                                 gamma22 = (c*d-b*e)/float(a)
                                 if gamma11%f==0 and gamma12%f==0 and gamma21%f==0 and gamma22%f==0:
                                     HNF = [[a,0,0],[b,c,0],[d,e,f]]
-                                    srHNFs.append(HNF)
+                                    spHNFs.append(HNF)
                 b += a
                                 
-    return srHNFs
+    return spHNFs
+
+def hex_22(n):
+    """Finds the symmetry preserving HNFs for the hexagonal lattices
+    with a determinant of n. Assuming A = [[0,0,-0.5],[1,0,0],[-0.5,0.8660254037844386,0]].
+
+    Args:
+        n (int): The determinant of the HNFs.
+
+    Returns:
+        spHNFs (list of lists): The symmetry preserving HNFs.
+    """
+
+    from opf_python.universal import get_HNF_diagonals
+
+    diags = get_HNF_diagonals(n)
+
+    spHNFs = []
+
+    for diag in diags:
+        a = diag[0]
+        c = diag[1]
+        f = diag[2]
+
+        if f%c==0:
+            for e in range(0,f,c):
+                g21 = -c+2*e
+                g22 = -c+e-e*e/float(c)
+                if g21%f==0 and g22%f==0 and e%c==0:
+                    for b in range(c):
+                        for d in range(0,f,c):
+                            g11 = -b+2*d
+                            g12 = -b+d-d*e/float(c)
+                            if g11%f==0 and g12%f==0:
+                                HNF = [[a,0,0],[b,c,0],[d,e,f]]
+                                spHNFs.append(HNF)
+                                    
+    return spHNFs                                    

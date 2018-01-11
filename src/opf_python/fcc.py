@@ -1,4 +1,4 @@
-def fcc_srHNFs(n):
+def fcc_1(n):
     """Finds the symmetry preserving HNFs for the face centered cubic lattices
     with a determinant of n. Assuming A = [[0,1,1],[1,0,1],[1,1,0]].
 
@@ -6,14 +6,14 @@ def fcc_srHNFs(n):
         n (int): The determinant of the HNFs.
 
     Returns:
-        srHNFs (list of lists): The symmetry preserving HNFs.
+        spHNFs (list of lists): The symmetry preserving HNFs.
     """
 
     from opf_python.universal import get_HNF_diagonals
 
     diags = get_HNF_diagonals(n)
 
-    srHNFs = []
+    spHNFs = []
     
     for diag in diags:
         a = diag[0]
@@ -25,12 +25,12 @@ def fcc_srHNFs(n):
             d = 0
             e = 0
             HNF = [[a,0,0],[b,c,0],[d,e,f]]
-            srHNFs.append(HNF)
+            spHNFs.append(HNF)
         elif c==f and (f/float(a)==2 or f/float(a)==4):
             b = a
             d = a
             e = 0
             HNF = [[a,0,0],[b,c,0],[d,e,f]]
-            srHNFs.append(HNF)        
+            spHNFs.append(HNF)        
         
-    return srHNFs
+    return spHNFs
