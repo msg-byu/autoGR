@@ -439,24 +439,14 @@ def test_find_supers():
     true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_29_30_31.txt").reshape(31,3,3)
 
     assert np.allclose(Bs,true_Bs)
-                
-    #base_mono 41
-    A = [[-1.      ,  1.85397 , -2.      ],
-         [ 0.      ,  2.268353,  1.41421 ],
-         [-1.      ,  0.64603 ,  0.      ]]
+                               
+    #base_mono 37 39 and 41
+    A = [[-1.79092,   1.,        1.      ],
+        [-1.47209,  -1.41421,   0.      ],
+        [ 0.790922, -1.,        1.      ]]
     Bs = find_supercells(A,8,exact=True)
 
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_41_31.txt").reshape(31,3,3)
-
-    assert np.allclose(Bs,true_Bs)
-                
-    #base_mono 37 39
-    A = [[-1.79092 ,  3.79092 , -0.79092 ],
-         [-1.47209 ,  0.05788 , -2.8863  ],
-         [ 0.790922, -0.790922, -0.209078]]
-    Bs = find_supercells(A,8,exact=True)
-
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_37_39_31.txt").reshape(31,3,3)
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_37_39_41_31.txt").reshape(31,3,3)
 
     assert np.allclose(Bs,true_Bs)
                 

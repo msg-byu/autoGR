@@ -280,7 +280,7 @@ def find_supercells(U,kpt,exact=False):
                 break
         
     elif nig_n in [14,10,17,20,25,27,28,29,30,41,37,39,43]:
-        from opf_python.base_mono import base_mono_14, base_mono_27, base_mono_28, base_mono_41, base_mono_43, base_mono_10_17, base_mono_20_25, base_mono_29_30, base_mono_37_39
+        from opf_python.base_mono import base_mono_14, base_mono_27, base_mono_28, base_mono_43, base_mono_10_17, base_mono_20_25, base_mono_29_30, base_mono_37_39_41
         for n in ns:
             if nig_n == 14:
                 temp = base_mono_14(n)
@@ -288,8 +288,6 @@ def find_supercells(U,kpt,exact=False):
                 temp = base_mono_27(n)
             elif nig_n == 28:
                 temp = base_mono_28(n)
-            elif nig_n == 41:
-                temp = base_mono_41(n)
             elif nig_n == 43:
                 temp = base_mono_43(n)
             elif nig_n in [10,17]:
@@ -299,7 +297,7 @@ def find_supercells(U,kpt,exact=False):
             elif nig_n in [29,30]:
                 temp = base_mono_29_30(n)
             else:
-                temp = base_mono_37_39(n)
+                temp = base_mono_37_39_41(n)
             if len(temp)> 1 and not exact:
                 count += 1
                 for t in temp:
