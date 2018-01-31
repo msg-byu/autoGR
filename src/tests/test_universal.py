@@ -441,9 +441,9 @@ def test_find_supers():
     assert np.allclose(Bs,true_Bs)
                                
     #base_mono 37 39 and 41
-    A = [[-1.79092,   1.,        1.      ],
-        [-1.47209,  -1.41421,   0.      ],
-        [ 0.790922, -1.,        1.      ]]
+    A = [[-1.79092,1.0,1.0],
+         [-1.47209,-1.41421,0.0],
+         [0.790922,-1.0,1.0]]
     Bs = find_supercells(A,8,exact=True)
 
     true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_37_39_41_31.txt").reshape(31,3,3)
