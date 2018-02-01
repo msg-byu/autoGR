@@ -744,7 +744,8 @@ def test_sm():
 def test_base_mono():
     """Tests the base centered monoclinic lattice srHNF generation.
     """
-    from opf_python.base_mono import base_mono_14, base_mono_27, base_mono_28, base_mono_41, base_mono_43, base_mono_10_17, base_mono_20_25, base_mono_29_30, base_mono_37_39
+    
+    from opf_python.base_mono import base_mono_14, base_mono_27, base_mono_28, base_mono_43, base_mono_10_17, base_mono_20_25, base_mono_29_30, base_mono_37_39_41
 
     # niggli cell 14 (original)
     srHNFs = []
@@ -887,10 +888,10 @@ def test_base_mono():
     for t in srHNFs:
         assert t in brute 
 
-    # niggli cell 37 and 39
+    # niggli cell 37, 39 and 41
     srHNFs = []
     for n in range(1,201):
-        temp = base_mono_37_39(n)
+        temp = base_mono_37_39_41(n)
         for t in temp:
             if len(t) >0:
                 srHNFs.append(t)
@@ -899,29 +900,6 @@ def test_base_mono():
 
     brute = []
     with open("tests/test_output/base_mono_37_1_200_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-    
-    for t in srHNFs:
-        assert t in brute 
-
-    # niggli cell 41
-    srHNFs = []
-    for n in range(1,201):
-        temp = base_mono_41(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/base_mono_41_1_200_srHNFs.out","r") as f:
         HNF = []
         for line in f:
             if len(line.strip().split()) == 0:
@@ -966,9 +944,8 @@ def test_base_mono():
         s4 = base_mono_27(k)
         s5 = base_mono_28(k)
         s6 = base_mono_29_30(k)
-        s7 = base_mono_37_39(k)
-        s8 = base_mono_41(k)
-        s9 = base_mono_43(k)
+        s7 = base_mono_37_39_41(k)
+        s8 = base_mono_43(k)
         assert len(s1)==len(s2)
         assert len(s1)==len(s3)
         assert len(s1)==len(s4)
@@ -976,4 +953,3 @@ def test_base_mono():
         assert len(s1)==len(s6)
         assert len(s1)==len(s7)
         assert len(s1)==len(s8)
-        assert len(s1)==len(s9)

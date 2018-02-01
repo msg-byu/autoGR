@@ -313,20 +313,20 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'
                     niggli_num = 41
-                    basis = np.transpose([[-1, 0, -1], [1.85397, 0.854143, -1.35397],
-                                          [-1, 1.41421, 1]]) 
+                    basis = np.transpose([[-1.85397, -0.854143, 1.35397],[1, 0, 1],
+                                          [1, -1.41421, -1]]) 
                 elif np.allclose(E,-A/2.,atol=eps) and np.allclose(F,0,atol=eps):
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'
                     niggli_num = 37
-                    basis = np.transpose([[-1.79092, -1.47209, 0.790922], [1, 0, 1],
-                                          [1, -1.41421, -1]]) 
+                    basis = np.transpose([[-1.79092,-1.47209,0.790922],[1.0,-1.41421,-1.0],
+                                          [1.0,0.0,1.0]]) 
                 elif np.allclose(E,0,atol=eps) and np.allclose(F,-A/2.,atol=eps):
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'
                     niggli_num = 39
-                    basis = np.transpose([[0, 1.73205, 1], [-1, 0, -1],
-                                          [1.66542, 0.672857, -1.66542]]) 
+                    basis = np.transpose([[0, -1.73205,-1],[-1.66542, -0.672857, 1.66542],
+                                           [1,0,1]]) 
                 elif np.allclose(2.0*abs(D+E+F),A+B,atol=eps) and np.allclose(abs(2.0*D+F),B,atol=eps):
                     lat_fam = 6
                     lat_type = 'body centered monoclinc'
