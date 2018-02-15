@@ -31,7 +31,7 @@ PROGRAM lat_id_driver
 
   call matrix_inverse(transpose(lat_vecs),r_vecs)
 
-  nkpts = int(volume(r_vecs(:,1),r_vecs(:,2),r_vecs(:,3))*kpd)
+  nkpts = int(abs(volume(r_vecs(:,1),r_vecs(:,2),r_vecs(:,3)))*kpd)
 
   call find_grids(lat_vecs,nkpts,grids)
   call grid_selection(lat_vecs, grids, offset, grid)
