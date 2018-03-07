@@ -8,11 +8,9 @@ def niggli_id(lattice,eps_=None,G=None):
     number, .i.e, cubic -> 1, hexagonal -> 2, rhombehedral -> 3,
     tetragonal -> 4, orthorhombic -> 5, monoclinic -> 6, and triclinic
     -> 7. 
-
     Args:
         lattice (numpy array): The lattice vectors as columns of a matrix.
         eps_ (float, optional): The floating point tollerance for comparisons.
-
     Returns:
         lat_type, niggli_num, lat_fam, basis (str, int, int, list): The lattice type, the 
             niggli case number from the 'International Tables of Crystalography',
@@ -71,8 +69,8 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 3
                     lat_type = 'rhombohedral'
                     niggli_num = 2
-                    basis = np.transpose([[-1, 0, -1],[0, -1.32288, -0.5],
-                                          [-1.11652, -0.610985, 0.616515]])
+                    basis = np.transpose([[-1.11652,-0.610985,0.616515],
+                                          [0.0,-1.32288,-0.5],[1.0,1.32288,1.5]])
         else:
             if np.allclose(D,E,atol=eps) and np.allclose(D,F,atol=eps):
                 if np.allclose(0,D,atol=eps):
@@ -89,8 +87,8 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 3
                     lat_type = 'rhombohedral'
                     niggli_num = 4
-                    basis = np.transpose([[-1, 0, -1],[0, -1.32288, 0.5],
-                                          [-0.548584, 0.774292, 1.04858]])
+                    basis = np.transpose([[-0.548584,0.774292,1.04858],
+                                          [0.0,-1.32288,0.5],[1.0,1.32288,0.5]])
 
             elif np.allclose(2.0*abs(D+E+F),A+B,atol=eps):
                 if np.allclose(D,E,atol=eps):

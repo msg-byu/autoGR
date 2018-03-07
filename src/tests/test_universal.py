@@ -97,9 +97,6 @@ def test_find_supers():
 
     from opf_python.universal import find_supercells
 
-    count = 1
-    folder = "/Users/wileymorgan/codes/opf_kgrids/src/fortran/tests/find_kgrids/{0}.{1}"
-
     #hex_12
     A = [[ 0.       ,  1.5      ,  1.       ],
        [ 0.       , -0.8660254,  0.       ],
