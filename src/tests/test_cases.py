@@ -713,7 +713,7 @@ def test_face_ortho():
 def test_sm():
     """Tests the simple monoclinic lattice srHNF generation.
     """
-    from opf_python.sm import sm_33
+    from opf_python.sm import sm_33, sm_35
 
     srHNFs = []
     for n in range(1,151):
@@ -728,7 +728,34 @@ def test_sm():
     assert len(srHNFs) == n_500
 
     brute = []
-    with open("tests/test_output/sm_1_150_srHNFs.out","r") as f:
+    with open("tests/test_output/sm_33_1_150_srHNFs.out","r") as f:
+        HNF = []
+        for line in f:
+            if len(line.strip().split()) == 0:
+                brute.append(HNF)
+                HNF = []
+            else:
+                HNF.append([int(i) for i in line.strip().split()])
+
+    
+    for t in srHNFs:
+        assert t in brute 
+	
+	#niggli 35
+	srHNFs = []
+    for n in range(1,151):
+        temp = sm_35(n)
+        for t in temp:
+            if len(t) >0:
+                srHNFs.append(t)
+
+    with open("tests/test_output/sm_1_150_n.out","r") as f:
+        n_500 = int(f.readline().strip())
+
+    assert len(srHNFs) == n_500
+
+    brute = []
+    with open("tests/test_output/sm_35_1_150_srHNFs.out","r") as f:
         HNF = []
         for line in f:
             if len(line.strip().split()) == 0:
