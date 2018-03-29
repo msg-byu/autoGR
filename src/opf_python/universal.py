@@ -133,12 +133,10 @@ def find_supercells(U,kpt,exact=False):
                 break
 
     elif nig_n in [9,4,2,24]:
-        from opf_python.rhom import rhom_9, rhom_4_2, rhom_24
+        from opf_python.rhom import rhom_9_24, rhom_4_2
         for n in ns:
-            if nig_n == 9:
-                temp = rhom_9(n)
-            elif nig_n == 24:
-                temp = rhom_24(n)
+            if nig_n == 9 or nig_n == 24:
+                temp = rhom_9_24(n)
             else:
                 temp = rhom_4_2(n)                                
             if len(temp)> 1 and not exact:
@@ -169,16 +167,9 @@ def find_supercells(U,kpt,exact=False):
                 break
        
     elif nig_n in [15,7,6,18]:
-        from opf_python.body_tet import body_tet_15, body_tet_7, body_tet_6, body_tet_18
+        from opf_python.body_tet import body_tet_6_7_15_18
         for n in ns:
-            if nig_n == 15:
-                temp = body_tet_15(n)
-            elif nig_n == 18:
-                temp = body_tet_18(n)
-            elif nig_n == 6:
-                temp = body_tet_6(n)
-            else:
-                temp = body_tet_7(n)
+            temp = body_tet_6_7_15_18(n)
             if len(temp)> 1 and not exact:
                 count += 1
                 for t in temp:
@@ -280,24 +271,18 @@ def find_supercells(U,kpt,exact=False):
                 break
         
     elif nig_n in [14,10,17,20,25,27,28,29,30,41,37,39,43]:
-        from opf_python.base_mono import base_mono_14, base_mono_27, base_mono_28, base_mono_43, base_mono_10_17, base_mono_20_25, base_mono_29_30, base_mono_37_39_41
+        from opf_python.base_mono import base_mono_28, base_mono_43, base_mono_20_25, base_mono_29_30, base_mono_10_14_17_27_37_39_41
         for n in ns:
-            if nig_n == 14:
-                temp = base_mono_14(n)
-            elif nig_n == 27:
-                temp = base_mono_27(n)
-            elif nig_n == 28:
+            if  nig_n == 28:
                 temp = base_mono_28(n)
             elif nig_n == 43:
                 temp = base_mono_43(n)
-            elif nig_n in [10,17]:
-                temp = base_mono_10_17(n)
             elif nig_n in [20,25]:
                 temp = base_mono_20_25(n)
             elif nig_n in [29,30]:
                 temp = base_mono_29_30(n)
             else:
-                temp = base_mono_37_39_41(n)
+                temp = base_mono_10_14_17_27_37_39_41(n)
             if len(temp)> 1 and not exact:
                 count += 1
                 for t in temp:
