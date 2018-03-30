@@ -312,19 +312,9 @@ def test_body_tet():
     for t in srHNFs:
         assert t in brute
 
-    '''
-    # larger cell checks
-    for i in range(10):
-        k = np.random.random_integers(501,100000)
-        print("kpd",k)
-        s1 = body_tet_15(k)
-        s2 = body_tet_18(k)
-        s3 = body_tet_6(k)
-        s4 = body_tet_7(k)
-        assert len(s1)==len(s2)
-        assert len(s1)==len(s3)
-        assert len(s1)==len(s4)     
-	'''       
+	assert len(body_tet_6_7_15_18(928)) == 9    
+	assert len(body_tet_6_7_15_18(6000)) == 14
+	assert len(body_tet_6_7_15_18(12348)) == 12
         
 def test_so():
     """Tests the simple orthorhombic lattice srHNF generation.
