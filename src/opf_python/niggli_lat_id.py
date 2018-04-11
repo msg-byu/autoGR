@@ -163,7 +163,8 @@ def niggli_id(lattice,eps_=None,G=None):
                 lat_fam = 6
                 lat_type = 'base centered monoclinic'
                 niggli_num = 17
-                basis = np.transpose([[-2.0,-1.0,1.0],[-3.0,1.0,0.0],[-1.0,-3.0,0.0]])
+                basis = np.transpose([[-1.05387,-1.61088,1.51474],[-0.244302,-2.77045,0.51474],
+									 [1.809568,-0.15957,0.0]])
 
     if np.allclose(B,C,atol=eps) and niggli_num is None:
         if positive:
@@ -172,7 +173,7 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 4
                     lat_type = 'body centered tetragonal'
                     niggli_num = 18
-                    basis = np.transpose([[0, 0, 2], [1, -2, 1], [-2, -1, 1]])
+                    basis = np.transpose([[-2.0,-1.0,1.0],[-3.0,1.0,0.0],[-1.0,-3.0,0.0]])
                 elif np.allclose(A/2.,E,atol=eps):
                     lat_fam = 5
                     lat_type = 'body centered orthorhombic'
