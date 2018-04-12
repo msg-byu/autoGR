@@ -1,6 +1,8 @@
-def rhom_9(n):
+def rhom_9_24(n):
     """Finds the symmetry preserving HNFs for the trigonal lattices
-    with a determinant of n. Assuming A = [[1,2,2],[2,1,2],[4,3,3]].
+    with a determinant of n. Assuming A = [[1,2,2],[2,1,2],[4,3,3]] for basis 9
+	A = [[-0.255922,-1.44338,0.92259],[1.51184,0,-0.845178],[1.255922,1.44338,0.07741]] 
+	for basis 24.
 
     Args:
         n (int): The determinant of the HNFs.
@@ -106,53 +108,4 @@ def rhom_4_2(n):
                                     spHNFs.append(HNF)
                                 
     return spHNFs
-
-def rhom_24(n):
-    """Finds the symmetry preserving HNFs for the rhombohedral lattice
-    that matches niggli conditions for niggli cell number 24
-    with a determinant of n. Assuming A =
-    [[-1,0,-1],[1.51184,0,-0.845178],[-0.255922,-1.44338,0.92259]].
-
-    Args:
-        n (int): The determinant of the HNFs.
-
-    Returns:
-        spHNFs (list of lists): The symmetry preserving HNFs.
-
-    """
-
-    from opf_python.universal import get_HNF_diagonals
-
-    diags = get_HNF_diagonals(n)
-
-    spHNFs = []
-    
-    for diag in diags:
-        a = diag[0]
-        c = diag[1]
-        f = diag[2]
-        b = 0
-        
-        if f%a==0 and f%c==0:
-            if c==f:
-                es = [0]
-                ds = [0]
-            else: 
-                es = [f-c]
-                if c==1 and f>3:
-                    ds = [3]
-                else:
-                    ds = range(0,es[0]+1,c)
-            for e in es:
-                if e%c==0 and e%a==0:
-                    for d in ds:
-                        if d%c==0 and d%a==0:
-                            g11 = 2*d-d*d/float(a) -d*e/float(c)
-                            g21 = 2*e-d*e/float(a)-e*e/float(c)
-                            g22 = -c+e-d*e/float(a)-e*e/float(c)
-                            if g11%f==0 and g21%f==0 and g22%f==0:
-                                HNF = [[a,0,0],[b,c,0],[d,e,f]]
-                                spHNFs.append(HNF)
-                                
-    return spHNFs                                    
-                                    
+                  

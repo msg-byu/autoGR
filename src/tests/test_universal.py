@@ -147,13 +147,13 @@ def test_find_supers():
 
     assert np.allclose(Bs,true_Bs)
         
-    #rhom_9
+    #rhom_9_24
     A = [[4, 7, 5],
          [3, 6, 5],
          [3, 7, 5]]
     Bs = find_supercells(A,10,exact=True)
 
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_9_1.txt").reshape(1,3,3)
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_9_24_1.txt").reshape(1,3,3)
 
     assert np.allclose(Bs,true_Bs)
         
@@ -166,17 +166,7 @@ def test_find_supers():
     true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_4_2_13.txt").reshape(13,3,3)
 
     assert np.allclose(Bs,true_Bs)
-        
-    #rhom_24
-    A = [[-0.255922,  0.255918, -1.255922],
-         [-1.44338 , -1.44338 , -1.44338 ],
-         [ 0.92259 , -0.922588, -0.07741 ]]
-    Bs = find_supercells(A,10)
-
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_24_9.txt").reshape(9,3,3)
-
-    assert np.allclose(Bs,true_Bs)
-        
+                
     #stet_11
     A = [[0, 1, 1],
          [0, 1, 0],
@@ -197,43 +187,13 @@ def test_find_supers():
 
     assert np.allclose(Bs,true_Bs)
         
-    #body_tet_15
+    #body_tet_6_7_15_18
     A = [[ 1,  1,  0],
          [ 1,  1,  2],
          [-2,  2,  0]]
-    Bs = find_supercells(A,10,exact=True)
+    Bs = find_supercells(A,12,exact=True)
 
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_15_1.txt").reshape(1,3,3)
-
-    assert np.allclose(Bs,true_Bs)
-                
-    #body_tet_7
-    A = [[ 1.95095 ,  1.      ,  0.      ],
-         [ 1.19163 ,  1.60788 ,  2.60788 ],
-         [ 0.879663, -1.55394 ,  0.44606 ]]
-    Bs = find_supercells(A,20)
-
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_7_15.txt").reshape(15,3,3)
-
-    assert np.allclose(Bs,true_Bs)
-                
-    #body_tet_6
-    A = [[ 1.80278 ,  1.80278 ,  0.80278 ],
-         [-1.47253 ,  1.13535 , -0.47253 ],
-         [ 0.762655,  1.208715,  2.762655]]
-    Bs = find_supercells(A,20)
-
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_6_15.txt").reshape(15,3,3)
-
-    assert np.allclose(Bs,true_Bs)
-                
-    #body_tet_18
-    A = [[-2, -1, -2],
-         [-1, -3, -1],
-         [ 1,  4,  3]]
-    Bs = find_supercells(A,20)
-
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_18_15.txt").reshape(15,3,3)
+    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_15_3.txt").reshape(3,3,3)
 
     assert np.allclose(Bs,true_Bs)
                 
@@ -376,27 +336,7 @@ def test_find_supers():
     true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_34_77.txt").reshape(77,3,3)
 
     assert np.allclose(Bs,true_Bs)
-                
-    #base_mono 14
-    A = [[ 1. , -0.5,  1.5],
-         [ 1. ,  1. ,  1. ],
-         [ 0. ,  2. ,  2. ]]
-    Bs = find_supercells(A,8,exact=True)
-
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_14_31.txt").reshape(31,3,3)
-
-    assert np.allclose(Bs,true_Bs)
-                
-    #base_mono 10 17
-    A = [[-1.46391,  2.46391, -1.46391],
-         [ 0.     ,  3.     ,  2.     ],
-         [ 1.96391, -0.96391,  1.96391]]
-    Bs = find_supercells(A,8,exact=True)
-
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_10_17_31.txt").reshape(31,3,3)
-
-    assert np.allclose(Bs,true_Bs)
-                
+                              
     #base_mono 20 25
     A = [[ 1.       ,  1.39898  ,  1.69779  ],
          [ 1.       , -3.8834405, -0.4322505],
@@ -404,16 +344,6 @@ def test_find_supers():
     Bs = find_supercells(A,8,exact=True)
 
     true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_20_25_31.txt").reshape(31,3,3)
-
-    assert np.allclose(Bs,true_Bs)
-                
-    #base_mono 27
-    A = [[ 0.464824, -3.082857, -0.535176],
-         [-1.464824,  1.082857, -2.464824],
-         [-1.907413,  0.907413, -1.907413]]
-    Bs = find_supercells(A,8,exact=True)
-
-    true_Bs = np.loadtxt("tests/test_output/find_supercells_basis_27_31.txt").reshape(31,3,3)
 
     assert np.allclose(Bs,true_Bs)
                 
@@ -437,7 +367,7 @@ def test_find_supers():
 
     assert np.allclose(Bs,true_Bs)
                                
-    #base_mono 37 39 and 41
+    #base_mono 10 14 17 27 37 39 and 41
     A = [[-1.79092,1.0,1.0],
          [-1.47209,-1.41421,0.0],
          [0.790922,-1.0,1.0]]
