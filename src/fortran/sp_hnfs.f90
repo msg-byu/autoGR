@@ -427,10 +427,10 @@ CONTAINS
   end SUBROUTINE rhom_9
 
   !!<summary>Finds the symmetry preserving HNFs for the rhombohedral
-  !!lattice with determinant n. Assuming A = [[-1, 0,-1],[0, -1.32288,
-  !!-0.5],[-1.11652, -0.610985, 0.616515]] for number 2 and A= [[-1,
-  !!0,-1],[0, -1.32288, 0.5],[-0.548584, 0.774292, 1.04858]] for
-  !!number 4.</summary>
+  !!lattice with determinant n. Assuming A = [[-1.11652,-0.610985,0.616515],
+  !![0.0,-1.32288,-0.5],[1.0,1.32288,1.5]]for basis 2 and A =
+  !![[-0.548584,0.774292,1.04858],[0.0,-1.32288,0.5],[1.0,1.32288,0.5]]
+  !!for basis 4.</summary>
   !!<parameter name="n" regular="true">The target determinant of the
   !!HNFs.</parameter>
   !!<parameter name="spHNFs" regular="true">The symmetry preserving
@@ -441,12 +441,12 @@ CONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     real(dp) :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k
+    integer :: nds, i, nhnfs, status, j, k, z
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta32, beta22, beta11, beta12, gamma11, gamma12, gamma22
-    real(dp), allocatable :: bs(:), ds(:)
+    real(dp) :: beta32,beta22,gamma11,gamma21,beta12,gamma12,gamma22
+    real(dp), allocatable :: bs(:)
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -466,87 +466,51 @@ CONTAINS
        c = diagonals(2,i)
        f = diagonals(3,i)
 
-       if ((MOD(f,a)==0) .and. (MOD(f,c)==0))then
-          if (c<f) then
-             e = f-c
-          else
-             e = 0.0_dp
-          end if
-          allocate(bs(int(c)))
-          do j=0,int(c-1)
-             bs(j+1) = real(j,dp)
-          end do
-          if (.not. e==0.0_dp) then
-             if (a<c) then
-                deallocate(bs)
-                allocate(bs(2))
-                bs = (/0.0_dp,a/)
-             else
-                deallocate(bs)
-                allocate(bs(1))
-                bs = (/0.0_dp/)
-             end if
-          else
-             if (a<c) then
-                deallocate(bs)
-                allocate(bs(1))
-                bs = (/a/)
-             else
-                deallocate(bs)
-                allocate(bs(1))
-                bs = (/0.0_dp/)
-             end if
-          end if
-          if (c==1.0_dp) then
-             allocate(ds(1))
-             ds = (/e/)
-          else if (e==0.0_dp) then
-             allocate(ds(1))
-             if (a==c) then
-                ds = (/0.0_dp/)
-             else
-                ds = (/a/)
-             end if
-          else
-             allocate(ds(int(f)))
-             do j=1,int(f)
-                ds(j) = j-1
-             end do
-          end if
-
-          gamma12 = -c+e*e/c
-          if ((MOD(e,c)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(e,a)==0)) then
-             do j=1,size(bs)
-                b = bs(j)
-                beta32 = b*f/a
-                beta22 = b*e/a
-                if ((MOD(beta32,c)==0) .and. (MOD(beta22,c)==0)) then
-                   do k=1,size(ds)
-                      d = ds(k)
-                      beta11 = b-d
-                      beta12 = -a+b*d/a
-                      gamma11 = -b+d-beta11*e/c
-                      gamma12 = -b+(d*d/a)-beta12*e/c
-                      gamma22 = -c+(d*e/a)-b*e*e/(a*c)
-                      if ((MOD(beta11,c)==0) .and. (MOD(beta12,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma22,f)==0)) then
-                         nhnfs = nhnfs + 1
-                         temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
-                              0, int(c), int(e), &
-                              0, 0, int(f)/),(/3,3/))
-                      end if
-                   end do
+       if (MOD(f,a)==0)then
+         if (MOD(c,2.0_dp)==0) then
+            allocate(bs(2))
+            bs = (/0.0_dp,real(int(c)/2,dp)/)
+         else
+            allocate(bs(1))
+            bs = (/0.0_dp/)
+         end if
+         do j=1, size(bs)
+           b = bs(j)
+           beta32 = -f+b*f/a
+           if(MOD(beta32,c)==0) then
+             do k=0, int(f-1)
+               e = real(k)
+               beta22 = -e+b*e/a
+               gamma11 = b-2.0_dp*b*e/c
+               gamma21 = c-2.0_dp*e
+               if((MOD(e,a)==0) .and. (MOD(beta22,c)==0) .and. (MOD(gamma11,f)==0) &
+                 .and. (MOD(gamma21,f)==0))then
+                  do z=0,int(f-1)
+                    d = real(z)
+                    beta12 = -a+b-d+b*d/a
+                    gamma12 = (-a+d*d/a)-(e*beta12/c)
+                    gamma22 = (-e+d*e/a)-(e*beta22/c)
+                    if((MOD(d,a)==0) .and. (MOD(beta12,c)==0) .and. (MOD(gamma12,f)==0) &
+                      .and. (MOD(gamma22,f)==0))then
+                      nhnfs = nhnfs + 1
+                      temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
+                         0, int(c), int(e), &
+                         0, 0, int(f)/),(/3,3/))
+                    end if
+                  end do
                 end if
-             end do
-          end if
-          deallocate(bs,ds)
-       end if
+              end do
+            end if
+          end do
+       deallocate(bs)
+     end if
     end do
 
     allocate(spHNFs(3,3,nhnfs))
 
     spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
 
-  end SUBROUTINE rhom_4_2
+  END SUBROUTINE rhom_4_2
 
 
   !!<summary>Finds the symmetry preserving HNFs for the rhombohedral

@@ -9,7 +9,7 @@ Module niggli
   private
   public reduce_cell, id_cell
 
-  
+
 CONTAINS
 
   !!<summary>Finds the niggli reduced cell from the users given
@@ -58,15 +58,15 @@ CONTAINS
     logical :: reduced
 
     vol = determinant(IN)
-    
+
     if (equal(vol,0._dp,0.000001_dp)) stop "Input matrix is linearly dependent."
-    
+
     if (present(eps_)) then
        eps = eps_*abs(vol)**(1.0_dp/3.0_dp)
     else
        eps = (10.0_dp**(-5.0_dp))*abs(vol)**(1.0_dp/3.0_dp)
     end if
-    
+
     path = ''
     count = 0
     reduced = .False.
@@ -77,12 +77,12 @@ CONTAINS
     do while ((.not. reduced) .and. (count <= 1000))
        reduced = .True.
        count = count + 1
-       ! step #1 
+       ! step #1
        if ((A>(B+eps)) .or. ((.not. (ABS(A-B)>eps)) .and. (ABS(xi)>(ABS(eta)+eps))))then
           path = trim(path) // "1"
-          reduced = .False. 
+          reduced = .False.
           trans = matmul(trans,transpose(reshape((/0, -1, 0, -1, 0, 0, 0, 0, -1/),(/3,3/))))
-          temp_lat = matmul(IN,trans) 
+          temp_lat = matmul(IN,trans)
           call get_params(temp_lat,eps,A,B,C,xi,eta,zeta,l,m,n)
        end if
 
@@ -101,7 +101,7 @@ CONTAINS
           path = trim(path) // "3"
           call find_C3(l,m,n,temp_M)
           if (.not. (all(abs(temp_M-transpose(reshape((/1, 0, 0, 0, 1, 0, 0, 0, 1/),(/3,3/))))==0))) then
-             reduced = .False. 
+             reduced = .False.
           end if
           trans = matmul(trans,temp_M)
           temp_lat = matmul(IN,trans)
@@ -113,7 +113,7 @@ CONTAINS
           path = trim(path) // "4"
           call find_C4(l,m,n,temp_M)
           if (.not. (all(abs(temp_M-transpose(reshape((/1, 0, 0, 0, 1, 0, 0, 0, 1/),(/3,3/))))==0))) then
-             reduced = .False. 
+             reduced = .False.
           end if
           trans = matmul(trans,temp_M)
           temp_lat = matmul(IN,trans)
@@ -196,7 +196,7 @@ CONTAINS
     real(dp), intent(in) :: A, B, C, xi, eta, zeta, eps
 
     condition_check = .True.
-    
+
     if (.not. (((A-eps)>0.0_dp) .and. ((A<(B-eps)) .or. (ABS(A-B)<eps)) .and. ((B<(C-eps)) .or. (ABS(B-C)<eps)))) then
        condition_check = .False.
     end if
@@ -252,9 +252,9 @@ CONTAINS
     if ((ABS(C-(A+B+C+xi+eta+zeta))<eps) .and. (.not. (((2.0_dp*A+2.0_dp*eta+zeta)<(-eps)) .or. (ABS(2.0_dp*A+2.0_dp*eta+zeta)<eps)))) then
        condition_check = .False.
     end if
-       
+
   end function condition_check
-  
+
   !!<summary>Finds the sign (-1,0,0) of a real number.</summary>
   !!<parameter name="a" regular="true">A real number.</parameter>
   function get_sign(a)
@@ -288,7 +288,7 @@ CONTAINS
        j = 1
        k = 1
     else
-       
+
        i = 1
        j = 1
        k = 1
@@ -322,10 +322,10 @@ CONTAINS
           end if
        end if
     end if
-    
+
     trans = transpose(reshape((/i, 0, 0, 0, j, 0, 0, 0, k/),(/3,3/)))
 
-  end SUBROUTINE find_C4  
+  end SUBROUTINE find_C4
 
   !!<summary>Finds the transformation matrix for the operation of step
   !!3.</summary>
@@ -361,7 +361,7 @@ CONTAINS
     trans = transpose(reshape((/i, 0, 0, 0, j, 0, 0, 0, k/),(/3,3/)))
 
   end SUBROUTINE find_C3
-  
+
   !!<summary>Gets the G vector (A,B,C,xi,eta,zeta) for a given input
   !!matrix.</summary>
   !!<parameter name="IN" regular="true">The matrix being
@@ -451,7 +451,7 @@ CONTAINS
     real(dp) :: eps
     real(dp) :: temp_a(3), temp_b(3), temp_c(3), A, B, C, D, E, F
     logical :: positive
-        
+
     if (present(eps_)) then
        eps = eps_
     else
@@ -485,7 +485,7 @@ CONTAINS
                 O = reshape((/0.0_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp/),(/3,3/))
              else
                 id = 2
-                O = reshape((/-1.0_dp,0.0_dp,-1.0_dp,0.0_dp,-1.32288_dp,-0.5_dp,-1.11652_dp,-0.610985_dp,0.616515_dp/),(/3,3/))
+                O = reshape((/-1.11652_dp,-0.610985_dp,0.616515_dp,0.0_dp,-1.32288_dp,-0.5_dp,1.0_dp,1.32288_dp,1.5_dp/),(/3,3/))
              end if
           end if
        else
@@ -498,7 +498,7 @@ CONTAINS
                 O = reshape((/-1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp/),(/3,3/))
              else
                 id = 4
-                O = reshape((/-1.0_dp,0.0_dp,-1.0_dp,0.0_dp,-1.32288_dp,0.5_dp,-0.548584_dp,0.774292_dp,1.04858_dp/),(/3,3/))
+                O = reshape((/-0.548584_dp,0.774292_dp,1.04858_dp,0.0_dp,-1.32288_dp,0.5_dp,1.0_dp,1.32288_dp,0.5_dp/),(/3,3/))
              end if
           else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
              if (isclose(D,E,atol_=eps)) then
@@ -514,7 +514,7 @@ CONTAINS
           end if
        end if
     end if
-    
+
     if (isclose(A,B,atol_=eps) .and. (id==(-1))) then
        if (positive .eqv. .True.) then
           if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps) .and. isclose((A/2.0_dp),D,atol_=eps)) then
@@ -525,7 +525,7 @@ CONTAINS
              O = reshape((/1.0_dp, -1.0_dp, 1.0_dp,-1.46391_dp, 0.0_dp, 1.96391_dp,0.0_dp, 2.0_dp, 0.0_dp/),(/3,3/))
           end if
        else
-          
+
           if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps) .and. isclose(0.0_dp,D,atol_=eps)) then
              id = 11
              O = reshape((/1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp/),(/3,3/))
@@ -533,7 +533,7 @@ CONTAINS
              if (isclose(0.0_dp,D,atol_=eps) .and. isclose((-A/2.0_dp),F,atol_=eps)) then
                 id = 12
                 O = reshape((/1.0_dp,0.0_dp,0.0_dp,0.5_dp,-0.8660254037844386_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp/),(/3,3/))
-             else if (isclose((-A/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,F,atol_= eps)) then 
+             else if (isclose((-A/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,F,atol_= eps)) then
                 id = 15
                 O = reshape((/-1.0_dp,1.0_dp,2.0_dp,1.0_dp,-1.0_dp,2.0_dp,1.0_dp,1.0_dp,-2.0_dp/),(/3,3/))
              else if (isclose(0.0_dp,D,atol_=eps)) then
@@ -552,7 +552,7 @@ CONTAINS
           end if
        end if
     end if
-    
+
     if (isclose(B,C,atol_=eps) .and. (id==(-1))) then
        if (positive .eqv. .True.) then
           if (isclose(E,F,atol_=eps)) then
@@ -568,7 +568,7 @@ CONTAINS
              end if
           end if
        else
-          if (isclose(E,F,atol_= eps)) then 
+          if (isclose(E,F,atol_= eps)) then
              if (isclose(0.0_dp,D,atol_=eps) .and. isclose(0.0_dp,E,atol_=eps)) then
                 id = 21
                 O = reshape((/0.0_dp,0.0_dp,0.5_dp,1.0_dp,0.0_dp,0.0_dp,0.0_dp,1.0_dp,0.0_dp/),(/3,3/))
@@ -680,7 +680,7 @@ CONTAINS
     real(dp), intent(in) :: A, B
     real(dp), optional, intent(in) :: rtol_, atol_
 
-    real(dp) :: rtol, atol 
+    real(dp) :: rtol, atol
 
     if (present(rtol_)) then
        rtol = rtol_
@@ -699,7 +699,7 @@ CONTAINS
     else
        isclose = .False.
     end if
-    
+
   end Function isclose
-  
+
 end Module niggli
