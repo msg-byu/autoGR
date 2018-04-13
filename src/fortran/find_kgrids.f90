@@ -102,10 +102,8 @@ CONTAINS
        do while ((count <5) .and. (a_kpd-kpd<=10))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd,temp_hnfs)
-          else if (lat_id==6) then
-             call bct_6(a_kpd,temp_hnfs)
-          else if (lat_id==7) then
-             call bct_7(a_kpd,temp_hnfs)
+          else if (lat_id==6 .or.lat_id==7 .or. lat_id==15 .or.lat_id==18) then
+             call bct_6_7_15_18(a_kpd,temp_hnfs)
           else if (lat_id==8) then
              call bco_8(a_kpd,temp_hnfs)
           else if (lat_id==9) then
@@ -119,12 +117,8 @@ CONTAINS
              call hex_12(a_kpd,temp_hnfs)
           else if ((lat_id==13) .or. (lat_id==38)) then
              call baseco_38_13(a_kpd,temp_hnfs)
-          else if (lat_id==15) then
-             call bct_15(a_kpd,temp_hnfs)
           else if (lat_id==16) then
              call fco_16(a_kpd,temp_hnfs)
-          else if (lat_id==18) then
-             call bct_18(a_kpd,temp_hnfs)
           else if (lat_id==19) then
              call bco_19(a_kpd,temp_hnfs)
           else if ((lat_id==20) .or. (lat_id==25)) then

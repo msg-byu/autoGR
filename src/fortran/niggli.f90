@@ -503,10 +503,10 @@ CONTAINS
           else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
              if (isclose(D,E,atol_=eps)) then
                 id = 6
-                O = reshape((/-1.0_dp,1.0_dp,2.0_dp,1.0_dp,1.60788_dp,-1.55394_dp,1.80278_dp,-1.47253_dp,0.762655_dp/),(/3,3/))
+                O = reshape((/1.80278_dp,-1.47253_dp,0.762655_dp,2.80278_dp,0.13535_dp,-0.791285_dp,0.80278_dp,-0.47253_dp,2.762655_dp/),(/3,3/))
              else if (isclose(E,F,atol_=eps)) then
                 id = 7
-                O = reshape((/-1.95095_dp,1.41625_dp,-0.433603_dp,1.0_dp,-1.0_dp,-2.0_dp,1.95095_dp,1.19163_dp,0.879663_dp/),(/3,3/))
+                O = reshape((/1.95095_dp, 1.19163_dp, 0.879663_dp,0.0_dp, 2.60788_dp, 0.44606_dp,0.95095_dp, -0.41625_dp, 2.433603_dp/),(/3,3/))
              else
                 id = 8
                 O = reshape((/1.41144_dp,0.0885622_dp,-2.0_dp,-0.99868_dp,2.21232_dp,1.268178_dp,3.41012_dp,-1.1237578_dp,-1.268178_dp/),(/3,3/))
@@ -535,7 +535,7 @@ CONTAINS
                 O = reshape((/1.0_dp,0.0_dp,0.0_dp,0.5_dp,-0.8660254037844386_dp,0.0_dp,0.0_dp,0.0_dp,2.0_dp/),(/3,3/))
              else if (isclose((-A/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,F,atol_= eps)) then
                 id = 15
-                O = reshape((/-1.0_dp,1.0_dp,2.0_dp,1.0_dp,-1.0_dp,2.0_dp,1.0_dp,1.0_dp,-2.0_dp/),(/3,3/))
+                O = reshape((/-1.0_dp,-1.0_dp,2.0_dp,0.0_dp,-2.0_dp,0.0_dp,-2.0_dp,0.0_dp,0.0_dp/),(/3,3/))
              else if (isclose(0.0_dp,D,atol_=eps)) then
                 id = 13
                 O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.0_dp,-1.0_dp,-1.0_dp,0.0_dp,-1.73205_dp,1.73205_dp/),(/3,3/))
@@ -558,7 +558,7 @@ CONTAINS
           if (isclose(E,F,atol_=eps)) then
              if (isclose((A/4.0_dp),D,atol_=eps) .and. isclose((A/2.0_dp),E,atol_=eps)) then
                 id = 18
-                O = reshape((/0.0_dp,0.0_dp,2.0_dp,1.0_dp,-2.0_dp,1.0_dp,-2.0_dp,-1.0_dp,1.0_dp/),(/3,3/))
+                O = reshape((/-2.0_dp,-1.0_dp,1.0_dp,-3.0_dp,1.0_dp,0.0_dp,-1.0_dp,-3.0_dp,0.0_dp/),(/3,3/))
              else if (isclose((A/2.0_dp),E,atol_=eps)) then
                 id = 19
                 O = reshape((/0.5_dp,1.0_dp,1.5_dp,0.0_dp,2.0_dp,0.0_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/))

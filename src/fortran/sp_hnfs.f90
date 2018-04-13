@@ -782,130 +782,18 @@ CONTAINS
   end SUBROUTINE st_21
 
   !!<summary>Finds the symmetry preserving HNFs for the body centered
-  !!tetragonal lattice with determinant n. Assuming the basis of A =
-  !![[-1,1,2],[1,-1,2],[1,1,-2]].</summary>
+  !!tetragonal lattice with determinant n. Assuming the basis of
+  !!A  = [[1.80278,-1.47253,0.762655],[2.80278,0.13535,-0.791285],
+  !![0.80278,-0.47253,2.762655]] for 6,
+  !!A = [[1.95095, 1.19163, 0.879663],[0.0, 2.60788, 0.44606],
+  !![0.95095, -0.41625, 2.433603]] for 7,
+  !!A = [[-1.0,-1.0,2.0],[0.0,-2.0,0.0],[-2.0,0.0,0.0]] for 15,
+  !!A = [[-2.0,-1.0,1.0],[-3.0,1.0,0.0],[-1.0,-3.0,0.0]] for 18.</summary>
   !!<parameter name="n" regular="true">The target determinant of the
   !!HNFs.</parameter>
   !!<parameter name="spHNFs" regular="true">The symmetry preserving
   !!HNFs.</parameter>
-  SUBROUTINE bct_15(n,spHNFs)
-    integer, intent(in) :: n
-    integer, allocatable, intent(out) :: spHNFs(:,:,:)
-
-    integer, pointer :: diagonals(:,:) => null()
-    real(dp) :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z, spc, size_count
-    integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
-
-    real(dp) :: beta11, beta12, beta22, gamma11, gamma12, gamma21, gamma22
-    real(dp), allocatable :: bs(:), es(:), ds(:)
-
-    call get_HNF_diagonals(n,diagonals)
-
-    nds = size(diagonals,2)
-    nhnfs = 0
-    total_hnfs = 0
-
-    do i = 1,nds
-       total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
-    end do
-
-    allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bct_15."
-
-    do i =1,nds
-       a = diagonals(1,i)
-       c = diagonals(2,i)
-       f = diagonals(3,i)
-
-       if ((a==c) .and. (a==f)) then
-          allocate(bs(1),ds(1),es(1))
-          bs = (/0.0_dp/)
-          ds = (/0.0_dp/)
-          es = (/0.0_dp/)
-       elseif (f==(a*c*f)) then
-          allocate(bs(1))
-          bs = (/0.0_dp/)
-          if (MOD(f,2.0_dp)==0) then
-             allocate(ds(2),es(2))
-             ds = (/1.0_dp, real((int(f)/2)+1,dp)/)
-             es = (/1.0_dp, real((int(f)/2)+1,dp)/)
-          else
-             allocate(ds(1),es(1))
-             ds = (/1.0_dp/)
-             es = (/1.0_dp/)
-          end if
-       else
-          call smallest_prime(int(c),spc)
-          size_count = int(f)/spc + 1
-          allocate(ds(size_count),es(size_count))
-          z = 0
-          do j = 1,size_count
-             ds(j) = z
-             es(j) = z
-             z = z + spc
-          end do
-          if (a==1) then
-             allocate(bs(2))
-             bs = (/1.0_dp,real((int(c)/2)+1,dp)/)
-          else
-             size_count = int(c)/int(a) +1
-             allocate(bs(size_count))
-             z = 0
-             do j = 1,size_count
-                bs(j) = z
-                z = z + int(a)
-             end do
-          end if
-       end if
-
-       if ((MOD(f,a)==0) .and. (MOD(f,c)==0)) then
-          do j =1,size(bs)
-             b = bs(j)
-             if ((MOD((b*f),(a*c))==0) .and. (b<c)) then
-                do k=1,size(es)
-                   e = es(k)
-                   beta22 = b*e/a
-                   gamma21 = c -e*e/c
-                   if ((MOD(e,c)==0) .and. (MOD(beta22,c)==0) .and. (MOD(gamma21,f)==0) .and. (MOD(e,a)==0) .and. (e<f)) then
-                      do z=1,size(ds)
-                         d = ds(z)
-                         beta11 = -a +b +d
-                         beta12 = -a +b -b*d/a
-                         gamma11 = -a +b +d -e*beta11/c
-                         gamma12 = -a +b +d -d*d/a -e*beta12/c
-                         gamma22 = c -d*e/a + e*beta22/c
-                         if ((MOD(beta11,c)==0) .and. (MOD(beta12,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma22,f)==0) .and. (MOD(d,a)==0) .and. (d<f)) then
-                            nhnfs = nhnfs + 1
-                            temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
-                                 0, int(c), int(e), &
-                                 0, 0, int(f)/),(/3,3/))
-                         end if
-                      end do
-                   end if
-                end do
-             end if
-          end do
-       end if
-       deallocate(bs,es,ds)
-    end do
-
-    allocate(spHNFs(3,3,nhnfs))
-
-    spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-
-  end SUBROUTINE bct_15
-
-  !!<summary>Finds the symmetry preserving HNFs for the body centered
-  !!tetragonal lattice with determinant n. Assuming the basis of A =
-  !![[-1.95095 , 1.41625 , -0.433603], [ 1.  , -1.  , -2.  ],
-  !![ 1.95095 , 1.19163 , 0.879663]].</summary>
-  !!<parameter name="n" regular="true">The target determinant of the
-  !!HNFs.</parameter>
-  !!<parameter name="spHNFs" regular="true">The symmetry preserving
-  !!HNFs.</parameter>
-  SUBROUTINE bct_7(n,spHNFs)
+  SUBROUTINE bct_6_7_15_18(n,spHNFs)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
 
@@ -915,10 +803,8 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta11, beta33, beta23, alpha23, alpha13, beta13
-    real(dp) :: gamma13, gamma23, gamma11
-    real(dp), allocatable :: bs(:), es(:), temp(:), ds(:)
-    integer :: count
+    real(dp) :: gamma21,gamma13,beta12,gamma12
+    real(dp), allocatable :: es(:)
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -931,359 +817,57 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bct_7."
+    if (status/=0) stop "Failed to allocate memory in bct_6_7_15_18."
 
     do i =1,nds
-       a = diagonals(1,i)
-       c = diagonals(2,i)
-       f = diagonals(3,i)
+      a = diagonals(1,i)
+      c = diagonals(2,i)
+      f = diagonals(3,i)
 
-       if ((MOD(f,a)==0) .and. (MOD(f,c)==0) .and. (MOD(a,c)==0)) then
-          if ((a==1) .and. (c==1)) then
-             allocate(es(1),bs(1))
-             es = (/f-1.0_dp/)
-             bs = (/0.0_dp/)
-          else if ((a==c) .and. (c==f)) then
-             allocate(es(1),bs(1))
-             es = (/0.0_dp/)
-             bs = (/0.0_dp/)
-          else
-             allocate(bs(int(c)),temp(int(f)))
-             count = 0
-             do j=0,int(f-1)
-                if (j==0) then
-                   count = count + 1
-                   temp(count) = j
-                   count = count + 1
-                   temp(count) = c
-                else if ((c+a*j)<f) then
-                   count = count + 1
-                   temp(count) = c+a*j
-                end if
-             end do
-             allocate(es(count))
-             es(1:count) = temp(1:count)
-             deallocate(temp)
-             do j=0,int(c-1)
-                bs(j+1) = j
-             end do
-          end if
-
-          do j=1,size(bs)
-             b = bs(j)
-             beta11 = -a+2*b
-             beta33 = f-b*f/a
-             if ((MOD(beta11,c)==0) .and. (MOD(beta33,c)==0)) then
-                do k=1,size(es)
-                   e = es(k)
-                   alpha23 = -c+e
-                   beta23 = e-b*alpha23/a
-                   if ((MOD(alpha23,a)==0) .and. (MOD(beta23,c)==0)) then
-                      if (b==0) then
-                         if ((MOD(f,2.0_dp)==0) .and. (((f/2)+a)<f)) then
-                            allocate(ds(3))
-                            ds = (/0.0_dp, a, ((f/2.0_dp)+a)/)
-                         else if (a<f) then
-                            allocate(ds(2))
-                            ds = (/0.0_dp, a/)
-                         else
-                            allocate(ds(int(f)))
-                            do z=0,int(f-1)
-                               ds(z+1) = z
-                            end do
-                         end if
-                      else
-                         if ((e==(f-c)) .and. (MOD(f,2.0_dp)==0)) then
-                            allocate(ds(1))
-                            ds = (/(f/2.0_dp)+b/)
-                         else
-                            allocate(ds(int(f)))
-                            do z=0,int(f-1)
-                               ds(z+1) = z
-                            end do
-                         end if
+      if (MOD(f,c)==0)then
+        if (MOD(f,2.0_dp)==0)then
+           allocate(es(2))
+           es = (/0.0_dp,real(int(f)/2,dp)/)
+        else
+           allocate(es(1))
+           es = (/0.0_dp/)
+        end if
+        do j=1,size(es)
+          e = es(j)
+          if(MOD(e,c)==0)then
+            gamma21 = -c+e*e/c
+            if(MOD(gamma21,f)==0)then
+              do k=0,int(f-1)
+                d = real(k)
+                gamma13 = a+2*d
+                if(MOD(gamma13,f)==0)then
+                  do z=0,int(c-1)
+                    b = real(z)
+                    beta12 = b-d
+                    if(MOD(beta12,c)==0)then
+                      gamma12 = -b+d-(beta12*e/c)
+                      if(MOD(gamma12,f)==0)then
+                        nhnfs = nhnfs + 1
+                        temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
+                           0, int(c), int(e), &
+                           0, 0, int(f)/),(/3,3/))
                       end if
-                      do z=1,size(ds)
-                         d = ds(z)
-                         alpha13 = -b+d
-                         beta13 = -a+d-b*alpha13/a
-                         gamma11 = -a+2*d-e*beta11/c
-                         gamma13 = d-(d*alpha13/a)-e*beta13/c
-                         gamma23 = e-(d*alpha23/a)-e*beta23/c
-                         if ((MOD(alpha13,a)==0) .and. (MOD(beta13,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma13,f)==0) .and. (MOD(gamma23,f)==0)) then
-                            nhnfs = nhnfs + 1
-                            temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
-                                 0, int(c), int(e), &
-                                 0, 0, int(f)/),(/3,3/))
-                         end if
-                      end do
-                      deallocate(ds)
-                   end if
-                end do
-             end if
-          end do
-          deallocate(es,bs)
-       end if
-    end do
-
-    allocate(spHNFs(3,3,nhnfs))
-
-    spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-
-  end SUBROUTINE bct_7
-
-  !!<summary>Finds the symmetry preserving HNFs for the body centered
-  !!tetragonal lattice with determinant n. Assuming the basis of A =
-  !![[-1.  , 1.  , 2.  ], [ 1.  , 1.60788 , -1.55394 ], [ 1.80278 ,
-  !!-1.47253 , 0.762655]].</summary>
-  !!<parameter name="n" regular="true">The target determinant of the
-  !!HNFs.</parameter>
-  !!<parameter name="spHNFs" regular="true">The symmetry preserving
-  !!HNFs.</parameter>
-  SUBROUTINE bct_6(n,spHNFs)
-    integer, intent(in) :: n
-    integer, allocatable, intent(out) :: spHNFs(:,:,:)
-
-    integer, pointer :: diagonals(:,:) => null()
-    real(dp) :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
-    integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
-
-    real(dp) :: beta11, beta12, beta22, gamma11, gamma12, gamma21, gamma22
-    real(dp), allocatable :: bs(:), es(:), ds(:)
-
-    call get_HNF_diagonals(n,diagonals)
-
-    nds = size(diagonals,2)
-    nhnfs = 0
-    total_hnfs = 0
-
-    do i = 1,nds
-       total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
-    end do
-
-    allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bct_6."
-
-    do i =1,nds
-       a = diagonals(1,i)
-       c = diagonals(2,i)
-       f = diagonals(3,i)
-
-       if ((MOD(f,c)==0) .and. (MOD(f,a)==0)) then
-          if ((a==c) .and. (f==a)) then
-             allocate(es(1),bs(1),ds(1))
-             es = (/0.0_dp/)
-             ds = (/0.0_dp/)
-             bs = (/0.0_dp/)
-          else
-             allocate(bs(int(c)))
-             do j=0,int(c-1)
-                bs(j+1) = real(j,dp)
-             end do
-             if ((int(f/2)+c)<f) then
-                allocate(es(3))
-                es = (/0.0_dp, c, (int(f/2.0_dp)+c)/)
-             else if (c<f) then
-                allocate(es(2))
-                es = (/0.0_dp, c/)
-             else
-                allocate(es(1))
-                es = (/0.0_dp/)
-             end if
-             if (MOD(c,2.0_dp)==0) then
-                allocate(ds(int(f/int(c/2.0_dp))))
-                do j=1,int(f/int(c/2.0_dp))
-                   ds(j) = (j-1)*(c/2.0_dp)
-                end do
-             else
-                allocate(ds(int(f/c)))
-                do j=1,int(f/c)
-                   ds(j) = (j-1)*c
-                end do
-             end if
+                    end if
+                  end do
+                end if
+              end do
+            end if
           end if
-
-          do j=1,size(bs)
-             b = bs(j)
-             if (MOD(b*f,a*c)==0) then
-                do k=1,size(es)
-                   e = es(k)
-                   gamma21 = c-e*e/c
-                   beta22 = b*e/a
-                   if ((MOD(e,a)==0) .and. (MOD(gamma21,f)==0) .and. (MOD(beta22,c)==0)) then
-                      do z=1,size(ds)
-                         d = ds(z)
-                         beta11 = -a+b+d
-                         beta12 = -a+b-b*d/a
-                         gamma11 = beta11-beta11*e/c
-                         gamma12 = beta11 -(d*d/a)-beta12*e/c
-                         gamma22 = c-(d*e/a)+beta22*e/c
-                         if ((MOD(beta11,c)==0) .and. (MOD(beta12,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma22,f)==0)) then
-                            nhnfs = nhnfs + 1
-                            temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
-                                 0, int(c), int(e), &
-                                 0, 0, int(f)/),(/3,3/))
-                         end if
-                      end do
-                   end if
-                end do
-             end if
-          end do
-          deallocate(es,bs,ds)
-       end if
+        end do
+      deallocate(es)
+      endif
     end do
 
     allocate(spHNFs(3,3,nhnfs))
 
     spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
 
-  end SUBROUTINE bct_6
-
-  !!<summary>Finds the symmetry preserving HNFs for the body centered
-  !!tetragonal lattice with determinant n. Assuming the basis of A =
-  !![[ 0, 0, 2], [ 1, -2, 1], [-2, -1, 1]].</summary>
-  !!<parameter name="n" regular="true">The target determinant of the
-  !!HNFs.</parameter>
-  !!<parameter name="spHNFs" regular="true">The symmetry preserving
-  !!HNFs.</parameter>
-  SUBROUTINE bct_18(n,spHNFs)
-    integer, intent(in) :: n
-    integer, allocatable, intent(out) :: spHNFs(:,:,:)
-
-    integer, pointer :: diagonals(:,:) => null()
-    real(dp) :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z, sp
-    integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
-
-    real(dp) :: beta31, beta33, beta23, beta21, beta22, beta11, beta12, beta13
-    real(dp) :: gamma11, gamma12, gamma21, gamma23, gamma13, alpha11, alpha21, gamma22
-    real(dp), allocatable :: bs(:), es(:), ds(:)
-
-    call get_HNF_diagonals(n,diagonals)
-
-    nds = size(diagonals,2)
-    nhnfs = 0
-    total_hnfs = 0
-
-    do i = 1,nds
-       total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
-    end do
-
-    allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in bct_18."
-
-    do i =1,nds
-       a = diagonals(1,i)
-       c = diagonals(2,i)
-       f = diagonals(3,i)
-
-       if ((MOD(c,a)==0) .and. (MOD(f,a)==0) .and. (MOD(f,c)==0)) then
-          if (c==f) then
-             allocate(es(1))
-             es = (/0.0_dp/)
-             if (a==c) then
-                allocate(bs(1),ds(1))
-                bs = (/0.0_dp/)
-                ds = (/0.0_dp/)
-             else
-                call smallest_prime(int(c),sp)
-                allocate(bs(int(c/sp)),ds(int(f/sp)))
-                do j=1,size(bs)
-                   bs(j) = real((j-1)*sp,dp)
-                end do
-                do j=1,size(ds)
-                   ds(j) = real((j-1)*sp,dp)
-                end do
-             end if
-          else if ((a*c*f)==f) then
-             allocate(bs(1))
-             bs = (/0.0_dp/)
-             if (MOD(f,2.0_dp)==0) then
-                allocate(es(2))
-                es = (/real(int(f/2.0_dp)-1,dp),f-1.0_dp/)
-             else
-                allocate(es(1))
-                es = (/f-1.0_dp/)
-             end if
-             allocate(ds(1))
-             if (f>=2.0_dp) then
-                ds = (/f-2.0_dp/)
-             else
-                ds = (/0.0_dp/)
-             end if
-          else
-             call smallest_prime(int(c),sp)
-             allocate(bs(int(c/sp)))
-             do j=1,size(bs)
-                bs(j) = real((j-1)*sp,dp)
-             end do
-             if (MOD(f,2.0_dp)==0) then
-                allocate(es(2))
-                es = (/real(int(f/2.0_dp))-c,f-c/)
-             else
-                allocate(es(1))
-                es = (/f-c/)
-             end if
-             if (MOD(c,2.0_dp)==0) then
-                allocate(ds(int(f/int(c/2.0_dp))))
-                do j=1,size(ds)
-                   ds(j) = real((j-1)*int(c/2.0_dp),dp)
-                end do
-             else
-                allocate(ds(int(f/c)))
-                do j=1,size(ds)
-                   ds(j) = (j-1)*c
-                end do
-             end if
-          end if
-
-          do j=1,size(bs)
-             b = bs(j)
-             beta31 = f+b*f/a
-             beta33 = b*f/a
-             if ((MOD(beta31,c)==0) .and. (MOD(beta33,c)==0)) then
-                do k=1,size(es)
-                   e = es(k)
-                   alpha21 = -c-e
-                   beta23 = -b*alpha21/a
-                   beta21 = beta23+e
-                   beta22 = (b*c/a)-e
-                   if ((MOD(alpha21,a)==0) .and. (MOD(beta23,c)==0) .and. (MOD(beta21,c)==0) .and. (MOD(beta22,c)==0) .and. (MOD(beta23,c)==0)) then
-                      do z=1,size(ds)
-                         d = ds(z)
-                         alpha11 = -b-d
-                         beta11 = b-(b*alpha11/a)+d
-                         beta12 = b+(b*b/a)-d
-                         beta13 = 2*b-b*alpha11/a
-                         gamma11 = b+d-(alpha11*d/a)-beta11*e/c
-                         gamma12 = b+d+(b*d/a)-beta12*e/c
-                         gamma13 = 2*d-(alpha11*d/a)-beta13*e/c
-                         gamma21 = c-(d*alpha21/a)-e*beta21/c
-                         gamma22 = c+(c*d/a)-beta22*e/c
-                         gamma23 = -(d*alpha21/a)-beta23*e/c
-                         if ((MOD(alpha11,a)==0) .and. (MOD(beta11,c)==0) .and. (MOD(beta12,c)==0) .and. (MOD(beta13,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma13,f)==0)  .and. (MOD(gamma21,f)==0) .and. (MOD(gamma22,f)==0) .and. (MOD(gamma23,f)==0)) then
-                            nhnfs = nhnfs + 1
-                            temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
-                                 0, int(c), int(e), &
-                                 0, 0, int(f)/),(/3,3/))
-                         end if
-                      end do
-                   end if
-                end do
-             end if
-          end do
-          deallocate(es,ds,bs)
-       end if
-    end do
-
-    allocate(spHNFs(3,3,nhnfs))
-
-    spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-
-  end SUBROUTINE bct_18
+  end SUBROUTINE bct_6_7_15_18
 
   !!<summary>Finds the symmetry preserving HNFs for the simple
   !!orthorhombic lattice with determinant n. Assuming the basis of A =
