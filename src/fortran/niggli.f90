@@ -522,7 +522,7 @@ CONTAINS
              O = reshape((/1.0_dp,2.0_dp,2.0_dp,2.0_dp,1.0_dp,2.0_dp,4.0_dp,3.0_dp,3.0_dp/),(/3,3/))
           else if (isclose(D,E,atol_=eps)) then
              id = 10
-             O = reshape((/-1.46391_dp,0.0_dp,1.96391_dp,1.0_dp,1.0_dp,1.0_dp,0.0_dp,2.0_dp,0.0_dp/),(/3,3/))
+             O = reshape((/1.0_dp, -1.0_dp, 1.0_dp,-1.46391_dp, 0.0_dp, 1.96391_dp,0.0_dp, 2.0_dp, 0.0_dp/),(/3,3/))
           end if
        else
           
@@ -544,11 +544,11 @@ CONTAINS
                 O = reshape((/1.0_dp,1.0_dp,-1.0_dp,-1.779796_dp,0.1798_dp,0.0_dp,0.735376_dp,-1.61953_dp,-1.68415_dp/),(/3,3/))
              else
                 id = 14
-                O = reshape((/1.0_dp,1.0_dp,0.0_dp,0.0_dp,2.0_dp,0.0_dp,0.5_dp,0.0_dp,2.0_dp/),(/3,3/))
+                O = reshape((/-1.0_dp,1.0_dp,0.0_dp,0.5_dp,0.0_dp,2.0_dp,0.0_dp,-2.0_dp,0.0_dp/),(/3,3/))
              end if
           else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
              id = 17
-             O = reshape((/-0.05387_dp,-0.61088_dp,2.51474_dp,1.0_dp,1.0_dp,1.0_dp,1.809568_dp,-0.15957_dp,0.0_dp/),(/3,3/))
+             O = reshape((/-1.05387_dp,-1.61088_dp,1.51474_dp,-0.244302_dp,-2.77045_dp,0.51474_dp,1.809568_dp,-0.15957_dp,0.0_dp/),(/3,3/))
           end if
        end if
     end if
@@ -597,7 +597,7 @@ CONTAINS
                 O = reshape((/0.0_dp,1.0_dp,1.5_dp,0.5_dp,0.0_dp,1.5_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/))
              else if (isclose((A/2.0_dp),E,atol_=eps)) then
                 id = 27
-                O = reshape((/0.464824_dp,-1.464824_dp,-1.907413_dp,-1.618033_dp,0.618033_dp,-1.0_dp,-1.0_dp,-1.0_dp,0.0_dp/),(/3,3/))
+                O = reshape((/0.0_dp,-1.73205_dp,-1.0_dp,-1.66542_dp,-0.672857_dp,1.66542_dp,1.0_dp,0.0_dp,1.0_dp/),(/3,3/))
              end if
           else
              if (isclose((A/2.0_dp),E,atol_=eps) .and. isclose((2.0_dp*D),F,atol_=eps)) then
@@ -648,13 +648,13 @@ CONTAINS
                 O = reshape((/-1.53633_dp,1.36706_dp,-1.33073_dp,1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.61803_dp,-1.0_dp/),(/3,3/))
              else if (isclose((-B/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,F,atol_=eps)) then
                 id = 41
-                O = reshape((/-1.0_dp,0.0_dp,-1.0_dp,1.85397_dp,0.854143_dp,-1.35397_dp,-1.0_dp,1.41421_dp,1.0_dp/),(/3,3/))
+                O = reshape((/-1.85397_dp, -0.854143_dp, 1.35397_dp,1.0_dp, 0.0_dp, 1.0_dp,1.0_dp, -1.41421_dp, -1.0_dp/),(/3,3/))
              else if (isclose((-A/2.0_dp),E,atol_=eps) .and. isclose(0.0_dp,F,atol_=eps)) then
                 id = 37
-                O = reshape((/-1.79092_dp,-1.47209_dp,0.790922_dp,1.0_dp,0.0_dp,1.0_dp,1.0_dp,-1.41421_dp,-1.0_dp/),(/3,3/))
+                O = reshape((/-1.79092_dp,-1.47209_dp,0.790922_dp,1.0_dp,-1.41421_dp,-1.0_dp,1.0_dp,0.0_dp,1.0_dp/),(/3,3/))
              else if (isclose(0.0_dp,E,atol_=eps) .and. isclose((-A/2.0_dp),F,atol_=eps)) then
                 id = 39
-                O = reshape((/0.0_dp,1.73205_dp,1.0_dp,-1.0_dp,0.0_dp,-1.0_dp,1.66542_dp,0.672857_dp,-1.66542_dp/),(/3,3/))
+                O = reshape((/0.0_dp, -1.73205_dp,-1.0_dp,-1.66542_dp, -0.672857_dp, 1.66542_dp,1.0_dp,0.0_dp,1.0_dp/),(/3,3/))
              else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps) .and. isclose(ABS(2.0_dp*D+F),B,atol_=eps)) then
                 id = 43
                 O = reshape((/-0.39716_dp,-0.34718_dp,2.49434_dp,2.64194_dp,-0.14194_dp,0.0_dp,-1.39716_dp,-1.34718_dp,1.49434_dp/),(/3,3/))

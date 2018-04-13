@@ -32,7 +32,7 @@ CONTAINS
   SUBROUTINE transform_supercell(spHNF,No,Nu,Co,Cu,O,UB)
     integer, intent(in) :: spHNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3) 
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
     real(dp), intent(out) :: UB(3,3)
 
     integer :: F(3,3)
@@ -46,7 +46,7 @@ CONTAINS
     UB = matmul(matmul(Nu,F),Cuinv)
 
   end SUBROUTINE transform_supercell
-  
+
   !!<summary>Determines the symmetry preserving kpoint grids, with
   !!target denstiy, for the provided lattice.</summary>
   !!<parameter name="lat_vecs" regular="true">The parent cell lattice
@@ -68,7 +68,7 @@ CONTAINS
     real(dp) :: O(3,3), Nu(3,3), No(3,3), UB(3,3)
     integer :: Cu(3,3), Co(3,3), mult
     real(dp) :: eps
-    
+
     if (present(eps_)) then
        eps = eps_
     else
@@ -110,16 +110,15 @@ CONTAINS
              call bco_8(a_kpd,temp_hnfs)
           else if (lat_id==9) then
              call rhom_9(a_kpd,temp_hnfs)
-          else if ((lat_id==10) .or. (lat_id==17)) then
-             call basecm_10_17(a_kpd,temp_hnfs)
+          else if ((lat_id==10) .or. (lat_id==14) .or. (lat_id==17) .or. (lat_id==27) &
+                  .or. (lat_id==37) .or. (lat_id==39) .or. (lat_id == 41)) then
+             call basecm_10_14_17_27_37_39_41(a_kpd,temp_hnfs)
           else if (lat_id==11) then
              call st_11(a_kpd,temp_hnfs)
           else if (lat_id==12) then
              call hex_12(a_kpd,temp_hnfs)
           else if ((lat_id==13) .or. (lat_id==38)) then
              call baseco_38_13(a_kpd,temp_hnfs)
-          else if (lat_id==14) then
-             call basecm_14(a_kpd,temp_hnfs)
           else if (lat_id==15) then
              call bct_15(a_kpd,temp_hnfs)
           else if (lat_id==16) then
@@ -140,8 +139,6 @@ CONTAINS
              call rhom_24(a_kpd,temp_hnfs)
           else if (lat_id==26) then
              call fco_26(a_kpd,temp_hnfs)
-          else if (lat_id==27) then
-             call basecm_27(a_kpd,temp_hnfs)
           else if (lat_id==28) then
              call basecm_28(a_kpd,temp_hnfs)
           else if ((lat_id==29) .or. (lat_id==30)) then
@@ -156,12 +153,8 @@ CONTAINS
              call sm_35(a_kpd,temp_hnfs)
           else if (lat_id==36) then
              call baseco_36(a_kpd,temp_hnfs)
-          else if ((lat_id==37) .or. (lat_id==39)) then
-             call basecm_37_39(a_kpd,temp_hnfs)
           else if (lat_id==40) then
              call baseco_40(a_kpd,temp_hnfs)
-          else if (lat_id==41) then
-             call basecm_41(a_kpd,temp_hnfs)
           else if (lat_id==42) then
              call bco_42(a_kpd,temp_hnfs)
           else if (lat_id==43) then
@@ -180,7 +173,7 @@ CONTAINS
                 allocate(sp_hnfs(3,3,old+size(temp_hnfs,3)))
                 sp_hnfs(:,:,1:old) = temp_hnfs2(:,:,1:old)
                 sp_hnfs(:,:,news:size(temp_hnfs,3)+old) = temp_hnfs(:,:,1:size(temp_hnfs,3))
-                deallocate(temp_hnfs2)                
+                deallocate(temp_hnfs2)
              end if
              count = count + 1
              a_kpd = a_kpd + 1
@@ -222,7 +215,7 @@ CONTAINS
     a = 0
     b = 0
     c = 0
-    
+
     if (lat_id==1) then
        mults = (/1,4,16/)
     else
@@ -230,7 +223,7 @@ CONTAINS
     end if
 
     do while (nb<nmax)
-       nc = nb**3 
+       nc = nb**3
        do j=1,3
           temp = mults(j)*nc
           if (temp >= kpd) then
@@ -307,8 +300,8 @@ CONTAINS
     real(dp)              :: R(3,3), invLat(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
-    
-    
+
+
     if (present(eps_)) then
        eps = eps_
     else
@@ -317,7 +310,7 @@ CONTAINS
 
     call matrix_inverse(lat_vecs, invLat)
     R = transpose(invLat)
-    
+
     r_min_best = 0
     n_irreducible = 0
     do i=1,size(grids,3)
