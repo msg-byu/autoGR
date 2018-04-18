@@ -1,6 +1,8 @@
-def rhom_9(n):
+def rhom_9_24(n):
     """Finds the symmetry preserving HNFs for the trigonal lattices
-    with a determinant of n. Assuming A = [[1,2,2],[2,1,2],[4,3,3]].
+    with a determinant of n. Assuming A = [[1,2,2],[2,1,2],[4,3,3]] for basis 9
+	A = [[-0.255922,-1.44338,0.92259],[1.51184,0,-0.845178],[1.255922,1.44338,0.07741]] 
+	for basis 24.
 
     Args:
         n (int): The determinant of the HNFs.
@@ -58,17 +60,17 @@ def rhom_9(n):
 def rhom_4_2(n):
     """Finds the symmetry preserving HNFs for the rhombohedral lattice
     that matches niggli conditions for niggli cells number 2 and 4
-    with a determinant of n. Assuming A = [[-1, 0,-1],[0, -1.32288,
-    -0.5],[-1.11652, -0.610985, 0.616515]] for number 2 and A= [[-1,
-    0,-1],[0, -1.32288, 0.5],[-0.548584, 0.774292, 1.04858]] for
-    number 4.
+    with a determinant of n. Assuming A =
+    [[-1.11652,-0.610985,0.616515],[0.0,-1.32288,-0.5],[1.0,1.32288,1.5]]
+    for basis 2 and A =
+    [[-0.548584,0.774292,1.04858],[0.0,-1.32288,0.5],[1.0,1.32288,0.5]]
+    for basis 4.
 
     Args:
         n (int): The determinant of the HNFs.
 
     Returns:
         spHNFs (list of lists): The symmetry preserving HNFs.
-
     """
 
     from opf_python.universal import get_HNF_diagonals
@@ -83,101 +85,27 @@ def rhom_4_2(n):
         f = diag[2]
 
         # conditions alpha 3 and betta3
-        if f%a == 0 and f%c == 0:
-            
-            if c<f:
-                e = f-c # By inspecting results.
+        if f%a == 0:
+            if c%2==0:
+                bs = [0,c/2]
             else:
-                e = 0
-            bs = range(0,c)
-            if e!=0:
-                if a <c:
-                    bs = [0,a]
-                else:
-                    bs = [0]
-            else:
-                if a==c:
-                    bs = [0]
-                else:
-                    if a<c:
-                        bs = [a]
-                    else:
-                        bs = [0] #pragma: no cover
-            if c==1:
-                ds = [e]
-            elif e==0:
-                if a==c:
-                    ds = [0]
-                else: 
-                    ds = [a]
-            else:
-                ds = range(0,f,a)
+                bs = [0]
 
-            g12 = -c+e*e/float(c)
-            #beta2 condition
-            if e%c==0 and g12%f==0 and e%a==0:
-                for b in bs:
-                    b32 = b*f/float(a)
-                    b22 = b*e/float(a)
-                    if b32%c==0 and b22%c==0:
-                        for d in ds:
-                            b11 = b-d
-                            b12 = -a+b*d/float(a)
-                            g11 = -b+d-b11*e/float(c)
-                            g12 = -b+d*d/float(a)-b12*e/float(c)
-                            g22 = -c+d*e/float(a) -b*e*e/float(a*c)
-                            if b11%c==0 and b12%c==0 and g11%f==0 and g12%f==0 and g22%f==0:
-                                HNF = [[a,0,0],[b,c,0],[d,e,f]]
-                                spHNFs.append(HNF)
+            for b in bs:
+                beta32 = -f+b*f/float(a)
+                if beta32%c==0:
+                    for e in range(f):
+                        beta22 = -e+b*e/float(a)
+                        gamma11 = b-2*b*e/float(c)
+                        gamma21 = c-2*e
+                        if e%a==0 and beta22%c==0 and gamma11%f==0 and gamma21%f==0:
+                            for d in range(f):
+                                beta12 = -a+b-d+b*d/float(a)
+                                gamma12 = -a+d*d/float(a)-e*beta12/float(c)
+                                gamma22 = -e+d*e/float(a)-e*beta22/float(c)
+                                if d%a==0 and beta12%c==0 and gamma12%f==0 and gamma22%f==0:
+                                    HNF = [[a,0,0],[b,c,0],[d,e,f]]
+                                    spHNFs.append(HNF)
                                 
     return spHNFs
-
-def rhom_24(n):
-    """Finds the symmetry preserving HNFs for the rhombohedral lattice
-    that matches niggli conditions for niggli cell number 24
-    with a determinant of n. Assuming A =
-    [[-1,0,-1],[1.51184,0,-0.845178],[-0.255922,-1.44338,0.92259]].
-
-    Args:
-        n (int): The determinant of the HNFs.
-
-    Returns:
-        spHNFs (list of lists): The symmetry preserving HNFs.
-
-    """
-
-    from opf_python.universal import get_HNF_diagonals
-
-    diags = get_HNF_diagonals(n)
-
-    spHNFs = []
-    
-    for diag in diags:
-        a = diag[0]
-        c = diag[1]
-        f = diag[2]
-        b = 0
-        
-        if f%a==0 and f%c==0:
-            if c==f:
-                es = [0]
-                ds = [0]
-            else: 
-                es = [f-c]
-                if c==1 and f>3:
-                    ds = [3]
-                else:
-                    ds = range(0,es[0]+1,c)
-            for e in es:
-                if e%c==0 and e%a==0:
-                    for d in ds:
-                        if d%c==0 and d%a==0:
-                            g11 = 2*d-d*d/float(a) -d*e/float(c)
-                            g21 = 2*e-d*e/float(a)-e*e/float(c)
-                            g22 = -c+e-d*e/float(a)-e*e/float(c)
-                            if g11%f==0 and g21%f==0 and g22%f==0:
-                                HNF = [[a,0,0],[b,c,0],[d,e,f]]
-                                spHNFs.append(HNF)
-                                
-    return spHNFs                                    
-                                    
+                  

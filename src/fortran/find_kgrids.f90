@@ -64,7 +64,7 @@ CONTAINS
     real(dp), allocatable, intent(out) :: grids(:,:,:)
 
     integer :: lat_id, a_kpd, c_kpd(3), i, status, count, old, news
-    integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:), temp_hnfs2(:,:,:)
+    integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:), temp_hnfs2(:,:,:), n_irr_kp(:)
     real(dp) :: O(3,3), Nu(3,3), No(3,3), UB(3,3)
     integer :: Cu(3,3), Co(3,3), mult
     real(dp) :: eps
@@ -79,7 +79,7 @@ CONTAINS
 
     if ((lat_id==3) .or. (lat_id==5) .or. (lat_id==1)) then
        call get_kpd_cubic(lat_id,kpd,c_kpd)
-       allocate(sp_hnfs(3,3,3))
+       allocate(sp_hnfs(3,3,3), n_irr_kp(3))
        do i=1,3
           a_kpd = c_kpd(i)
           if (lat_id==3) then
@@ -292,11 +292,13 @@ CONTAINS
   !!used.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
-  SUBROUTINE grid_selection(lat_vecs, grids, shift, best_grid,eps_)
+  SUBROUTINE grid_selection(lat_vecs,B_vecs,at, grids, shift, best_grid,eps_)
     real(dp), intent(in) :: lat_vecs(3,3), shift(3)
     real(dp), allocatable, intent(in) :: grids(:,:,:)
     real(dp), optional, intent(in) :: eps_
     real(dp), intent(out) :: best_grid(3,3)
+    real(dp), pointer :: B_vecs(:,:)
+    integer, intent(inout) :: at(:)
 
     real(dp) :: reduced_grid(3,3), norms(3)
     integer :: i, n_irreducible
@@ -327,10 +329,10 @@ CONTAINS
        if ((r_min_best==0) .or. (r_min>r_min_best)) then
           r_min_best = r_min
           best_grid = grids(:,:,i)
-          call generateIrredKpointList(best_grid, R, shift, rdKlist, weights, eps_=eps)
+          call generateIrredKpointList(lat_vecs,B_vecs,at,best_grid, R, shift, rdKlist, weights, eps_=eps)
           n_irreducible = size(rdKlist,1)
        else if (abs(r_min-r_min_best)<eps) then
-          call generateIrredKpointList(best_grid, R, shift, rdKlist, weights, eps_=eps)
+          call generateIrredKpointList(lat_vecs,B_vecs,at,best_grid, R, shift, rdKlist, weights, eps_=eps)
           if (size(rdKlist,1) < n_irreducible) then
              r_min_best = r_min
              best_grid = grids(:,:,i)

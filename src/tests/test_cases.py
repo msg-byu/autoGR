@@ -161,12 +161,12 @@ def test_stet():
 def test_rhom():
     """Tests the trigonal lattice srHNF generation.
     """
-    from opf_python.rhom import rhom_9, rhom_24, rhom_4_2
+    from opf_python.rhom import rhom_9_24, rhom_4_2
 
     # niggli 9 (original) check
     srHNFs = []
     for n in range(1,501):
-        temp = rhom_9(n)
+        temp = rhom_9_24(n)
         for t in temp:
             if len(t) >0:
                 srHNFs.append(t)
@@ -188,29 +188,6 @@ def test_rhom():
     
     for t in srHNFs:
         assert t in brute
-        
-    # niggli 24 check
-    srHNFs = []
-    for n in range(1,501):
-        temp = rhom_24(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/rhom_24_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-    
-    for t in srHNFs:
-        assert t in brute 
 
     # niggli 2 and 4 check
     srHNFs = []
@@ -239,11 +216,9 @@ def test_rhom():
     for i in range(10):
         k = np.random.random_integers(501,100000)
         print("kpd",k)
-        s1 = rhom_9(k)
+        s1 = rhom_9_24(k)
         s2 = rhom_4_2(k)
-        s3 = rhom_24(k)
         assert len(s1)==len(s2)
-        assert len(s1)==len(s3)
     
 def test_hex():
     """Tests the hexagonal lattice srHNF generation.
@@ -309,12 +284,12 @@ def test_hex():
 def test_body_tet():
     """Tests the body centered tetragonal lattince srHNF generation.
     """
-    from opf_python.body_tet import body_tet_15, body_tet_6, body_tet_7, body_tet_18
+    from opf_python.body_tet import body_tet_6_7_15_18
 
-    # test body_tet 15 (original)
+    # test body_tet 6 7 15 and 18
     srHNFs = []
     for n in range(1,501):
-        temp = body_tet_15(n)
+        temp = body_tet_6_7_15_18(n)
         for t in temp:
             if len(t) >0:
                 srHNFs.append(t)
@@ -322,29 +297,6 @@ def test_body_tet():
     with open("tests/test_output/body_tet_1_500_n.out","r") as f:
         n_500 = int(f.readline().strip())
 
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/body_tet_15_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-                
-    for t in srHNFs:
-        assert t in brute
-
-    # test body_tet 6 (original)
-    srHNFs = []
-    for n in range(1,501):
-        temp = body_tet_6(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-                
     assert len(srHNFs) == n_500
 
     brute = []
@@ -360,63 +312,9 @@ def test_body_tet():
     for t in srHNFs:
         assert t in brute
 
-    # test body_tet 7 (original)
-    srHNFs = []
-    for n in range(1,501):
-        temp = body_tet_7(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-                
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/body_tet_7_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-                
-    for t in srHNFs:
-        assert t in brute
-
-    # test body_tet 18 (original)
-    srHNFs = []
-    for n in range(1,501):
-        temp = body_tet_18(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-                
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/body_tet_18_1_500_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-                
-    for t in srHNFs:
-        assert t in brute
-
-    # larger cell checks
-    for i in range(10):
-        k = np.random.random_integers(501,100000)
-        print("kpd",k)
-        s1 = body_tet_15(k)
-        s2 = body_tet_18(k)
-        s3 = body_tet_6(k)
-        s4 = body_tet_7(k)
-        assert len(s1)==len(s2)
-        assert len(s1)==len(s3)
-        assert len(s1)==len(s4)            
+	assert len(body_tet_6_7_15_18(928)) == 9    
+	assert len(body_tet_6_7_15_18(6000)) == 14
+	assert len(body_tet_6_7_15_18(12348)) == 12
         
 def test_so():
     """Tests the simple orthorhombic lattice srHNF generation.
@@ -713,7 +611,7 @@ def test_face_ortho():
 def test_sm():
     """Tests the simple monoclinic lattice srHNF generation.
     """
-    from opf_python.sm import sm_33
+    from opf_python.sm import sm_33, sm_35
 
     srHNFs = []
     for n in range(1,151):
@@ -728,7 +626,34 @@ def test_sm():
     assert len(srHNFs) == n_500
 
     brute = []
-    with open("tests/test_output/sm_1_150_srHNFs.out","r") as f:
+    with open("tests/test_output/sm_33_1_150_srHNFs.out","r") as f:
+        HNF = []
+        for line in f:
+            if len(line.strip().split()) == 0:
+                brute.append(HNF)
+                HNF = []
+            else:
+                HNF.append([int(i) for i in line.strip().split()])
+
+    
+    for t in srHNFs:
+        assert t in brute 
+	
+	#niggli 35
+	srHNFs = []
+    for n in range(1,151):
+        temp = sm_35(n)
+        for t in temp:
+            if len(t) >0:
+                srHNFs.append(t)
+
+    with open("tests/test_output/sm_1_150_n.out","r") as f:
+        n_500 = int(f.readline().strip())
+
+    assert len(srHNFs) == n_500
+
+    brute = []
+    with open("tests/test_output/sm_35_1_150_srHNFs.out","r") as f:
         HNF = []
         for line in f:
             if len(line.strip().split()) == 0:
@@ -744,58 +669,12 @@ def test_sm():
 def test_base_mono():
     """Tests the base centered monoclinic lattice srHNF generation.
     """
-    from opf_python.base_mono import base_mono_14, base_mono_27, base_mono_28, base_mono_41, base_mono_43, base_mono_10_17, base_mono_20_25, base_mono_29_30, base_mono_37_39
-
-    # niggli cell 14 (original)
-    srHNFs = []
-    for n in range(1,201):
-        temp = base_mono_14(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    with open("tests/test_output/base_mono_1_200_n.out","r") as f:
-        n_500 = int(f.readline().strip())
-
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/base_mono_14_1_200_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
     
-    for t in srHNFs:
-        assert t in brute 
-
-    # niggli cell 27
-    srHNFs = []
-    for n in range(1,201):
-        temp = base_mono_27(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/base_mono_27_1_200_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-    
-    for t in srHNFs:
-        assert t in brute 
+    from opf_python.base_mono import base_mono_28, base_mono_43, base_mono_20_25, base_mono_29_30, base_mono_10_14_17_27_37_39_41
 
     # niggli cell 28
+    with open("tests/test_output/base_mono_1_200_n.out","r") as f:
+        n_500 = int(f.readline().strip())
     srHNFs = []
     for n in range(1,201):
         temp = base_mono_28(n)
@@ -807,29 +686,6 @@ def test_base_mono():
 
     brute = []
     with open("tests/test_output/base_mono_28_1_200_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-    
-    for t in srHNFs:
-        assert t in brute 
-
-    # niggli cell 10 and 17
-    srHNFs = []
-    for n in range(1,201):
-        temp = base_mono_10_17(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/base_mono_10_1_200_srHNFs.out","r") as f:
         HNF = []
         for line in f:
             if len(line.strip().split()) == 0:
@@ -887,10 +743,10 @@ def test_base_mono():
     for t in srHNFs:
         assert t in brute 
 
-    # niggli cell 37 and 39
+    # niggli cell 10, 14, 17, 27, 37, 39 and 41
     srHNFs = []
     for n in range(1,201):
-        temp = base_mono_37_39(n)
+        temp = base_mono_10_14_17_27_37_39_41(n)
         for t in temp:
             if len(t) >0:
                 srHNFs.append(t)
@@ -899,29 +755,6 @@ def test_base_mono():
 
     brute = []
     with open("tests/test_output/base_mono_37_1_200_srHNFs.out","r") as f:
-        HNF = []
-        for line in f:
-            if len(line.strip().split()) == 0:
-                brute.append(HNF)
-                HNF = []
-            else:
-                HNF.append([int(i) for i in line.strip().split()])
-    
-    for t in srHNFs:
-        assert t in brute 
-
-    # niggli cell 41
-    srHNFs = []
-    for n in range(1,201):
-        temp = base_mono_41(n)
-        for t in temp:
-            if len(t) >0:
-                srHNFs.append(t)
-
-    assert len(srHNFs) == n_500
-
-    brute = []
-    with open("tests/test_output/base_mono_41_1_200_srHNFs.out","r") as f:
         HNF = []
         for line in f:
             if len(line.strip().split()) == 0:
@@ -960,20 +793,11 @@ def test_base_mono():
     for i in range(10):
         k = np.random.random_integers(201,10000)
         print("kpd",k)
-        s1 = base_mono_14(k)
-        s2 = base_mono_10_17(k)
-        s3 = base_mono_20_25(k)
-        s4 = base_mono_27(k)
-        s5 = base_mono_28(k)
-        s6 = base_mono_29_30(k)
-        s7 = base_mono_37_39(k)
-        s8 = base_mono_41(k)
-        s9 = base_mono_43(k)
+        s1 = base_mono_20_25(k)
+        s2 = base_mono_28(k)
+        s3 = base_mono_29_30(k)
+        s4 = base_mono_10_14_17_27_37_39_41(k)
+        s5 = base_mono_43(k)
         assert len(s1)==len(s2)
         assert len(s1)==len(s3)
         assert len(s1)==len(s4)
-        assert len(s1)==len(s5)
-        assert len(s1)==len(s6)
-        assert len(s1)==len(s7)
-        assert len(s1)==len(s8)
-        assert len(s1)==len(s9)

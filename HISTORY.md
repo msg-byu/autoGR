@@ -1,5 +1,10 @@
 # Revision History
 
+## Revision 0.4.1 (WSM)
+- Fixed a bug in the fortran driver where a negative determinant was
+  being used to find the number of k-points wanted.
+- Update basis 2 and 4 with better algorithm.
+
 ## Revision 0.4.0 (WSM)
 - Fixed the driver to work with the new code setup.
 - Fixed the issues in the makefile.
