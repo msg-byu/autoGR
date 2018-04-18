@@ -4,7 +4,7 @@ Module sp_hnfs
   implicit none
   private
   public sc_3, fcc_1, bcc_5, hex_12, hex_22, rhom_9, rhom_4_2, rhom_24, st_11, st_21, &
-       bct_15, bct_6, bct_7, bct_18, so_32, baseco_23, baseco_36, baseco_40, baseco_38_13, &
+       bct_6_7_15_18, so_32, baseco_23, baseco_36, baseco_40, baseco_38_13, &
        bco_19, bco_8, bco_42, fco_26, fco_16, sm_33, sm_34, sm_35, basecm_10_14_17_27_37_39_41, &
        basecm_43, basecm_28, basecm_29_30, basecm_20_25, tric_31_44
 
@@ -251,7 +251,8 @@ CONTAINS
                          gamma12 = 2*d + b*d/a - e*beta11/c
                          gamma21 = c*d/c - 2*e - b*e/a
                          gamma22 = (c*d - b*e)/a
-                         if ((MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. (MOD(gamma21,f)==0) .and. (MOD(gamma22,f) ==0)) then
+                         if ((MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. &
+                          (MOD(gamma21,f)==0) .and. (MOD(gamma22,f) ==0)) then
                             nhnfs = nhnfs + 1
                             temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
                                  0, int(c), int(e), &

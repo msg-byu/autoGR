@@ -185,8 +185,25 @@
 	       folder="./tests/spHNFs" rename="a.in"/>
       </assignment>
     </group>
-  </decorates>  
-
+  </decorates> 
+ 
+  <decorates name="sp_hnfs.bct_6_7_15_18">
+    <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
+      <test identifier="original" description="Tests of symmetry preserving HNF generation"
+	    cases="bt_6_7_15_18_[1-7]" timed="true">
+	<output folder="./tests/spHNFs"
+		file="spHNFs.out.{}" template="integer.xml"
+		identifier="spHNFs.out"/>
+	<target name="spHNFs" compareto="spHNFs.out"
+		varfile="spHNFs.out" when="each"/>
+      </test>
+      <assignment name="n" value="nfile">
+	<value identifier="nfile" file="n.in.{}"
+	       folder="./tests/spHNFs" rename="n.in"/>
+      </assignment>
+    </group>
+  </decorates> 
+<!--
   <decorates name="sp_hnfs.bct_15">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -254,7 +271,7 @@
       </assignment>
     </group>
   </decorates>  
-
+-->
   <decorates name="sp_hnfs.so_32">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -476,6 +493,23 @@
     </group>
   </decorates>  
 
+  <decorates name="sp_hnfs.basecm_10_14_17_27_37_39_41">
+    <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
+      <test identifier="original" description="Tests of symmetry preserving HNF generation"
+	    cases="basecm_10_14_17_27_37_39_41[1-5]" timed="true">
+	<output folder="./tests/spHNFs"
+		file="spHNFs.out.{}" template="integer.xml"
+		identifier="spHNFs.out"/>
+	<target name="spHNFs" compareto="spHNFs.out"
+		varfile="spHNFs.out" when="each"/>
+      </test>
+      <assignment name="n" value="nfile">
+	<value identifier="nfile" file="n.in.{}"
+	       folder="./tests/spHNFs" rename="n.in"/>
+      </assignment>
+    </group>
+  </decorates> 
+<!--
   <decorates name="sp_hnfs.basecm_14">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -509,7 +543,7 @@
       </assignment>
     </group>
   </decorates>  
-
+-->
   <decorates name="sp_hnfs.basecm_20_25">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -526,7 +560,7 @@
       </assignment>
     </group>
   </decorates>  
-
+<!--
   <decorates name="sp_hnfs.basecm_27">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -543,7 +577,7 @@
       </assignment>
     </group>
   </decorates>  
-
+-->
   <decorates name="sp_hnfs.basecm_28">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -577,7 +611,7 @@
       </assignment>
     </group>
   </decorates>  
-
+<!--
   <decorates name="sp_hnfs.basecm_41">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -611,7 +645,7 @@
       </assignment>
     </group>
   </decorates>  
-
+-->
   <decorates name="sp_hnfs.basecm_43">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
