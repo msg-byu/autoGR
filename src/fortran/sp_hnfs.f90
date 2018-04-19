@@ -1061,25 +1061,32 @@ CONTAINS
        c = diagonals(2,i)
        f = diagonals(3,i)
 
-       if (MOD(c,2.0_dp)==0) then
-          allocate(bs(2))
-          bs = (/0.0_dp,(c/2.0_dp)/)
-       else
-          allocate(bs(1))
-          bs = (/0.0_dp/)
+       if (MOD(f,c)==0) then
+          do j=0,int(f-1.0_dp),int(c)
+             e = real(j,dp)
+             gamma21 = -2.0_dp*e+e*e/c
+             if (MOD(gamma21,f)==0) then
+                do k=0,int(c-1.0_dp)
+                   b = real(k,dp)
+                   beta12 = -a+2.0_dp*b
+                   if (MOD(beta12,c)==0) then
+                      do z=0,int(f-1.0_dp)
+                         d = real(z,dp)
+                         beta11 = beta12-d
+                         gamma11 = -e*beta11/c
+                         gamma12 = 2.0_dp*d-e*beta12/c
+                         if ((MOD(beta11,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0)) then
+                            nhnfs = nhnfs + 1
+                            temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
+                                 0, int(c), int(e), &
+                                 0, 0, int(f)/),(/3,3/))
+                         end if
+                      end do
+                   end if
+                end do
+             end if
+          end do
        end if
-       do j,size(bs)
-         b = bs(j)
-         do k, int(f-1)
-           e = real(k,dp)
-           gamma11 = -b-2*b*e/c
-           gamma21 = c+2*e
-           if((MOD(gamma11,f) .and. MOD(gamma21)))them
-
-
-         end do
-       end do
-       deallocate(bs)
     end do
 
     allocate(spHNFs(3,3,nhnfs))
