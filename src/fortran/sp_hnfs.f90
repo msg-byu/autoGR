@@ -1025,8 +1025,8 @@ CONTAINS
 
   !!<summary>Finds the symmetry preserving HNFs for the face centered
   !!orthorhombic lattice with determinant n. Assuming the basis of A =
-  !![[ 1.  , 1.  , -1.  ], [-1.779796, 0.1798 , 0.  ], [ 0.735376,
-  !!-1.61953 , -1.68415 ]].</summary>
+  !![[1.04442, 1.43973, 1.68415], [0.779796, -1.1789, 1.0],
+  !![1.779796, -0.1789, 0]].</summary>
   !!<parameter name="n" regular="true">The target determinant of the
   !!HNFs.</parameter>
   !!<parameter name="spHNFs" regular="true">The symmetry preserving
@@ -1042,6 +1042,7 @@ CONTAINS
     integer, allocatable :: temp_HNFs(:,:,:)
 
     real(dp) :: beta11, beta12, gamma11, gamma12, gamma21
+    real(dp), allocatable :: bs(:)
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -1061,33 +1062,35 @@ CONTAINS
        c = diagonals(2,i)
        f = diagonals(3,i)
 
-       if (MOD(f,c)==0) then
-          do j=0,int(f-1.0_dp),int(c)
-             e = real(j,dp)
-             gamma21 = -2.0_dp*e+e*e/c
-             if (MOD(gamma21,f)==0) then
-                do k=0,int(c-1.0_dp)
-                   b = real(k,dp)
-                   beta12 = -a+2.0_dp*b
-                   if (MOD(beta12,c)==0) then
-                      do z=0,int(f-1.0_dp)
-                         d = real(z,dp)
-                         beta11 = beta12-d
-                         gamma11 = -e*beta11/c
-                         gamma12 = 2.0_dp*d-e*beta12/c
-                         if ((MOD(beta11,c)==0) .and. (MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0)) then
-                            nhnfs = nhnfs + 1
-                            temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
-                                 0, int(c), int(e), &
-                                 0, 0, int(f)/),(/3,3/))
-                         end if
-                      end do
-                   end if
-                end do
-             end if
-          end do
+       if (MOD(c,2.0_dp)==0) then
+          allocate(bs(2))
+          bs = (/0.0_dp,real(int(c)/2,dp)/)
+       else
+          allocate(bs(1))
+          bs = (/0.0_dp/)
        end if
+       do j=1, size(bs)
+         do k=0, int(f-1)
+           b = bs(j)
+           e = real(k,dp)
+           gamma11 = -b-2*b*e/c
+           gamma21 = c+2*e
+           if(MOD(gamma11,f)==0 .and. MOD(gamma21,f)==0)then
+             do z=0,int(f-1)
+               d = real(z,dp)
+               gamma12 = a+2*d-(2*b*e/c)
+               if(MOD(gamma12,f)==0)then
+                 nhnfs = nhnfs + 1
+                 temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
+                    0, int(c), int(e), &
+                    0, 0, int(f)/),(/3,3/))
+               end if
+             end do
+           end if
+       end do
     end do
+    deallocate(bs)
+  end do
 
     allocate(spHNFs(3,3,nhnfs))
 
