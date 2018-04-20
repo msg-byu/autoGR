@@ -970,7 +970,7 @@ CONTAINS
 
        if (MOD(c,2.0_dp)==0) then
           allocate(bs(2))
-          bs = (/0.0_dp,real(int(c)/2,dp)/)
+          bs = (/real(int(c)/2,dp),0.0_dp/)
        else
           allocate(bs(1))
           bs = (/0.0_dp/)
