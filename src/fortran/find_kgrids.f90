@@ -139,10 +139,8 @@ CONTAINS
              call so_32(a_kpd,temp_hnfs)
           else if (lat_id==33) then
              call sm_33(a_kpd,temp_hnfs)
-          else if (lat_id==34) then
-             call sm_34(a_kpd,temp_hnfs)
-          else if (lat_id==35) then
-             call sm_35(a_kpd,temp_hnfs)
+          else if (lat_id==34 .or. lat_id==35) then
+             call sm_34_35(a_kpd,temp_hnfs)
           else if (lat_id==36) then
              call baseco_36(a_kpd,temp_hnfs)
           else if (lat_id==40) then

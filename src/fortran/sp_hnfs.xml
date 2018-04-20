@@ -459,7 +459,7 @@
       </assignment>
     </group>
   </decorates>
-
+<!--
   <decorates name="sp_hnfs.sm_35">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -476,8 +476,8 @@
       </assignment>
     </group>
   </decorates>
-
-  <decorates name="sp_hnfs.sm_34">
+-->
+  <decorates name="sp_hnfs.sm_34_35">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
 	    cases="sm_34_[1-6]" timed="true">

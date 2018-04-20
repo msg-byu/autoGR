@@ -624,7 +624,7 @@ CONTAINS
                 O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.618034_dp,-1.0_dp,-1.05557_dp,1.99895_dp,-0.943376_dp/),(/3,3/))
              else
                 id = 35
-                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.61803_dp,-0.618034_dp,-1.0_dp,-0.668912_dp,1.96676_dp,-1.29785_dp/),(/3,3/))
+                O = reshape((/-0.668912_dp,1.96676_dp,-1.29785_dp,1.61803_dp,-0.618034_dp,-1.0_dp,1.0_dp,1.0_dp,1.0_dp/),(/3,3/))
              end if
           else if (isclose(D,F,atol_=eps) .and. isclose(0.0_dp,D,atol_=eps)) then
              if (isclose((-A/2.0_dp),E,atol_=eps)) then

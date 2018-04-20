@@ -5,7 +5,7 @@ Module sp_hnfs
   private
   public sc_3, fcc_1, bcc_5, hex_12, hex_22, rhom_9, rhom_4_2, rhom_24, st_11, st_21, &
        bct_6_7_15_18, so_32, baseco_23, baseco_36, baseco_40, baseco_38_13, &
-       bco_19, bco_8, bco_42, fco_26, fco_16, sm_33, sm_34, sm_35, basecm_10_14_17_27_37_39_41, &
+       bco_19, bco_8, bco_42, fco_26, fco_16, sm_33, sm_34_35, basecm_10_14_17_27_37_39_41, &
        basecm_43, basecm_28, basecm_29_30, basecm_20_25, tric_31_44
 
   integer, parameter:: dp=selected_real_kind(15,307)
@@ -1741,83 +1741,14 @@ CONTAINS
 
   !!<summary>Finds the symmetry preserving HNFs for the simple
   !!monoclinic lattice with determinant n. Assuming the basis of A =
-  !![[1,1,1],[1.61803,-0.618034,-1],[-0.668912,1.96676,-1.29785]].</summary>
+  !![[1,1,1],[1.22474487,-1.22474487,-1],[-0.16598509,-1.64308297,1.80906806]]
+  !!for 34, and a =  =[[-0.668912,1.96676,-1.29785],[1.61803,-0.618034,-1.0]
+  !!,[1.0,1.0,1.0]] for 35.</summary>
   !!<parameter name="n" regular="true">The target determinant of the
   !!HNFs.</parameter>
   !!<parameter name="spHNFs" regular="true">The symmetry preserving
   !!HNFs.</parameter>
-  SUBROUTINE sm_35(n,spHNFs)
-    integer, intent(in) :: n
-    integer, allocatable, intent(out) :: spHNFs(:,:,:)
-
-    integer, pointer :: diagonals(:,:) => null()
-    real(dp) :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
-    integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
-
-    real(dp) :: gamma12
-    real(dp), allocatable :: bs(:)
-
-    call get_HNF_diagonals(n,diagonals)
-
-    nds = size(diagonals,2)
-    nhnfs = 0
-    total_hnfs = 0
-
-    do i = 1,nds
-       total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
-    end do
-
-    allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in sm_35."
-
-    do i =1,nds
-       a = diagonals(1,i)
-       c = diagonals(2,i)
-       f = diagonals(3,i)
-
-       if (MOD(c,2.0_dp)==0) then
-          allocate(bs(2))
-          bs = (/0.0_dp,(c/2.0_dp)/)
-       else
-          allocate(bs(1))
-          bs = (/0.0_dp/)
-       end if
-
-       do j=1,size(bs)
-          b = bs(j)
-          do k=0,int(f-1.0_dp)
-             d = real(k,dp)
-             do z=0,int(f-1.0_dp)
-                e = real(z,dp)
-                gamma12 = 2.0_dp*d-2.0_dp*b*e/c
-                if (MOD(gamma12,f)==0) then
-                   nhnfs = nhnfs + 1
-                   temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
-                        0, int(c), int(e), &
-                        0, 0, int(f)/),(/3,3/))
-                end if
-             end do
-          end do
-       end do
-       deallocate(bs)
-    end do
-
-    allocate(spHNFs(3,3,nhnfs))
-
-    spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-
-  end SUBROUTINE sm_35
-
-  !!<summary>Finds the symmetry preserving HNFs for the simple
-  !!monoclinic lattice with determinant n. Assuming the basis of A =
-  !![[1,1,1],[1.22474487,-1.22474487,-1],[-0.16598509,-1.64308297,1.80906806]].</summary>
-  !!<parameter name="n" regular="true">The target determinant of the
-  !!HNFs.</parameter>
-  !!<parameter name="spHNFs" regular="true">The symmetry preserving
-  !!HNFs.</parameter>
-  SUBROUTINE sm_34(n,spHNFs)
+  SUBROUTINE sm_34_35(n,spHNFs)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
 
@@ -1840,7 +1771,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in sm_34."
+    if (status/=0) stop "Failed to allocate memory in sm_34_35."
 
     do i =1,nds
        a = diagonals(1,i)
@@ -1877,7 +1808,7 @@ CONTAINS
 
     spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
 
-  end SUBROUTINE sm_34
+  end SUBROUTINE sm_34_35
 
   !!<summary>Finds the symmetry preserving HNFs for the base centered
   !!monoclinic lattice with determinant n. Assuming:
