@@ -580,7 +580,7 @@ CONTAINS
                 O = reshape((/-0.3333333_dp,-1.54116_dp,1.87449_dp,1.0_dp,1.0_dp,1.0_dp,2.0_dp,-1.0_dp,-1.0_dp/),(/3,3/))
              else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps) .and. isclose((-A/3.0_dp),E,atol_=eps)) then
                 id = 24
-                O = reshape((/-1.0_dp,0.0_dp,-1.0_dp,1.51184_dp,0.0_dp,-0.845178_dp,-0.255922_dp,-1.44338_dp,0.92259_dp/),(/3,3/))
+                O = reshape((/-0.255922_dp,-1.44338_dp,0.92259_dp,1.51184_dp,0.0_dp,-0.845178_dp,1.255922_dp,1.44338_dp,0.07741_dp/),(/3,3/))
              else
                 id = 25
                 O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.45119_dp,-1.70119_dp,-1.0_dp,0.28878_dp,-3.26895_dp,0.48018_dp/),(/3,3/))

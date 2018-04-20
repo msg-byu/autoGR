@@ -1041,7 +1041,7 @@ CONTAINS
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    real(dp) :: beta11, beta12, gamma11, gamma12, gamma21
+    real(dp) :: gamma11, gamma12, gamma21
     real(dp), allocatable :: bs(:)
 
     call get_HNF_diagonals(n,diagonals)

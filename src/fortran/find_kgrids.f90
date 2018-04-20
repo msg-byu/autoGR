@@ -106,8 +106,8 @@ CONTAINS
              call bct_6_7_15_18(a_kpd,temp_hnfs)
           else if (lat_id==8) then
              call bco_8(a_kpd,temp_hnfs)
-          else if (lat_id==9) then
-             call rhom_9(a_kpd,temp_hnfs)
+          else if (lat_id==9 .or. lat_id==24) then
+             call rhom_9_24(a_kpd,temp_hnfs)
           else if ((lat_id==10) .or. (lat_id==14) .or. (lat_id==17) .or. (lat_id==27) &
                   .or. (lat_id==37) .or. (lat_id==39) .or. (lat_id == 41)) then
              call basecm_10_14_17_27_37_39_41(a_kpd,temp_hnfs)
@@ -129,8 +129,6 @@ CONTAINS
              call hex_22(a_kpd,temp_hnfs)
           else if (lat_id==23) then
              call baseco_23(a_kpd,temp_hnfs)
-          else if (lat_id==24) then
-             call rhom_24(a_kpd,temp_hnfs)
           else if (lat_id==26) then
              call fco_26(a_kpd,temp_hnfs)
           else if (lat_id==28) then

@@ -16,7 +16,7 @@
       </assignment>
     </group>
   </decorates>
-  
+
   <decorates name="sp_hnfs.fcc_1">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -49,7 +49,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.hex_12">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -66,7 +66,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.hex_22">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -83,9 +83,9 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
-  <decorates name="sp_hnfs.rhom_9">
+  <decorates name="sp_hnfs.rhom_9_24">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
 	    cases="rhom_9_[1-5]" timed="true">
@@ -100,7 +100,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.rhom_4_2">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -117,8 +117,8 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
-
+  </decorates>
+<!--
   <decorates name="sp_hnfs.rhom_24">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -134,7 +134,8 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
+-->
 
   <decorates name="sp_hnfs.st_11">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -151,7 +152,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.st_21">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -168,7 +169,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.smallest_prime">
     <group name="math" purpose="testing" staging="../../unittests/">
@@ -185,8 +186,8 @@
 	       folder="./tests/spHNFs" rename="a.in"/>
       </assignment>
     </group>
-  </decorates> 
- 
+  </decorates>
+
   <decorates name="sp_hnfs.bct_6_7_15_18">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
@@ -202,7 +203,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates> 
+  </decorates>
 <!--
   <decorates name="sp_hnfs.bct_15">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -219,7 +220,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.bct_7">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -236,7 +237,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.bct_6">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -253,7 +254,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.bct_18">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -270,7 +271,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 -->
   <decorates name="sp_hnfs.so_32">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -287,7 +288,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.fco_26">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -304,7 +305,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.fco_16">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -321,7 +322,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.bco_19">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -338,7 +339,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.bco_8">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -355,7 +356,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.bco_42">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -372,7 +373,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.baseco_38_13">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -389,7 +390,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.baseco_23">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -406,7 +407,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.baseco_40">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -423,7 +424,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.baseco_36">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -440,7 +441,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.sm_33">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -457,7 +458,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.sm_35">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -474,7 +475,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.sm_34">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -491,7 +492,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.basecm_10_14_17_27_37_39_41">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -508,7 +509,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates> 
+  </decorates>
 <!--
   <decorates name="sp_hnfs.basecm_14">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -525,7 +526,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.basecm_10_17">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -542,7 +543,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 -->
   <decorates name="sp_hnfs.basecm_20_25">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -559,7 +560,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 <!--
   <decorates name="sp_hnfs.basecm_27">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -576,7 +577,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 -->
   <decorates name="sp_hnfs.basecm_28">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -593,7 +594,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.basecm_29_30">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -610,7 +611,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 <!--
   <decorates name="sp_hnfs.basecm_41">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -627,7 +628,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.basecm_37_39">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -644,7 +645,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 -->
   <decorates name="sp_hnfs.basecm_43">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -661,7 +662,7 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 
   <decorates name="sp_hnfs.tric_31_44">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
@@ -678,5 +679,5 @@
 	       folder="./tests/spHNFs" rename="n.in"/>
       </assignment>
     </group>
-  </decorates>  
+  </decorates>
 </fortpy>
