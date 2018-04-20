@@ -3,7 +3,7 @@
 Module sp_hnfs
   implicit none
   private
-  public sc_3, fcc_1, bcc_5, hex_12, hex_22, rhom_9, rhom_4_2, rhom_24, st_11, st_21, &
+  public sc_3, fcc_1, bcc_5, hex_12, hex_22, rhom_9_24, rhom_4_2, st_11, st_21, &
        bct_6_7_15_18, so_32, baseco_23, baseco_36, baseco_40, baseco_38_13, &
        bco_19, bco_8, bco_42, fco_26, fco_16, sm_33, sm_34_35, basecm_10_14_17_27_37_39_41, &
        basecm_43, basecm_28, basecm_29_30, basecm_20_25, tric_31_44
@@ -344,12 +344,15 @@ CONTAINS
 
   !!<summary>Finds the symmetry preserving HNFs for the rhombohedral
   !!lattice with determinant n. Assuming the basis of A =
-  !![[1,2,2],[2,1,2],[4,3,3]].</summary>
+  !![[1,2,2],[2,1,2],[4,3,3]]for basis 9, A = [[-0.255922,-1.44338,0.92259],
+  !![1.51184,0,-0.845178],[1.255922,1.44338,0.07741]]
+	!!for basis 24.</summary>
   !!<parameter name="n" regular="true">The target determinant of the
   !!HNFs.</parameter>
   !!<parameter name="spHNFs" regular="true">The symmetry preserving
   !!HNFs.</parameter>
-  SUBROUTINE rhom_9(n,spHNFs)
+
+  SUBROUTINE rhom_9_24(n,spHNFs)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
 
@@ -373,7 +376,7 @@ CONTAINS
     end do
 
     allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in rhom_9."
+    if (status/=0) stop "Failed to allocate memory in rhom_9_24."
 
     do i =1,nds
        a = diagonals(1,i)
@@ -425,7 +428,7 @@ CONTAINS
 
     spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
 
-  end SUBROUTINE rhom_9
+  end SUBROUTINE rhom_9_24
 
   !!<summary>Finds the symmetry preserving HNFs for the rhombohedral
   !!lattice with determinant n. Assuming A = [[-1.11652,-0.610985,0.616515],
@@ -512,103 +515,6 @@ CONTAINS
     spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
 
   END SUBROUTINE rhom_4_2
-
-
-  !!<summary>Finds the symmetry preserving HNFs for the rhombohedral
-  !!lattice with determinant n. Assuming A =
-  !![[-1,0,-1],[1.51184,0,-0.845178],[-0.255922,-1.44338,0.92259]].</summary>
-  !!<parameter name="n" regular="true">The target determinant of the
-  !!HNFs.</parameter>
-  !!<parameter name="spHNFs" regular="true">The symmetry preserving
-  !!HNFs.</parameter>
-  SUBROUTINE rhom_24(n,spHNFs)
-    integer, intent(in) :: n
-    integer, allocatable, intent(out) :: spHNFs(:,:,:)
-
-    integer, pointer :: diagonals(:,:) => null()
-    real(dp) :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k
-    integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
-
-    real(dp) :: gamma11, gamma21, gamma22
-    real(dp), allocatable :: ds(:), es(:), temp(:)
-    integer :: count
-
-    call get_HNF_diagonals(n,diagonals)
-
-    nds = size(diagonals,2)
-    nhnfs = 0
-    total_hnfs = 0
-
-    do i = 1,nds
-       total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
-    end do
-
-    allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in rhom_24."
-
-    do i =1,nds
-       a = diagonals(1,i)
-       c = diagonals(2,i)
-       f = diagonals(3,i)
-
-       b = 0.0_dp
-
-       if ((MOD(f,a)==0) .and. (MOD(f,c)==0)) then
-          if (c==f) then
-             allocate(es(1),ds(1))
-             es = (/0.0_dp/)
-             ds = (/0.0_dp/)
-          else
-             allocate(es(1))
-             es = (/f-c/)
-             if ((c==1) .and. (f>3)) then
-                allocate(ds(1))
-                ds = (/3.0_dp/)
-             else
-                allocate(temp(int(f)))
-                count = 0
-                do j=1,int(f)
-                   if ((MOD(j-1,int(c))==0) .and. ((j-1)<(es(1)+1.0_dp))) then
-                      count = count + 1
-                      temp(count) = real(j-1,dp)
-                   end if
-                end do
-                allocate(ds(count))
-                ds(1:count) = temp(1:count)
-                deallocate(temp)
-             end if
-          end if
-
-          do j=1,size(es)
-             e = es(j)
-             if ((MOD(e,c)==0) .and. (MOD(e,a)==0)) then
-                do k=1,size(ds)
-                   d = ds(k)
-                   if ((MOD(d,c)==0) .and. (MOD(d,a)==0)) then
-                      gamma11 = 2*d-(d*d/a)-d*e/c
-                      gamma21 = 2*e-(d*e/a)-e*e/c
-                      gamma22 = -c+e-(d*e/a)-e*e/c
-                      if ((MOD(gamma11,f)==0) .and. (MOD(gamma21,f)==0) .and. (MOD(gamma22,f)==0)) then
-                         nhnfs = nhnfs + 1
-                         temp_HNFs(:,:,nhnfs) = reshape((/ int(a), int(b), int(d), &
-                              0, int(c), int(e), &
-                              0, 0, int(f)/),(/3,3/))
-                      end if
-                   end if
-                end do
-             end if
-          end do
-          deallocate(ds,es)
-       end if
-    end do
-
-    allocate(spHNFs(3,3,nhnfs))
-
-    spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-
-  end SUBROUTINE rhom_24
 
   !!<summary>Finds the symmetry preserving HNFs for the simple
   !!tetragonal lattice with determinant n. Assuming the basis of A =
