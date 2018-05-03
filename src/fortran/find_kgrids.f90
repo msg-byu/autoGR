@@ -21,18 +21,26 @@ CONTAINS
   !!vectors.</parameter>
   !!<parameter name="kpd" regular="true">The target kpoint
   !!density.</parameter>
-  !!<parameter name="grids" regular="true">The kpoint grids
+  !!<parameter name="best_grid" regular="true">The kpoint grids
   !!found.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
-  SUBROUTINE find_grids(lat_vecs,kpd,grids,eps_)
+  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!vectors.</parameter>
+  !!<parameter name="at" regular="True">The atom types in the
+  !!basis.</parameter>
+  SUBROUTINE find_grids(lat_vecs, kpd, B_vecs, at, grid, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
+    real(dp), pointer :: B_vecs(:,:)
     integer, intent(in) :: kpd
+    integer, intent(inout) :: at(:)
     real(dp), optional, intent(in) :: eps_
-    real(dp), allocatable, intent(out) :: grids(:,:,:)
+    real(dp), intent(out) :: best_grid(3,3)
 
     integer :: lat_id, a_kpd, c_kpd(3), i, status, count, old, news
-    integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:), temp_hnfs2(:,:,:), n_irr_kp(:)
+    integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:), 
+    integer, allocatable :: temp_hnfs2(:,:,:), n_irr_kp(:), nhnfs(:)
+    real(dp), allocatable :: grids(:,:,:), rmin(:)
     real(dp) :: O(3,3), Nu(3,3), No(3,3), UB(3,3)
     integer :: Cu(3,3), Co(3,3), mult
     real(dp) :: eps
@@ -40,36 +48,41 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-5
+       eps = 1E-6
     end if
 
     call id_cell(lat_vecs,Nu,Cu,O,No,Co,lat_id,eps_=eps)
 
     if ((lat_id==3) .or. (lat_id==5) .or. (lat_id==1)) then
        call get_kpd_cubic(lat_id,kpd,c_kpd)
-       allocate(sp_hnfs(3,3,3), n_irr_kp(3))
+       allocate(sp_hnfs(3,3,3), n_irr_kp(3), rmin(3), nhnfs(3), grids(3,3,3))
        do i=1,3
           a_kpd = c_kpd(i)
           if (lat_id==3) then
-             call sc_3(a_kpd,temp_hnfs)
+             call sc_3(a_kpd, No, Nu, Co, Cu, lat_vecs, B_vecs, at, temp_hnfs, &
+                  grids(:,:,i), rmin(i), n_irr_kp(i), nhnfs(i), eps_=eps)
           else if (lat_id==5) then
-             call bcc_5(a_kpd,temp_hnfs)
+             call bcc_5(a_kpd, No, Nu, Co, Cu, lat_vecs, B_vecs, at, temp_hnfs, &
+                  grids(:,:,i), rmin(i), n_irr_kp(i), nhnfs(i), eps_=eps)
           else if (lat_id==1) then
-             call fcc_1(a_kpd,temp_hnfs)
+             call fcc_1(a_kpd, No, Nu, Co, Cu, lat_vecs, B_vecs, at, temp_hnfs, &
+                  grids(:,:,i), rmin(i), n_irr_kp(i), nhnfs(i), eps_=eps)
           end if
           sp_hnfs(:,:,i) = temp_hnfs(:,:,1)
           deallocate(temp_hnfs)
        end do
     else if ((lat_id==44) .or. (lat_id==31)) then
-       call get_kpd_tric(kpd,a_kpd,mult)
-       call tric_31_44(a_kpd,sp_hnfs)
+       call get_kpd_tric(kpd, a_kpd, mult)
+       call tric_31_44(a_kpd, No, Nu, Co, Cu, lat_vecs, B_vecs, at, mult, temp_hnfs, &
+                  grids(:,:,i), rmin(i), n_irr_kp(i), nhnfs(i), eps_=eps)
        sp_hnfs = sp_hnfs*mult
     else
        count = 0
        a_kpd = kpd
        do while ((count <5) .and. (a_kpd-kpd<=10))
           if ((lat_id==2) .or. (lat_id==4)) then
-             call rhom_4_2(a_kpd,temp_hnfs)
+             call rhom_4_2(a_kpd, No, Nu, Co, Cu, lat_vecs, B_vecs, at, temp_hnfs, &
+                  grids(:,:,i), rmin(i), n_irr_kp(i), nhnfs(i), eps_=eps)
           else if (lat_id==6 .or.lat_id==7 .or. lat_id==15 .or.lat_id==18) then
              call bct_6_7_15_18(a_kpd,temp_hnfs)
           else if (lat_id==8) then

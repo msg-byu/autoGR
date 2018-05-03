@@ -3875,6 +3875,8 @@ CONTAINS
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
+  !!<parameter name="mult" regular="true">Multiplication factor to
+  !!reach correct determinant.</parameter>
   !!<parameter name="spHNFs" regular="true">The symmetry preserving
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
@@ -3884,10 +3886,10 @@ CONTAINS
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
-  !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>  
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, spHNFs, grid, rmin, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -3952,11 +3954,13 @@ CONTAINS
                    spHNFs(:,:,nhnfs) = reshape((/ d(1,i), j, k, &
                         0, d(2,i), l, &
                         0, 0, d(3,i)/),(/3,3/))
+                   spHNFs(:,:,nhnfs) = spHNFs(:,:,nhnfs)*mult
                 else
                    
                    spHNFs(:,:,1) = reshape((/ d(1,i), j, k, &
                         0, d(2,i), l, &
                         0, 0, d(3,i)/),(/3,3/))
+                   spHNFs(:,:,1) = spHNFs(:,:,nhnfs)*mult
                    call compare_grids(U, B_vecs, at, &
                         spHNFs(:,:,1), No, Nu, Co, Cu, O, &
                         grid, rmin, n_irr, eps_)
