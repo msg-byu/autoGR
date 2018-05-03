@@ -15,7 +15,7 @@ Module sp_hnfs
   integer, parameter:: si=selected_int_kind(1) ! very short integer -10..10 range
   integer, parameter:: li=selected_int_kind(18) ! Big integer -10^18..10^18 range
 
-kCONTAINS
+CONTAINS
 
   !!<summary>Finds the symmetry preserving HNFs for the simple cubic
   !!lattice with determinant n. Assuming the basis of A =
@@ -45,10 +45,10 @@ kCONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, n_irr, nhnfs, eps_)
+  SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+       n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), allocatable, intent(out) :: grids(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
@@ -142,10 +142,10 @@ kCONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, spHNFs, grid, rmin, n_irr, eps_)
+  SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+       n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), allocatable, intent(out) :: grids(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
@@ -199,7 +199,6 @@ kCONTAINS
     rmin = 0.0_dp
     n_irr = 0
     grid = 0.0_dp
-    allocate(grids(3,3,1),STAT=status)
     call grid_metrics(U, B_vecs, at, spHNFs(:,:,1), No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_=eps)
     
   end SUBROUTINE fcc_1
@@ -232,7 +231,8 @@ kCONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, n_irr, nhnfs, eps_)
+  SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+       n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
@@ -432,7 +432,7 @@ kCONTAINS
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
-                                        call compare_grids(lat_vecs, B_vecs, at, &
+                                        call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                              grid, rmin, n_irr, eps_)
                                      end if
@@ -505,7 +505,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status
+    integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -572,7 +572,7 @@ kCONTAINS
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
-                                  call compare_grids(lat_vecs, B_vecs, at, &
+                                  call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                        grid, rmin, n_irr, eps_)
                                end if
@@ -644,7 +644,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j
+    integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -732,7 +732,7 @@ kCONTAINS
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
-                                        call compare_grids(lat_vecs, B_vecs, at, &
+                                        call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                              grid, rmin, n_irr, eps_)
                                      end if
@@ -809,11 +809,11 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k
+    integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
-    integer :: beta32, beta22, beta11, beta12, gamma11, gamma12, gamma22
+    integer :: beta32, beta22, beta12, gamma11, gamma12, gamma22, gamma21
     integer :: nbs
     integer :: bs(2)
     real(dp) :: eps
@@ -896,20 +896,20 @@ kCONTAINS
                                            temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                                 0, c, e, &
                                                 0, 0, f/),(/3,3/))
-                                           call compare_grids(lat_vecs, B_vecs, at, &
+                                           call compare_grids(U, B_vecs, at, &
                                                 temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                                 grid, rmin, n_irr, eps_)
                                         end if
                                      end if
                                   end if
-                               end do
-                            end if
+                               end if
+                            end do
                          end if
                       end if
                    end do
                 end if
-            end if
-         end do
+             end if
+          end do
       end if
    end do
 
@@ -970,7 +970,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k
+    integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -1057,7 +1057,7 @@ kCONTAINS
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
-                                        call compare_grids(lat_vecs, B_vecs, at, &
+                                        call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                              grid, rmin, n_irr, eps_)
                                      end if
@@ -1130,7 +1130,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, status, j, k, z
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -1215,7 +1215,7 @@ kCONTAINS
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
-                               call compare_grids(lat_vecs, B_vecs, at, &
+                               call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                     grid, rmin, n_irr, eps_)
                             end if
@@ -1279,6 +1279,7 @@ kCONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
+    real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
@@ -1289,7 +1290,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z, spc, size_count
+    integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -1366,7 +1367,7 @@ kCONTAINS
                                      temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                           0, c, e, &
                                           0, 0, f/),(/3,3/))
-                                     call compare_grids(lat_vecs, B_vecs, at, &
+                                     call compare_grids(U, B_vecs, at, &
                                           temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                           grid, rmin, n_irr, eps_)
                                   end if
@@ -1438,7 +1439,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, status, j, k, z
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -1517,7 +1518,7 @@ kCONTAINS
                       temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
-                      call compare_grids(lat_vecs, B_vecs, at, &
+                      call compare_grids(U, B_vecs, at, &
                            temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                            grid, rmin, n_irr, eps_)
                    end if
@@ -1525,7 +1526,6 @@ kCONTAINS
              end if
           end do
        end do
-       deallocate(es,ds,bs)
     end do
 
     if (all_hnfs) then
@@ -1585,7 +1585,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status
+    integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -1659,7 +1659,7 @@ kCONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(lat_vecs, B_vecs, at, &
+                            call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                  grid, rmin, n_irr, eps_)
                          end if
@@ -1729,7 +1729,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status
+    integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -1802,7 +1802,7 @@ kCONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(lat_vecs, B_vecs, at, &
+                            call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                  grid, rmin, n_irr, eps_)
                          end if
@@ -1871,7 +1871,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, k
+    integer :: nds, i, status, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -1946,7 +1946,7 @@ kCONTAINS
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
-                               call compare_grids(lat_vecs, B_vecs, at, &
+                               call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                     grid, rmin, n_irr, eps_)
                             end if
@@ -2017,7 +2017,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j
+    integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -2064,7 +2064,7 @@ kCONTAINS
        f = diagonals(3,i)
 
        if (MOD(2*f, c)==0) then
-          if (MOD(c,2.0_dp)==0) then
+          if (MOD(c, 2)==0) then
              nbs = 2
              bs = (/0, (c/2)/)
           else
@@ -2093,7 +2093,7 @@ kCONTAINS
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
-                               call compare_grids(lat_vecs, B_vecs, at, &
+                               call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                     grid, rmin, n_irr, eps_)
                             end if
@@ -2164,7 +2164,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j
+    integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -2239,7 +2239,7 @@ kCONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(lat_vecs, B_vecs, at, &
+                            call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                  grid, rmin, n_irr, eps_)
                          end if
@@ -2312,12 +2312,12 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k
+    integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
     integer :: gamma13, gamma23, beta13
-    integer :: es(2), ds(2), nes, nds
+    integer :: es(2), ds(2), ne_ds
     real(dp) :: eps
     logical :: all_hnfs
 
@@ -2360,13 +2360,11 @@ kCONTAINS
 
        if (MOD(c,a)==0) then
           if (MOD(f, 2)==0) then
-             nes = 2
-             nds = 2
+             ne_ds = 2
              es = (/0, (f/2)/)
              ds = (/0, (f/2)/)
           else
-             nes = 1
-             nds = 1
+             ne_ds = 1
              es = (/0, -1/)
              ds = (/0, -1/)
           end if
@@ -2376,9 +2374,9 @@ kCONTAINS
              if (MOD(b, a)==0) then
                 beta13 = -a +b*b/a
                 if (MOD(beta13, c)==0) then
-                   do j = 1, nes
+                   do j = 1, ne_ds
                       e = es(j)
-                      do k = 1, nds
+                      do k = 1, ne_ds
                          d = ds(k)
                          if (MOD(b*d, a)==0) then
                             gamma13 = -d + b*d/a -e*beta13/c
@@ -2394,7 +2392,7 @@ kCONTAINS
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
-                                  call compare_grids(lat_vecs, B_vecs, at, &
+                                  call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                        grid, rmin, n_irr, eps_)
                                end if
@@ -2467,7 +2465,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -2553,7 +2551,7 @@ kCONTAINS
                                      temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                           0, c, e, &
                                           0, 0, f/),(/3,3/))
-                                     call compare_grids(lat_vecs, B_vecs, at, &
+                                     call compare_grids(U, B_vecs, at, &
                                           temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                           grid, rmin, n_irr, eps_)
                                   end if
@@ -2611,7 +2609,8 @@ kCONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_40(n,spHNFs)
+  SUBROUTINE baseco_40(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+       n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
@@ -2625,7 +2624,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status
+    integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -2691,7 +2690,7 @@ kCONTAINS
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
-                               call compare_grids(lat_vecs, B_vecs, at, &
+                               call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                     grid, rmin, n_irr, eps_)
                             end if
@@ -2746,7 +2745,8 @@ kCONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_36(n,spHNFs)
+  SUBROUTINE baseco_36(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+       n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
@@ -2760,7 +2760,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k
+    integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -2852,7 +2852,7 @@ kCONTAINS
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
-                                        call compare_grids(lat_vecs, B_vecs, at, &
+                                        call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                              grid, rmin, n_irr, eps_)
                                      end if
@@ -2925,7 +2925,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -2966,7 +2966,7 @@ kCONTAINS
        allocate(temp_HNFs(3,3,1))
     end if
     
-    do i =1,nds
+    do i =1, nds
        a = diagonals(1,i)
        c = diagonals(2,i)
        f = diagonals(3,i)
@@ -3004,7 +3004,7 @@ kCONTAINS
                          temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                               0, c, e, &
                               0, 0, f/),(/3,3/))
-                         call compare_grids(lat_vecs, B_vecs, at, &
+                         call compare_grids(U, B_vecs, at, &
                               temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                               grid, rmin, n_irr, eps_)
                       end if
@@ -3013,7 +3013,6 @@ kCONTAINS
              end if
           end do
        end do
-       deallocate(es,bs)
     end do
 
     if (all_hnfs) then
@@ -3075,7 +3074,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k
+    integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -3148,7 +3147,7 @@ kCONTAINS
                    temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                         0, c, e, &
                         0, 0, f/),(/3,3/))
-                   call compare_grids(lat_vecs, B_vecs, at, &
+                   call compare_grids(U, B_vecs, at, &
                         temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                         grid, rmin, n_irr, eps_)
                 end if
@@ -3166,8 +3165,6 @@ kCONTAINS
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
-  end SUBROUTINE sm_34
     
   end SUBROUTINE sm_34_35
 
@@ -3222,7 +3219,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -3292,7 +3289,7 @@ kCONTAINS
                       temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
-                      call compare_grids(lat_vecs, B_vecs, at, &
+                      call compare_grids(U, B_vecs, at, &
                            temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                            grid, rmin, n_irr, eps_)
                    end if
@@ -3362,7 +3359,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, k, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -3435,7 +3432,7 @@ kCONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(lat_vecs, B_vecs, at, &
+                            call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                  grid, rmin, n_irr, eps_)
                          end if
@@ -3505,7 +3502,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -3568,7 +3565,7 @@ kCONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(lat_vecs, B_vecs, at, &
+                            call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                  grid, rmin, n_irr, eps_)
                          end if
@@ -3640,7 +3637,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -3703,7 +3700,7 @@ kCONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(lat_vecs, B_vecs, at, &
+                            call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                  grid, rmin, n_irr, eps_)
                          end if
@@ -3773,7 +3770,7 @@ kCONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, nhnfs, status, j, k, z
+    integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -3837,7 +3834,7 @@ kCONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(lat_vecs, B_vecs, at, &
+                            call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                  grid, rmin, n_irr, eps_)
                          end if
@@ -3952,15 +3949,15 @@ kCONTAINS
              do l = 0,d(3,i)-1  ! Ditto for row 3, element 2
                 ihnf = ihnf+1 ! Count the HNFs and construct the next one
                 if (all_hnfs) then 
-                   spHNFs(:,:,nhnfs) = reshape((/ a, b, d, &
-                        0, c, e, &
-                        0, 0, f/),(/3,3/))
+                   spHNFs(:,:,nhnfs) = reshape((/ d(1,i), j, k, &
+                        0, d(2,i), l, &
+                        0, 0, d(3,i)/),(/3,3/))
                 else
                    
-                   spHNFs(:,:,1) = reshape((/ a, b, d, &
-                        0, c, e, &
-                        0, 0, f/),(/3,3/))
-                   call compare_grids(lat_vecs, B_vecs, at, &
+                   spHNFs(:,:,1) = reshape((/ d(1,i), j, k, &
+                        0, d(2,i), l, &
+                        0, 0, d(3,i)/),(/3,3/))
+                   call compare_grids(U, B_vecs, at, &
                         spHNFs(:,:,1), No, Nu, Co, Cu, O, &
                         grid, rmin, n_irr, eps_)
                 end if
@@ -3972,28 +3969,28 @@ kCONTAINS
     if (ihnf /= Nhnf) stop "HNF: not all the matrices were generated...(bug!)"
   end SUBROUTINE tric_31_44
 
-  !!<summary>Finds the smallest prime factor of the given positive integer.</summary>
-  !!<parameter name="a" regular="true">A positive integer number.</parameter>
-  !!<parameter name="sp" regular="true">The smallest prime factor of a.</parameter>
-  SUBROUTINE smallest_prime(a,sp)
-    integer, intent(in) :: a
-    integer, intent(out) :: sp
+  ! !!<summary>Finds the smallest prime factor of the given positive integer.</summary>
+  ! !!<parameter name="a" regular="true">A positive integer number.</parameter>
+  ! !!<parameter name="sp" regular="true">The smallest prime factor of a.</parameter>
+  ! SUBROUTINE smallest_prime(a,sp)
+  !   integer, intent(in) :: a
+  !   integer, intent(out) :: sp
 
-    integer ::i
+  !   integer ::i
 
-    if (a<0) stop "smallest_prime is only designed for positive integers."
-    if (a <= 2) then
-       sp = a
-    else
-       do i = 2, a
-          if (MOD(a,i)==0) then
-             sp = i
-             exit
-          end if
-       end do
-    end if
+  !   if (a<0) stop "smallest_prime is only designed for positive integers."
+  !   if (a <= 2) then
+  !      sp = a
+  !   else
+  !      do i = 2, a
+  !         if (MOD(a,i)==0) then
+  !            sp = i
+  !            exit
+  !         end if
+  !      end do
+  !   end if
 
-  end SUBROUTINE smallest_prime
+  ! end SUBROUTINE smallest_prime
 
   !!<summary>Finds all the possible diagonals of the HNF matrices of a
   !!given size. Subroutine taken from enumlib on 7/18/17.</summary>

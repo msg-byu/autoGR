@@ -77,9 +77,9 @@ CONTAINS
     real(dp), intent(out) :: rmin, grid(3,3)
     integer, intent(out) :: n_irr
 
-    real(dp) :: supercell(3,3), shift(3)
+    real(dp) :: supercell(3,3), shift(3), norms(3), reduced_grid(3,3), grid_inv(3,3)
     real(dp) :: eps
-    real(dp)              :: R(3,3), invLat(3,3)
+    real(dp)              :: R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
     
@@ -93,14 +93,14 @@ CONTAINS
     
     call transform_supercell(HNF, No, Nu, Co, Cu, O, supercell)
 
-    grid = transpose(supercell)
-    call matrix_inverse(grid, grid)
+    grid_inv = transpose(supercell)
+    call matrix_inverse(grid_inv, grid)
     
-    call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
-    norms(1) = sqrt(dot_product(reduced_grid(:,1),reduced_grid(:,1)))
-    norms(2) = sqrt(dot_product(reduced_grid(:,2),reduced_grid(:,2)))
-    norms(3) = sqrt(dot_product(reduced_grid(:,3),reduced_grid(:,3)))
-    rmin = min(norms(1),norms(2),norms(3))
+    call minkowski_reduce_basis(grid, reduced_grid, eps)
+    norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
+    norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
+    norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
+    rmin = min(norms(1), norms(2), norms(3))
     call generateIrredKpointList(lat_vecs, B_vecs, at, grid, R, shift, rdKlist, weights, eps_=eps)
     n_irr = size(rdKlist,1)
 
@@ -144,13 +144,13 @@ CONTAINS
     real(dp), intent(inout) :: rmin, grid(3,3)
     integer, intent(inout) :: n_irr
 
-    real(dp) :: supercell(3,3), shift(3)
+    real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3)
     real(dp) :: eps
-    real(dp)              :: R(3,3), invLat(3,3)
+    real(dp)              :: R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
-    real(dp), intent(inout) :: temp_rmin, temp_grid(3,3)
-    integer, intent(inout) :: temp_n_irr
+    real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3)
+    integer :: temp_n_irr
     
     if (present(eps_)) then
        eps = eps_
@@ -162,27 +162,27 @@ CONTAINS
     
     call transform_supercell(HNF, No, Nu, Co, Cu, O, supercell)
 
-    temp_grid = transpose(supercell)
-    call matrix_inverse(temp_grid, temp_grid)
+    temp_grid_inv = transpose(supercell)
+    call matrix_inverse(temp_grid_inv, temp_grid)
     
-    call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
-    norms(1) = sqrt(dot_product(reduced_grid(:,1),reduced_grid(:,1)))
-    norms(2) = sqrt(dot_product(reduced_grid(:,2),reduced_grid(:,2)))
-    norms(3) = sqrt(dot_product(reduced_grid(:,3),reduced_grid(:,3)))
-    temp_rmin = min(norms(1),norms(2),norms(3))
+    call minkowski_reduce_basis(grid, reduced_grid, eps)
+    norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
+    norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
+    norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
+    temp_rmin = min(norms(1), norms(2), norms(3))
     
     if (temp_rmin > rmin) then
        call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
        n_irr = size(rdKlist,1)
-       rmin = temp_r_min
+       rmin = temp_rmin
        grid = temp_grid
        
-    else if (equal(temp_r_min, rmin)) then
+    else if (equal(temp_rmin, rmin, eps)) then
        call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
        temp_n_irr = size(rdKlist,1)
        
        if (temp_n_irr < n_irr) then 
-          rmin = temp_r_min
+          rmin = temp_rmin
           n_irr = temp_n_irr
           grid = temp_grid          
        end if       
