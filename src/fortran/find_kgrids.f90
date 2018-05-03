@@ -36,7 +36,7 @@ CONTAINS
     real(dp) :: O(3,3), Nu(3,3), No(3,3), UB(3,3)
     integer :: Cu(3,3), Co(3,3), mult
     real(dp) :: eps
-    
+
     if (present(eps_)) then
        eps = eps_
     else
@@ -70,30 +70,23 @@ CONTAINS
        do while ((count <5) .and. (a_kpd-kpd<=10))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd,temp_hnfs)
-          else if (lat_id==6) then
-             call bct_6(a_kpd,temp_hnfs)
-          else if (lat_id==7) then
-             call bct_7(a_kpd,temp_hnfs)
+          else if (lat_id==6 .or.lat_id==7 .or. lat_id==15 .or.lat_id==18) then
+             call bct_6_7_15_18(a_kpd,temp_hnfs)
           else if (lat_id==8) then
              call bco_8(a_kpd,temp_hnfs)
-          else if (lat_id==9) then
-             call rhom_9(a_kpd,temp_hnfs)
-          else if ((lat_id==10) .or. (lat_id==17)) then
-             call basecm_10_17(a_kpd,temp_hnfs)
+          else if (lat_id==9 .or. lat_id==24) then
+             call rhom_9_24(a_kpd,temp_hnfs)
+          else if ((lat_id==10) .or. (lat_id==14) .or. (lat_id==17) .or. (lat_id==27) &
+                  .or. (lat_id==37) .or. (lat_id==39) .or. (lat_id == 41)) then
+             call basecm_10_14_17_27_37_39_41(a_kpd,temp_hnfs)
           else if (lat_id==11) then
              call st_11(a_kpd,temp_hnfs)
           else if (lat_id==12) then
              call hex_12(a_kpd,temp_hnfs)
           else if ((lat_id==13) .or. (lat_id==38)) then
              call baseco_38_13(a_kpd,temp_hnfs)
-          else if (lat_id==14) then
-             call basecm_14(a_kpd,temp_hnfs)
-          else if (lat_id==15) then
-             call bct_15(a_kpd,temp_hnfs)
           else if (lat_id==16) then
              call fco_16(a_kpd,temp_hnfs)
-          else if (lat_id==18) then
-             call bct_18(a_kpd,temp_hnfs)
           else if (lat_id==19) then
              call bco_19(a_kpd,temp_hnfs)
           else if ((lat_id==20) .or. (lat_id==25)) then
@@ -104,12 +97,8 @@ CONTAINS
              call hex_22(a_kpd,temp_hnfs)
           else if (lat_id==23) then
              call baseco_23(a_kpd,temp_hnfs)
-          else if (lat_id==24) then
-             call rhom_24(a_kpd,temp_hnfs)
           else if (lat_id==26) then
              call fco_26(a_kpd,temp_hnfs)
-          else if (lat_id==27) then
-             call basecm_27(a_kpd,temp_hnfs)
           else if (lat_id==28) then
              call basecm_28(a_kpd,temp_hnfs)
           else if ((lat_id==29) .or. (lat_id==30)) then
@@ -118,18 +107,12 @@ CONTAINS
              call so_32(a_kpd,temp_hnfs)
           else if (lat_id==33) then
              call sm_33(a_kpd,temp_hnfs)
-          else if (lat_id==34) then
-             call sm_34(a_kpd,temp_hnfs)
-          else if (lat_id==35) then
-             call sm_35(a_kpd,temp_hnfs)
+          else if (lat_id==34 .or. lat_id==35) then
+             call sm_34_35(a_kpd,temp_hnfs)
           else if (lat_id==36) then
              call baseco_36(a_kpd,temp_hnfs)
-          else if ((lat_id==37) .or. (lat_id==39)) then
-             call basecm_37_39(a_kpd,temp_hnfs)
           else if (lat_id==40) then
              call baseco_40(a_kpd,temp_hnfs)
-          else if (lat_id==41) then
-             call basecm_41(a_kpd,temp_hnfs)
           else if (lat_id==42) then
              call bco_42(a_kpd,temp_hnfs)
           else if (lat_id==43) then
@@ -148,7 +131,7 @@ CONTAINS
                 allocate(sp_hnfs(3,3,old+size(temp_hnfs,3)))
                 sp_hnfs(:,:,1:old) = temp_hnfs2(:,:,1:old)
                 sp_hnfs(:,:,news:size(temp_hnfs,3)+old) = temp_hnfs(:,:,1:size(temp_hnfs,3))
-                deallocate(temp_hnfs2)                
+                deallocate(temp_hnfs2)
              end if
              count = count + 1
              a_kpd = a_kpd + 1
@@ -190,7 +173,7 @@ CONTAINS
     a = 0
     b = 0
     c = 0
-    
+
     if (lat_id==1) then
        mults = (/1,4,16/)
     else
@@ -198,7 +181,7 @@ CONTAINS
     end if
 
     do while (nb<nmax)
-       nc = nb**3 
+       nc = nb**3
        do j=1,3
           temp = mults(j)*nc
           if (temp >= kpd) then
