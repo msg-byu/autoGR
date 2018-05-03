@@ -11,41 +11,9 @@ Module find_kgrids
 
   implicit none
   private
-  public find_grids, grid_selection
+  public find_grids
 
 CONTAINS
-
-  !!<summary>Finds the symmetry preserving supercell in the users
-  !!basis.</summary>
-  !!<parameter name="spHNF" regular="true">One of the symmetry
-  !!preserving HNFs in our basis</parameter>
-  !!<parameter name="No" regular="true">Our niggli basis.</parameter>
-  !!<parameter name="Nu" regular="true">The users niggli
-  !!basis.</parameter>
-  !!<parameter name="Co" regular="true">Transformation from our basis
-  !!to the our niggli basis.</parameter>
-  !!<parameter name="Cu" regular="true">Transformation from the users
-  !!basis to the users niggli basis.</parameter>
-  !!<parameter name="O" regular="true">Our basis vectors.</parameter>
-  !!<parameter name="UB" regular="true">The supercell in the users
-  !!basis.</parameter>
-  SUBROUTINE transform_supercell(spHNF,No,Nu,Co,Cu,O,UB)
-    integer, intent(in) :: spHNF(3,3)
-    integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3) 
-    real(dp), intent(out) :: UB(3,3)
-
-    integer :: F(3,3)
-    real(dp) :: Oinv(3,3), Noinv(3,3), Cuinv(3,3), L(3,3)
-
-    call matrix_inverse(O,Oinv)
-    call matrix_inverse(No,Noinv)
-    call matrix_inverse(real(Cu,dp),Cuinv)
-    L = matmul(matmul(O,spHNF),Oinv)
-    F = nint(matmul(Noinv,matmul(matmul(L,O),Co)))
-    UB = matmul(matmul(Nu,F),Cuinv)
-
-  end SUBROUTINE transform_supercell
   
   !!<summary>Determines the symmetry preserving kpoint grids, with
   !!target denstiy, for the provided lattice.</summary>
@@ -195,7 +163,7 @@ CONTAINS
     if (status /=0) stop "Failed to allocate memory in find_kgrids."
 
     do i=1,size(sp_hnfs,3)
-       call transform_supercell(sp_HNFs(:,:,i),No,Nu,Co,Cu,O,UB)
+       call transform_supercell(sp_hnfs(:,:,i),No,Nu,Co,Cu,O,UB)
        grids(:,:,i) = transpose(UB)
        call matrix_inverse(grids(:,:,i),grids(:,:,i))
     end do
@@ -280,66 +248,4 @@ CONTAINS
     end do
 
   end SUBROUTINE get_kpd_tric
-
-  !!<summary>Selects the best grid from the list of grids.</summary>
-  !!<parameter name="lat_vecs" regular="true">The lattice vectors for
-  !!the crystal.</parameter>
-  !!<parameter name="grids" regular="true">The list of generating
-  !!vectors for the candidate grids.</parameter>
-  !!<parameter name="best_grid" regular="true">The best grid given the
-  !!criteria.</parameter>
-  !!<parameter name="shift" regular="true">The shift off gamma to be
-  !!used.</parameter>
-  !!<parameter name="eps_" regular="true">Floating point
-  !!tolerance.</parameter>
-  SUBROUTINE grid_selection(lat_vecs,B_vecs,at, grids, shift, best_grid,eps_)
-    real(dp), intent(in) :: lat_vecs(3,3), shift(3)
-    real(dp), allocatable, intent(in) :: grids(:,:,:)
-    real(dp), optional, intent(in) :: eps_
-    real(dp), intent(out) :: best_grid(3,3)
-    real(dp), pointer :: B_vecs(:,:)
-    integer, intent(inout) :: at(:)
-
-    real(dp) :: reduced_grid(3,3), norms(3)
-    integer :: i, n_irreducible
-    real(dp) :: r_min, r_min_best, eps
-
-    real(dp)              :: R(3,3), invLat(3,3)
-    real(dp), pointer     :: rdKlist(:,:)
-    integer, pointer      :: weights(:)
-    
-    
-    if (present(eps_)) then
-       eps = eps_
-    else
-       eps = 1E-6
-    end if
-
-    call matrix_inverse(lat_vecs, invLat)
-    R = transpose(invLat)
-    
-    r_min_best = 0
-    n_irreducible = 0
-    do i=1,size(grids,3)
-       call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
-       norms(1) = sqrt(dot_product(reduced_grid(:,1),reduced_grid(:,1)))
-       norms(2) = sqrt(dot_product(reduced_grid(:,2),reduced_grid(:,2)))
-       norms(3) = sqrt(dot_product(reduced_grid(:,3),reduced_grid(:,3)))
-       r_min = min(norms(1),norms(2),norms(3))
-       if ((r_min_best==0) .or. (r_min>r_min_best)) then
-          r_min_best = r_min
-          best_grid = grids(:,:,i)
-          call generateIrredKpointList(lat_vecs,B_vecs,at,best_grid, R, shift, rdKlist, weights, eps_=eps)
-          n_irreducible = size(rdKlist,1)
-       else if (abs(r_min-r_min_best)<eps) then
-          call generateIrredKpointList(lat_vecs,B_vecs,at,best_grid, R, shift, rdKlist, weights, eps_=eps)
-          if (size(rdKlist,1) < n_irreducible) then
-             r_min_best = r_min
-             best_grid = grids(:,:,i)
-             n_irreducible = size(rdKlist,1)
-          end if
-       end if
-    end do
-
-  end SUBROUTINE grid_selection
 end Module find_kgrids

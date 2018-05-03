@@ -1,5 +1,12 @@
 # Revision History
 
+## Revision 0.5.0 (WSM)
+- Changed sp_hnfs.f90 to use integers instead of reals.
+- Changed sp_hnfs.f90 to return only one grid per determinant size
+  unless the `all` bool is set to true in which case it returns all
+  the HNFs and no grids. Basically the first round of grid selection
+  is now done as the HNFs are being constructed.
+
 ## Revision 0.4.1 (WSM)
 - Fixed a bug in the fortran driver where a negative determinant was
   being used to find the number of k-points wanted.
