@@ -3,6 +3,7 @@
 ## Revision 0.5.1 (WSM)
 - Fixed lots of compiler errors in sp_hnfs.f90 and grid_utils.f90.
 - Added grid_utils.f90 to the Makefile.
+- Removed `smallest_prime` from sp_hnfs.f90.
 
 ## Revision 0.5.0 (WSM)
 - Changed sp_hnfs.f90 to use integers instead of reals.

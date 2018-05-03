@@ -3969,29 +3969,6 @@ CONTAINS
     if (ihnf /= Nhnf) stop "HNF: not all the matrices were generated...(bug!)"
   end SUBROUTINE tric_31_44
 
-  ! !!<summary>Finds the smallest prime factor of the given positive integer.</summary>
-  ! !!<parameter name="a" regular="true">A positive integer number.</parameter>
-  ! !!<parameter name="sp" regular="true">The smallest prime factor of a.</parameter>
-  ! SUBROUTINE smallest_prime(a,sp)
-  !   integer, intent(in) :: a
-  !   integer, intent(out) :: sp
-
-  !   integer ::i
-
-  !   if (a<0) stop "smallest_prime is only designed for positive integers."
-  !   if (a <= 2) then
-  !      sp = a
-  !   else
-  !      do i = 2, a
-  !         if (MOD(a,i)==0) then
-  !            sp = i
-  !            exit
-  !         end if
-  !      end do
-  !   end if
-
-  ! end SUBROUTINE smallest_prime
-
   !!<summary>Finds all the possible diagonals of the HNF matrices of a
   !!given size. Subroutine taken from enumlib on 7/18/17.</summary>
   !!<parameter name="detS" regular="true">Cell size, i.e., determinant

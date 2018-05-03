@@ -171,23 +171,6 @@
     </group>
   </decorates>
 
-  <decorates name="sp_hnfs.smallest_prime">
-    <group name="math" purpose="testing" staging="../../unittests/">
-      <test identifier="original" description="Tests of symmetry preserving HNF generation"
-	    cases="[1-5]" timed="true">
-	<output folder="./tests/spHNFs"
-		file="sp.out.{}" template="integer.xml"
-		identifier="sp.out"/>
-	<target name="sp" compareto="sp.out"
-		varfile="sp.out" when="each"/>
-      </test>
-      <assignment name="a" value="afile">
-	<value identifier="afile" file="a.in.{}"
-	       folder="./tests/spHNFs" rename="a.in"/>
-      </assignment>
-    </group>
-  </decorates>
-
   <decorates name="sp_hnfs.bct_6_7_15_18">
     <group name="sp_hnfs" purpose="testing" staging="../../unittests/">
       <test identifier="original" description="Tests of symmetry preserving HNF generation"
