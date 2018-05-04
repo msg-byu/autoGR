@@ -3895,7 +3895,7 @@ CONTAINS
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
-    integer, intent(in) :: Co(3,3), Cu(3,3)
+    integer, intent(in) :: Co(3,3), Cu(3,3), mult
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: rmin, grid(3,3)

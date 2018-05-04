@@ -1,5 +1,5 @@
 PROGRAM lat_id_driver
-  use find_kgrids, only: grid_selection, find_grids
+  use find_kgrids, only: find_grid
   use kpointgeneration, only: generateIrredKpointList, mapKptsIntoFirstBZ
   use vector_matrix_utilities, only: matrix_inverse, volume
   use num_types
@@ -7,7 +7,6 @@ PROGRAM lat_id_driver
   implicit none
 
   real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3), point(3), Rinv(3,3)
-  real(dp), allocatable :: grids(:,:,:)
   real(dp) :: kpd
   integer :: i, nkpts, count, j, z
   real(dp), pointer :: IRKps(:,:)
@@ -35,10 +34,12 @@ PROGRAM lat_id_driver
   
   z = 1
   do i=1,count
-     do j=1,concs(i)
-        at(z) = i-1
-        z = z+1        
-     end do
+     if (concs(i) > 0) then
+        do j=1,concs(i)
+           at(z) = i-1
+           z = z+1        
+        end do
+     end if
   end do
 
   open(2,file="kpgen",status="old")
@@ -50,28 +51,27 @@ PROGRAM lat_id_driver
 
   nkpts = int(abs(volume(r_vecs(:,1),r_vecs(:,2),r_vecs(:,3)))*kpd)
 
-  call find_grids(lat_vecs,nkpts,grids)
-  call grid_selection(lat_vecs,B_vecs,at, grids, offset, grid)
+  call find_grid(lat_vecs, nkpts, B_vecs, at, grid)
 
-  ! call generateIrredKpointList(lat_vecs,B_vecs,at,grid,r_vecs,offset,IRKps,weights,eps_=1E-6_dp)
-  ! call mapKptsIntoFirstBZ(r_vecs,IRKps)
+  call generateIrredKpointList(lat_vecs,B_vecs,at,grid,r_vecs,offset,IRKps,weights,eps_=1E-6_dp)
+  call mapKptsIntoFirstBZ(r_vecs,IRKps)
   
   open(4,file="KPOINTS")
   ! write(4,'("Our new kpoint method. ",i6)') sum(weights)
   write(4,*)"Our new kpoint method."
-  write(4,*) "0"!size(IRKps,1)
-  ! write(4,*) "Fractional"
-  write(4,'(A4)')"cart"
-  ! call matrix_inverse(r_vecs,Rinv)
-  ! do i = 1,size(IRKps,1)
-  !    point = matmul(Rinv,IRKps(i,:))
-  !    write(4,'(F16.14,A1,F16.14,A1,F16.14,A1,I5.1)') point(1), " ",point(2), " ",point(3), " ", weights(i)
-  ! end do
-
-  do i=1,3
-     write(4,'(F16.14,A1,F16.14,A1,F16.14)') grid(1,i), " ", grid(2,i), " ", grid(3,i)
+  write(4,*) size(IRKps,1)
+  write(4,*) "Fractional"
+  ! write(4,'(A4)')"cart"
+  call matrix_inverse(r_vecs,Rinv)
+  do i = 1,size(IRKps,1)
+     point = matmul(Rinv,IRKps(i,:))
+     write(4,'(F16.14,A1,F16.14,A1,F16.14,A1,I5.1)') point(1), " ",point(2), " ",point(3), " ", weights(i)
   end do
-     write(4,'(F16.14,A1,F16.14,A1,F16.14)') offset(1), " ", offset(2), " ", offset(3)
+
+  ! do i=1,3
+  !    write(4,'(F16.14,A1,F16.14,A1,F16.14)') grid(1,i), " ", grid(2,i), " ", grid(3,i)
+  ! end do
+  !    write(4,'(F16.14,A1,F16.14,A1,F16.14)') offset(1), " ", offset(2), " ", offset(3)
   
      
   
