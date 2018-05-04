@@ -7,8 +7,8 @@ PROGRAM lat_id_driver
   implicit none
 
   real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3), point(3), Rinv(3,3)
-  real(dp) :: kpd
-  integer :: i, nkpts, count, j, z
+  ! real(dp) :: kpd
+  integer :: i, nkpts, count, j, z, kpd
   real(dp), pointer :: IRKps(:,:)
   integer, pointer :: weights(:)
 
@@ -49,7 +49,7 @@ PROGRAM lat_id_driver
 
   call matrix_inverse(transpose(lat_vecs),r_vecs)
 
-  nkpts = int(abs(volume(r_vecs(:,1),r_vecs(:,2),r_vecs(:,3)))*kpd)
+  nkpts = kpd!int(abs(volume(r_vecs(:,1),r_vecs(:,2),r_vecs(:,3)))*kpd)
 
   call find_grid(lat_vecs, nkpts, B_vecs, at, grid)
 
@@ -58,7 +58,7 @@ PROGRAM lat_id_driver
   
   open(4,file="KPOINTS")
   ! write(4,'("Our new kpoint method. ",i6)') sum(weights)
-  write(4,*)"Our new kpoint method."
+  write(4,'(A22, I12, A1, I6)')"Our new kpoint method.", sum(weights), '/', size(IRKps,1)
   write(4,*) size(IRKps,1)
   write(4,*) "Fractional"
   ! write(4,'(A4)')"cart"

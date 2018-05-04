@@ -86,7 +86,7 @@ CONTAINS
                0, c, e, &
                0, 0, f/),(/3,3/))
           exit
-       elseif ((a==c) .and. (real(f,dp)/real(a,dp)==2)) then
+       elseif ((a==c) .and. (((f/a)==2) .and. (MOD(f, a)==0))) then
           b = 0
           d = a
           e = a
@@ -94,7 +94,7 @@ CONTAINS
                0, c, e, &
                0, 0, f/),(/3,3/))
           exit
-       elseif ((c==f) .and. (real(f,dp)/real(a,dp)==2)) then
+       elseif ((c==f) .and. (((f/a)==2) .and. (MOD(f, a)==0))) then
           b = a
           d = a
           e = 0
@@ -174,7 +174,6 @@ CONTAINS
        a = diagonals(1,i)
        c = diagonals(2,i)
        f = diagonals(3,i)
-
        if ((a==c) .and. (a==f)) then
           b = 0
           d = 0
@@ -183,7 +182,8 @@ CONTAINS
                0, c, e, &
                0, 0, f/),(/3,3/))
           exit
-       elseif ((c==f) .and. ((real(f,dp)/real(a,dp) == 2) .or. (real(f,dp)/real(a,dp) == 4))) then
+       elseif ((c==f) .and. ((((f/a) == 2) .and. (MOD(f, a) ==0)) .or. (((f/a) == 4)) &
+            .and. (MOD(f, a)==0))) then
           b = a
           d = a
           e = 0
@@ -272,7 +272,7 @@ CONTAINS
                0, c, e, &
                0, 0, f/),(/3,3/))
           exit
-       elseif ((a==c) .and. (real(f,dp)/real(a,dp)==2)) then
+       elseif ((a==c) .and. (((f/a)==2) .and. (MOD(f, a)==0))) then
           b = 0
           d = a
           e = a
@@ -280,7 +280,7 @@ CONTAINS
                0, c, e, &
                0, 0, f/),(/3,3/))
           exit
-       elseif ((a==c) .and. (real(f,dp)/real(a,dp) ==4)) then
+       elseif ((a==c) .and. (((f/a)==4) .and. (MOD(f, a)==0))) then
           b = 0
           d = 3*a
           e = 3*a

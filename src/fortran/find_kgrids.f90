@@ -4,10 +4,7 @@ Module find_kgrids
   use num_types
   use niggli
   use sp_hnfs
-  use vector_matrix_utilities, only: matrix_inverse, minkowski_reduce_basis, norm, cross_product
-  use numerical_utilities, only: equal
   use kpointgeneration, only: generateIrredKpointList
-  use symmetry, only : get_lattice_pointGroup
 
   implicit none
   private
@@ -44,6 +41,8 @@ CONTAINS
     real(dp) :: O(3,3), Nu(3,3), No(3,3)
     integer :: Cu(3,3), Co(3,3), min_kpn_loc(1)
     real(dp) :: eps
+
+    integer :: j
 
     if (present(eps_)) then
        eps = eps_
@@ -189,18 +188,18 @@ CONTAINS
     integer :: j, a, b, c , nb, nmax, nc, temp
     integer :: mults(3)
 
-    nb = int(real(kpd,dp)**(1.0_dp/3.0_dp))-1
-    nmax  = kpd+1000
+    nb = ((int(real(kpd,dp)**(1.0_dp/3.0_dp)))/16)-1
+    nmax  = nb+500
     a = 0
     b = 0
     c = 0
-
+    
     if (lat_id==1) then
        mults = (/1,4,16/)
     else
        mults = (/1,2,4/)
     end if
-
+    
     do while (nb<nmax)
        nc = nb**3
        do j=1,3
@@ -220,7 +219,7 @@ CONTAINS
        end do
        nb = nb + 1
     end do
-
+    
     densities = (/a,b,c/)
 
   end SUBROUTINE get_kpd_cubic

@@ -77,7 +77,7 @@ CONTAINS
     real(dp), intent(out) :: rmin, grid(3,3)
     integer, intent(out) :: n_irr
 
-    real(dp) :: supercell(3,3), shift(3), norms(3), reduced_grid(3,3), grid_inv(3,3)
+    real(dp) :: supercell(3,3), shift(3), norms(3), reduced_grid(3,3), grid_inv(3,3), lat_trans(3,3)
     real(dp) :: eps
     real(dp)              :: R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
@@ -95,7 +95,9 @@ CONTAINS
 
     grid_inv = transpose(supercell)
     call matrix_inverse(grid_inv, grid)
-    
+    lat_trans = transpose(lat_vecs)
+    call matrix_inverse(lat_trans, R)
+
     call minkowski_reduce_basis(grid, reduced_grid, eps)
     norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
