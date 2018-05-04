@@ -9,6 +9,8 @@
 - Fixed a bug in the cubic k-point number finding algorithm that was
   causing it to skip values at large N.
 - Made cubic algorithms integer only, somehow they got missed before.
+- Fixed allocations and other problems.
+- Added the reciprocal lattice calculation to the comparison routines.
 
 ## Revision 0.5.0 (WSM)
 - Changed sp_hnfs.f90 to use integers instead of reals.
@@ -384,3 +386,8 @@ volumes of 1 to 150 for time reasons).
   distribution.
 - Added the nots directory in which we can store notes from
   collaborations. For now I'm including Rod's divisors writeup and the
+  history of or dialog with Dr. Campbell.
+
+
+## 0.0.1
+- Initial commit

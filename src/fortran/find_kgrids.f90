@@ -42,8 +42,6 @@ CONTAINS
     integer :: Cu(3,3), Co(3,3), min_kpn_loc(1)
     real(dp) :: eps
 
-    integer :: j
-
     if (present(eps_)) then
        eps = eps_
     else
@@ -79,8 +77,8 @@ CONTAINS
     else
        count = 0
        a_kpd = kpd
+       allocate(sp_hnfs(3,3,5), n_irr_kp(5), rmin(5), nhnfs(5), grids(3,3,5))
        do while ((count <5) .and. (a_kpd-kpd<=10))
-          allocate(sp_hnfs(3,3,5), n_irr_kp(5), rmin(5), nhnfs(5), grids(3,3,5))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, temp_hnfs, &
                   grids(:,:,count+1), rmin(count+1), n_irr_kp(count+1), nhnfs(count+1), eps_=eps)
@@ -168,9 +166,9 @@ CONTAINS
 
     ! Select the grid that has the fewest irreducible k-points as the
     ! best grid for this system.
-    min_kpn_loc = MINLOC(n_irr_kp)
-    best_grid = grids(:,:, min_kpn_loc(min_kpn_loc(1)))
-    
+    min_kpn_loc = MINLOC(n_irr_kp(:count))
+    best_grid = grids(:,:, min_kpn_loc(1))
+
   end SUBROUTINE find_grid
 
   !!<summary>Gets the trial range of kpoint densities for cubic

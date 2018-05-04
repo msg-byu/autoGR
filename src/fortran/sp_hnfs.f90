@@ -728,7 +728,7 @@ CONTAINS
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
                                      else
-                                        
+
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
