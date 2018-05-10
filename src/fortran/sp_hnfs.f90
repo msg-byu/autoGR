@@ -346,7 +346,7 @@ CONTAINS
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f
-    integer :: nds, i, status, j,k, nes
+    integer :: nds, i, status, j, nes
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
 
@@ -408,11 +408,11 @@ CONTAINS
                    end if
                    do j = 1, nes
                       e = es(j)
-                      if (MOD((a+2*b)*e, c)==0) then
-                         gamma13 = (a+2*b)*e/c
+                      gamma13 = (a+2*b)*e
+                      if (MOD(gamma13, c)==0) then
+                         gamma13 = gamma13/c
                          if (MOD(gamma13, f)==0) then
-                            do k=0, (f-1)
-                               d = k
+                            do d=0, (f-1)
                                if ((MOD(b*d, a)==0) .and. (MOD(e*beta11, c)==0) .and. &
                                     (MOD(b*e, a)==0) .and. (MOD(c*d, a)==0) .and. &
                                     (MOD(c*d-b*e, a)==0)) then 
@@ -714,27 +714,29 @@ CONTAINS
                               (MOD(gamma11, f)==0)) then
                             d = 0
                             do while (d < f)
-                               if ((MOD(d*b, a)==0) .and. (MOD(d*d, a)==0) .and. &
-                                    (MOD(e*beta12, c)==0) .and. (MOD(d*e, a)==0) &
-                                    .and. (MOD(d*e, a)==0) .and. (MOD(e*beta22, c)==0)) then
+                               if (MOD(d*b, a)==0) then
                                   beta12 = -a + b + d + d*b/a
-                                  gamma12 = -b -d + (d*d/a) - e*beta12/c
-                                  gamma22 = -c -2*e + (d*e/a) - e*beta22/c
-                                  if ((MOD(beta12, c)==0) .and. (MOD(gamma12, f)==0) .and. &
-                                       (MOD(gamma22, f)==0)) then
-                                     nhnfs = nhnfs + 1          
-                                     if (all_hnfs) then 
-                                        temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
-                                             0, c, e, &
-                                             0, 0, f/),(/3,3/))
-                                     else
-
-                                        temp_HNFs(:,:,1) = reshape((/ a, b, d, &
-                                             0, c, e, &
-                                             0, 0, f/),(/3,3/))
-                                        call compare_grids(U, B_vecs, at, &
-                                             temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                             grid, rmin, n_irr, eps_)
+                                  if ((MOD(d*d, a)==0) .and. (MOD(e*beta12, c)==0) .and. &
+                                       (MOD(d*e, a)==0) .and. (MOD(d*e, a)==0) .and. &
+                                       (MOD(e*beta22, c)==0)) then
+                                     gamma12 = -b -d + (d*d/a) - e*beta12/c
+                                     gamma22 = -c -2*e + (d*e/a) - e*beta22/c
+                                     if ((MOD(beta12, c)==0) .and. (MOD(gamma12, f)==0) .and. &
+                                          (MOD(gamma22, f)==0)) then
+                                        nhnfs = nhnfs + 1          
+                                        if (all_hnfs) then 
+                                           temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
+                                                0, c, e, &
+                                                0, 0, f/),(/3,3/))
+                                        else
+                                           
+                                           temp_HNFs(:,:,1) = reshape((/ a, b, d, &
+                                                0, c, e, &
+                                                0, 0, f/),(/3,3/))
+                                           call compare_grids(U, B_vecs, at, &
+                                                temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
+                                                grid, rmin, n_irr, eps_)
+                                        end if
                                      end if
                                   end if
                                end if
@@ -875,12 +877,13 @@ CONTAINS
                          beta22 = -e+b*e/a
                          gamma11 = b-2*b*e/c
                          gamma21 = c-2*e
-                         if((MOD(e, a)==0) .and. (MOD(beta22, c)==0) .and. (MOD(gamma11, f)==0) &
-                              .and. (MOD(gamma21, f)==0))then
+                         if((MOD(e, a)==0) .and. (MOD(beta22, c)==0) .and. &
+                              (MOD(gamma11, f)==0) .and. (MOD(gamma21, f)==0))then
                             do d=0, (f-1)
                                if (MOD(b*d, a)==0) then
                                   beta12 = -a+b-d+b*d/a
-                                  if (MOD(e*beta12, a)==0) then
+                                  if ((MOD(e*beta12, c)==0) .and. (MOD(d*d, a)==0) &
+                                       .and. (MOD(d*e, a)==0)) then
                                      gamma12 = (-a+d*d/a)-(e*beta12/c)
                                      gamma22 = (-e+d*e/a)-(e*beta22/c)
                                      if((MOD(d, a)==0) .and. (MOD(beta12, c)==0) .and. &
@@ -1043,7 +1046,8 @@ CONTAINS
                          gamma12 = 2*b*e/c
                          if (MOD(gamma12, f)==0) then
                             do d = 0, (f-1)
-                               if ((MOD(b, a)==0) .and. (MOD(d*c, a)==0)) then
+                               if ((MOD(d*b, a)==0) .and. (MOD(d*c, a)==0) &
+                                    .and. (MOD(e*b, a)==0)) then
                                   gamma13 = -e*beta13/c + d*(b/a-1)
                                   gamma23 = -e*(b/a+1) +d*c/a
                                   if ((MOD(gamma13,f)==0) .and. (MOD(gamma23,f)==0)) then
@@ -2371,7 +2375,7 @@ CONTAINS
 
           b = 0
           do while (b<c)
-             if (MOD(b, a)==0) then
+             if (MOD(b*b, a)==0) then
                 beta13 = -a +b*b/a
                 if (MOD(beta13, c)==0) then
                    do j = 1, ne_ds
@@ -2828,14 +2832,15 @@ CONTAINS
              if (MOD(beta32, c)==0) then
                 do k=1, nes
                    e = es(k)
-                   if ((MOD(b*e, a)==0) .and. (MOD(b*e, c)==0)) then
+                   !The (MOD(e, a)==0) check is an actual condition
+                   !that comes from the integer relationships. Not a
+                   !mistake in droping the b from b*e.
+                   if ((MOD(e, a)==0) .and. (MOD(b*e, c)==0)) then 
                       beta22 = -b*e/a
                       gamma13 = -2*b*e/c
-                      if ((MOD(beta22, c)==0) .and. (MOD(gamma13, f)==0) .and. &
-                           (MOD(e, a)==0)) then
+                      if ((MOD(beta22, c)==0) .and. (MOD(gamma13, f)==0)) then
                          do d=0, (f-1)
-                            if ((MOD(b*d, a)==0) .and. (MOD(d*d, a)==0) .and. &
-                                 (MOD(d*e, a)==0)) then
+                            if ((MOD(b*d, a)==0) .and. (MOD(d*d, a)==0)) then
                                beta12 = -b*d/a
                                if (MOD(beta12*e, c)==0) then
                                   gamma12 = 2*d-(d*d/a)-beta12*e/c
