@@ -3,6 +3,7 @@
 ## Revision 0.5.2 (WSM)
 - Implemented changes that John suggested to fix/improve the
   algorithms.
+- Debugged new triclinic case.
 
 ## Revision 0.5.1 (WSM)
 - Fixed lots of compiler errors in sp_hnfs.f90 and grid_utils.f90.

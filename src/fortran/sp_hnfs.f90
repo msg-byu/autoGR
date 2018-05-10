@@ -2,6 +2,7 @@
 !!crystal lattices.</summary>
 Module sp_hnfs
   use grid_utils
+  use num_types  
   
   implicit none
   private
@@ -9,11 +10,6 @@ Module sp_hnfs
        bct_6_7_15_18, so_32, baseco_23, baseco_36, baseco_40, baseco_38_13, &
        bco_19, bco_8, bco_42, fco_26, fco_16, sm_33, sm_34_35, basecm_10_14_17_27_37_39_41, &
        basecm_43, basecm_28, basecm_29_30, basecm_20_25, tric_31_44
-
-  integer, parameter:: dp=selected_real_kind(15,307)
-  integer, parameter:: sp=selected_real_kind(6,37)
-  integer, parameter:: si=selected_int_kind(1) ! very short integer -10..10 range
-  integer, parameter:: li=selected_int_kind(18) ! Big integer -10^18..10^18 range
 
 CONTAINS
 
@@ -3876,7 +3872,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -3941,14 +3937,7 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1),STAT=status)
     end if
-    
-    Nhnf = 0
-    do i = 1,Nds
-       Nhnf = Nhnf + d(2,i)*d(3,i)**2
-    enddo
 
-    allocate(spHNFs(3,3,Nhnf),STAT=status)
-    if(status/=0) stop "Failed to allocate memory in tric"
     ihnf = 0
     do i = 1,Nds ! Loop over the permutations of the diagonal elements of the HFNs
        do j = 0,d(2,i)-1  ! Look over possible values of row 2, element 1
@@ -3956,10 +3945,10 @@ CONTAINS
              do l = 0,d(3,i)-1  ! Ditto for row 3, element 2
                 ihnf = ihnf+1 ! Count the HNFs and construct the next one
                 if (all_hnfs) then 
-                   spHNFs(:,:,nhnfs) = reshape((/ d(1,i), j, k, &
+                   spHNFs(:,:,ihnf) = reshape((/ d(1,i), j, k, &
                         0, d(2,i), l, &
                         0, 0, d(3,i)/),(/3,3/))
-                   spHNFs(:,:,nhnfs) = spHNFs(:,:,nhnfs)*mult
+                   spHNFs(:,:,ihnf) = spHNFs(:,:,ihnf)*mult
                 else
                    
                    spHNFs(:,:,1) = reshape((/ d(1,i), j, k, &
@@ -3974,7 +3963,7 @@ CONTAINS
           enddo
        enddo  ! End loops over values for off-diagonal elements
     enddo ! End loop over all unique triplets of target determinant (n)
-
+    nhnfs = ihnf
     if (ihnf /= Nhnf) stop "HNF: not all the matrices were generated...(bug!)"
   end SUBROUTINE tric_31_44
 
