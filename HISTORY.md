@@ -14,6 +14,7 @@
 - Added the python script used to make test output for fortran to the
   repo in testing_codes/make_output.py.
 - Added plotting notebook and some plots.
+- Reformatted niggli.f90 to make it a little easier to read.
 
 ## Revision 0.5.1 (WSM)
 - Fixed lots of compiler errors in sp_hnfs.f90 and grid_utils.f90.
