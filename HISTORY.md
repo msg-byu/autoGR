@@ -9,6 +9,8 @@
 - Fixed bugs in bco_8 introduced by refactor.
 - Fixed bugs in bcc_5 introduced by refactor.
 - Fixed bugs in stet_21 introduced by refactor.
+- Fixed bugs in fco_16 introduced by refactor.
+- Fixed basis for sm_34 in python and fortran niggli id routines.
 - Added the python script used to make test output for fortran to the
   repo in testing_codes/make_output.py.
 - Added plotting notebook and some plots.

@@ -297,7 +297,7 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 34
-                    basis = np.transpose([[1,1,1],[1.22474487,-1.22474487,-2],
+                    basis = np.transpose([[1,1,1],[1.22474487,-1.22474487,-1],
                                           [-0.16598509,-1.64308297,1.80906806]])
             else:
                 if np.allclose(-B/2.,D,atol=eps) and np.allclose(-A/2.,E,atol=eps) and np.allclose(F,0,atol=eps):

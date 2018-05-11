@@ -1779,10 +1779,10 @@ CONTAINS
           nbs = 2
           bs = (/(c/2), 0/)
        else
-          nbs = -1
+          nbs = 1
           bs = (/0, -1/)
        end if
-       do j=1, size(bs)
+       do j=1, nbs
           b = bs(j)
           do e=0, (f-1)
              if (MOD(2*b*e, c)==0) then

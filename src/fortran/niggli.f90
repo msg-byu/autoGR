@@ -640,7 +640,7 @@ CONTAINS
                 O = reshape((/0.5_dp,1.0_dp,0.0_dp,0.5_dp,-1.0_dp,0.0_dp,0.0_dp,0.0_dp,3.0_dp/),(/3,3/))
              else
                 id = 34
-                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.22474487_dp,-1.22474487_dp,-2.0_dp,-0.16598509_dp,-1.64308297_dp,1.80906806_dp/),(/3,3/))
+                O = reshape((/1.0_dp,1.0_dp,1.0_dp,1.22474487_dp,-1.22474487_dp,-1.0_dp,-0.16598509_dp,-1.64308297_dp,1.80906806_dp/),(/3,3/))
              end if
           else
              if (isclose((-B/2.0_dp),D,atol_=eps) .and. isclose((-A/2.0_dp),E,atol_=eps) .and. isclose(0.0_dp,F,atol_=eps)) then
