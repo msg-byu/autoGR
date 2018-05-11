@@ -8,6 +8,7 @@
 - Fixed bugs in tric_31_44 introduced by refactor.
 - Fixed bugs in bco_8 introduced by refactor.
 - Fixed bugs in bcc_5 introduced by refactor.
+- Fixed bugs in stet_21 introduced by refactor.
 - Added the python script used to make test output for fortran to the
   repo in testing_codes/make_output.py.
 - Added plotting notebook and some plots.

@@ -1182,7 +1182,7 @@ CONTAINS
              nbs = 2
           else
              bs = (/0, -1/)
-             nbs = 2
+             nbs = 1
           end if
           do j=1, nbs
              b = bs(j)
