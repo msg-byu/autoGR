@@ -287,7 +287,7 @@ CONTAINS
           exit
        end if
     end do
-    allocate(spHNFs(3,3,nhnfs))
+    allocate(spHNFs(3,3,1))
     nhnfs = 1
     spHNFs(:,:,1) = temp_HNFs(:,:,1)
     rmin = 0.0_dp
