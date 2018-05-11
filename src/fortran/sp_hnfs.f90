@@ -2081,21 +2081,24 @@ CONTAINS
                    if ((MOD(beta21, c)==0) .and. (MOD(gamma21, f)==0)) then
                       do d=0, (f-1)
                          beta11 = -a+(2*b)-2*d
-                         if (MOD(beta11*e, c)==0) then
+                         if (MOD(beta11, c)==0) then
                             gamma11 = -beta11*e/c
                             gamma13 = a+(2*d)-b*beta21/c
-                            if (all_hnfs) then 
-                               temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
-                                    0, c, e, &
-                                    0, 0, f/),(/3,3/))
-                            else
-                                        
-                               temp_HNFs(:,:,1) = reshape((/ a, b, d, &
-                                    0, c, e, &
-                                    0, 0, f/),(/3,3/))
-                               call compare_grids(U, B_vecs, at, &
-                                    temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                    grid, rmin, n_irr, eps_)
+                            if ((MOD(gamma11, f)==0) .and. (MOD(gamma13, f)==0)) then
+                               nhnfs = nhnfs + 1
+                               if (all_hnfs) then 
+                                  temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
+                                       0, c, e, &
+                                       0, 0, f/),(/3,3/))
+                               else
+                                  
+                                  temp_HNFs(:,:,1) = reshape((/ a, b, d, &
+                                       0, c, e, &
+                                       0, 0, f/),(/3,3/))
+                                  call compare_grids(U, B_vecs, at, &
+                                       temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
+                                       grid, rmin, n_irr, eps_)
+                               end if
                             end if
                          end if
                       end do

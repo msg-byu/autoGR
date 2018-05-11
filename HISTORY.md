@@ -4,8 +4,9 @@
 - Implemented changes that John suggested to fix/improve the
   algorithms.
 - Debugged new triclinic case.
-- Fixed sm_34_35 subroutine so that it passes unit tests.
-- Fixed tric_31_44 so that it passes unit tests.
+- Fixed bugs in sm_34_35 inroduced by refactor.
+- Fixed bugs in tric_31_44 introduced by refactor.
+- Fixed bugs in bco_8 introduced by refactor.
 - Added the python script used to make test output for fortran to the
   repo in testing_codes/make_output.py.
 - Added plotting notebook and some plots.
