@@ -7,12 +7,12 @@ def niggli_id(lattice,eps_=None,G=None):
     """Returns the lattice type, niggli cell number, and crystal family
     number, .i.e, cubic -> 1, hexagonal -> 2, rhombehedral -> 3,
     tetragonal -> 4, orthorhombic -> 5, monoclinic -> 6, and triclinic
-    -> 7. 
+    -> 7.
     Args:
         lattice (numpy array): The lattice vectors as columns of a matrix.
         eps_ (float, optional): The floating point tollerance for comparisons.
     Returns:
-        lat_type, niggli_num, lat_fam, basis (str, int, int, list): The lattice type, the 
+        lat_type, niggli_num, lat_fam, basis (str, int, int, list): The lattice type, the
             niggli case number from the 'International Tables of Crystalography',
             the lattice family type, and the 'canonical' basis choice.
     """
@@ -30,7 +30,7 @@ def niggli_id(lattice,eps_=None,G=None):
     if G is None:
         if eps_ is None:
             temp = reduced_cell(lattice)
-        else: 
+        else:
             temp = reduced_cell(lattice, eps = eps)
         niggli = temp.niggli
 
@@ -110,7 +110,7 @@ def niggli_id(lattice,eps_=None,G=None):
                     basis = np.transpose([[1.41144, 0.0885622, -2],
                                           [-0.99868, 2.21232, 1.268178],
                                           [3.41012, -1.1237578, -1.268178]])
-                    
+
     if np.allclose(A,B,atol=eps) and niggli_num is None:
         if positive:
             if np.allclose(D,E,atol=eps) and np.allclose(D,F,atol=eps) and np.allclose(A/2.,D,atol=eps):
@@ -150,7 +150,7 @@ def niggli_id(lattice,eps_=None,G=None):
                 elif np.allclose(2.0*abs(D+E+F),A+B,atol=eps):
                     lat_fam = 5
                     lat_type = 'face centered orthorhombic'
-                    niggli_num = 16                    
+                    niggli_num = 16
                     basis = np.transpose([[ 1.04442 ,  1.43973 ,  1.68415 ],
                                           [ 0.779796, -1.1798  ,  1.      ],
                                           [ 1.779796, -0.1798  ,  0.      ]])
@@ -237,7 +237,7 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_type = 'base centered monoclinic'
                     niggli_num = 28
                     basis = np.transpose([[-1.44896, 0.948958, -1], [-1, -1, 0],
-                                          [0.342424, -1.342424, -2.02006]])                    
+                                          [0.342424, -1.342424, -2.02006]])
                 elif np.allclose(F,A/2.,atol=eps) and np.allclose(E,2*D,atol=eps):
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'
@@ -267,21 +267,21 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_type = 'base centered orthorhombic'
                     niggli_num = 40
                     basis = np.transpose([[1, 1, 1], [1.61803, -0.618034, -1],
-                                          [-1.05557, 1.99895, -0.943376]]) 
+                                          [-1.05557, 1.99895, -0.943376]])
                 else:
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 35
-                    basis = np.transpose([[-0.668912,1.96676,-1.29785],	
+                    basis = np.transpose([[-0.668912,1.96676,-1.29785],
 					[1.61803,-0.618034,-1.0],[1.0,1.0,1.0]])
-                    
+
             elif np.allclose(D,F,atol=eps) and np.allclose(D,0,atol=eps):
                 if np.allclose(E,-A/2.,atol=eps):
                     lat_fam = 5
                     lat_type = 'base centered orthorhombic'
                     niggli_num = 36
                     basis = np.transpose([[1, 1, 1], [1.41421, -1.41421, 0],
-                                          [-1.43541, -1.43541, 1.37083]]) 
+                                          [-1.43541, -1.43541, 1.37083]])
                 else:
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
@@ -292,12 +292,12 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 5
                     lat_type = 'base centered orthorhombic'
                     niggli_num = 38
-                    basis = np.transpose([[0.5, 1, 0], [0.5, -1, 0], [0, 0, 3]]) 
+                    basis = np.transpose([[0.5, 1, 0], [0.5, -1, 0], [0, 0, 3]])
                 else:
                     lat_fam = 6
                     lat_type = 'simple monoclinic'
                     niggli_num = 34
-                    basis = np.transpose([[1,1,1],[1.22474487,-1.22474487,-2],
+                    basis = np.transpose([[1,1,1],[1.22474487,-1.22474487,-1],
                                           [-0.16598509,-1.64308297,1.80906806]])
             else:
                 if np.allclose(-B/2.,D,atol=eps) and np.allclose(-A/2.,E,atol=eps) and np.allclose(F,0,atol=eps):
@@ -305,36 +305,36 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_type = 'body centered orthorhombic'
                     niggli_num = 42
                     basis = np.transpose([[-1.53633, 1.36706, -1.33073], [1, 1, 1],
-                                          [1.61803, -0.61803, -1]]) 
+                                          [1.61803, -0.61803, -1]])
                 elif np.allclose(-B/2.,D,atol=eps) and np.allclose(F,0,atol=eps):
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'
                     niggli_num = 41
                     basis = np.transpose([[-1.85397, -0.854143, 1.35397],[1, 0, 1],
-                                          [1, -1.41421, -1]]) 
+                                          [1, -1.41421, -1]])
                 elif np.allclose(E,-A/2.,atol=eps) and np.allclose(F,0,atol=eps):
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'
                     niggli_num = 37
                     basis = np.transpose([[-1.79092,-1.47209,0.790922],[1.0,-1.41421,-1.0],
-                                          [1.0,0.0,1.0]]) 
+                                          [1.0,0.0,1.0]])
                 elif np.allclose(E,0,atol=eps) and np.allclose(F,-A/2.,atol=eps):
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'
                     niggli_num = 39
                     basis = np.transpose([[0, -1.73205,-1],[-1.66542, -0.672857, 1.66542],
-                                           [1,0,1]]) 
+                                           [1,0,1]])
                 elif np.allclose(2.0*abs(D+E+F),A+B,atol=eps) and np.allclose(abs(2.0*D+F),B,atol=eps):
                     lat_fam = 6
                     lat_type = 'body centered monoclinc'
                     niggli_num = 43
                     basis = np.transpose([[-0.39716, -0.34718, 2.49434],
                                           [2.64194, -0.14194, 0],
-                                          [-1.39716, -1.34718, 1.49434]]) 
+                                          [-1.39716, -1.34718, 1.49434]])
                 else:
                     lat_fam = 7
                     lat_type = 'triclinic'
                     niggli_num = 44
                     basis = None
 
-    return lat_type, niggli_num, lat_fam, basis 
+    return lat_type, niggli_num, lat_fam, basis
