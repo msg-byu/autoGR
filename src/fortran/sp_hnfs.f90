@@ -27,7 +27,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -124,7 +124,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -213,7 +213,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -287,7 +287,7 @@ CONTAINS
           exit
        end if
     end do
-    allocate(spHNFs(3,3,nhnfs))
+    allocate(spHNFs(3,3,1))
     nhnfs = 1
     spHNFs(:,:,1) = temp_HNFs(:,:,1)
     rmin = 0.0_dp
@@ -311,7 +311,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -470,7 +470,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -609,7 +609,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -776,7 +776,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -938,7 +938,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -1099,7 +1099,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -1182,7 +1182,7 @@ CONTAINS
              nbs = 2
           else
              bs = (/0, -1/)
-             nbs = 2
+             nbs = 1
           end if
           do j=1, nbs
              b = bs(j)
@@ -1259,7 +1259,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -1408,7 +1408,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -1554,7 +1554,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -1621,7 +1621,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in fco_26."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -1698,7 +1698,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -1765,7 +1765,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in fco_16."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -1779,10 +1779,10 @@ CONTAINS
           nbs = 2
           bs = (/(c/2), 0/)
        else
-          nbs = -1
+          nbs = 1
           bs = (/0, -1/)
        end if
-       do j=1, size(bs)
+       do j=1, nbs
           b = bs(j)
           do e=0, (f-1)
              if (MOD(2*b*e, c)==0) then
@@ -1840,7 +1840,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -1907,7 +1907,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in bco_19."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -1986,7 +1986,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -2053,7 +2053,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in bco_8."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -2081,21 +2081,24 @@ CONTAINS
                    if ((MOD(beta21, c)==0) .and. (MOD(gamma21, f)==0)) then
                       do d=0, (f-1)
                          beta11 = -a+(2*b)-2*d
-                         if (MOD(beta11*e, c)==0) then
+                         if (MOD(beta11, c)==0) then
                             gamma11 = -beta11*e/c
                             gamma13 = a+(2*d)-b*beta21/c
-                            if (all_hnfs) then 
-                               temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
-                                    0, c, e, &
-                                    0, 0, f/),(/3,3/))
-                            else
-                                        
-                               temp_HNFs(:,:,1) = reshape((/ a, b, d, &
-                                    0, c, e, &
-                                    0, 0, f/),(/3,3/))
-                               call compare_grids(U, B_vecs, at, &
-                                    temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                    grid, rmin, n_irr, eps_)
+                            if ((MOD(gamma11, f)==0) .and. (MOD(gamma13, f)==0)) then
+                               nhnfs = nhnfs + 1
+                               if (all_hnfs) then 
+                                  temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
+                                       0, c, e, &
+                                       0, 0, f/),(/3,3/))
+                               else
+                                  
+                                  temp_HNFs(:,:,1) = reshape((/ a, b, d, &
+                                       0, c, e, &
+                                       0, 0, f/),(/3,3/))
+                                  call compare_grids(U, B_vecs, at, &
+                                       temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
+                                       grid, rmin, n_irr, eps_)
+                               end if
                             end if
                          end if
                       end do
@@ -2133,7 +2136,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -2200,7 +2203,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in bco_42."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -2281,7 +2284,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -2348,7 +2351,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in baseco_38_13."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -2434,7 +2437,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -2501,7 +2504,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in baseco_23."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -2593,7 +2596,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -2659,7 +2662,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in baseco_40."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -2729,7 +2732,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -2796,7 +2799,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in baseco_36."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -2895,7 +2898,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -2962,7 +2965,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in sm_33."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -3044,7 +3047,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -3110,14 +3113,11 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in sm_34_35."
     else
        allocate(temp_HNFs(3,3,1))
     end if
     
-    allocate(temp_HNFs(3,3,total_hnfs),STAT=status)
-    if (status/=0) stop "Failed to allocate memory in sm_34_35."
-
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -3189,7 +3189,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -3256,7 +3256,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in basecm_10_14_17_27_37_39_41."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -3329,7 +3329,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -3396,7 +3396,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in basecm_20_25."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -3472,7 +3472,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -3538,7 +3538,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in basecm_28."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -3607,7 +3607,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -3673,7 +3673,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in basecm_29_30."
     else
        allocate(temp_HNFs(3,3,1))
     end if
@@ -3740,7 +3740,7 @@ CONTAINS
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
   !!<parameter name="U" regular="true">Users basis vectors.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
+  !!<parameter name="B_vecs">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
@@ -3806,7 +3806,7 @@ CONTAINS
        end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
-       if (status/=0) stop "Failed to allocate memory in hex_12."
+       if (status/=0) stop "Failed to allocate memory in basecm_43."
     else
        allocate(temp_HNFs(3,3,1))
     end if

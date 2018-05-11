@@ -4,6 +4,17 @@
 - Implemented changes that John suggested to fix/improve the
   algorithms.
 - Debugged new triclinic case.
+- Fixed bugs in sm_34_35 inroduced by refactor.
+- Fixed bugs in tric_31_44 introduced by refactor.
+- Fixed bugs in bco_8 introduced by refactor.
+- Fixed bugs in bcc_5 introduced by refactor.
+- Fixed bugs in stet_21 introduced by refactor.
+- Fixed bugs in fco_16 introduced by refactor.
+- Fixed basis for sm_34 in python and fortran niggli id routines.
+- Added the python script used to make test output for fortran to the
+  repo in testing_codes/make_output.py.
+- Added plotting notebook and some plots.
+- Reformatted niggli.f90 to make it a little easier to read.
 
 ## Revision 0.5.1 (WSM)
 - Fixed lots of compiler errors in sp_hnfs.f90 and grid_utils.f90.

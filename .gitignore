@@ -1,3 +1,6 @@
+## Python pip files
+.pytest_cache
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

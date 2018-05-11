@@ -10,6 +10,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -20,8 +21,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
     </group>
   </decorates>
@@ -36,6 +37,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -46,8 +48,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
     </group>
   </decorates>
@@ -62,6 +64,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -72,8 +75,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/)),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
     </group>
   </decorates>
@@ -88,6 +91,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -98,8 +102,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -115,6 +119,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -125,8 +130,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -142,6 +147,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -152,8 +158,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -169,6 +175,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -179,8 +186,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -196,6 +203,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -206,8 +214,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -223,6 +231,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -233,8 +242,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -250,6 +259,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -260,8 +270,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -277,6 +287,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -287,8 +298,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -304,6 +315,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -314,8 +326,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -331,6 +343,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -341,8 +354,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -358,6 +371,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -368,8 +382,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -385,6 +399,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -395,8 +410,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -412,6 +427,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -422,8 +438,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -439,6 +455,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -449,8 +466,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -466,6 +483,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -476,8 +494,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -493,6 +511,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -503,8 +522,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -520,6 +539,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -530,8 +550,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -547,6 +567,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -557,8 +578,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -574,6 +595,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -584,8 +606,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -601,6 +623,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -611,8 +634,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -628,6 +651,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -638,8 +662,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -655,6 +679,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -665,8 +690,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -682,6 +707,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -692,8 +718,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
@@ -709,6 +735,7 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
+      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -719,8 +746,8 @@
       <assignment name="Cu" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="O" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
       <assignment name="U" constant = "reshape((/1,0,0,0,1,0,0,0,1/),(/3,3/))"/>
-      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))"/>
-      <assignment name="at" constant = "(/0/)"/>
+      <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
+      <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
       <assignment name="all_hnfs_" constant = ".True."/>
     </group>
