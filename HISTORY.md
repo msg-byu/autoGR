@@ -4,6 +4,11 @@
 - Implemented changes that John suggested to fix/improve the
   algorithms.
 - Debugged new triclinic case.
+- Fixed sm_34_35 subroutine so that it passes unit tests.
+- Fixed tric_31_44 so that it passes unit tests.
+- Added the python script used to make test output for fortran to the
+  repo in testing_codes/make_output.py.
+- Added plotting notebook and some plots.
 
 ## Revision 0.5.1 (WSM)
 - Fixed lots of compiler errors in sp_hnfs.f90 and grid_utils.f90.
