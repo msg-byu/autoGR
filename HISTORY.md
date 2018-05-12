@@ -15,6 +15,8 @@
   repo in testing_codes/make_output.py.
 - Added plotting notebook and some plots.
 - Reformatted niggli.f90 to make it a little easier to read.
+- Fixed a bug in fing_kgrids.f90 in which the count variable wasn't
+  getting set.
 
 ## Revision 0.5.1 (WSM)
 - Fixed lots of compiler errors in sp_hnfs.f90 and grid_utils.f90.

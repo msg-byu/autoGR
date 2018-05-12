@@ -49,6 +49,7 @@ CONTAINS
     end if
 
     call id_cell(lat_vecs,Nu,Cu,O,No,Co,lat_id,eps_=eps)
+    count = 0
 
     if ((lat_id==3) .or. (lat_id==5) .or. (lat_id==1)) then
        call get_kpd_cubic(lat_id,kpd,c_kpd)
@@ -66,6 +67,7 @@ CONTAINS
                   grids(:,:,i), rmin(i), n_irr_kp(i), nhnfs(i), eps_=eps)
           end if
           sp_hnfs(:,:,i) = temp_hnfs(:,:,1)
+          count = count + 1
           deallocate(temp_hnfs)
        end do
     else if ((lat_id==44) .or. (lat_id==31)) then
@@ -74,8 +76,8 @@ CONTAINS
        call tric_31_44(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, mult, temp_hnfs, &
                   grids(:,:,1), rmin(1), n_irr_kp(1), nhnfs(1), eps_=eps)
        sp_hnfs = temp_hnfs*mult
+       count = 1
     else
-       count = 0
        a_kpd = kpd
        allocate(sp_hnfs(3,3,5), n_irr_kp(5), rmin(5), nhnfs(5), grids(3,3,5))
        do while ((count <5) .and. (a_kpd-kpd<=10))
