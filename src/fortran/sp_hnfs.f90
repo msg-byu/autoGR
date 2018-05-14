@@ -3926,16 +3926,15 @@ CONTAINS
     Nds = size(d,2)
 
     ! Count the total number of HNF matrices for given determinant (n)
+    nhnfs = 0
+    do i = 1,Nds
+      nhnfs = nhnfs + d(2,i)*d(3,i)**2
+    enddo
+    
     if (all_hnfs) then
-       nhnfs = 0
-       do i = 1,Nds
-          nhnfs = nhnfs + d(2,i)*d(3,i)**2
-       enddo
-
        allocate(spHNFs(3,3,nhnfs),STAT=status)
        if(status/=0) stop "Failed to allocate memory in tric"
     else
-       nhnfs = 1
        allocate(spHNFs(3,3,1),STAT=status)
     end if
 
@@ -3955,7 +3954,7 @@ CONTAINS
                    spHNFs(:,:,1) = reshape((/ d(1,i), j, k, &
                         0, d(2,i), l, &
                         0, 0, d(3,i)/),(/3,3/))
-                   spHNFs(:,:,1) = spHNFs(:,:,nhnfs)*mult
+                   spHNFs(:,:,1) = spHNFs(:,:,1)*mult
                    call compare_grids(U, B_vecs, at, &
                         spHNFs(:,:,1), No, Nu, Co, Cu, O, &
                         grid, rmin, n_irr, eps_)
