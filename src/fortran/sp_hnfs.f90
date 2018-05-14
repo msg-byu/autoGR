@@ -2,8 +2,8 @@
 !!crystal lattices.</summary>
 Module sp_hnfs
   use grid_utils
-  use num_types  
-  
+  use num_types
+
   implicit none
   private
   public sc_3, fcc_1, bcc_5, hex_12, hex_22, rhom_9_24, rhom_4_2, st_11, st_21, &
@@ -64,7 +64,7 @@ CONTAINS
     else
        eps = 1E-6
     end if
-    
+
     call get_HNF_diagonals(n,diagonals)
 
     nds = size(diagonals,2)
@@ -107,7 +107,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
     call grid_metrics(U, B_vecs, at, spHNFs(:,:,1), No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_=eps)
-    
+
   end SUBROUTINE sc_3
 
   !!<summary>Finds the symmetry preserving HNFs for the face centered
@@ -190,13 +190,13 @@ CONTAINS
        end if
     end do
     allocate(spHNFs(3,3,1))
-    nhnfs = 1    
+    nhnfs = 1
     spHNFs(:,:,1) = temp_HNFs(:,:,1)
     rmin = 0.0_dp
     n_irr = 0
     grid = 0.0_dp
     call grid_metrics(U, B_vecs, at, spHNFs(:,:,1), No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_=eps)
-    
+
   end SUBROUTINE fcc_1
 
   !!<summary>Finds the symmetry preserving HNFs for the body centered
@@ -250,7 +250,7 @@ CONTAINS
     else
        eps = 1E-6
     end if
-    
+
     call get_HNF_diagonals(n,diagonals)
 
     nds = size(diagonals,2)
@@ -280,7 +280,7 @@ CONTAINS
           b = 0
           d = 3*a
           e = 3*a
-          nhnfs = nhnfs + 1          
+          nhnfs = nhnfs + 1
           temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                0, c, e, &
                0, 0, f/),(/3,3/))
@@ -294,7 +294,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
     call grid_metrics(U, B_vecs, at, spHNFs(:,:,1), No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_=eps)
-    
+
   end SUBROUTINE bcc_5
 
   !!<summary>Finds the symmetry preserving HNFs for the hexagonal
@@ -372,7 +372,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -382,7 +382,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -411,7 +411,7 @@ CONTAINS
                             do d=0, (f-1)
                                if ((MOD(b*d, a)==0) .and. (MOD(e*beta11, c)==0) .and. &
                                     (MOD(b*e, a)==0) .and. (MOD(c*d, a)==0) .and. &
-                                    (MOD(c*d-b*e, a)==0)) then 
+                                    (MOD(c*d-b*e, a)==0)) then
                                   gamma11 = b*d/a -e*beta11/c
                                   gamma12 = 2*d + b*d/a - e*beta11/c
                                   gamma21 = c*d/a - 2*e - b*e/a
@@ -419,12 +419,12 @@ CONTAINS
                                   if ((MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. &
                                        (MOD(gamma21,f)==0) .and. (MOD(gamma22,f) ==0)) then
                                      nhnfs = nhnfs + 1
-                                     if (all_hnfs) then 
+                                     if (all_hnfs) then
                                         temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
                                      else
-                                        
+
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
@@ -449,7 +449,7 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
@@ -530,7 +530,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -540,7 +540,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -558,13 +558,13 @@ CONTAINS
                             gamma11 = -b+d*2
                             gamma12 = -b+d-(d*e)/c
                             if ((MOD(gamma11, f)==0) .and. (MOD(gamma12, f)==0)) then
-                               nhnfs = nhnfs + 1          
-                               if (all_hnfs) then 
+                               nhnfs = nhnfs + 1
+                               if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
                                else
-                                  
+
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
@@ -586,7 +586,7 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
@@ -670,7 +670,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -680,7 +680,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1, nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -719,13 +719,13 @@ CONTAINS
                                      gamma22 = -c -2*e + (d*e/a) - e*beta22/c
                                      if ((MOD(beta12, c)==0) .and. (MOD(gamma12, f)==0) .and. &
                                           (MOD(gamma22, f)==0)) then
-                                        nhnfs = nhnfs + 1          
-                                        if (all_hnfs) then 
+                                        nhnfs = nhnfs + 1
+                                        if (all_hnfs) then
                                            temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                                 0, c, e, &
                                                 0, 0, f/),(/3,3/))
                                         else
-                                           
+
                                            temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                                 0, c, e, &
                                                 0, 0, f/),(/3,3/))
@@ -752,12 +752,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE rhom_9_24
 
   !!<summary>Finds the symmetry preserving HNFs for the rhombohedral
@@ -838,7 +838,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -848,12 +848,12 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
        f = diagonals(3,i)
-       
+
        if (MOD(f, a)==0)then
           if (MOD(c, 2)==0) then
              nbs = 2
@@ -862,7 +862,7 @@ CONTAINS
              nbs = 1
              bs = (/0, -1/)
           end if
-          
+
           do j=1, nbs
              b = bs(j)
              if (MOD(b*f, a)==0) then
@@ -886,12 +886,12 @@ CONTAINS
                                           (MOD(gamma12, f)==0) .and. &
                                           (MOD(gamma22,f)==0))then
                                         nhnfs = nhnfs + 1
-                                        if (all_hnfs) then 
+                                        if (all_hnfs) then
                                            temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                                 0, c, e, &
                                                 0, 0, f/),(/3,3/))
                                         else
-                                           
+
                                            temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                                 0, c, e, &
                                                 0, 0, f/),(/3,3/))
@@ -916,14 +916,14 @@ CONTAINS
       allocate(spHNFs(3,3,nhnfs))
 
       spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-   else 
+   else
       allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE rhom_4_2
-  
+
   !!<summary>Finds the symmetry preserving HNFs for the simple
   !!tetragonal lattice with determinant n. Assuming the basis of A =
   !![[1,0,0],[0,1,0],[0,0,2]].</summary>
@@ -999,7 +999,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -1009,12 +1009,12 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
        f = diagonals(3,i)
-       
+
        if (MOD(c, a)==0) then
           if (MOD(c, 2)==0) then
              bs = (/0, (c/2)/)
@@ -1047,13 +1047,13 @@ CONTAINS
                                   gamma13 = -e*beta13/c + d*(b/a-1)
                                   gamma23 = -e*(b/a+1) +d*c/a
                                   if ((MOD(gamma13,f)==0) .and. (MOD(gamma23,f)==0)) then
-                                     nhnfs = nhnfs + 1          
-                                     if (all_hnfs) then 
+                                     nhnfs = nhnfs + 1
+                                     if (all_hnfs) then
                                         temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
                                      else
-                                     
+
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
@@ -1077,12 +1077,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE st_11
 
   !!<summary>Finds the symmetry preserving HNFs for the simple
@@ -1160,7 +1160,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -1170,7 +1170,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -1205,13 +1205,13 @@ CONTAINS
                          gamma23 = -c+e*e/c
                          if ((MOD(gamma12, f)==0) .and. (MOD(gamma13, f)==0) .and. &
                               (MOD(gamma23, f)==0)) then
-                            nhnfs = nhnfs + 1          
-                            if (all_hnfs) then 
+                            nhnfs = nhnfs + 1
+                            if (all_hnfs) then
                                temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
                             else
-                               
+
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
@@ -1232,12 +1232,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE st_21
 
   !!<summary>Finds the symmetry preserving HNFs for the body centered
@@ -1320,7 +1320,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -1330,12 +1330,12 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
        f = diagonals(3,i)
-       
+
        if (MOD(f, c)==0)then
           if (MOD(f, 2)==0)then
              nes = 2
@@ -1357,13 +1357,13 @@ CONTAINS
                             if (MOD(beta12, c)==0) then
                                gamma12 = -b+d-(e*beta12/c)
                                if(MOD(gamma12, f)==0)then
-                                  nhnfs = nhnfs + 1          
-                                  if (all_hnfs) then 
+                                  nhnfs = nhnfs + 1
+                                  if (all_hnfs) then
                                      temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                           0, c, e, &
                                           0, 0, f/),(/3,3/))
                                   else
-                                     
+
                                      temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                           0, c, e, &
                                           0, 0, f/),(/3,3/))
@@ -1386,12 +1386,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE bct_6_7_15_18
 
   !!<summary>Finds the symmetry preserving HNFs for the simple
@@ -1468,7 +1468,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -1478,12 +1478,12 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
        f = diagonals(3,i)
-       
+
        if (MOD(c, 2)==0) then
           nbs = 2
           bs = (/0, (c/2)/)
@@ -1508,13 +1508,13 @@ CONTAINS
              if (MOD((2*b*e), (f*c))==0) then
                 do z = 1, ne_ds
                    d = ds(z)
-                   nhnfs = nhnfs + 1          
-                   if (all_hnfs) then 
+                   nhnfs = nhnfs + 1
+                   if (all_hnfs) then
                       temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
                    else
-                      
+
                       temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
@@ -1532,7 +1532,7 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
@@ -1615,7 +1615,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -1625,7 +1625,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -1649,13 +1649,13 @@ CONTAINS
                    do d = 0, (f-1)
                       gamma13 = a +b +2*d
                       if (MOD(gamma13, f)==0) then
-                         nhnfs = nhnfs + 1          
-                         if (all_hnfs) then 
+                         nhnfs = nhnfs + 1
+                         if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
                          else
-                                     
+
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
@@ -1675,12 +1675,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE fco_26
 
   !!<summary>Finds the symmetry preserving HNFs for the face centered
@@ -1759,7 +1759,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -1769,7 +1769,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -1789,16 +1789,16 @@ CONTAINS
                 gamma11 = -b-2*b*e/c
                 gamma21 = c+2*e
                 if (MOD(gamma11, f)==0 .and. MOD(gamma21, f)==0) then
-                   do d=0, (f-1)                      
+                   do d=0, (f-1)
                       gamma12 = a+2*d-(2*b*e/c)
                       if (MOD(gamma12, f)==0) then
-                         nhnfs = nhnfs + 1          
-                         if (all_hnfs) then 
+                         nhnfs = nhnfs + 1
+                         if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
                          else
-                            
+
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
@@ -1818,12 +1818,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE fco_16
 
   !!<summary>Finds the symmetry preserving HNFs for the body centered
@@ -1901,7 +1901,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -1911,7 +1911,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -1936,13 +1936,13 @@ CONTAINS
                       do d=0, (f-1)
                          gamma12 = a + 2*d
                          if (MOD(gamma12, f)==0) then
-                            nhnfs = nhnfs + 1          
-                            if (all_hnfs) then 
+                            nhnfs = nhnfs + 1
+                            if (all_hnfs) then
                                temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
                             else
-                               
+
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
@@ -1963,12 +1963,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE bco_19
 
   !!<summary>Finds the symmetry preserving HNFs for the body centered
@@ -2047,7 +2047,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -2057,7 +2057,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2071,7 +2071,7 @@ CONTAINS
              nbs = 1
              bs = (/0, -1/)
           end if
-          
+
           do j=1, nbs
              b = bs(j)
              do e=0, (f-1)
@@ -2086,12 +2086,12 @@ CONTAINS
                             gamma13 = a+(2*d)-b*beta21/c
                             if ((MOD(gamma11, f)==0) .and. (MOD(gamma13, f)==0)) then
                                nhnfs = nhnfs + 1
-                               if (all_hnfs) then 
+                               if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
                                else
-                                  
+
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
@@ -2113,12 +2113,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE bco_8
 
   !!<summary>Finds the symmetry preserving HNFs for the body centered
@@ -2197,7 +2197,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -2207,7 +2207,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2232,13 +2232,13 @@ CONTAINS
                       gamma11 = -a+(2*d)-e*beta11/c
                       gamma13 = -a+2*d
                       if ((MOD(gamma11, f)==0) .and. (MOD(gamma13, f)==0)) then
-                         nhnfs = nhnfs + 1          
-                         if (all_hnfs) then 
+                         nhnfs = nhnfs + 1
+                         if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
                          else
-                            
+
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
@@ -2259,12 +2259,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE bco_42
 
   !!<summary>Finds the symmetry preserving HNFs for the base centered
@@ -2345,7 +2345,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -2355,7 +2355,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2385,13 +2385,13 @@ CONTAINS
                             gamma13 = -d + b*d/a -e*beta13/c
                             gamma23 = c*d/a -e -b*e/a
                             if ((MOD(gamma13, f)==0) .and. (MOD(gamma23, f)==0)) then
-                               nhnfs = nhnfs + 1          
-                               if (all_hnfs) then 
+                               nhnfs = nhnfs + 1
+                               if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
                                else
-                                  
+
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
@@ -2414,12 +2414,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE baseco_38_13
 
   !!<summary>Finds the symmetry preserving HNFs for the base centered
@@ -2498,7 +2498,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -2508,7 +2508,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2544,13 +2544,13 @@ CONTAINS
                                gamma23 = e+(d*e/a)-b*e*e/(a*c)
                                if ((MOD(beta13, c)==0) .and. (MOD(gamma13, f)==0) .and. &
                                     (MOD(gamma23, f)==0)) then
-                                  nhnfs = nhnfs + 1          
-                                  if (all_hnfs) then 
+                                  nhnfs = nhnfs + 1
+                                  if (all_hnfs) then
                                      temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                           0, c, e, &
                                           0, 0, f/),(/3,3/))
                                   else
-                                     
+
                                      temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                           0, c, e, &
                                           0, 0, f/),(/3,3/))
@@ -2573,12 +2573,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE baseco_23
 
   !!<summary>Finds the symmetry preserving HNFs for the base centered
@@ -2656,7 +2656,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -2666,7 +2666,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2683,13 +2683,13 @@ CONTAINS
                          beta13 = 2*b-d
                          gamma13 = beta13*e/c
                          if ((MOD(beta13, c)==0) .and. (MOD(gamma13, f)==0)) then
-                            nhnfs = nhnfs + 1          
-                            if (all_hnfs) then 
+                            nhnfs = nhnfs + 1
+                            if (all_hnfs) then
                                temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
                             else
-                               
+
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
@@ -2710,12 +2710,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE baseco_40
 
   !!<summary>Finds the symmetry preserving HNFs for the base centered
@@ -2793,7 +2793,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -2803,7 +2803,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2834,7 +2834,7 @@ CONTAINS
                    !The (MOD(e, a)==0) check is an actual condition
                    !that comes from the integer relationships. Not a
                    !mistake in droping the b from b*e.
-                   if ((MOD(e, a)==0) .and. (MOD(b*e, c)==0)) then 
+                   if ((MOD(e, a)==0) .and. (MOD(b*e, c)==0)) then
                       beta22 = -b*e/a
                       gamma13 = -2*b*e/c
                       if ((MOD(beta22, c)==0) .and. (MOD(gamma13, f)==0)) then
@@ -2846,13 +2846,13 @@ CONTAINS
                                   gamma22 = 2*e-(d*e/a)-beta22*e/c
                                   if ((MOD(beta12, c)==0) .and. (MOD(gamma12, f)==0) &
                                        .and. (MOD(gamma22, f)==0)) then
-                                     nhnfs = nhnfs + 1          
-                                     if (all_hnfs) then 
+                                     nhnfs = nhnfs + 1
+                                     if (all_hnfs) then
                                         temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
                                      else
-                                        
+
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
@@ -2876,12 +2876,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE baseco_36
 
   !!<summary>Finds the symmetry preserving HNFs for the simple
@@ -2959,7 +2959,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -2969,7 +2969,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1, nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2998,13 +2998,13 @@ CONTAINS
                 gamma12 = 2*b*e/c
                 if (MOD(gamma12, f)==0) then
                    do d=0, (f-1)
-                      nhnfs = nhnfs + 1          
-                      if (all_hnfs) then 
+                      nhnfs = nhnfs + 1
+                      if (all_hnfs) then
                          temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                               0, c, e, &
                               0, 0, f/),(/3,3/))
                       else
-                                     
+
                          temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                               0, c, e, &
                               0, 0, f/),(/3,3/))
@@ -3023,7 +3023,7 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
@@ -3107,7 +3107,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -3117,7 +3117,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -3138,13 +3138,13 @@ CONTAINS
           do k=1, nd_es
              e = es(k)
              do b=0, (c-1)
-                nhnfs = nhnfs + 1          
-                if (all_hnfs) then 
+                nhnfs = nhnfs + 1
+                if (all_hnfs) then
                    temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                         0, c, e, &
                         0, 0, f/),(/3,3/))
                 else
-                                        
+
                    temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                         0, c, e, &
                         0, 0, f/),(/3,3/))
@@ -3161,12 +3161,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE sm_34_35
 
   !!<summary>Finds the symmetry preserving HNFs for the base centered
@@ -3250,7 +3250,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -3260,7 +3260,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -3280,13 +3280,13 @@ CONTAINS
              gamma11 = -1*a + 2*d
              if (MOD(gamma11,f)==0) then
                 do b=0, (c-1)
-                   nhnfs = nhnfs + 1          
-                   if (all_hnfs) then 
+                   nhnfs = nhnfs + 1
+                   if (all_hnfs) then
                       temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
                    else
-                            
+
                       temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
@@ -3304,7 +3304,7 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
@@ -3390,7 +3390,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -3400,7 +3400,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -3423,13 +3423,13 @@ CONTAINS
                    gamma12 = -b-2*b*e/c
                    if (MOD(gamma12, f)==0) then
                       do d=0, (f-1)
-                         nhnfs = nhnfs + 1          
-                         if (all_hnfs) then 
+                         nhnfs = nhnfs + 1
+                         if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
                          else
-                            
+
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
@@ -3449,7 +3449,7 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
@@ -3532,7 +3532,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -3542,7 +3542,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -3556,13 +3556,13 @@ CONTAINS
                    gamma11 = 2*d+d*e/c
                    if (MOD(gamma11, f)==0) then
                       do b=0, (c-1)
-                         nhnfs = nhnfs + 1          
-                         if (all_hnfs) then 
+                         nhnfs = nhnfs + 1
+                         if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
                          else
-                                        
+
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
@@ -3582,12 +3582,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE basecm_28
 
   !!<summary>Finds the symmetry preserving HNFs for the base centered
@@ -3667,7 +3667,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -3677,7 +3677,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -3691,13 +3691,13 @@ CONTAINS
                    gamma11 = 2*d+d*e/c
                    if (MOD(gamma11, f)==0) then
                       do b=0, (c-1)
-                         nhnfs = nhnfs + 1          
-                         if (all_hnfs) then 
+                         nhnfs = nhnfs + 1
+                         if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
                          else
-                            
+
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
@@ -3717,7 +3717,7 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
@@ -3800,7 +3800,7 @@ CONTAINS
     n_irr = 0
     grid = 0.0_dp
 
-    if (all_hnfs) then 
+    if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
        end do
@@ -3810,7 +3810,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -3825,13 +3825,13 @@ CONTAINS
                    gamma12 = 2*a+2*d-beta12*e/c
                    if ((MOD(beta12, c)==0) .and. (MOD(gamma12, f)==0)) then
                       do b=0, (c-1)
-                         nhnfs = nhnfs + 1          
-                         if (all_hnfs) then 
+                         nhnfs = nhnfs + 1
+                         if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
                          else
-                            
+
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
@@ -3851,12 +3851,12 @@ CONTAINS
        allocate(spHNFs(3,3,nhnfs))
 
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
-    else 
+    else
        allocate(spHNFs(3,3,1))
 
        spHNFs(:,:,1) = temp_HNFs(:,:,1)
     end if
-    
+
   end SUBROUTINE basecm_43
 
   !!<summary>Finds the symmetry preserving HNFs for the triclinic
@@ -3887,7 +3887,7 @@ CONTAINS
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
-  !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>  
+  !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, spHNFs, grid, rmin, &
@@ -3902,10 +3902,10 @@ CONTAINS
     real(dp), intent(out) :: rmin, grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    
+
     integer, pointer    :: d(:,:) => null()
     integer             :: i, j, k, l    ! Loop counters
-    integer             :: Nds, Nhnf, ihnf ! # of triplets, # of HNF matrices, HNF counter
+    integer             :: Nds, ihnf ! # of triplets, HNF counter
     integer             :: status
     real(dp) :: eps
     logical :: all_hnfs
@@ -3921,20 +3921,21 @@ CONTAINS
     else
        eps = 1E-6
     end if
-    
+
     call get_HNF_diagonals(n,d)
     Nds = size(d,2)
 
     ! Count the total number of HNF matrices for given determinant (n)
-    if (all_hnfs) then 
-       Nhnf = 0
+    if (all_hnfs) then
+       nhnfs = 0
        do i = 1,Nds
-          Nhnf = Nhnf + d(2,i)*d(3,i)**2
+          nhnfs = nhnfs + d(2,i)*d(3,i)**2
        enddo
 
-       allocate(spHNFs(3,3,Nhnf),STAT=status)
+       allocate(spHNFs(3,3,nhnfs),STAT=status)
        if(status/=0) stop "Failed to allocate memory in tric"
     else
+       nhnfs = 1
        allocate(spHNFs(3,3,1),STAT=status)
     end if
 
@@ -3944,13 +3945,13 @@ CONTAINS
           do k = 0,d(3,i)-1  ! Ditto for row 3, element 1
              do l = 0,d(3,i)-1  ! Ditto for row 3, element 2
                 ihnf = ihnf+1 ! Count the HNFs and construct the next one
-                if (all_hnfs) then 
+                if (all_hnfs) then
                    spHNFs(:,:,ihnf) = reshape((/ d(1,i), j, k, &
                         0, d(2,i), l, &
                         0, 0, d(3,i)/),(/3,3/))
                    spHNFs(:,:,ihnf) = spHNFs(:,:,ihnf)*mult
                 else
-                   
+
                    spHNFs(:,:,1) = reshape((/ d(1,i), j, k, &
                         0, d(2,i), l, &
                         0, 0, d(3,i)/),(/3,3/))
@@ -3963,8 +3964,8 @@ CONTAINS
           enddo
        enddo  ! End loops over values for off-diagonal elements
     enddo ! End loop over all unique triplets of target determinant (n)
-    nhnfs = ihnf
-    if (ihnf /= Nhnf) stop "HNF: not all the matrices were generated...(bug!)"
+
+    if (ihnf /= nhnfs) stop "HNF: not all the matrices were generated...(bug!)"
   end SUBROUTINE tric_31_44
 
   !!<summary>Finds all the possible diagonals of the HNF matrices of a
