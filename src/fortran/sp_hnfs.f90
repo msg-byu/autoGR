@@ -2355,7 +2355,8 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-
+    !print *, "startig baseco_38_13"
+    !print *,n
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2386,6 +2387,7 @@ CONTAINS
                             gamma23 = c*d/a -e -b*e/a
                             if ((MOD(gamma13, f)==0) .and. (MOD(gamma23, f)==0)) then
                                nhnfs = nhnfs + 1
+                               !print * , "starting hnf insertion"
                                if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                        0, c, e, &
@@ -2398,7 +2400,9 @@ CONTAINS
                                   call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
                                        grid, rmin, n_irr, eps_)
+
                                end if
+                              !print * , "ending hnf insertion"
                             end if
                          end if
                       end do
@@ -2409,7 +2413,7 @@ CONTAINS
           end do
        end if
     end do
-
+    !print *, "ending baseco_38_13"
     if (all_hnfs) then
        allocate(spHNFs(3,3,nhnfs))
 
@@ -3174,7 +3178,7 @@ CONTAINS
   !!for basis 10 A = [[1, -1, 1],[-1.46391, 0, 1.96391],[0, 2, 0]],
   !!for basis 14 A = [[-1,1,0],[0.5,0,2],[0,-2,0]],
   !!for basis 17 A = [[-1.05387,-1.61088,1.51474],[-0.244302,-2.77045,0.51474],[1.809568,-0.15957,0.0]]
-  !!for basis 27 A = [[0.0,-1.73205,-1.0],[-1.66542,-0.672857,1.66542],[1.0,0.0,1.0]],
+  !!for basis 27 A = [[-1.464824,0.464824,1.907413],[-0.153209,0.153209,-2.907413],[1.0,1.0,0.0]],
   !!for basis 37 A = [[-1.79092,-1.47209,0.790922],[1.0,-1.41421,-1.0],[1.0,0.0,1.0]],
   !!for basis 39 A = [[0, -1.73205,-1],[-1.66542, -0.672857, 1.66542], [1,0,1]],
   !!for basis 41 A = [[-1.85397, -0.854143, 1.35397],[1, 0, 1],[1, -1.41421, -1]].</summary>
@@ -3249,7 +3253,6 @@ CONTAINS
     rmin = 0.0_dp
     n_irr = 0
     grid = 0.0_dp
-
     if (all_hnfs) then
        do i = 1,nds
           total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
@@ -3930,7 +3933,7 @@ CONTAINS
     do i = 1,Nds
       nhnfs = nhnfs + d(2,i)*d(3,i)**2
     enddo
-    
+
     if (all_hnfs) then
        allocate(spHNFs(3,3,nhnfs),STAT=status)
        if(status/=0) stop "Failed to allocate memory in tric"
