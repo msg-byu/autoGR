@@ -341,7 +341,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, nes
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -430,7 +430,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                             grid, rmin, n_irr, eps_)
+                                             grid, rmin, n_irr, best_HNF, eps_)
                                      end if
                                   end if
                                end if
@@ -452,7 +452,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
   end SUBROUTINE hex_12
 
@@ -500,7 +500,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -570,7 +570,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                       grid, rmin, n_irr, eps_)
+                                       grid, rmin, n_irr, best_HNF, eps_)
                                end if
                             end if
                          end if
@@ -589,7 +589,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
   end SUBROUTINE hex_22
 
@@ -639,7 +639,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -731,7 +731,7 @@ CONTAINS
                                                 0, 0, f/),(/3,3/))
                                            call compare_grids(U, B_vecs, at, &
                                                 temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                                grid, rmin, n_irr, eps_)
+                                                grid, rmin, n_irr, best_HNF, eps_)
                                         end if
                                      end if
                                   end if
@@ -755,7 +755,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE rhom_9_24
@@ -806,7 +806,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -897,7 +897,7 @@ CONTAINS
                                                 0, 0, f/),(/3,3/))
                                            call compare_grids(U, B_vecs, at, &
                                                 temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                                grid, rmin, n_irr, eps_)
+                                                grid, rmin, n_irr, best_HNF, eps_)
                                         end if
                                      end if
                                   end if
@@ -919,7 +919,7 @@ CONTAINS
    else 
       allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE rhom_4_2
@@ -968,7 +968,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -1059,7 +1059,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                             grid, rmin, n_irr, eps_)
+                                             grid, rmin, n_irr, best_HNF, eps_)
                                      end if
                                   end if
                                end if
@@ -1080,7 +1080,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE st_11
@@ -1129,7 +1129,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k, z
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -1217,7 +1217,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                    grid, rmin, n_irr, eps_)
+                                    grid, rmin, n_irr, best_HNF, eps_)
                             end if
                          end if
                       end if
@@ -1235,7 +1235,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE st_21
@@ -1289,7 +1289,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -1369,7 +1369,7 @@ CONTAINS
                                           0, 0, f/),(/3,3/))
                                      call compare_grids(U, B_vecs, at, &
                                           temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                          grid, rmin, n_irr, eps_)
+                                          grid, rmin, n_irr, best_HNF, eps_)
                                   end if
                                end if
                             end if
@@ -1389,7 +1389,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE bct_6_7_15_18
@@ -1438,7 +1438,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k, z
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -1520,7 +1520,7 @@ CONTAINS
                            0, 0, f/),(/3,3/))
                       call compare_grids(U, B_vecs, at, &
                            temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                           grid, rmin, n_irr, eps_)
+                           grid, rmin, n_irr, best_HNF, eps_)
                    end if
                 end do
              end if
@@ -1535,7 +1535,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
 
   end SUBROUTINE so_32
@@ -1584,7 +1584,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -1661,7 +1661,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, eps_)
+                                 grid, rmin, n_irr, best_HNF, eps_)
                          end if
                       end if
                    end do
@@ -1678,7 +1678,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE fco_26
@@ -1728,7 +1728,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -1804,7 +1804,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, eps_)
+                                 grid, rmin, n_irr, best_HNF, eps_)
                          end if
                       end if
                    end do
@@ -1821,7 +1821,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE fco_16
@@ -1870,7 +1870,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -1948,7 +1948,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                    grid, rmin, n_irr, eps_)
+                                    grid, rmin, n_irr, best_HNF, eps_)
                             end if
                          end if
                       end do
@@ -1966,7 +1966,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE bco_19
@@ -2016,7 +2016,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -2097,7 +2097,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                       grid, rmin, n_irr, eps_)
+                                       grid, rmin, n_irr, best_HNF, eps_)
                                end if
                             end if
                          end if
@@ -2116,7 +2116,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE bco_8
@@ -2166,7 +2166,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -2244,7 +2244,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, eps_)
+                                 grid, rmin, n_irr, best_HNF, eps_)
                          end if
                       end if
                    end do
@@ -2262,7 +2262,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE bco_42
@@ -2314,7 +2314,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -2397,7 +2397,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                       grid, rmin, n_irr, eps_)
+                                       grid, rmin, n_irr, best_HNF, eps_)
                                end if
                             end if
                          end if
@@ -2417,7 +2417,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE baseco_38_13
@@ -2467,7 +2467,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -2556,7 +2556,7 @@ CONTAINS
                                           0, 0, f/),(/3,3/))
                                      call compare_grids(U, B_vecs, at, &
                                           temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                          grid, rmin, n_irr, eps_)
+                                          grid, rmin, n_irr, best_HNF, eps_)
                                   end if
                                end if
                             end if
@@ -2576,7 +2576,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE baseco_23
@@ -2626,7 +2626,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -2695,7 +2695,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                    grid, rmin, n_irr, eps_)
+                                    grid, rmin, n_irr, best_HNF, eps_)
                             end if
                          end if
                       end do
@@ -2713,7 +2713,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE baseco_40
@@ -2762,7 +2762,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -2858,7 +2858,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                             grid, rmin, n_irr, eps_)
+                                             grid, rmin, n_irr, best_HNF, eps_)
                                      end if
                                   end if
                                end if
@@ -2879,7 +2879,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE baseco_36
@@ -2928,7 +2928,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -3010,7 +3010,7 @@ CONTAINS
                               0, 0, f/),(/3,3/))
                          call compare_grids(U, B_vecs, at, &
                               temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                              grid, rmin, n_irr, eps_)
+                              grid, rmin, n_irr, best_HNF, eps_)
                       end if
                    end do
                 end if
@@ -3026,7 +3026,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
 
   end SUBROUTINE sm_33
@@ -3077,7 +3077,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -3150,7 +3150,7 @@ CONTAINS
                         0, 0, f/),(/3,3/))
                    call compare_grids(U, B_vecs, at, &
                         temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                        grid, rmin, n_irr, eps_)
+                        grid, rmin, n_irr, best_HNF, eps_)
                 end if
              end do
           end do
@@ -3164,7 +3164,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE sm_34_35
@@ -3219,7 +3219,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -3286,13 +3286,12 @@ CONTAINS
                            0, c, e, &
                            0, 0, f/),(/3,3/))
                    else
-                            
                       temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
                       call compare_grids(U, B_vecs, at, &
                            temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                           grid, rmin, n_irr, eps_)
+                           grid, rmin, n_irr, best_HNF, eps_)
                    end if
                 end do
              end if
@@ -3307,7 +3306,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
 
   end SUBROUTINE basecm_10_14_17_27_37_39_41
@@ -3359,7 +3358,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, k, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -3435,7 +3434,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, eps_)
+                                 grid, rmin, n_irr, best_HNF, eps_)
                          end if
                       end do
                    end if
@@ -3452,7 +3451,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
 
   end SUBROUTINE basecm_20_25
@@ -3502,7 +3501,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -3568,7 +3567,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, eps_)
+                                 grid, rmin, n_irr, best_HNF, eps_)
                          end if
                       end do
                    end if
@@ -3585,7 +3584,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE basecm_28
@@ -3637,7 +3636,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -3703,7 +3702,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, eps_)
+                                 grid, rmin, n_irr, best_HNF, eps_)
                          end if
                       end do
                    end if
@@ -3720,7 +3719,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
 
   end SUBROUTINE basecm_29_30
@@ -3770,7 +3769,7 @@ CONTAINS
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
-    integer :: a,b,c,d,e,f
+    integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
     integer, allocatable :: temp_HNFs(:,:,:)
@@ -3837,7 +3836,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, eps_)
+                                 grid, rmin, n_irr, best_HNF, eps_)
                          end if
                       end do
                    end if
@@ -3854,7 +3853,7 @@ CONTAINS
     else 
        allocate(spHNFs(3,3,1))
 
-       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       spHNFs(:,:,1) = best_HNF
     end if
     
   end SUBROUTINE basecm_43
@@ -3907,6 +3906,7 @@ CONTAINS
     integer             :: i, j, k, l    ! Loop counters
     integer             :: Nds, Nhnf, ihnf ! # of triplets, # of HNF matrices, HNF counter
     integer             :: status
+    integer :: best_HNF(3,3)
     real(dp) :: eps
     logical :: all_hnfs
 
@@ -3957,7 +3957,7 @@ CONTAINS
                    spHNFs(:,:,1) = spHNFs(:,:,nhnfs)*mult
                    call compare_grids(U, B_vecs, at, &
                         spHNFs(:,:,1), No, Nu, Co, Cu, O, &
-                        grid, rmin, n_irr, eps_)
+                        grid, rmin, n_irr, best_HNF, eps_)
                 end if
              enddo
           enddo
