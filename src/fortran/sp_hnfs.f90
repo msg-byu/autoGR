@@ -2355,8 +2355,7 @@ CONTAINS
     else
        allocate(temp_HNFs(3,3,1))
     end if
-    !print *, "startig baseco_38_13"
-    !print *,n
+
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -2387,7 +2386,7 @@ CONTAINS
                             gamma23 = c*d/a -e -b*e/a
                             if ((MOD(gamma13, f)==0) .and. (MOD(gamma23, f)==0)) then
                                nhnfs = nhnfs + 1
-                               !print * , "starting hnf insertion"
+
                                if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
                                        0, c, e, &
@@ -2402,7 +2401,7 @@ CONTAINS
                                        grid, rmin, n_irr, eps_)
 
                                end if
-                              !print * , "ending hnf insertion"
+
                             end if
                          end if
                       end do
@@ -2413,7 +2412,7 @@ CONTAINS
           end do
        end if
     end do
-    !print *, "ending baseco_38_13"
+
     if (all_hnfs) then
        allocate(spHNFs(3,3,nhnfs))
 
