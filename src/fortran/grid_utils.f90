@@ -27,7 +27,7 @@ CONTAINS
   SUBROUTINE transform_supercell(spHNF,No,Nu,Co,Cu,O,UB)
     integer, intent(in) :: spHNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3) 
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
     real(dp), intent(out) :: UB(3,3)
 
     integer :: F(3,3)
@@ -51,7 +51,7 @@ CONTAINS
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
   !!<parameter name="HNF" regular="true">The list of generating
-  !!vectors for the candidate grids.</parameter>  
+  !!vectors for the candidate grids.</parameter>
   !!<parameter name="No" regular="true">Our niggli basis.</parameter>
   !!<parameter name="Nu" regular="true">The users niggli
   !!basis.</parameter>
@@ -83,15 +83,15 @@ CONTAINS
     real(dp)              :: R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
-    
+
     if (present(eps_)) then
        eps = eps_
     else
        eps = 1E-6
     end if
 
-    shift = 0.0_dp    
-    
+    shift = 0.0_dp
+
     call transform_supercell(HNF, No, Nu, Co, Cu, O, supercell)
 
     grid_inv = transpose(supercell)
@@ -120,7 +120,7 @@ CONTAINS
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
   !!<parameter name="HNF" regular="true">The list of generating
-  !!vectors for the candidate grids.</parameter>  
+  !!vectors for the candidate grids.</parameter>
   !!<parameter name="No" regular="true">Our niggli basis.</parameter>
   !!<parameter name="Nu" regular="true">The users niggli
   !!basis.</parameter>
@@ -136,7 +136,9 @@ CONTAINS
   !!tolerance.</parameter>
   !!<parameter name="grid" regular="true">The grid being compared to
   !!is input. The best grid is output.</parameter>
-  SUBROUTINE compare_grids(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_)
+  !!<parameter name="best_hnf" regular="true">The HNF being compared to
+  !!is input. The best HNF is output.</parameter>
+  SUBROUTINE compare_grids(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grid, rmin, n_irr, best_HNF, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
     real(dp), optional, intent(in) :: eps_
     real(dp), pointer :: B_vecs(:,:)
@@ -145,7 +147,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
     real(dp), intent(inout) :: rmin, grid(3,3)
-    integer, intent(inout) :: n_irr
+    integer, intent(inout) :: n_irr, best_HNF(3,3)
 
     real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3)
     real(dp) :: lat_trans(3,3)
@@ -155,43 +157,43 @@ CONTAINS
     integer, pointer      :: weights(:)
     real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3)
     integer :: temp_n_irr
-    
+
     if (present(eps_)) then
        eps = eps_
     else
        eps = 1E-6
     end if
 
-    shift = 0.0_dp    
-    
+    shift = 0.0_dp
     call transform_supercell(HNF, No, Nu, Co, Cu, O, supercell)
 
     temp_grid_inv = transpose(supercell)
-    call matrix_inverse(temp_grid_inv, temp_grid)
+    call matrix_inverse(transpose(supercell), temp_grid)
     lat_trans = transpose(lat_vecs)
     call matrix_inverse(lat_trans, R)
-    
+
     call minkowski_reduce_basis(temp_grid, reduced_grid, eps)
     norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
     temp_rmin = min(norms(1), norms(2), norms(3))
-    
-    if (temp_rmin > rmin) then
+
+    if (temp_rmin > (rmin+eps)) then
        call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
        n_irr = size(rdKlist,1)
        rmin = temp_rmin
        grid = temp_grid
-       
+
     else if (equal(temp_rmin, rmin, eps)) then
        call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
        temp_n_irr = size(rdKlist,1)
-       
-       if (temp_n_irr < n_irr) then 
+
+       if (temp_n_irr < n_irr) then
           rmin = temp_rmin
           n_irr = temp_n_irr
-          grid = temp_grid          
-       end if       
+          grid = temp_grid
+          best_hnf = HNF
+       end if
     end if
 
   end SUBROUTINE compare_grids
@@ -224,8 +226,8 @@ CONTAINS
     real(dp)              :: R(3,3), invLat(3,3), shift(3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
-    
-    
+
+
     if (present(eps_)) then
        eps = eps_
     else
@@ -233,10 +235,10 @@ CONTAINS
     end if
 
     shift = 0.0_dp
-    
+
     call matrix_inverse(lat_vecs, invLat)
     R = transpose(invLat)
-    
+
     r_min_best = 0
     n_irreducible = 0
     do i=1,size(grids,3)
@@ -261,6 +263,6 @@ CONTAINS
     end do
 
   end SUBROUTINE grid_selection
-  
+
 
 end Module grid_utils
