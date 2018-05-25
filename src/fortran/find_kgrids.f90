@@ -15,7 +15,7 @@ Module find_kgrids
   public find_grid
 
 CONTAINS
-  
+
   !!<summary>Determines the best k-point grid to use near the target
   !!density.</summary>
   !!<parameter name="lat_vecs" regular="true">The parent cell lattice
@@ -49,7 +49,7 @@ CONTAINS
     real(dp), pointer :: O_pg_ops(:,:,:), U_pg_ops(:,:,:)
     integer :: j, k, z
     real(dp) :: N_u(3,3), N_o(3,3), Hinv(3,3), Uinv(3,3), Oinv(3,3), X(3,3), S(3,3), H(3,3), St(3,3)
-    
+
 
     if (present(eps_)) then
        eps = eps_
@@ -65,7 +65,7 @@ CONTAINS
     ! print *, "Niggli N", lat_id
     ! print *, "User group order", size(U_pg_ops,3)
     ! print *, "Our group order", size(O_pg_ops,3)
-    
+
     if ((lat_id==3) .or. (lat_id==5) .or. (lat_id==1)) then
        call get_kpd_cubic(lat_id,kpd,c_kpd)
        allocate(sp_hnfs(3,3,3), n_irr_kp(3), rmin(3), nhnfs(3), grids(3,3,3), nt_kpts(3))
@@ -197,7 +197,7 @@ CONTAINS
              a_kpd = a_kpd + 1
              ! print *, "temp_nirr", temp_nirr
              ! print *, "n_irr_kp", n_irr_kp
-             
+
           else
              a_kpd = a_kpd + 1
           end if
@@ -209,10 +209,10 @@ CONTAINS
     do i=1,size(ratio,1)
        ratio(i) = real(n_irr_kp(i),dp)/real(nt_kpts(i),dp)
     end do
-    
+
     ! call matrix_inverse(lat_vecs, Uinv)
     ! call matrix_inverse(O, Oinv)
-    
+
     ! print *, "Checking the HNFs generated to ensure they preserve the symmetries of our basis."
     ! do i = 1, count
     !    call matrix_inverse(real(sp_hnfs(:,:,i),dp), Hinv)
@@ -237,8 +237,8 @@ CONTAINS
     !       end if
     !    end do
     ! end do
- 
-    
+
+
     ! print *, "Checking the grids generated to ensure they preserve the symmetries of the users basis."
     ! do i = 1, count
     !    call transform_supercell(sp_hnfs(:,:,i), No, Nu, Co, Cu, O, S)
@@ -333,13 +333,13 @@ CONTAINS
     a = 0
     b = 0
     c = 0
-    
+
     if (lat_id==1) then
        mults = (/1,4,16/)
     else
        mults = (/1,2,4/)
     end if
-    
+
     do while (nb<nmax)
        nc = nb**3
        do j=1,3
@@ -359,7 +359,7 @@ CONTAINS
        end do
        nb = nb + 1
     end do
-    
+
     densities = (/a,b,c/)
 
   end SUBROUTINE get_kpd_cubic

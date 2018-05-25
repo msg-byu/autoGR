@@ -626,8 +626,8 @@ CONTAINS
                      0.0_dp, 3.0_dp/),(/3,3/))
              else if (isclose((A/2.0_dp),E,atol_=eps)) then
                 id = 27
-                O = reshape((/0.0_dp, -1.73205_dp, -1.0_dp, -1.66542_dp, -0.672857_dp, &
-                     1.66542_dp, 1.0_dp, 0.0_dp, 1.0_dp/),(/3,3/))
+                O = reshape((/-1.464824_dp,0.464824_dp,1.907413_dp,-0.153209_dp,0.153209_dp, &
+                     -2.907413_dp,1.0_dp,1.0_dp,0.0_dp/),(/3,3/))
              end if
           else
              if (isclose((A/2.0_dp),E,atol_=eps) .and. isclose((2.0_dp*D),F,atol_=eps)) then

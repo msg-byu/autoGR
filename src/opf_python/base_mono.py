@@ -18,7 +18,7 @@ def base_mono_20_25(n):
     diags = get_HNF_diagonals(n)
 
     spHNFs = []
-    
+
     for diag in diags:
         a = diag[0]
         c = diag[1]
@@ -38,7 +38,7 @@ def base_mono_20_25(n):
                         for d in range(f):
                             HNF = [[a,0,0],[b,c,0],[d,e,f]]
                             spHNFs.append(HNF)
-                                
+
     return spHNFs
 
 def base_mono_28(n):
@@ -60,7 +60,7 @@ def base_mono_28(n):
     diags = get_HNF_diagonals(n)
 
     spHNFs = []
-    
+
     for diag in diags:
         a = diag[0]
         c = diag[1]
@@ -76,7 +76,7 @@ def base_mono_28(n):
                             for b in range(c):
                                 HNF = [[a,0,0],[b,c,0],[d,e,f]]
                                 spHNFs.append(HNF)
-                                
+
     return spHNFs
 
 def base_mono_29_30(n):
@@ -99,7 +99,7 @@ def base_mono_29_30(n):
     diags = get_HNF_diagonals(n)
 
     spHNFs = []
-    
+
     for diag in diags:
         a = diag[0]
         c = diag[1]
@@ -115,16 +115,16 @@ def base_mono_29_30(n):
                             for b in range(c):
                                 HNF = [[a,0,0],[b,c,0],[d,e,f]]
                                 spHNFs.append(HNF)
-                                
+
     return spHNFs
-                                                          
+
 def base_mono_10_14_17_27_37_39_41(n):
     """Finds the symmetry preserving HNFs for the base centered monoclinic
     lattices with a determinant of n. Assuming:
 	for basis 10 A = [[1, -1, 1],[-1.46391, 0, 1.96391],[0, 2, 0]],
 	for basis 14 A = [[-1,1,0],[0.5,0,2],[0,-2,0]],
 	for basis 17 A = [[-1.05387,-1.61088,1.51474],[-0.244302,-2.77045,0.51474],[1.809568,-0.15957,0.0]]
-	for basis 27 A = [[0.0,-1.73205,-1.0],[-1.66542,-0.672857,1.66542],[1.0,0.0,1.0]],
+	for basis 27 A = [[-1.464824,0.464824,1.907413],[-0.153209,0.153209,-2.907413],[1.0,1.0,0.0]],
 	for basis 37 A = [[-1.79092,-1.47209,0.790922],[1.0,-1.41421,-1.0],[1.0,0.0,1.0]],
 	for basis 39 A = [[0, -1.73205,-1],[-1.66542, -0.672857, 1.66542], [1,0,1]],
 	for basis 41 A = [[-1.85397, -0.854143, 1.35397],[1, 0, 1],[1, -1.41421, -1]].
@@ -138,7 +138,7 @@ def base_mono_10_14_17_27_37_39_41(n):
     """
 
     from opf_python.universal import get_HNF_diagonals
-    
+
     diags = get_HNF_diagonals(n)
 
     spHNFs = []
@@ -149,7 +149,7 @@ def base_mono_10_14_17_27_37_39_41(n):
         f = diag[2]
         #gamma 2
         if f%2==0:
-            es = [0,f//2.]
+            es = [0,f//2]
         else:
             es = [0]
 
@@ -161,8 +161,8 @@ def base_mono_10_14_17_27_37_39_41(n):
                         HNF = [[a,0,0],[b,c,0],[d,e,f]]
                         spHNFs.append(HNF)
 
-    return spHNFs 
-                      
+    return spHNFs
+
 def base_mono_43(n):
     """Finds the symmetry preserving HNFs for the base centered monoclinic
     lattices with a determinant of n. Assuming A = [[-0.39716,
@@ -182,7 +182,7 @@ def base_mono_43(n):
     diags = get_HNF_diagonals(n)
 
     spHNFs = []
-    
+
     for diag in diags:
         a = diag[0]
         c = diag[1]
@@ -199,5 +199,5 @@ def base_mono_43(n):
                             for b in range(c):
                                 HNF = [[a,0,0],[b,c,0],[d,e,f]]
                                 spHNFs.append(HNF)
-                                
+
     return spHNFs
