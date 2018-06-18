@@ -1,6 +1,6 @@
 PROGRAM lat_id_driver
   use find_kgrids, only: find_grid
-  use kpointgeneration, only: generateIrredKpointList, mapKptsIntoFirstBZ
+  use kpointgeneration, only: generateIrredKpointList, mapKptsIntoBZ
   use vector_matrix_utilities, only: matrix_inverse, volume
   use num_types
   ! use fortpy, only: pysave, fpy_read_f, fpy_read
@@ -28,16 +28,16 @@ PROGRAM lat_id_driver
   allocate(at(sum(concs)),B_vecs(3,sum(concs)))
   read(1,'(a300)') line
   do i=1,sum(concs)
-     read(1,*) B_vecs(:,i)     
+     read(1,*) B_vecs(:,i)
   end do
   close(1)
-  
+
   z = 1
   do i=1,count
      if (concs(i) > 0) then
         do j=1,concs(i)
            at(z) = i-1
-           z = z+1        
+           z = z+1
         end do
      end if
   end do
@@ -54,8 +54,8 @@ PROGRAM lat_id_driver
   call find_grid(lat_vecs, nkpts, B_vecs, at, grid)
 
   call generateIrredKpointList(lat_vecs,B_vecs,at,grid,r_vecs,offset,IRKps,weights,eps_=1E-6_dp)
-  call mapKptsIntoFirstBZ(r_vecs,IRKps)
-  
+  call mapKptsIntoBZ(r_vecs,IRKps)
+
   open(4,file="KPOINTS")
   ! write(4,'("Our new kpoint method. ",i6)') sum(weights)
   write(4,'(A22, I12, A1, I6)')"Our new kpoint method.", sum(weights), '/', size(IRKps,1)
@@ -72,15 +72,15 @@ PROGRAM lat_id_driver
   !    write(4,'(F16.14,A1,F16.14,A1,F16.14)') grid(1,i), " ", grid(2,i), " ", grid(3,i)
   ! end do
   !    write(4,'(F16.14,A1,F16.14,A1,F16.14)') offset(1), " ", offset(2), " ", offset(3)
-  
-     
-  
+
+
+
   ! print *, "choosen grid"
   ! do i=1,3
   !    print *, grid(:,i)
   ! end do
- 
-contains 
+
+contains
   subroutine split_str(instr,out1)
     character(300), intent(inout) :: instr
     character(300), intent(out) :: out1
@@ -92,7 +92,7 @@ contains
     out1 = adjustl(TRIM(instr(1:index-1)))
     instr = adjustl(TRIM(instr(index+1:)))
   end subroutine split_str
-  
+
   subroutine parse_line_for_numbers(line,readEntries,values)
     character(300), intent(inout):: line
     integer, intent(out)          :: readEntries
@@ -110,12 +110,12 @@ contains
     readEntries=0
     iE = 0
 
-    line = trim(adjustl(line)) ! Remove preceding blanks                                         
+    line = trim(adjustl(line)) ! Remove preceding blanks
     if (trim(line)=="") then ! make sure we didn't get a blank line
        readEntries = 0
        return
     endif
-    
+
     do while (.not. done)
        iE = iE+1
        call split_str(line,temp)
@@ -126,14 +126,14 @@ contains
        read(temp,*,iostat=ierr) values(iE)
        if (ierr /=0) then
           readEntries=iE-1
-          return 
+          return
           !stop "ERROR: line parsing for number failed. Maybe format mismatch?"
        endif
        if (line=="") then
           done = .True.
        end if
     enddo
-    
+
     readEntries=iE
   end subroutine parse_line_for_numbers
 
