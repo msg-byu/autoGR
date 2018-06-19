@@ -157,6 +157,8 @@ CONTAINS
     real(dp)              :: R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
+    integer, allocatable :: ralloc_HNFs(:,:,:)
+    real(dp), allocatable :: ralloc_grids(:,:,:)
     real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3), supr2_rmin, supr_rmin
     integer :: temp_n_irr
 
@@ -199,6 +201,17 @@ CONTAINS
        best_HNFs(:,:,ngrids) = HNF
        
     else if (equal(temp_rmin, rmin, eps)) then
+       if (size(grids,3) == ngrids) then
+          allocate(ralloc_HNFs(3,3,ngrids), ralloc_grids(3,3,ngrids))
+          ralloc_HNFs = best_HNFs
+          ralloc_grids = grids
+          deallocate(best_HNFs, grids)
+          allocate(best_HNFs(3,3,2*ngrids), grids(3,3,2*ngrids))
+          best_HNFs = 0
+          grids = 0.0_dp
+          best_HNFs(1:3,1:3,1:ngrids) = ralloc_HNFs(1:3,1:3,1:ngrids)
+          grids(1:3,1:3,1:ngrids) = ralloc_grids(1:3,1:3,1:ngrids)
+       end if
        ngrids = ngrids + 1
        grids(:,:,ngrids) = temp_grid
        best_HNFs(:,:,ngrids) = HNF
