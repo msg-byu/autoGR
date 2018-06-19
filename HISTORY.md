@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.5.3 (WSM)
+- Implemented a faster selection implementation in which a minimal set
+  of grids is folded.
+
 ## Revision 0.5.2 (WSM)
 - Implemented changes that John suggested to fix/improve the
   algorithms.

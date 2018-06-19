@@ -344,7 +344,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, nes
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta13, beta11, gamma13, gamma11, gamma12, gamma21, gamma22
     integer :: es(2)
@@ -430,7 +432,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                             grid, rmin, n_irr, best_HNF, eps_)
+                                             cand_grids, rmin, cand_HNFs, ngrids, eps)
                                      end if
                                   end if
                                end if
@@ -451,7 +453,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
   end SUBROUTINE hex_12
@@ -503,7 +505,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma21, gamma22, gamma11, gamma12
     real(dp) :: eps
@@ -570,7 +574,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                       grid, rmin, n_irr, best_HNF, eps_)
+                                       cand_grids, rmin, cand_HNFs, ngrids, eps)
                                end if
                             end if
                          end if
@@ -588,7 +592,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
   end SUBROUTINE hex_22
@@ -642,7 +646,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta13, beta22, beta12, gamma11, gamma12, gamma21, gamma22
     integer :: bs(2), nbs
@@ -731,7 +737,7 @@ CONTAINS
                                                 0, 0, f/),(/3,3/))
                                            call compare_grids(U, B_vecs, at, &
                                                 temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                                grid, rmin, n_irr, best_HNF, eps_)
+                                                cand_grids, rmin, cand_HNFs, ngrids, eps)
                                         end if
                                      end if
                                   end if
@@ -754,7 +760,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -809,7 +815,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta32, beta22, beta12, gamma11, gamma12, gamma22, gamma21
     integer :: nbs
@@ -897,7 +905,7 @@ CONTAINS
                                                 0, 0, f/),(/3,3/))
                                            call compare_grids(U, B_vecs, at, &
                                                 temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                                grid, rmin, n_irr, best_HNF, eps_)
+                                                cand_grids, rmin, cand_HNFs, ngrids, eps)
                                         end if
                                      end if
                                   end if
@@ -971,7 +979,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta13, gamma13, gamma12, gamma23
     integer :: bs(2), es(2), nbs, nes
@@ -1059,7 +1069,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                             grid, rmin, n_irr, best_HNF, eps_)
+                                             cand_grids, rmin, cand_HNFs, ngrids, eps)
                                      end if
                                   end if
                                end if
@@ -1079,7 +1089,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1132,7 +1142,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k, z
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta13, gamma13, gamma12, gamma23
     integer :: bs(2), es(2), nbs, nes
@@ -1217,7 +1229,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                    grid, rmin, n_irr, best_HNF, eps_)
+                                    cand_grids, rmin, cand_HNFs, ngrids, eps)
                             end if
                          end if
                       end if
@@ -1234,7 +1246,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1292,7 +1304,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma21, gamma13, beta12, gamma12
     integer :: es(2), nes
@@ -1369,7 +1383,7 @@ CONTAINS
                                           0, 0, f/),(/3,3/))
                                      call compare_grids(U, B_vecs, at, &
                                           temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                          grid, rmin, n_irr, best_HNF, eps_)
+                                          cand_grids, rmin, cand_HNFs, ngrids, eps)
                                   end if
                                end if
                             end if
@@ -1388,7 +1402,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1441,7 +1455,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k, z
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: bs(2), es(2), ds(2), nbs, ne_ds
     real(dp) :: eps
@@ -1520,7 +1536,7 @@ CONTAINS
                            0, 0, f/),(/3,3/))
                       call compare_grids(U, B_vecs, at, &
                            temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                           grid, rmin, n_irr, best_HNF, eps_)
+                           cand_grids, rmin, cand_HNFs, ngrids, eps)
                    end if
                 end do
              end if
@@ -1534,7 +1550,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1587,7 +1603,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma12, gamma13, gamma23
     integer :: bs(2), nbs
@@ -1661,7 +1679,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, best_HNF, eps_)
+                                 cand_grids, rmin, cand_HNFs, ngrids, eps)
                          end if
                       end if
                    end do
@@ -1677,7 +1695,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1731,7 +1749,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma11, gamma12, gamma21
     integer :: bs(2), nbs
@@ -1804,7 +1824,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, best_HNF, eps_)
+                                 cand_grids, rmin, cand_HNFs, ngrids, eps)
                          end if
                       end if
                    end do
@@ -1820,7 +1840,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1873,7 +1893,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma12, gamma13, beta13
     integer :: es(2), nes
@@ -1948,7 +1970,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                    grid, rmin, n_irr, best_HNF, eps_)
+                                    cand_grids, rmin, cand_HNFs, ngrids, eps)
                             end if
                          end if
                       end do
@@ -1965,7 +1987,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2019,7 +2041,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta21, beta11, gamma21, gamma11, gamma13
     integer :: bs(2), nbs
@@ -2097,7 +2121,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                       grid, rmin, n_irr, best_HNF, eps_)
+                                       cand_grids, rmin, cand_HNFs, ngrids, eps)
                                end if
                             end if
                          end if
@@ -2115,7 +2139,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2169,7 +2193,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta11, gamma12, gamma11, gamma13
     integer :: es(2), nes
@@ -2244,7 +2270,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, best_HNF, eps_)
+                                 cand_grids, rmin, cand_HNFs, ngrids, eps)
                          end if
                       end if
                    end do
@@ -2261,7 +2287,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2317,7 +2343,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma13, gamma23, beta13
     integer :: es(2), ds(2), ne_ds
@@ -2397,7 +2425,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(U, B_vecs, at, &
                                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                       grid, rmin, n_irr, best_HNF, eps_)
+                                       cand_grids, rmin, cand_HNFs, ngrids, eps)
                                end if
                             end if
                          end if
@@ -2416,7 +2444,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2470,7 +2498,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta13, gamma13, gamma23
     integer :: es(2), bs(2), nes, nbs
@@ -2556,7 +2586,7 @@ CONTAINS
                                           0, 0, f/),(/3,3/))
                                      call compare_grids(U, B_vecs, at, &
                                           temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                          grid, rmin, n_irr, best_HNF, eps_)
+                                          cand_grids, rmin, cand_HNFs, ngrids, eps)
                                   end if
                                end if
                             end if
@@ -2575,7 +2605,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2629,7 +2659,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta13, gamma13, gamma12, gamma22
     real(dp) :: eps
@@ -2695,7 +2727,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(U, B_vecs, at, &
                                     temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                    grid, rmin, n_irr, best_HNF, eps_)
+                                    cand_grids, rmin, cand_HNFs, ngrids, eps)
                             end if
                          end if
                       end do
@@ -2712,7 +2744,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2765,7 +2797,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta12, beta22, beta32, gamma13, gamma12, gamma22
     integer :: bs(2), es(2), nes, nbs
@@ -2858,7 +2892,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(U, B_vecs, at, &
                                              temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                             grid, rmin, n_irr, best_HNF, eps_)
+                                             cand_grids, rmin, cand_HNFs, ngrids, eps)
                                      end if
                                   end if
                                end if
@@ -2878,7 +2912,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2931,7 +2965,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma12
     integer :: es(2), bs(2), nes, nbs
@@ -3010,7 +3046,7 @@ CONTAINS
                               0, 0, f/),(/3,3/))
                          call compare_grids(U, B_vecs, at, &
                               temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                              grid, rmin, n_irr, best_HNF, eps_)
+                              cand_grids, rmin, cand_HNFs, ngrids, eps)
                       end if
                    end do
                 end if
@@ -3025,7 +3061,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3080,7 +3116,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: ds(2), es(2), nd_es
     real(dp) :: eps
@@ -3150,7 +3188,7 @@ CONTAINS
                         0, 0, f/),(/3,3/))
                    call compare_grids(U, B_vecs, at, &
                         temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                        grid, rmin, n_irr, best_HNF, eps_)
+                        cand_grids, rmin, cand_HNFs, ngrids, eps)
                 end if
              end do
           end do
@@ -3163,7 +3201,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3222,7 +3260,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma11
     integer :: es(2), nes
@@ -3291,7 +3331,7 @@ CONTAINS
                            0, 0, f/),(/3,3/))
                       call compare_grids(U, B_vecs, at, &
                            temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                           grid, rmin, n_irr, best_HNF, eps_)
+                           cand_grids, rmin, cand_HNFs, ngrids, eps)
                    end if
                 end do
              end if
@@ -3305,7 +3345,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3361,7 +3401,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, k, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma12, gamma22
     integer :: bs(2), nbs
@@ -3434,7 +3476,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, best_HNF, eps_)
+                                 cand_grids, rmin, cand_HNFs, ngrids, eps)
                          end if
                       end do
                    end if
@@ -3450,7 +3492,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3504,7 +3546,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma21, gamma11
     real(dp) :: eps
@@ -3567,7 +3611,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, best_HNF, eps_)
+                                 cand_grids, rmin, cand_HNFs, ngrids, eps)
                          end if
                       end do
                    end if
@@ -3583,7 +3627,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3639,7 +3683,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: gamma21, gamma11
     real(dp) :: eps
@@ -3702,7 +3748,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, best_HNF, eps_)
+                                 cand_grids, rmin, cand_HNFs, ngrids, eps)
                          end if
                       end do
                    end if
@@ -3718,7 +3764,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3772,7 +3818,9 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:)
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer :: beta12, gamma12, gamma22
     real(dp) :: eps
@@ -3836,7 +3884,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(U, B_vecs, at, &
                                  temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
-                                 grid, rmin, n_irr, best_HNF, eps_)
+                                 cand_grids, rmin, cand_HNFs, ngrids, eps)
                          end if
                       end do
                    end if
@@ -3852,7 +3900,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3901,6 +3949,10 @@ CONTAINS
     real(dp), intent(out) :: rmin, grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
+
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:)
+    integer :: ngrids
 
     integer, pointer    :: d(:,:) => null()
     integer             :: i, j, k, l    ! Loop counters
@@ -3956,8 +4008,8 @@ CONTAINS
                         0, 0, d(3,i)/),(/3,3/))
                    spHNFs(:,:,1) = spHNFs(:,:,1)*mult
                    call compare_grids(U, B_vecs, at, &
-                        spHNFs(:,:,1), No, Nu, Co, Cu, O, &
-                        grid, rmin, n_irr, best_HNF, eps_)
+                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
+                        cand_grids, rmin, cand_HNFs, ngrids, eps)
                 end if
              enddo
           enddo

@@ -59,13 +59,7 @@ CONTAINS
 
     call id_cell(lat_vecs,Nu,Cu,O,No,Co,lat_id,eps_=eps)
     count = 0
-
-    call get_lattice_pointGroup(lat_vecs, U_pg_ops)
-    call get_lattice_pointGroup(O, O_pg_ops, eps_=real(1E-3,dp))
-    ! print *, "Niggli N", lat_id
-    ! print *, "User group order", size(U_pg_ops,3)
-    ! print *, "Our group order", size(O_pg_ops,3)
-    
+   
     if ((lat_id==3) .or. (lat_id==5) .or. (lat_id==1)) then
        call get_kpd_cubic(lat_id,kpd,c_kpd)
        allocate(sp_hnfs(3,3,3), n_irr_kp(3), rmin(3), nhnfs(3), grids(3,3,3), nt_kpts(3))
@@ -195,8 +189,6 @@ CONTAINS
              nt_kpts(count+1) = a_kpd
              count = count + 1
              a_kpd = a_kpd + 1
-             ! print *, "temp_nirr", temp_nirr
-             ! print *, "n_irr_kp", n_irr_kp
              
           else
              a_kpd = a_kpd + 1
@@ -209,108 +201,8 @@ CONTAINS
     do i=1,size(ratio,1)
        ratio(i) = real(n_irr_kp(i),dp)/real(nt_kpts(i),dp)
     end do
-    
-    ! call matrix_inverse(lat_vecs, Uinv)
-    ! call matrix_inverse(O, Oinv)
-    
-    ! print *, "Checking the HNFs generated to ensure they preserve the symmetries of our basis."
-    ! do i = 1, count
-    !    call matrix_inverse(real(sp_hnfs(:,:,i),dp), Hinv)
-    !    do k=1, size(O_pg_ops,3)
-    !       X = matmul(Oinv, matmul(O_pg_ops(:,:,k),O))
-    !       N_u = matmul(Hinv, matmul(X, sp_hnfs(:,:,i)))
-    !       if (any(abs(N_u-nint(N_u))>1E-3) .or. any(abs(X-nint(X))>1E-3)) then
-    !          print *, "Failed to preserve our symmetry."
-    !          print *, "i", i, "k", k
-    !          print *, "HNF"
-    !          do z=1,3
-    !             print *, sp_hnfs(z,:,i)
-    !          end do
-    !          print *, "N"
-    !          do z=1,3
-    !             print *, N_u(:,z)
-    !          end do
-    !          print *, "X"
-    !          do z=1,3
-    !             print *, X(:,z)
-    !          end do
-    !       end if
-    !    end do
-    ! end do
- 
-    
-    ! print *, "Checking the grids generated to ensure they preserve the symmetries of the users basis."
-    ! do i = 1, count
-    !    call transform_supercell(sp_hnfs(:,:,i), No, Nu, Co, Cu, O, S)
-    !    H = matmul(Uinv,S)
-    !    call matrix_inverse(H, Hinv)
-    !    do k=1, size(U_pg_ops, 3)
-    !       X = matmul(Uinv, matmul(U_pg_ops(:,:,k), lat_vecs))
-    !       N_u = matmul(Hinv, matmul(X, H))
-    !       if (any(abs(N_u-nint(N_u))>1E-3) .or. any(abs(X-nint(X))>1E-3)) then
-    !          print *, "Failed to user symmetry."
-    !          print *, "i", i, "k", k
-    !          print *, "grid"
-    !          do z=1,3
-    !             print *, grids(z,:,i)
-    !          end do
-    !          ! print *, "S"
-    !          ! do z=1,3
-    !          !    print *, S(z,:)
-    !          ! end do
-    !          print *, "Uinv"
-    !          do z=1,3
-    !             print *, Uinv(z,:)
-    !          end do
-    !          print *, "HNF"
-    !          do z=1,3
-    !             print *, H(z,:)
-    !          end do
-    !          print *, "N"
-    !          do z=1,3
-    !             print *, N_u(z,:)
-    !          end do
-    !          print *, "X"
-    !          do z=1,3
-    !             print *, X(z,:)
-    !          end do
-    !       end if
-    !    end do
-    ! end do
-
-    ! print *, "check if grid and supercell match."
-    ! do j=1, count
-    !    call transform_supercell(sp_hnfs(:,:,j), No, Nu, Co, Cu, O, S)
-    !    call matrix_inverse(transpose(S),St)
-    !    call get_lattice_pointGroup(St,U_pg_ops)
-    !    if (any(abs(grids(:,:,j)-St)>1E-3)) then
-    !       print *, "grids and supercell don't match."
-    !       print *, "j",j, size(U_pg_ops,3)
-    !       print *, "grids"
-    !       do i=1,3
-    !          print *, grids(i,:,j)
-    !       end do
-    !       print *, "S"
-    !       do i=1,3
-    !          print *, S(i,:)
-    !       end do
-    !       print *, "St"
-    !       do i=1,3
-    !          print *, St(i,:)
-    !       end do
-    !    end if
-    ! end do
-    ! do i=1,count
-    !    call get_lattice_pointGroup(grids(:,:,i),U_pg_ops,eps_=real(1E-3,dp))
-    !    print *, "i", i, size(U_pg_ops,3)
-    ! end do
-    ! ! Select the grid that has the fewest irreducible k-points as the
-    ! ! best grid for this system.
-    ! print *, n_irr_kp
     min_kpn_loc = MINLOC(ratio)
     best_grid = grids(:,:, min_kpn_loc(1))
-    ! print *, "selected", min_kpn_loc
-    ! print *, "count", count
   end SUBROUTINE find_grid
 
   !!<summary>Gets the trial range of kpoint densities for cubic

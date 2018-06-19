@@ -1,6 +1,6 @@
 PROGRAM lat_id_driver
   use find_kgrids, only: find_grid
-  use kpointgeneration, only: generateIrredKpointList, mapKptsIntoFirstBZ
+  use kpointgeneration, only: generateIrredKpointList, mapKptsIntoBZ
   use vector_matrix_utilities, only: matrix_inverse, volume
   use num_types
   ! use fortpy, only: pysave, fpy_read_f, fpy_read
@@ -54,7 +54,12 @@ PROGRAM lat_id_driver
   call find_grid(lat_vecs, nkpts, B_vecs, at, grid)
 
   call generateIrredKpointList(lat_vecs,B_vecs,at,grid,r_vecs,offset,IRKps,weights,eps_=1E-6_dp)
-  call mapKptsIntoFirstBZ(r_vecs,IRKps)
+  call mapKptsIntoBZ(r_vecs,IRKps)
+
+  print *, "OUR GRID"
+  do i=1,3
+     print *, grid(:,i)
+  end do
   
   open(4,file="KPOINTS")
   ! write(4,'("Our new kpoint method. ",i6)') sum(weights)

@@ -129,16 +129,16 @@ CONTAINS
   !!<parameter name="Cu" regular="true">Transformation from the users
   !!basis to the users niggli basis.</parameter>
   !!<parameter name="O" regular="true">Our basis vectors.</parameter>
-  !!<parameter name="rmin" regular="true">The rmin for this grid.</parameter>
-  !!<parameter name="n_irr" regular="true">The number of irreducbile
-  !!k-points.</parameter>
+  !!<parameter name="rmin" regular="true">The rmin for these grids.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
-  !!<parameter name="grid" regular="true">The grid being compared to
-  !!is input. The best grid is output.</parameter>
-  !!<parameter name="best_hnf" regular="true">The HNF being compared to
-  !!is input. The best HNF is output.</parameter>
-  SUBROUTINE compare_grids(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grid, rmin, n_irr, best_HNF, eps_)
+  !!<parameter name="grids" regular="true">A list of grids with the best
+  !!r_min.</parameter>
+  !!<parameter name="best_hnfs" regular="true">The HNFs for the grids with
+  !!this r_min.</parameter>
+  !!<parameter name="ngrids" regular="true">The number of grids
+  !!currently stored in the list of grids.</parameter>
+  SUBROUTINE compare_grids(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grids, rmin, best_HNFs, ngrids, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
     real(dp), optional, intent(in) :: eps_
     real(dp), pointer :: B_vecs(:,:)
@@ -146,16 +146,18 @@ CONTAINS
     integer, intent(in) :: HNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
-    real(dp), intent(inout) :: rmin, grid(3,3)
-    integer, intent(inout) :: n_irr, best_HNF(3,3)
+    real(dp), intent(inout) :: rmin
+    real(dp), allocatable, intent(inout) :: grids(:,:,:)
+    integer, intent(inout) :: ngrids
+    integer, allocatable, intent(inout) :: best_HNFs(:,:,:)
 
-    real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3)
+    real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3), supercell2(3,3), red_supercell(3,3)
     real(dp) :: lat_trans(3,3)
     real(dp) :: eps
     real(dp)              :: R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
-    real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3)
+    real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3), supr2_rmin, supr_rmin
     integer :: temp_n_irr
 
     if (present(eps_)) then
@@ -164,7 +166,17 @@ CONTAINS
        eps = 1E-6
     end if
 
-    shift = 0.0_dp    
+    shift = 0.0_dp
+    if (.not. allocated(grids)) then
+       allocate(grids(3,3,10))
+       grids = 0.0_dp
+       ngrids = 0
+    end if
+    if (.not. allocated(best_HNFs)) then
+       allocate(best_HNFs(3,3,10))
+       best_HNFs = 0
+    end if
+    
     call transform_supercell(HNF, No, Nu, Co, Cu, O, supercell)
 
     temp_grid_inv = transpose(supercell)
@@ -179,21 +191,17 @@ CONTAINS
     temp_rmin = min(norms(1), norms(2), norms(3))
     
     if (temp_rmin > (rmin+eps)) then
-       call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
-       n_irr = size(rdKlist,1)
        rmin = temp_rmin
-       grid = temp_grid
+       ngrids = 1
+       grids = 0.0_dp
+       best_HNFs = 0
+       grids(:,:,ngrids) = temp_grid
+       best_HNFs(:,:,ngrids) = HNF
        
     else if (equal(temp_rmin, rmin, eps)) then
-       call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
-       temp_n_irr = size(rdKlist,1)
-       
-       if (temp_n_irr < n_irr) then 
-          rmin = temp_rmin
-          n_irr = temp_n_irr
-          grid = temp_grid
-          best_hnf = HNF
-       end if       
+       ngrids = ngrids + 1
+       grids(:,:,ngrids) = temp_grid
+       best_HNFs(:,:,ngrids) = HNF
     end if
 
   end SUBROUTINE compare_grids
@@ -205,28 +213,34 @@ CONTAINS
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types of each atom in
   !!the basis.</parameter>
-  !!<parameter name="grids" regular="true">The list of generating
+  !!<parameter name="cand_grids" regular="true">The list of generating
   !!vectors for the candidate grids.</parameter>
   !!<parameter name="best_grid" regular="true">The best grid given the
   !!criteria.</parameter>
+  !!<parameter name="ngrids" regular="true">The number of
+  !!grids.</parameter>
+  !!<parameter name="cand_HNFs" regular="true">The cand HNFs.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
-  !!tolerance.</parameter>
-  SUBROUTINE grid_selection(lat_vecs,B_vecs,at, grids, best_grid, eps_)
+  !!tolerance.</parameter> 
+  SUBROUTINE grid_selection(lat_vecs, B_vecs, at, cand_grids, cand_HNFs, ngrids, best_grid, &
+       best_HNF, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
-    real(dp), allocatable, intent(in) :: grids(:,:,:)
+    real(dp), allocatable, intent(in) :: cand_grids(:,:,:)
     real(dp), optional, intent(in) :: eps_
     real(dp), intent(out) :: best_grid(3,3)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
+    integer, intent(in), allocatable :: cand_HNFs(:,:,:)
+    integer, intent(out) :: best_HNF(3,3)
+    integer, intent(in) :: ngrids
 
-    real(dp) :: reduced_grid(3,3), norms(3)
-    integer :: i, n_irreducible
-    real(dp) :: r_min, r_min_best, eps
+    real(dp) :: temp_grid(3,3), norms(3)
+    integer :: i, n_irreducible(ngrids), n_ir_min(1)
+    real(dp) :: eps
 
     real(dp)              :: R(3,3), invLat(3,3), shift(3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
-    
     
     if (present(eps_)) then
        eps = eps_
@@ -239,28 +253,16 @@ CONTAINS
     call matrix_inverse(lat_vecs, invLat)
     R = transpose(invLat)
     
-    r_min_best = 0
     n_irreducible = 0
-    do i=1,size(grids,3)
-       call minkowski_reduce_basis(grids(:,:,i),reduced_grid,eps)
-       norms(1) = sqrt(dot_product(reduced_grid(:,1),reduced_grid(:,1)))
-       norms(2) = sqrt(dot_product(reduced_grid(:,2),reduced_grid(:,2)))
-       norms(3) = sqrt(dot_product(reduced_grid(:,3),reduced_grid(:,3)))
-       r_min = min(norms(1),norms(2),norms(3))
-       if ((r_min_best==0) .or. (r_min>r_min_best)) then
-          r_min_best = r_min
-          best_grid = grids(:,:,i)
-          call generateIrredKpointList(lat_vecs,B_vecs,at,best_grid, R, shift, rdKlist, weights, eps_=eps)
-          n_irreducible = size(rdKlist,1)
-       else if (abs(r_min-r_min_best)<eps) then
-          call generateIrredKpointList(lat_vecs,B_vecs,at,best_grid, R, shift, rdKlist, weights, eps_=eps)
-          if (size(rdKlist,1) < n_irreducible) then
-             r_min_best = r_min
-             best_grid = grids(:,:,i)
-             n_irreducible = size(rdKlist,1)
-          end if
-       end if
+    do i=1,ngrids
+       temp_grid = cand_grids(:,:,i)
+       call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
+       n_irreducible(i) = size(rdKlist,1)
     end do
+
+    n_ir_min = minloc(n_irreducible)
+    best_grid = cand_grids(:,:, n_ir_min(1))
+    best_HNF = cand_HNFs(:,:, n_ir_min(1))
 
   end SUBROUTINE grid_selection
   
