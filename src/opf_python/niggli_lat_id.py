@@ -229,8 +229,7 @@ def niggli_id(lattice,eps_=None,G=None):
                     lat_fam = 6
                     lat_type = 'base centered monoclinic'
                     niggli_num = 27
-                    basis = np.transpose([[0.0,-1.73205,-1.0],[-1.66542,-0.672857,1.66542],
-										 [1.0,0.0,1.0]])
+                    basis = np.transpose([[-1.464824,0.464824,1.907413],[-0.153209,0.153209,-2.907413],[1.0,1.0,0.0]])
             else:
                 if np.allclose(E,A/2.,atol=eps) and np.allclose(F,2*D,atol=eps):
                     lat_fam = 6
