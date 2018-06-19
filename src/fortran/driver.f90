@@ -54,8 +54,21 @@ PROGRAM lat_id_driver
   call find_grid(lat_vecs, nkpts, B_vecs, at, grid)
 
   call generateIrredKpointList(lat_vecs,B_vecs,at,grid,r_vecs,offset,IRKps,weights,eps_=1E-6_dp)
+<<<<<<< HEAD
   call mapKptsIntoBZ(r_vecs,IRKps)
 
+||||||| merged common ancestors
+  call mapKptsIntoFirstBZ(r_vecs,IRKps)
+  
+=======
+  call mapKptsIntoBZ(r_vecs,IRKps)
+
+  print *, "OUR GRID"
+  do i=1,3
+     print *, grid(:,i)
+  end do
+  
+>>>>>>> 37c1db0f6eee676e130c78a33ee65962630ace97
   open(4,file="KPOINTS")
   ! write(4,'("Our new kpoint method. ",i6)') sum(weights)
   write(4,'(A22, I12, A1, I6)')"Our new kpoint method.", sum(weights), '/', size(IRKps,1)
