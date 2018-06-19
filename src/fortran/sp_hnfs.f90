@@ -4008,7 +4008,7 @@ CONTAINS
                         0, 0, d(3,i)/),(/3,3/))
                    spHNFs(:,:,1) = spHNFs(:,:,1)*mult
                    call compare_grids(U, B_vecs, at, &
-                        temp_HNFs(:,:,1), No, Nu, Co, Cu, O, &
+                        spHNFs(:,:,1), No, Nu, Co, Cu, O, &
                         cand_grids, rmin, cand_HNFs, ngrids, eps)
                 end if
              enddo
@@ -4017,6 +4017,7 @@ CONTAINS
     enddo ! End loop over all unique triplets of target determinant (n)
 
     if (ihnf /= nhnfs) stop "HNF: not all the matrices were generated...(bug!)"
+    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, spHNFs, eps)
   end SUBROUTINE tric_31_44
 
   !!<summary>Finds all the possible diagonals of the HNF matrices of a
