@@ -453,7 +453,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
   end SUBROUTINE hex_12
@@ -592,7 +592,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
   end SUBROUTINE hex_22
@@ -760,7 +760,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1089,7 +1089,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1246,7 +1246,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1402,7 +1402,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1550,7 +1550,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1695,7 +1695,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1840,7 +1840,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1987,7 +1987,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2139,7 +2139,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2287,7 +2287,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2444,7 +2444,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2605,7 +2605,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2744,7 +2744,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2912,7 +2912,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3061,7 +3061,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3201,7 +3201,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3345,7 +3345,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3492,7 +3492,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3627,7 +3627,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3764,7 +3764,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3900,7 +3900,7 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3982,7 +3982,7 @@ CONTAINS
     do i = 1,Nds
       nhnfs = nhnfs + d(2,i)*d(3,i)**2
     enddo
-    
+
     if (all_hnfs) then
        allocate(spHNFs(3,3,nhnfs),STAT=status)
        if(status/=0) stop "Failed to allocate memory in tric"
@@ -4017,7 +4017,7 @@ CONTAINS
     enddo ! End loop over all unique triplets of target determinant (n)
 
     if (ihnf /= nhnfs) stop "HNF: not all the matrices were generated...(bug!)"
-    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, spHNFs, eps)
+    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, spHNFs, n_irr, eps)
   end SUBROUTINE tric_31_44
 
   !!<summary>Finds all the possible diagonals of the HNF matrices of a

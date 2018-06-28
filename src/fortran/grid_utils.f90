@@ -178,7 +178,7 @@ CONTAINS
        allocate(best_HNFs(3,3,10))
        best_HNFs = 0
     end if
-    
+
     call transform_supercell(HNF, No, Nu, Co, Cu, O, supercell)
 
     temp_grid_inv = transpose(supercell)
@@ -199,7 +199,7 @@ CONTAINS
        best_HNFs = 0
        grids(:,:,ngrids) = temp_grid
        best_HNFs(:,:,ngrids) = HNF
-       
+
     else if (equal(temp_rmin, rmin, eps)) then
        if (size(grids,3) == ngrids) then
           allocate(ralloc_HNFs(3,3,ngrids), ralloc_grids(3,3,ngrids))
@@ -233,10 +233,12 @@ CONTAINS
   !!<parameter name="ngrids" regular="true">The number of
   !!grids.</parameter>
   !!<parameter name="cand_HNFs" regular="true">The cand HNFs.</parameter>
+  !!<parameter name="n_irr" regular="true">The number of irreducible kpoints
+  !!of best_grid</parameter>
   !!<parameter name="eps_" regular="true">Floating point
-  !!tolerance.</parameter> 
+  !!tolerance.</parameter>
   SUBROUTINE grid_selection(lat_vecs, B_vecs, at, cand_grids, cand_HNFs, ngrids, best_grid, &
-       best_HNF, eps_)
+    best_HNF, n_irr, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
     real(dp), allocatable, intent(in) :: cand_grids(:,:,:)
     real(dp), optional, intent(in) :: eps_
@@ -244,7 +246,7 @@ CONTAINS
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in), allocatable :: cand_HNFs(:,:,:)
-    integer, intent(out) :: best_HNF(3,3)
+    integer, intent(out) :: best_HNF(3,3),n_irr
     integer, intent(in) :: ngrids
 
     real(dp) :: temp_grid(3,3), norms(3)
@@ -274,6 +276,7 @@ CONTAINS
     end do
 
     n_ir_min = minloc(n_irreducible)
+    n_irr = n_irreducible(n_ir_min(1))
     best_grid = cand_grids(:,:, n_ir_min(1))
     best_HNF = cand_HNFs(:,:, n_ir_min(1))
 

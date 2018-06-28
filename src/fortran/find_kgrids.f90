@@ -40,8 +40,8 @@ CONTAINS
 
     integer :: lat_id, a_kpd, c_kpd(3), i, count, mult
     integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:)
-    integer, allocatable :: n_irr_kp(:), nhnfs(:), nt_kpts(:), ratio(:)
-    real(dp), allocatable :: grids(:,:,:), rmin(:)
+    integer, allocatable :: n_irr_kp(:), nhnfs(:), nt_kpts(:)
+    real(dp), allocatable :: grids(:,:,:), rmin(:),ratio(:)
     real(dp) :: O(3,3), Nu(3,3), No(3,3), temp_grid(3,3), temp_rmin
     integer :: Cu(3,3), Co(3,3), min_kpn_loc(1), temp_nirr, temp_nhnfs
     real(dp) :: eps
