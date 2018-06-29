@@ -1,6 +1,6 @@
 Module grid_utils
   use num_types
-  use vector_matrix_utilities, only: matrix_inverse, minkowski_reduce_basis, norm, cross_product
+  use vector_matrix_utilities, only: matrix_inverse, minkowski_reduce_basis, norm, cross_product, determinant
   use numerical_utilities, only: equal
   use kpointgeneration, only: generateIrredKpointList
 
@@ -146,36 +146,35 @@ CONTAINS
     integer, intent(in) :: HNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
-    real(dp), intent(inout) :: rmin
-    real(dp), allocatable, intent(inout) :: grids(:,:,:)
-    integer, intent(inout) :: ngrids
-    integer, allocatable, intent(inout) :: best_HNFs(:,:,:)
+    real(dp), intent(inout) :: rmin(2)
+    real(dp), allocatable, intent(inout) :: grids(:,:,:,:)
+    integer, intent(inout) :: ngrids(2)
+    integer, allocatable, intent(inout) :: best_HNFs(:,:,:,:)
 
     real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3), supercell2(3,3), red_supercell(3,3)
     real(dp) :: lat_trans(3,3)
     real(dp) :: eps
     real(dp)              :: R(3,3)
-    real(dp), pointer     :: rdKlist(:,:)
-    integer, pointer      :: weights(:)
-    integer, allocatable :: ralloc_HNFs(:,:,:)
-    real(dp), allocatable :: ralloc_grids(:,:,:)
-    real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3), supr2_rmin, supr_rmin
-    integer :: temp_n_irr
+    integer, allocatable :: ralloc_HNFs(:,:,:,:)
+    real(dp), allocatable :: ralloc_grids(:,:,:,:)
+    real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3)
+
+    integer :: j
 
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     shift = 0.0_dp
     if (.not. allocated(grids)) then
-       allocate(grids(3,3,10))
+       allocate(grids(3,3,10,2))
        grids = 0.0_dp
        ngrids = 0
     end if
     if (.not. allocated(best_HNFs)) then
-       allocate(best_HNFs(3,3,10))
+       allocate(best_HNFs(3,3,10,2))
        best_HNFs = 0
     end if
 
@@ -191,30 +190,63 @@ CONTAINS
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
     temp_rmin = min(norms(1), norms(2), norms(3))
+    if (temp_rmin > (rmin(1)+eps) .and. (.not. equal(temp_rmin, rmin(1), eps))) then
+       rmin(2) = rmin(1)
+       ngrids(2) = ngrids(1)
+       grids(:,:,:,2) = 0.0_dp
+       best_HNFs(:,:,:,2) = 0
+       best_HNFs(1:3,1:3,1:ngrids(2),2) = best_HNFs(1:3,1:3,1:ngrids(2),1)
+       grids(1:3,1:3,1:ngrids(2),2) = grids(1:3,1:3,1:ngrids(2),1)
+       
+       rmin(1) = temp_rmin
+       ngrids(1) = 1
+       grids(:,:,:,1) = 0.0_dp
+       best_HNFs(:,:,:,1) = 0
+       grids(:,:,ngrids(1),1) = temp_grid
+       best_HNFs(:,:,ngrids(1),1) = HNF
 
-    if (temp_rmin > (rmin+eps)) then
-       rmin = temp_rmin
-       ngrids = 1
-       grids = 0.0_dp
-       best_HNFs = 0
-       grids(:,:,ngrids) = temp_grid
-       best_HNFs(:,:,ngrids) = HNF
-
-    else if (equal(temp_rmin, rmin, eps)) then
-       if (size(grids,3) == ngrids) then
-          allocate(ralloc_HNFs(3,3,ngrids), ralloc_grids(3,3,ngrids))
+    else if ((temp_rmin > (rmin(2)+eps)) .and. (.not. equal(temp_rmin, rmin(1), eps)) &
+         .and. (.not. equal(temp_rmin, rmin(2), eps))) then
+       rmin(2) = temp_rmin
+       ngrids(2) = 1
+       grids(:,:,:,2) = 0.0_dp
+       best_HNFs(:,:,:,2) = 0
+       grids(:,:,ngrids(2),2) = temp_grid
+       best_HNFs(:,:,ngrids(2),2) = HNF
+    else if (equal(temp_rmin, rmin(1), eps)) then
+       if (size(grids,3) == ngrids(1)) then
+          allocate(ralloc_HNFs(3,3,ngrids(1),2), ralloc_grids(3,3,ngrids(1),2))
           ralloc_HNFs = best_HNFs
           ralloc_grids = grids
           deallocate(best_HNFs, grids)
-          allocate(best_HNFs(3,3,2*ngrids), grids(3,3,2*ngrids))
+          allocate(best_HNFs(3,3,2*ngrids(1),2), grids(3,3,2*ngrids(1),2))
           best_HNFs = 0
           grids = 0.0_dp
-          best_HNFs(1:3,1:3,1:ngrids) = ralloc_HNFs(1:3,1:3,1:ngrids)
-          grids(1:3,1:3,1:ngrids) = ralloc_grids(1:3,1:3,1:ngrids)
+          best_HNFs(1:3,1:3,1:ngrids(1),1) = ralloc_HNFs(1:3,1:3,1:ngrids(1),1)
+          grids(1:3,1:3,1:ngrids(1),1) = ralloc_grids(1:3,1:3,1:ngrids(1),1)
+          best_HNFs(1:3,1:3,1:ngrids(2),2) = ralloc_HNFs(1:3,1:3,1:ngrids(2),2)
+          grids(1:3,1:3,1:ngrids(2),2) = ralloc_grids(1:3,1:3,1:ngrids(2),2)
        end if
-       ngrids = ngrids + 1
-       grids(:,:,ngrids) = temp_grid
-       best_HNFs(:,:,ngrids) = HNF
+       ngrids(1) = ngrids(1) + 1
+       grids(:,:,ngrids(1),1) = temp_grid
+       best_HNFs(:,:,ngrids(1),1) = HNF
+    else if (equal(temp_rmin, rmin(2), eps)) then
+       if (size(grids,3) == ngrids(2)) then
+          allocate(ralloc_HNFs(3,3,ngrids(2),2), ralloc_grids(3,3,ngrids(2),2))
+          ralloc_HNFs = best_HNFs
+          ralloc_grids = grids
+          deallocate(best_HNFs, grids)
+          allocate(best_HNFs(3,3,2*ngrids(2),2), grids(3,3,2*ngrids(2),2))
+          best_HNFs = 0
+          grids = 0.0_dp
+          best_HNFs(1:3,1:3,1:ngrids(1),1) = ralloc_HNFs(1:3,1:3,1:ngrids(1),1)
+          grids(1:3,1:3,1:ngrids(1),1) = ralloc_grids(1:3,1:3,1:ngrids(1),1)
+          best_HNFs(1:3,1:3,1:ngrids(2),2) = ralloc_HNFs(1:3,1:3,1:ngrids(2),2)
+          grids(1:3,1:3,1:ngrids(2),2) = ralloc_grids(1:3,1:3,1:ngrids(2),2)
+       end if
+       ngrids(2) = ngrids(2) + 1
+       grids(:,:,ngrids(2),2) = temp_grid
+       best_HNFs(:,:,ngrids(2),2) = HNF
     end if
 
   end SUBROUTINE compare_grids
@@ -240,23 +272,23 @@ CONTAINS
   SUBROUTINE grid_selection(lat_vecs, B_vecs, at, cand_grids, cand_HNFs, ngrids, best_grid, &
     best_HNF, n_irr, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
-    real(dp), allocatable, intent(in) :: cand_grids(:,:,:)
+    real(dp), allocatable, intent(in) :: cand_grids(:,:,:,:)
     real(dp), optional, intent(in) :: eps_
     real(dp), intent(out) :: best_grid(3,3)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
-    integer, intent(in), allocatable :: cand_HNFs(:,:,:)
+    integer, intent(in), allocatable :: cand_HNFs(:,:,:,:)
     integer, intent(out) :: best_HNF(3,3),n_irr
-    integer, intent(in) :: ngrids
+    integer, intent(in) :: ngrids(2)
 
     real(dp) :: temp_grid(3,3), norms(3)
-    integer :: i, n_irreducible(ngrids), n_ir_min(1)
-    real(dp) :: eps
+    integer :: i, n_irreducible(sum(ngrids)), n_ir_min(1), count
+    real(dp) :: eps, det
 
     real(dp)              :: R(3,3), invLat(3,3), shift(3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
-
+    
     if (present(eps_)) then
        eps = eps_
     else
@@ -269,16 +301,39 @@ CONTAINS
     R = transpose(invLat)
 
     n_irreducible = 0
-    do i=1,ngrids
-       temp_grid = cand_grids(:,:,i)
-       call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
+    count = 0
+    do i=1,ngrids(1)
+       temp_grid = cand_grids(:,:,i,1)
+       det = determinant(temp_grid)
+       if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=(eps**2))
+       else 
+          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
+       end if
        n_irreducible(i) = size(rdKlist,1)
+       count = count + 1
+    end do
+
+    do i=1,ngrids(2)
+       temp_grid = cand_grids(:,:,i,2)
+       det = determinant(temp_grid)
+       if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=(eps**2))
+       else 
+          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
+       end if
+       n_irreducible(count+i) = size(rdKlist,1)
     end do
 
     n_ir_min = minloc(n_irreducible)
     n_irr = n_irreducible(n_ir_min(1))
-    best_grid = cand_grids(:,:, n_ir_min(1))
-    best_HNF = cand_HNFs(:,:, n_ir_min(1))
+    if (n_ir_min(1) <= count) then
+       best_grid = cand_grids(:,:, n_ir_min(1),1)
+       best_HNF = cand_HNFs(:,:, n_ir_min(1),1)
+    else
+       best_grid = cand_grids(:,:, n_ir_min(1)-count,2)
+       best_HNF = cand_HNFs(:,:, n_ir_min(1)-count,2)
+    end if
 
   end SUBROUTINE grid_selection
 

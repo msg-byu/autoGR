@@ -1,5 +1,18 @@
 # Revision History
 
+## Revision 0.5.4 (WSM)
+- Changed the code so that it will consider the two largest rmin
+  values found in order to explore a larger regoin of the search
+  space, this is neccessary because in many cases we weren't finding
+  the "optimal" grid because it had a slightly smaller rmin but much
+  better folding.
+- Changed the default eps value to 1E-3 instead of 1E-6, this makes
+  more sence is practice and should be sufficient for our purposes.
+- Increased the eps value passed to the k-point folding code in cases
+  where the determinant of the new grid is approximately the size of
+  the eps value, or when it is smaller than eps but still larger than
+  1E-10.
+
 ## Revision 0.5.3 (WSM)
 - Implemented a faster selection implementation in which a minimal set
   of grids is folded.

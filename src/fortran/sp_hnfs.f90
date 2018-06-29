@@ -35,13 +35,12 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grids
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -50,7 +49,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
@@ -58,11 +57,12 @@ CONTAINS
     integer :: nds, i
     integer :: temp_HNFs(3,3,1)
     real(dp) :: eps
+    real(dp) :: rmin
 
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -132,13 +132,12 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grids
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -147,7 +146,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
@@ -155,11 +154,12 @@ CONTAINS
     integer :: nds, i
     integer :: temp_HNFs(3,3,1)
     real(dp) :: eps
-
+    real(dp) :: rmin
+    
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -221,13 +221,12 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grids
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -236,7 +235,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
@@ -244,11 +243,12 @@ CONTAINS
     integer :: nds, i
     integer :: temp_HNFs(3,3,1)
     real(dp) :: eps
-
+    real(dp) :: rmin
+    
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -319,7 +319,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -327,7 +326,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE hex_12(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE hex_12(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -337,16 +336,17 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, nes
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta13, beta11, gamma13, gamma11, gamma12, gamma21, gamma22
     integer :: es(2)
@@ -362,7 +362,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -480,7 +480,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -488,7 +487,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE hex_22(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE hex_22(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -497,7 +496,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -505,9 +504,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma21, gamma22, gamma11, gamma12
     real(dp) :: eps
@@ -522,7 +522,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -621,7 +621,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -629,7 +628,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE rhom_9_24(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE rhom_9_24(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -638,7 +637,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -646,9 +645,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta13, beta22, beta12, gamma11, gamma12, gamma21, gamma22
     integer :: bs(2), nbs
@@ -664,7 +664,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -790,7 +790,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -798,7 +797,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE rhom_4_2(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE rhom_4_2(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -807,7 +806,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -815,9 +814,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta32, beta22, beta12, gamma11, gamma12, gamma22, gamma21
     integer :: nbs
@@ -834,7 +834,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -954,7 +954,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -962,7 +961,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE st_11(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE st_11(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -971,7 +970,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -979,9 +978,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta13, gamma13, gamma12, gamma23
     integer :: bs(2), es(2), nbs, nes
@@ -997,7 +997,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1117,7 +1117,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -1125,7 +1124,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE st_21(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE st_21(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -1134,7 +1133,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1142,9 +1141,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k, z
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta13, gamma13, gamma12, gamma23
     integer :: bs(2), es(2), nbs, nes
@@ -1160,7 +1160,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1279,7 +1279,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -1287,7 +1286,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE bct_6_7_15_18(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE bct_6_7_15_18(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -1296,7 +1295,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1304,9 +1303,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma21, gamma13, beta12, gamma12
     integer :: es(2), nes
@@ -1322,7 +1322,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1430,7 +1430,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -1438,7 +1437,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE so_32(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE so_32(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -1447,7 +1446,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1455,9 +1454,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k, z
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: bs(2), es(2), ds(2), nbs, ne_ds
     real(dp) :: eps
@@ -1472,7 +1472,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1578,7 +1578,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -1586,7 +1585,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE fco_26(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE fco_26(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -1595,7 +1594,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1603,9 +1602,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma12, gamma13, gamma23
     integer :: bs(2), nbs
@@ -1621,7 +1621,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1724,7 +1724,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -1732,7 +1731,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE fco_16(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE fco_16(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -1741,7 +1740,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1749,9 +1748,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma11, gamma12, gamma21
     integer :: bs(2), nbs
@@ -1767,7 +1767,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1868,7 +1868,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -1876,7 +1875,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE bco_19(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE bco_19(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -1885,7 +1884,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1893,9 +1892,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma12, gamma13, beta13
     integer :: es(2), nes
@@ -1911,7 +1911,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2016,7 +2016,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -2024,7 +2023,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE bco_8(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE bco_8(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -2033,7 +2032,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2041,9 +2040,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta21, beta11, gamma21, gamma11, gamma13
     integer :: bs(2), nbs
@@ -2059,7 +2059,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2168,7 +2168,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -2176,7 +2175,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE bco_42(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE bco_42(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -2185,7 +2184,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2193,9 +2192,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta11, gamma12, gamma11, gamma13
     integer :: es(2), nes
@@ -2211,7 +2211,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2318,7 +2318,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -2326,7 +2325,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_38_13(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE baseco_38_13(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -2335,7 +2334,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2343,9 +2342,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma13, gamma23, beta13
     integer :: es(2), ds(2), ne_ds
@@ -2361,7 +2361,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2473,7 +2473,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -2481,7 +2480,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_23(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE baseco_23(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -2490,7 +2489,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2498,9 +2497,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta13, gamma13, gamma23
     integer :: es(2), bs(2), nes, nbs
@@ -2516,7 +2516,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2634,7 +2634,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -2642,7 +2641,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_40(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE baseco_40(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -2651,7 +2650,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2659,9 +2658,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta13, gamma13, gamma12, gamma22
     real(dp) :: eps
@@ -2676,7 +2676,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2772,7 +2772,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -2780,7 +2779,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_36(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE baseco_36(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -2789,7 +2788,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2797,9 +2796,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta12, beta22, beta32, gamma13, gamma12, gamma22
     integer :: bs(2), es(2), nes, nbs
@@ -2815,7 +2815,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2940,7 +2940,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -2948,7 +2947,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE sm_33(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE sm_33(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -2957,7 +2956,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2965,9 +2964,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma12
     integer :: es(2), bs(2), nes, nbs
@@ -2983,7 +2983,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3091,7 +3091,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -3099,7 +3098,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE sm_34_35(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE sm_34_35(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -3108,7 +3107,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3116,9 +3115,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j, k
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: ds(2), es(2), nd_es
     real(dp) :: eps
@@ -3133,7 +3133,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3235,7 +3235,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -3243,7 +3242,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_10_14_17_27_37_39_41(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE basecm_10_14_17_27_37_39_41(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -3252,7 +3251,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3260,9 +3259,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status, j
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma11
     integer :: es(2), nes
@@ -3278,7 +3278,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3376,7 +3376,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -3384,7 +3383,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_20_25(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE basecm_20_25(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -3393,7 +3392,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3401,9 +3400,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, k, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma12, gamma22
     integer :: bs(2), nbs
@@ -3419,7 +3419,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3521,7 +3521,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -3529,7 +3528,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_28(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE basecm_28(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -3538,7 +3537,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3546,9 +3545,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma21, gamma11
     real(dp) :: eps
@@ -3563,7 +3563,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3658,7 +3658,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -3666,7 +3665,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_29_30(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE basecm_29_30(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -3675,7 +3674,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3683,9 +3682,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: gamma21, gamma11
     real(dp) :: eps
@@ -3700,7 +3700,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3793,7 +3793,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -3801,7 +3800,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_43(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, rmin, &
+  SUBROUTINE basecm_43(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -3810,7 +3809,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3818,9 +3817,10 @@ CONTAINS
     integer :: a,b,c,d,e,f, best_HNF(3,3)
     integer :: nds, i, status
     integer(li) :: total_hnfs
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer :: beta12, gamma12, gamma22
     real(dp) :: eps
@@ -3835,7 +3835,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3929,7 +3929,6 @@ CONTAINS
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
   !!found.</parameter>
-  !!<parameter name="rmin" regular="true">R_min of best HNF.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible
   !!k-points.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
@@ -3937,7 +3936,7 @@ CONTAINS
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, spHNFs, grid, rmin, &
+  SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -3946,13 +3945,14 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3), mult
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: rmin, grid(3,3)
+    real(dp), intent(out) :: grid(3,3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
-    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:)
-    real(dp), allocatable :: cand_grids(:,:,:)
-    integer :: ngrids
+    integer, allocatable :: temp_HNFs(:,:,:), cand_HNFs(:,:,:,:)
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer :: ngrids(2)
+    real(dp) :: rmin(2)
 
     integer, pointer    :: d(:,:) => null()
     integer             :: i, j, k, l    ! Loop counters
@@ -3971,7 +3971,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call get_HNF_diagonals(n,d)
