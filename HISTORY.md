@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.5.5 (WSM)
+- Changed the code so that comparisons to the old rmin and new are
+  more flexible.
+
 ## Revision 0.5.4 (WSM)
 - Changed the code so that it will consider the two largest rmin
   values found in order to explore a larger regoin of the search

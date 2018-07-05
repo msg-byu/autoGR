@@ -190,7 +190,7 @@ CONTAINS
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
     temp_rmin = min(norms(1), norms(2), norms(3))
-    if (temp_rmin > (rmin(1)+eps) .and. (.not. equal(temp_rmin, rmin(1), eps))) then
+    if (temp_rmin > (rmin(1)+rmin(1)*eps) .and. (.not. equal(temp_rmin, rmin(1), eps))) then
        rmin(2) = rmin(1)
        ngrids(2) = ngrids(1)
        grids(:,:,:,2) = 0.0_dp
@@ -205,7 +205,7 @@ CONTAINS
        grids(:,:,ngrids(1),1) = temp_grid
        best_HNFs(:,:,ngrids(1),1) = HNF
 
-    else if ((temp_rmin > (rmin(2)+eps)) .and. (.not. equal(temp_rmin, rmin(1), eps)) &
+    else if ((temp_rmin > (rmin(2)+rmin(2)*eps)) .and. (.not. equal(temp_rmin, rmin(1), eps)) &
          .and. (.not. equal(temp_rmin, rmin(2), eps))) then
        rmin(2) = temp_rmin
        ngrids(2) = 1
@@ -324,7 +324,7 @@ CONTAINS
        end if
        n_irreducible(count+i) = size(rdKlist,1)
     end do
-
+    
     n_ir_min = minloc(n_irreducible)
     n_irr = n_irreducible(n_ir_min(1))
     if (n_ir_min(1) <= count) then
