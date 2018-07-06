@@ -2,6 +2,7 @@
 !!crystal lattices.</summary>
 Module sp_hnfs
   use grid_utils
+  use vector_matrix_utilities, only: matrix_inverse
   use num_types
 
   implicit none
@@ -40,30 +41,39 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
+  SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer, allocatable :: cand_HNFs(:,:,:,:)
     integer :: a,b,c,d,e,f
     integer :: nds, i
-    integer :: temp_HNFs(3,3,1)
-    real(dp) :: eps
-    real(dp) :: rmin
+    integer :: temp_HNFs(3,3,1), ngrids(2)
+    real(dp) :: eps, rmin
+    real(dp) :: supercell(3,3)
 
     if (present(eps_)) then
        eps = eps_
     else
        eps = 1E-3
     end if
+
+    allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
+    cand_grids = 0.0_dp
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -101,12 +111,13 @@ CONTAINS
        end if
     end do
     allocate(spHNFs(3,3,1))
+    call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
+    call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
+    cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
     nhnfs = 1
-    spHNFs(:,:,1) = temp_HNFs(:,:,1)
-    rmin = 0.0_dp
-    n_irr = 0
-    grid = 0.0_dp
-    call grid_metrics(U, B_vecs, at, spHNFs(:,:,1), No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_=eps)
+    ngrids = (/1,0/)
+    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+         grid, spHNFs, best_offset, n_irr, eps)
 
   end SUBROUTINE sc_3
 
@@ -137,24 +148,30 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
+  SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer, allocatable :: cand_HNFs(:,:,:,:)
     integer :: a,b,c,d,e,f
     integer :: nds, i
-    integer :: temp_HNFs(3,3,1)
-    real(dp) :: eps
-    real(dp) :: rmin
+    integer :: temp_HNFs(3,3,1), ngrids(2)
+    real(dp) :: eps, rmin
+    real(dp) :: supercell(3,3)
     
     if (present(eps_)) then
        eps = eps_
@@ -190,12 +207,13 @@ CONTAINS
        end if
     end do
     allocate(spHNFs(3,3,1))
+    call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
+    call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
+    cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
     nhnfs = 1
-    spHNFs(:,:,1) = temp_HNFs(:,:,1)
-    rmin = 0.0_dp
-    n_irr = 0
-    grid = 0.0_dp
-    call grid_metrics(U, B_vecs, at, spHNFs(:,:,1), No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_=eps)
+    ngrids = (/1,0/)
+    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets ,&
+         grid, spHNFs, best_offset, n_irr, eps)
 
   end SUBROUTINE fcc_1
 
@@ -226,24 +244,30 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
+  SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
+    real(dp), allocatable :: cand_grids(:,:,:,:)
+    integer, allocatable :: cand_HNFs(:,:,:,:)
     integer :: a,b,c,d,e,f
     integer :: nds, i
-    integer :: temp_HNFs(3,3,1)
-    real(dp) :: eps
-    real(dp) :: rmin
+    integer :: temp_HNFs(3,3,1), ngrids(2)
+    real(dp) :: eps, rmin
+    real(dp) :: supercell(3,3)
     
     if (present(eps_)) then
        eps = eps_
@@ -288,12 +312,13 @@ CONTAINS
        end if
     end do
     allocate(spHNFs(3,3,1))
+    call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
+    call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
+    cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
     nhnfs = 1
-    spHNFs(:,:,1) = temp_HNFs(:,:,1)
-    rmin = 0.0_dp
-    n_irr = 0
-    grid = 0.0_dp
-    call grid_metrics(U, B_vecs, at, spHNFs(:,:,1), No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_=eps)
+    ngrids = (/1,0/)
+    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+         grid, spHNFs, best_offset, n_irr, eps)
 
   end SUBROUTINE bcc_5
 
@@ -324,9 +349,13 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE hex_12(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE hex_12(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
@@ -334,9 +363,9 @@ CONTAINS
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     real(dp), optional, intent(in) :: eps_
 
     integer, pointer :: diagonals(:,:) => null()
@@ -453,7 +482,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
   end SUBROUTINE hex_12
@@ -485,18 +515,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE hex_22(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE hex_22(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -592,7 +626,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
   end SUBROUTINE hex_22
@@ -626,18 +661,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE rhom_9_24(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE rhom_9_24(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -760,7 +799,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -795,18 +835,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE rhom_4_2(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE rhom_4_2(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -926,7 +970,8 @@ CONTAINS
       spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
    else
       allocate(spHNFs(3,3,1))
-
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -959,18 +1004,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE st_11(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE st_11(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1089,7 +1138,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1122,18 +1172,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE st_21(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE st_21(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1246,7 +1300,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1284,18 +1339,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE bct_6_7_15_18(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE bct_6_7_15_18(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1402,7 +1461,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1435,18 +1495,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE so_32(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE so_32(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1550,7 +1614,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1583,18 +1648,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE fco_26(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE fco_26(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1695,7 +1764,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1729,18 +1799,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE fco_16(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE fco_16(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1840,7 +1914,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -1873,18 +1948,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE bco_19(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE bco_19(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -1987,7 +2066,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2021,18 +2101,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE bco_8(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE bco_8(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2139,7 +2223,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2173,18 +2258,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE bco_42(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE bco_42(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2287,7 +2376,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2323,18 +2413,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_38_13(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE baseco_38_13(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2444,7 +2538,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2478,18 +2573,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_23(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE baseco_23(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2605,7 +2704,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2639,18 +2739,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_40(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE baseco_40(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2744,7 +2848,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2777,18 +2882,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE baseco_36(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE baseco_36(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -2912,7 +3021,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -2945,18 +3055,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE sm_33(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE sm_33(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3061,7 +3175,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3096,18 +3211,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE sm_34_35(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE sm_34_35(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3201,7 +3320,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3240,18 +3360,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_10_14_17_27_37_39_41(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE basecm_10_14_17_27_37_39_41(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3345,7 +3469,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3381,18 +3506,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_20_25(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE basecm_20_25(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3492,7 +3621,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3526,18 +3656,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_28(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE basecm_28(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3627,7 +3761,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3663,18 +3798,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_29_30(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE basecm_29_30(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3764,7 +3903,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3798,18 +3938,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE basecm_43(n, No, Nu, Co, Cu, O, U, B_vecs, at, spHNFs, grid, &
+  SUBROUTINE basecm_43(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -3900,7 +4044,8 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, best_HNF, n_irr, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
        spHNFs(:,:,1) = best_HNF
     end if
 
@@ -3925,6 +4070,8 @@ CONTAINS
   !!the basis.</parameter>
   !!<parameter name="mult" regular="true">Multiplication factor to
   !!reach correct determinant.</parameter>
+  !!<parameter name="offsets" regular="true">The possible offsets to
+  !!apply.</parameter>
   !!<parameter name="spHNFs" regular="true">The symmetry preserving
   !!HNFs.</parameter>
   !!<parameter name="grid" regular="true">The kpoint grid
@@ -3934,18 +4081,22 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that works
+  !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
-  SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, spHNFs, grid, &
-       n_irr, nhnfs, eps_, all_hnfs_)
+  SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, offsets, best_offset, &
+       spHNFs, grid, n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), mult
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
-    real(dp), intent(out) :: grid(3,3)
+    real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
 
@@ -4018,7 +4169,8 @@ CONTAINS
     enddo ! End loop over all unique triplets of target determinant (n)
 
     if (ihnf /= nhnfs) stop "HNF: not all the matrices were generated...(bug!)"
-    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, grid, spHNFs, n_irr, eps)
+    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+         grid, best_HNF, best_offset, n_irr, eps)
   end SUBROUTINE tric_31_44
 
   !!<summary>Finds all the possible diagonals of the HNF matrices of a

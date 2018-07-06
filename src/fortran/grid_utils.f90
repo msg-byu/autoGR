@@ -265,27 +265,31 @@ CONTAINS
   !!<parameter name="ngrids" regular="true">The number of
   !!grids.</parameter>
   !!<parameter name="cand_HNFs" regular="true">The cand HNFs.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to apply to
+  !!the grids.</parameter>
+  !!<parameter name="best_offset" regular="true">The offset that gives
+  !!the best reduction for the best grid.</parameter>
   !!<parameter name="n_irr" regular="true">The number of irreducible kpoints
   !!of best_grid</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
-  SUBROUTINE grid_selection(lat_vecs, B_vecs, at, cand_grids, cand_HNFs, ngrids, best_grid, &
-    best_HNF, n_irr, eps_)
-    real(dp), intent(in) :: lat_vecs(3,3)
+  SUBROUTINE grid_selection(lat_vecs, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
+       offsets, best_grid, best_HNF, best_offset, n_irr, eps_)
+    real(dp), intent(in) :: lat_vecs(3,3), offsets(:,:)
     real(dp), allocatable, intent(in) :: cand_grids(:,:,:,:)
     real(dp), optional, intent(in) :: eps_
-    real(dp), intent(out) :: best_grid(3,3)
+    real(dp), intent(out) :: best_grid(3,3), best_offset(3)
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in), allocatable :: cand_HNFs(:,:,:,:)
     integer, intent(out) :: best_HNF(3,3),n_irr
     integer, intent(in) :: ngrids(2)
 
-    real(dp) :: temp_grid(3,3), norms(3)
-    integer :: i, n_irreducible(sum(ngrids)), n_ir_min(1), count
+    real(dp) :: temp_grid(3,3), norms(3), grid_offsets(sum(ngrids),3)
+    integer :: i, n_irreducible(sum(ngrids)), n_ir_min(1), count, j
     real(dp) :: eps, det
 
-    real(dp)              :: R(3,3), invLat(3,3), shift(3)
+    real(dp)              :: R(3,3), invLat(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
     
@@ -295,8 +299,6 @@ CONTAINS
        eps = 1E-6
     end if
 
-    shift = 0.0_dp
-
     call matrix_inverse(lat_vecs, invLat)
     R = transpose(invLat)
 
@@ -305,24 +307,44 @@ CONTAINS
     do i=1,ngrids(1)
        temp_grid = cand_grids(:,:,i,1)
        det = determinant(temp_grid)
-       if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=(eps**2))
-       else 
-          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
-       end if
-       n_irreducible(i) = size(rdKlist,1)
+       do j=1, size(offsets,1)
+          if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+                  offsets(j,:), rdKlist, weights, eps_=(eps**2))
+          else 
+             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+                  offsets(j,:), rdKlist, weights, eps_=eps)
+          end if
+          if (j==1) then
+             n_irreducible(i) = size(rdKlist,1)
+             grid_offsets(i,:) = offsets(j,:)
+          elseif (size(rdKlist,1) < n_irreducible(i)) then
+             n_irreducible(i) = size(rdKlist,1)
+             grid_offsets(i,:) = offsets(j,:)
+          end if
+       end do
        count = count + 1
     end do
 
     do i=1,ngrids(2)
        temp_grid = cand_grids(:,:,i,2)
        det = determinant(temp_grid)
-       if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=(eps**2))
-       else 
-          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, shift, rdKlist, weights, eps_=eps)
-       end if
-       n_irreducible(count+i) = size(rdKlist,1)
+       do j=1, size(offsets, 1)
+          if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+                  offsets(j,:), rdKlist, weights, eps_=(eps**2))
+          else 
+             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+                  offsets(j,:), rdKlist, weights, eps_=eps)
+          end if
+          if (j==1) then
+             n_irreducible(count+i) = size(rdKlist,1)
+             grid_offsets(count+i,:) = offsets(j,:)
+          elseif (size(rdKlist,1) < n_irreducible(i)) then
+             n_irreducible(count+i) = size(rdKlist,1)
+             grid_offsets(count+i,:) = offsets(j,:)
+          end if
+       end do
     end do
     
     n_ir_min = minloc(n_irreducible)
@@ -330,9 +352,11 @@ CONTAINS
     if (n_ir_min(1) <= count) then
        best_grid = cand_grids(:,:, n_ir_min(1),1)
        best_HNF = cand_HNFs(:,:, n_ir_min(1),1)
+       best_offset = grid_offsets(n_ir_min(1),:)
     else
        best_grid = cand_grids(:,:, n_ir_min(1)-count,2)
        best_HNF = cand_HNFs(:,:, n_ir_min(1)-count,2)
+       best_offset = grid_offsets(n_ir_min(1)-count,:)
     end if
 
   end SUBROUTINE grid_selection
