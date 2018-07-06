@@ -3990,6 +3990,7 @@ CONTAINS
        allocate(spHNFs(3,3,1),STAT=status)
     end if
 
+    rmin = 0.0_dp
     ihnf = 0
     do i = 1,Nds ! Loop over the permutations of the diagonal elements of the HFNs
        do j = 0,d(2,i)-1  ! Look over possible values of row 2, element 1
