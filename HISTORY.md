@@ -1,5 +1,15 @@
 # Revision History
 
+## Revision 0.6.0 (WS)
+- Changed the contral file name to KPGEN.
+- Changed control file to use key words instead of line numbers for
+  greater flexibility.
+- Added the ability in the code to search over multiple k-point
+  offsets.
+- Made the users specified offset get passed all the way through the
+  code to ensure we get the best folding for that offset.
+- Added the offsets to search over by grid type.
+
 ## Revision 0.5.5 (WSM)
 - Changed the code so that comparisons to the old rmin and new are
   more flexible.
