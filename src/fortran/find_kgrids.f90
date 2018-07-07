@@ -16,6 +16,84 @@ Module find_kgrids
 
 CONTAINS
 
+  !!<summary>Returns the possible symmetry preserving offsets given
+  !!the niggli number.</summary>
+  !!<parameter name="lat_id" regular="true">The niggli lattice
+  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The symmetry preserving
+  !!offsets for this case.</parameter>
+  SUBROUTINE get_offsets(lat_id, offsets)
+    integer, intent(in) :: lat_id
+    real(dp), allocatable, intent(out) :: offsets(:,:)
+
+    if ((lat_id==1) .or. (lat_id==3) .or. (lat_id==5) .or. (lat_id==16) .or. &
+         (lat_id==26) .or. (lat_id==11) .or. (lat_id==21) .or. (lat_id==32) .or. &
+         (lat_id==33) .or. (lat_id==34) .or. (lat_id==35) .or. (lat_id==10) .or. &
+         (lat_id==14) .or. (lat_id==17) .or. (lat_id==27) .or. (lat_id==37) .or. &
+         (lat_id==39) .or. (lat_id==41) .or. (lat_id==43) .or. (lat_id==28) .or. &
+         (lat_id==29) .or. (lat_id==30) .or. (lat_id==20) .or. (lat_id==25)) then
+       allocate(offsets(8,3))
+       offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+       offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+       offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+       offsets(4,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+       offsets(5,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+       offsets(6,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
+       offsets(7,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
+       offsets(8,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)
+    elseif ((lat_id==12) .or. (lat_id==9) .or. (lat_id==15) .or. (lat_id==22) .or. &
+         (lat_id==24) .or. (lat_id==18) .or. (lat_id==4) .or. (lat_id==2) .or. &
+         (lat_id==6) .or. (lat_id==7) .or. (lat_id==19) .or. (lat_id==8) .or. &
+         (lat_id==42)) then
+       allocate(offsets(4,3))
+       offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+       offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+       offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+       offsets(4,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+    elseif ((lat_id==40) .or. (lat_id==38) .or. (lat_id==36) .or. (lat_id==23) .or. &
+         (lat_id==13)) then
+       allocate(offsets(7,3))
+       offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+       offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+       offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+       offsets(4,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+       offsets(5,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+       offsets(6,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
+       offsets(7,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
+    ! elseif ((lat_id==10) .or. (lat_id==14) .or. (lat_id==17) .or. (lat_id==27) .or. &
+    !      (lat_id==37) .or. (lat_id==39) .or. (lat_id==41) .or. (lat_id==43) .or. &
+    !      (lat_id==28) .or. (lat_id==29) .or. (lat_id==30)) then
+    !    allocate(offsets(8,3))
+    !    offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+    !    offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+    !    offsets(3,:) = (/-0.25_dp, 0.25_dp, 0.0_dp/)
+    !    offsets(4,:) = (/-0.25_dp, 0.25_dp, 0.5_dp/)
+    !    offsets(5,:) = (/0.25_dp, 0.25_dp, 0.0_dp/)
+    !    offsets(6,:) = (/0.25_dp, 0.25_dp, 0.5_dp/)
+    !    offsets(7,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+    !    offsets(8,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
+    ! elseif ((lat_id==20) .or. (lat_id==25)) then
+    !    allocate(offsets(8,3))
+    !    offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+    !    offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+    !    offsets(3,:) = (/0.0_dp, 0.25_dp, -0.25_dp/)
+    !    offsets(4,:) = (/0.5_dp, 0.25_dp, -0.25_dp/)
+    !    offsets(5,:) = (/0.0_dp, 0.25_dp, 0.25_dp/)
+    !    offsets(6,:) = (/0.5_dp, 0.25_dp, 0.25_dp/)
+    !    offsets(7,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+    !    offsets(8,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+    elseif ((lat_id==31) .or. (lat_id==44)) then
+       allocate(offsets(8,3))
+       offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+       offsets(2,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)       
+    else
+       write(*,*) "Failed to find offsets for this case. Please report this occurance. Attempting to use defaults."
+       allocate(offsets(2,3))
+       offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+       offsets(2,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)       
+    end if
+
+  end SUBROUTINE get_offsets
   !!<summary>Determines the best k-point grid to use near the target
   !!density.</summary>
   !!<parameter name="lat_vecs" regular="true">The parent cell lattice
@@ -50,22 +128,9 @@ CONTAINS
     integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:)
     integer, allocatable :: n_irr_kp(:), nhnfs(:), nt_kpts(:)
     real(dp), allocatable :: grids(:,:,:), ratio(:), offsets(:,:), grid_offsets(:,:)
-    real(dp) :: O(3,3), Nu(3,3), No(3,3), temp_grid(3,3), temp_rmin
+    real(dp) :: O(3,3), Nu(3,3), No(3,3), temp_grid(3,3)
     integer :: Cu(3,3), Co(3,3), min_kpn_loc(1), temp_nirr, temp_nhnfs
     real(dp) :: eps
-
-    real(dp), pointer :: O_pg_ops(:,:,:), U_pg_ops(:,:,:)
-    integer :: j, k, z
-    real(dp) :: N_u(3,3), N_o(3,3), Hinv(3,3), Uinv(3,3), Oinv(3,3), X(3,3)
-    real(dp) :: S(3,3), H(3,3), St(3,3)
-
-    if (find_offset .eqv. .False.) then
-       allocate(offsets(1,3))
-       offsets(1,:) = offset
-    else
-       allocate(offsets(1,3))
-       offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
-    end if
     
     if (present(eps_)) then
        eps = eps_
@@ -76,6 +141,12 @@ CONTAINS
     call id_cell(lat_vecs,Nu,Cu,O,No,Co,lat_id,eps_=eps)
     count = 0
 
+    if (find_offset .eqv. .False.) then
+       allocate(offsets(1,3))
+       offsets(1,:) = offset
+    else
+       call get_offsets(lat_id, offsets)
+    end if
     if ((lat_id==3) .or. (lat_id==5) .or. (lat_id==1)) then
        call get_kpd_cubic(lat_id,kpd,c_kpd)
        allocate(sp_hnfs(3,3,3), n_irr_kp(3), nhnfs(3), grids(3,3,3), nt_kpts(3))
