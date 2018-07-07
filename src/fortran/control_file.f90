@@ -1,6 +1,6 @@
 Module control_file
   use num_types
-  use vector_matrix_utilities, only: matrix_inverse, volume
+  use vector_matrix_utilities, only: matrix_inverse, determinant
   implicit none
 CONTAINS
 
@@ -93,7 +93,7 @@ CONTAINS
 
     call matrix_inverse(transpose(lattice),r_vecs)
     r_vecs = 2*pi*r_vecs
-    r_vol = volume(r_vecs(:,1), r_vecs(:,2), r_vecs(:,3))
+    r_vol = abs(determinant(r_vecs))
     ! ios is negative if an end of record condition is encountered or if
     ! an endfile condition was detected.  It is positive if an error was
     ! detected.  ios is zero otherwise.
