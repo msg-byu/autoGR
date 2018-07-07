@@ -2,13 +2,14 @@ PROGRAM lat_id_driver
   use find_kgrids, only: find_grid
   use kpointgeneration, only: generateIrredKpointList, mapKptsIntoBZ
   use control_file, only: get_inputs
-  use vector_matrix_utilities, only: matrix_inverse
+  use vector_matrix_utilities, only: matrix_inverse, determinant
+  use numerical_utilities, only: equal
   use num_types
   ! use fortpy, only: pysave, fpy_read_f, fpy_read
   implicit none
 
   real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3)
-  real(dp) :: Rinv(3,3), point(3), eps, best_offset(3)
+  real(dp) :: Rinv(3,3), point(3), eps, best_offset(3), det
   logical :: find_offset
   integer :: nkpts, i
   integer, allocatable :: at(:)
@@ -20,8 +21,14 @@ PROGRAM lat_id_driver
   call find_grid(lat_vecs, nkpts, B_vecs, at, offset, find_offset, grid, best_offset, &
        eps_=eps)
 
-  call generateIrredKpointList(lat_vecs, B_vecs, at, grid, r_vecs, best_offset, &
-       IRKps, weights, eps_=eps)
+  det = determinant(grid)
+  if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+     call generateIrredKpointList(lat_vecs, B_vecs, at, grid, r_vecs, best_offset, &
+          IRKps, weights, eps_=(eps**2))
+  else
+     call generateIrredKpointList(lat_vecs, B_vecs, at, grid, r_vecs, best_offset, &
+          IRKps, weights, eps_=eps)
+  end if
   call mapKptsIntoBZ(r_vecs, IRKps)
 
   open(4,file="KPOINTS")
