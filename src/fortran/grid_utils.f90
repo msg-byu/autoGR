@@ -29,7 +29,7 @@ CONTAINS
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
     real(dp), intent(out) :: UB(3,3)
-
+    
     integer :: F(3,3)
     real(dp) :: Oinv(3,3), Noinv(3,3), Cuinv(3,3), L(3,3)
 
@@ -87,7 +87,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     shift = 0.0_dp
@@ -115,10 +115,6 @@ CONTAINS
   !!lattice given an HNF.</summary>
   !!<parameter name="lat_vecs" regular="true">The lattice vectors for
   !!the crystal.</parameter>
-  !!<parameter name="B_vecs" regular="true">The atomic basis
-  !!vectors.</parameter>
-  !!<parameter name="at" regular="true">The atom types of each atom in
-  !!the basis.</parameter>
   !!<parameter name="HNF" regular="true">The list of generating
   !!vectors for the candidate grids.</parameter>
   !!<parameter name="No" regular="true">Our niggli basis.</parameter>
@@ -138,11 +134,10 @@ CONTAINS
   !!this r_min.</parameter>
   !!<parameter name="ngrids" regular="true">The number of grids
   !!currently stored in the list of grids.</parameter>
-  SUBROUTINE compare_grids(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grids, rmin, best_HNFs, ngrids, eps_)
+  SUBROUTINE compare_grids(lat_vecs, HNF, No, Nu, Co, Cu, O, grids, rmin, &
+       best_HNFs, ngrids, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
     real(dp), optional, intent(in) :: eps_
-    real(dp), pointer :: B_vecs(:,:)
-    integer, intent(inout) :: at(:)
     integer, intent(in) :: HNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
@@ -151,15 +146,13 @@ CONTAINS
     integer, intent(inout) :: ngrids(2)
     integer, allocatable, intent(inout) :: best_HNFs(:,:,:,:)
 
-    real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3), supercell2(3,3), red_supercell(3,3)
+    real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3)
     real(dp) :: lat_trans(3,3)
     real(dp) :: eps
     real(dp)              :: R(3,3)
     integer, allocatable :: ralloc_HNFs(:,:,:,:)
     real(dp), allocatable :: ralloc_grids(:,:,:,:)
     real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3)
-
-    integer :: j
 
     if (present(eps_)) then
        eps = eps_
@@ -285,7 +278,7 @@ CONTAINS
     integer, intent(out) :: best_HNF(3,3),n_irr
     integer, intent(in) :: ngrids(2)
 
-    real(dp) :: temp_grid(3,3), norms(3), grid_offsets(sum(ngrids),3)
+    real(dp) :: temp_grid(3,3), grid_offsets(sum(ngrids),3)
     integer :: i, n_irreducible(sum(ngrids)), n_ir_min(1), count, j
     real(dp) :: eps, det
 
@@ -296,7 +289,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-6
+       eps = 1E-3
     end if
 
     call matrix_inverse(lat_vecs, invLat)
@@ -346,17 +339,15 @@ CONTAINS
           end if
        end do
     end do
-    
     n_ir_min = minloc(n_irreducible)
     n_irr = n_irreducible(n_ir_min(1))
+    best_offset = grid_offsets(n_ir_min(1),:)
     if (n_ir_min(1) <= count) then
        best_grid = cand_grids(:,:, n_ir_min(1),1)
        best_HNF = cand_HNFs(:,:, n_ir_min(1),1)
-       best_offset = grid_offsets(n_ir_min(1),:)
     else
        best_grid = cand_grids(:,:, n_ir_min(1)-count,2)
        best_HNF = cand_HNFs(:,:, n_ir_min(1)-count,2)
-       best_offset = grid_offsets(n_ir_min(1)-count,:)
     end if
 
   end SUBROUTINE grid_selection
