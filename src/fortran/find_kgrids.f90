@@ -129,7 +129,7 @@ CONTAINS
     integer, allocatable :: n_irr_kp(:), nhnfs(:), nt_kpts(:)
     real(dp), allocatable :: grids(:,:,:), ratio(:), offsets(:,:), grid_offsets(:,:)
     real(dp) :: O(3,3), Nu(3,3), No(3,3), temp_grid(3,3)
-    integer :: Cu(3,3), Co(3,3), min_kpn_loc(1), temp_nirr, temp_nhnfs
+    integer :: Cu(3,3), Co(3,3), min_kpn_loc(1), temp_nirr, temp_nhnfs, s_range
     real(dp) :: eps
     
     if (present(eps_)) then
@@ -138,7 +138,7 @@ CONTAINS
        eps = 1E-3
     end if
 
-    call id_cell(lat_vecs,Nu,Cu,O,No,Co,lat_id,eps_=eps)
+    call id_cell(lat_vecs, Nu, Cu, O, No, Co, lat_id, s_range,eps_=eps)
     count = 0
 
     if (find_offset .eqv. .False.) then
@@ -187,14 +187,16 @@ CONTAINS
        grid_offsets(1,:) = best_offset
        count = 1
     else
-       allocate(sp_hnfs(3,3,5), n_irr_kp(5), nhnfs(5), grids(3,3,5), nt_kpts(5))
+       allocate(sp_hnfs(3,3,s_range), n_irr_kp(s_range), nhnfs(s_range))
+       allocate(grids(3,3,s_range), nt_kpts(s_range))
        allocate(grid_offsets(5,3))
        a_kpd = kpd
        sp_hnfs = 0
        n_irr_kp = 0
        nhnfs = 0
        grids = 0
-       do while ((count <5) .and. (a_kpd-kpd<=10))
+       do count = 1, s_range
+       ! do while ((count < s_range) .and. (a_kpd-kpd<=s_range))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
                   best_offset, temp_hnfs, temp_grid, temp_nirr, temp_nhnfs, eps_=eps)
@@ -274,19 +276,14 @@ CONTAINS
              call basecm_43(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
                   best_offset, temp_hnfs, temp_grid, temp_nirr, temp_nhnfs, eps_=eps)
           end if
-          if (temp_nhnfs>1) then
-             sp_hnfs(:,:,count+1) = temp_hnfs(:,:,1)
-             grids(:,:,count+1) = temp_grid
-             grid_offsets(count+1,:) = best_offset
-             n_irr_kp(count+1) = temp_nirr
-             nhnfs(count+1) = temp_nhnfs
-             nt_kpts(count+1) = a_kpd
-             count = count + 1
-             a_kpd = a_kpd + 1
-
-          else
-             a_kpd = a_kpd + 1
-          end if
+          sp_hnfs(:,:,count) = temp_hnfs(:,:,1)
+          grids(:,:,count) = temp_grid
+          grid_offsets(count,:) = best_offset
+          n_irr_kp(count) = temp_nirr
+          nhnfs(count) = temp_nhnfs
+          nt_kpts(count) = a_kpd
+          ! count = count + 1
+          a_kpd = a_kpd + 1
           deallocate(temp_hnfs)
        end do
     end if

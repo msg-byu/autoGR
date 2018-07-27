@@ -1,6 +1,9 @@
 # Revision History
 
-## Revision 0.6.0 (WS)
+## Revision 0.6.1 (WSM)
+- Changed the search intervals for each crystal class.
+
+## Revision 0.6.0 (WSM)
 - Changed the contral file name to KPGEN.
 - Changed control file to use key words instead of line numbers for
   greater flexibility.
