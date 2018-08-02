@@ -1,5 +1,8 @@
 # Revision History
 
+## Revision 0.6.2 (WSM)
+- Fixed multiple allocations that were causing out of bounds errors.
+
 ## Revision 0.6.1 (WSM)
 - Changed the search intervals for each crystal class.
 

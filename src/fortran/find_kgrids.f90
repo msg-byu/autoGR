@@ -189,7 +189,7 @@ CONTAINS
     else
        allocate(sp_hnfs(3,3,s_range), n_irr_kp(s_range), nhnfs(s_range))
        allocate(grids(3,3,s_range), nt_kpts(s_range))
-       allocate(grid_offsets(5,3))
+       allocate(grid_offsets(s_range,3))
        a_kpd = kpd
        sp_hnfs = 0
        n_irr_kp = 0
@@ -288,8 +288,8 @@ CONTAINS
        end do
     end if
 
-    allocate(ratio(count))
-    do i=1, count
+    allocate(ratio(size(nt_kpts)))
+    do i=1, size(nt_kpts)
        ratio(i) = real(n_irr_kp(i),dp)/real(nt_kpts(i),dp)
     end do
 
