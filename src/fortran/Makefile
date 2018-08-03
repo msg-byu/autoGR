@@ -13,7 +13,7 @@ LBD2 = ../../../kgridGen/src
 FOUND = false
 ifeq (${F90},gfortran)  # gfortran compiler
   ifeq (${DEBUG},false)
-     FFLAGS = -O3 -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}
+     FFLAGS = -fopenmp -O3 -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}
      FOUND = true
   else
      FFLAGS = -fPIC -g -fbounds-check -Wall -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}

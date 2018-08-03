@@ -1,5 +1,6 @@
 Module control_file
   use num_types
+  use omp_lib
   use vector_matrix_utilities, only: matrix_inverse, determinant
   implicit none
 CONTAINS
@@ -78,11 +79,12 @@ CONTAINS
     
     ! Control file variables
     real(dp) :: pi, lkpd, kpd, r_vecs(3,3), r_vol, eps
-    integer :: kppra
+    integer :: kppra, ncores
     logical :: def_eps, nkpts_set
 
     ios = 0
     line_count = 0
+    ncores = 0
     pi = 3.1415926535897932385_dp
     find_offset = .True.
     def_eps = .True.
@@ -130,12 +132,19 @@ CONTAINS
              read(buffer, *, iostat=ios) eps
              def_eps = .False.
              nkpts_set = .True.
+          case ('NCORES')
+             read(buffer, *, iostat=ios) ncores
           case default
              print *, 'Skipping invalid label at line', line_count, label
           end select
        end if
     end do
 
+    if (ncores == 0) then
+       ncores = 1
+    end if
+    ! call OMP_SET_NUM_THREADS(ncores)       
+    
     if (def_eps .eqv. .True.) then
        eps = 1E-3
     end if

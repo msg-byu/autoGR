@@ -8,7 +8,10 @@ Module find_kgrids
 
   use symmetry
   use vector_matrix_utilities
+  use numerical_utilities
   use grid_utils, only: transform_supercell
+
+  use omp_lib
 
   implicit none
   private
@@ -20,18 +23,24 @@ CONTAINS
   !!the niggli number.</summary>
   !!<parameter name="lat_id" regular="true">The niggli lattice
   !!id.</parameter>
+  !!<parameter name="lattice" regular="true">The users lattice
+  !!vectors.</parameter>
+  !!<parameter name="eps" regular="true">Relative tolerance for
+  !!comparisons.</parameter>
+ 
   !!<parameter name="offsets" regular="true">The symmetry preserving
   !!offsets for this case.</parameter>
-  SUBROUTINE get_offsets(lat_id, offsets)
+  SUBROUTINE get_offsets(lat_id, lattice, eps, offsets)
     integer, intent(in) :: lat_id
+    real(dp), intent(in) :: lattice(3,3), eps
     real(dp), allocatable, intent(out) :: offsets(:,:)
 
-    if ((lat_id==1) .or. (lat_id==3) .or. (lat_id==5) .or. (lat_id==16) .or. &
-         (lat_id==26) .or. (lat_id==11) .or. (lat_id==21) .or. (lat_id==32) .or. &
-         (lat_id==33) .or. (lat_id==34) .or. (lat_id==35) .or. (lat_id==10) .or. &
-         (lat_id==14) .or. (lat_id==17) .or. (lat_id==27) .or. (lat_id==37) .or. &
-         (lat_id==39) .or. (lat_id==41) .or. (lat_id==43) .or. (lat_id==28) .or. &
-         (lat_id==29) .or. (lat_id==30) .or. (lat_id==20) .or. (lat_id==25)) then
+    real(dp) :: norms(3)
+
+    norms = norm(lattice)
+    
+    if ((lat_id==1) .or. (lat_id==3) .or. (lat_id==5) .or. (lat_id==32) .or. &
+         (lat_id==33) .or. (lat_id==34) .or. (lat_id==35)) then
        allocate(offsets(8,3))
        offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
        offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
@@ -41,47 +50,101 @@ CONTAINS
        offsets(6,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
        offsets(7,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
        offsets(8,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)
-    elseif ((lat_id==12) .or. (lat_id==9) .or. (lat_id==15) .or. (lat_id==22) .or. &
-         (lat_id==24) .or. (lat_id==18) .or. (lat_id==4) .or. (lat_id==2) .or. &
-         (lat_id==6) .or. (lat_id==7) .or. (lat_id==19) .or. (lat_id==8) .or. &
-         (lat_id==42)) then
+    elseif ((lat_id==12) .or. (lat_id==22) .or. (lat_id==4) .or. (lat_id==2) .or. &
+         (lat_id==9) .or. (lat_id==24) .or. (lat_id==6) .or. (lat_id==7) .or. &
+         (lat_id==15) .or. (lat_id==18)) then
+       if (equal(norms(1), norms(2), eps)) then
+          allocate(offsets(2,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+       elseif (equal(norms(1), norms(3), eps)) then
+          allocate(offsets(2,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+       elseif (equal(norms(2), norms(3), eps)) then
+          allocate(offsets(2,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+       else
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+          offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+          offsets(4,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+       end if
+    elseif ((lat_id==11) .or. (lat_id==21)) then
+       if (equal(norms(1), norms(2), eps)) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+          offsets(3,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+          offsets(4,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)
+       elseif (equal(norms(1), norms(3), eps)) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+          offsets(3,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
+          offsets(4,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)
+       elseif (equal(norms(2), norms(3), eps)) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+          offsets(3,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
+          offsets(4,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)
+       else
+          allocate(offsets(8,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+          offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+          offsets(4,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+          offsets(5,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+          offsets(6,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
+          offsets(7,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
+          offsets(8,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)
+       end if
+    elseif ((lat_id==16) .or. (lat_id==26)) then
+       allocate(offsets(2,3))
+       offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+       offsets(2,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)
+    elseif ((lat_id==19) .or. (lat_id==8) .or. (lat_id==42)) then
        allocate(offsets(4,3))
        offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
        offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
        offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
        offsets(4,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
     elseif ((lat_id==40) .or. (lat_id==38) .or. (lat_id==36) .or. (lat_id==23) .or. &
-         (lat_id==13)) then
-       allocate(offsets(7,3))
-       offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
-       offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
-       offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
-       offsets(4,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
-       offsets(5,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
-       offsets(6,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
-       offsets(7,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
-    ! elseif ((lat_id==10) .or. (lat_id==14) .or. (lat_id==17) .or. (lat_id==27) .or. &
-    !      (lat_id==37) .or. (lat_id==39) .or. (lat_id==41) .or. (lat_id==43) .or. &
-    !      (lat_id==28) .or. (lat_id==29) .or. (lat_id==30)) then
-    !    allocate(offsets(8,3))
-    !    offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
-    !    offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
-    !    offsets(3,:) = (/-0.25_dp, 0.25_dp, 0.0_dp/)
-    !    offsets(4,:) = (/-0.25_dp, 0.25_dp, 0.5_dp/)
-    !    offsets(5,:) = (/0.25_dp, 0.25_dp, 0.0_dp/)
-    !    offsets(6,:) = (/0.25_dp, 0.25_dp, 0.5_dp/)
-    !    offsets(7,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
-    !    offsets(8,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
-    ! elseif ((lat_id==20) .or. (lat_id==25)) then
-    !    allocate(offsets(8,3))
-    !    offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
-    !    offsets(2,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
-    !    offsets(3,:) = (/0.0_dp, 0.25_dp, -0.25_dp/)
-    !    offsets(4,:) = (/0.5_dp, 0.25_dp, -0.25_dp/)
-    !    offsets(5,:) = (/0.0_dp, 0.25_dp, 0.25_dp/)
-    !    offsets(6,:) = (/0.5_dp, 0.25_dp, 0.25_dp/)
-    !    offsets(7,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
-    !    offsets(8,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+         (lat_id==13) .or. (lat_id==10) .or. (lat_id==14) .or. (lat_id==17) .or. &
+         (lat_id==20) .or. (lat_id==25) .or. (lat_id==27) .or. (lat_id==28) .or. &
+         (lat_id==29) .or. (lat_id==30) .or. (lat_id==37) .or. (lat_id==39) .or. &
+         (lat_id==41) .or. (lat_id==43)) then
+       if ((norms(1) < norms(2)) .and. (norms(1) < norms(3))) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+          offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+          offsets(4,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
+       elseif ((norms(2) < norms(1)) .and. (norms(2) < norms(3))) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+          offsets(3,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+          offsets(4,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
+       elseif ((norms(3) < norms(1)) .and. (norms(3) < norms(2))) then
+          allocate(offsets(4,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+          offsets(3,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+          offsets(4,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+       else 
+          allocate(offsets(7,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
+          offsets(3,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
+          offsets(4,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
+          offsets(5,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+          offsets(6,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
+          offsets(7,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
+       end if
     elseif ((lat_id==31) .or. (lat_id==44)) then
        allocate(offsets(8,3))
        offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
@@ -145,7 +208,7 @@ CONTAINS
        allocate(offsets(1,3))
        offsets(1,:) = offset
     else
-       call get_offsets(lat_id, offsets)
+       call get_offsets(lat_id, lat_vecs, eps, offsets)
     end if
     if ((lat_id==3) .or. (lat_id==5) .or. (lat_id==1)) then
        call get_kpd_cubic(lat_id,kpd,c_kpd)
@@ -155,6 +218,7 @@ CONTAINS
        n_irr_kp = 0
        nhnfs = 0
        grids = 0
+       !$ OMP PARALLEL DO
        do i=1,3
           a_kpd = c_kpd(i)
           if (lat_id==3) then
@@ -176,6 +240,7 @@ CONTAINS
           count = count + 1
           deallocate(temp_hnfs)
        end do
+       !$ OMP PARALLEL END DO
     else if ((lat_id==44) .or. (lat_id==31)) then
        call get_kpd_tric(kpd, a_kpd, mult)
        allocate(sp_hnfs(3,3,1), n_irr_kp(1), nhnfs(1), grids(3,3,1), nt_kpts(1))
@@ -195,6 +260,7 @@ CONTAINS
        n_irr_kp = 0
        nhnfs = 0
        grids = 0
+       !$ OMP PARALLEL DO
        do count = 1, s_range
        ! do while ((count < s_range) .and. (a_kpd-kpd<=s_range))
           if ((lat_id==2) .or. (lat_id==4)) then
@@ -286,6 +352,7 @@ CONTAINS
           a_kpd = a_kpd + 1
           deallocate(temp_hnfs)
        end do
+       !$ OMP PARALLEL END DO
     end if
 
     allocate(ratio(size(nt_kpts)))
@@ -296,6 +363,7 @@ CONTAINS
     min_kpn_loc = MINLOC(ratio)
     best_grid = grids(:,:, min_kpn_loc(1))
     best_offset = grid_offsets(min_kpn_loc(1),:)
+    print *, "best_offset", best_offset
   end SUBROUTINE find_grid
 
   !!<summary>Gets the trial range of kpoint densities for cubic
