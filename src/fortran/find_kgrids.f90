@@ -11,8 +11,6 @@ Module find_kgrids
   use numerical_utilities
   use grid_utils, only: transform_supercell
 
-  use omp_lib
-
   implicit none
   private
   public find_grid
@@ -118,23 +116,35 @@ CONTAINS
          (lat_id==29) .or. (lat_id==30) .or. (lat_id==37) .or. (lat_id==39) .or. &
          (lat_id==41) .or. (lat_id==43)) then
        if ((norms(1) < norms(2)) .and. (norms(1) < norms(3))) then
-          allocate(offsets(4,3))
+          allocate(offsets(8,3))
           offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
           offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
           offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
           offsets(4,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
+          offsets(5,:) = (/-0.25_dp, 0.25_dp, 0.0_dp/)
+          offsets(6,:) = (/-0.25_dp, 0.25_dp, 0.5_dp/)
+          offsets(7,:) = (/0.25_dp, 0.25_dp, 0.0_dp/)
+          offsets(8,:) = (/0.25_dp, 0.25_dp, 0.5_dp/)
        elseif ((norms(2) < norms(1)) .and. (norms(2) < norms(3))) then
-          allocate(offsets(4,3))
+          allocate(offsets(8,3))
           offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
           offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
           offsets(3,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
           offsets(4,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
+          offsets(5,:) = (/0.25_dp, -0.25_dp, 0.0_dp/)
+          offsets(6,:) = (/0.25_dp, -0.25_dp, 0.5_dp/)
+          offsets(7,:) = (/0.25_dp, 0.25_dp, 0.0_dp/)
+          offsets(8,:) = (/0.25_dp, 0.25_dp, 0.5_dp/)
        elseif ((norms(3) < norms(1)) .and. (norms(3) < norms(2))) then
-          allocate(offsets(4,3))
+          allocate(offsets(8,3))
           offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
           offsets(2,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
           offsets(3,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
           offsets(4,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
+          offsets(5,:) = (/0.0_dp, 0.25_dp, -0.25_dp/)
+          offsets(6,:) = (/0.5_dp, 0.25_dp, -0.25_dp/)
+          offsets(7,:) = (/0.5_dp, 0.25_dp, 0.25_dp/)
+          offsets(8,:) = (/0.5_dp, 0.25_dp, 0.25_dp/)
        else 
           allocate(offsets(7,3))
           offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
@@ -201,6 +211,7 @@ CONTAINS
        eps = 1E-3
     end if
 
+
     call id_cell(lat_vecs, Nu, Cu, O, No, Co, lat_id, s_range,eps_=eps)
     count = 0
 
@@ -218,7 +229,6 @@ CONTAINS
        n_irr_kp = 0
        nhnfs = 0
        grids = 0
-       !$ OMP PARALLEL DO
        do i=1,3
           a_kpd = c_kpd(i)
           if (lat_id==3) then
@@ -240,7 +250,6 @@ CONTAINS
           count = count + 1
           deallocate(temp_hnfs)
        end do
-       !$ OMP PARALLEL END DO
     else if ((lat_id==44) .or. (lat_id==31)) then
        call get_kpd_tric(kpd, a_kpd, mult)
        allocate(sp_hnfs(3,3,1), n_irr_kp(1), nhnfs(1), grids(3,3,1), nt_kpts(1))
@@ -260,7 +269,6 @@ CONTAINS
        n_irr_kp = 0
        nhnfs = 0
        grids = 0
-       !$ OMP PARALLEL DO
        do count = 1, s_range
        ! do while ((count < s_range) .and. (a_kpd-kpd<=s_range))
           if ((lat_id==2) .or. (lat_id==4)) then
@@ -352,7 +360,6 @@ CONTAINS
           a_kpd = a_kpd + 1
           deallocate(temp_hnfs)
        end do
-       !$ OMP PARALLEL END DO
     end if
 
     allocate(ratio(size(nt_kpts)))
@@ -363,7 +370,6 @@ CONTAINS
     min_kpn_loc = MINLOC(ratio)
     best_grid = grids(:,:, min_kpn_loc(1))
     best_offset = grid_offsets(min_kpn_loc(1),:)
-    print *, "best_offset", best_offset
   end SUBROUTINE find_grid
 
   !!<summary>Gets the trial range of kpoint densities for cubic
