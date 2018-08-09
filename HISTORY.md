@@ -5,6 +5,7 @@
 - Reduced the search space of offsets by taking into account the order
   of the vectors that the user provided.
 - Started adding OpenMP functionality.
+- Fixed calculation of reciprocal lattice volume in control file.
 
 ## Revision 0.6.1 (WSM)
 - Changed the search intervals for each crystal class.

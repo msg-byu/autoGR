@@ -13,10 +13,12 @@ CONTAINS
   !!vectors.</parameter>
   !!<parameter name="atom_type" regular="true">The type of each atom
   !!in the basis.</parameter>
-  SUBROUTINE read_POSCAR(lattice, atom_base, atom_type)
+  !!<parameter name="lat_param" regular="true">The lattice
+  !!parameter.</parameter>
+  SUBROUTINE read_POSCAR(lattice, atom_base, atom_type, lat_param)
     integer, allocatable, intent(out) :: atom_type(:)
     real(dp), pointer :: atom_base(:,:)
-    real(dp), intent(out) :: lattice(3,3)
+    real(dp), intent(out) :: lattice(3,3), lat_param
 
     character(300) :: line
     integer :: count, j, i, z
@@ -25,7 +27,7 @@ CONTAINS
     open(1,file="POSCAR",status="old")
 
     read(1,'(a300)') line
-    read(1,'(a300)') line
+    read(1,'(a300)') lat_param
     do i=1,3
        read(1,*) lattice(:,i)
     end do
@@ -78,7 +80,7 @@ CONTAINS
     integer :: ios, line_count, pos
     
     ! Control file variables
-    real(dp) :: pi, lkpd, kpd, r_vecs(3,3), r_vol, eps
+    real(dp) :: pi, lkpd, kpd, r_vecs(3,3), r_vol, eps, lat_param
     integer :: kppra, ncores
     logical :: def_eps, nkpts_set
 
@@ -91,9 +93,9 @@ CONTAINS
     nkpts_set = .False.
     open(fh, file='KPGEN')
 
-    call read_POSCAR(lattice, atom_base, atom_type)
+    call read_POSCAR(lattice, atom_base, atom_type, lat_param)
 
-    call matrix_inverse(transpose(lattice),r_vecs)
+    call matrix_inverse(transpose(lat_param*lattice),r_vecs)
     r_vecs = 2*pi*r_vecs
     r_vol = abs(determinant(r_vecs))
     ! ios is negative if an end of record condition is encountered or if
