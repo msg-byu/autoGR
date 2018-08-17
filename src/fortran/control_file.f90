@@ -65,14 +65,17 @@ CONTAINS
   !!k-points.</parameter>
   !!<parameter name="find_offset" regular="true">'True' if the use
   !!didn't provide an offset.</parameter>
-  !!<parameter name="eps" regular="true">The floating point
-  !!tollerance.</parameter>
-  SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, find_offset, eps)
+  !!<parameter name="reps" regular="true">The floating point
+  !!tollerance for relative comparison.</parameter>
+  !!<parameter name="aeps" regular="true">The floating point
+  !!tollerance for absolute comparison.</parameter>
+  SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, find_offset, reps, aeps)
     real(dp), intent(out) :: lattice(3,3), offset(3)
     real(dp), pointer :: atom_base(:,:)
     integer, allocatable, intent(out) :: atom_type(:)
     integer, intent(out) :: nkpts
     logical, intent(out) :: find_offset
+    real(dp), intent(out) :: reps, aeps
     
     ! Input related variables
     character(len=100) :: buffer, label
@@ -80,9 +83,9 @@ CONTAINS
     integer :: ios, line_count, pos
     
     ! Control file variables
-    real(dp) :: pi, lkpd, kpd, r_vecs(3,3), r_vol, eps, lat_param
+    real(dp) :: pi, lkpd, kpd, r_vecs(3,3), r_vol, lat_param
     integer :: kppra, ncores
-    logical :: def_eps, nkpts_set
+    logical :: def_eps, nkpts_set, def_aeps
 
     ios = 0
     line_count = 0
@@ -90,6 +93,7 @@ CONTAINS
     pi = 3.1415926535897932385_dp
     find_offset = .True.
     def_eps = .True.
+    def_aeps = .True.
     nkpts_set = .False.
     open(fh, file='KPGEN')
 
@@ -131,9 +135,11 @@ CONTAINS
              nkpts = size(atom_base,2)*kppra
              nkpts_set = .True.
           case ('EPS')
-             read(buffer, *, iostat=ios) eps
+             read(buffer, *, iostat=ios) reps
              def_eps = .False.
-             nkpts_set = .True.
+          case ('ABSEPS')
+             read(buffer, *, iostat=ios) aeps
+             def_aeps = .False.
           case ('NCORES')
              read(buffer, *, iostat=ios) ncores
           case default
@@ -148,7 +154,10 @@ CONTAINS
     ! call OMP_SET_NUM_THREADS(ncores)       
     
     if (def_eps .eqv. .True.) then
-       eps = 1E-3
+       reps = 1E-3
+    end if
+    if (def_aeps .eqv. .True.) then
+       aeps = 1E-8
     end if
 
     if (nkpts_set .eqv. .False.) stop "Number of kpoints not set. Exiting."

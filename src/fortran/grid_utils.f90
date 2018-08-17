@@ -104,7 +104,7 @@ CONTAINS
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
     rmin = min(norms(1), norms(2), norms(3))
-    call generateIrredKpointList(lat_vecs, B_vecs, at, grid, R, shift, rdKlist, weights, eps)
+    call generateIrredKpointList(lat_vecs, B_vecs, at, grid, R, shift, rdKlist, weights, reps_=eps)
     n_irr = size(rdKlist,1)
 
   end SUBROUTINE grid_metrics
@@ -195,7 +195,7 @@ CONTAINS
        ngrids(1) = 1
        grids(:,:,:,1) = 0.0_dp
        best_HNFs(:,:,:,1) = 0
-       grids(:,:,ngrids(1),1) = temp_grid
+       grids(:,:,ngrids(1),1) = reduced_grid
        best_HNFs(:,:,ngrids(1),1) = HNF
 
     else if ((temp_rmin > (rmin(2)+temp_rmin*eps)) .and. (.not. equal(temp_rmin, rmin(1), eps)) &
@@ -204,7 +204,7 @@ CONTAINS
        ngrids(2) = 1
        grids(:,:,:,2) = 0.0_dp
        best_HNFs(:,:,:,2) = 0
-       grids(:,:,ngrids(2),2) = temp_grid
+       grids(:,:,ngrids(2),2) = reduced_grid
        best_HNFs(:,:,ngrids(2),2) = HNF
     else if (equal(temp_rmin, rmin(1), eps)) then
        if (size(grids,3) == ngrids(1)) then
@@ -221,7 +221,7 @@ CONTAINS
           grids(1:3,1:3,1:ngrids(2),2) = ralloc_grids(1:3,1:3,1:ngrids(2),2)
        end if
        ngrids(1) = ngrids(1) + 1
-       grids(:,:,ngrids(1),1) = temp_grid
+       grids(:,:,ngrids(1),1) = reduced_grid
        best_HNFs(:,:,ngrids(1),1) = HNF
     else if (equal(temp_rmin, rmin(2), eps)) then
        if (size(grids,3) == ngrids(2)) then
@@ -238,7 +238,7 @@ CONTAINS
           grids(1:3,1:3,1:ngrids(2),2) = ralloc_grids(1:3,1:3,1:ngrids(2),2)
        end if
        ngrids(2) = ngrids(2) + 1
-       grids(:,:,ngrids(2),2) = temp_grid
+       grids(:,:,ngrids(2),2) = reduced_grid
        best_HNFs(:,:,ngrids(2),2) = HNF
     end if
 
@@ -282,10 +282,12 @@ CONTAINS
     integer :: i, n_irreducible(sum(ngrids)), n_ir_min(1), count, j
     real(dp) :: eps, det
 
-    real(dp)              :: R(3,3), invLat(3,3)
+    real(dp)              :: R(3,3), invLat(3,3), temp_R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
     
+    ! real (dp) :: mean, variance, std
+
     if (present(eps_)) then
        eps = eps_
     else
@@ -293,21 +295,33 @@ CONTAINS
     end if
 
     call matrix_inverse(lat_vecs, invLat)
-    R = transpose(invLat)
+    temp_R = transpose(invLat)
+    call minkowski_reduce_basis(temp_R, R, eps)
 
     n_irreducible = 0
     count = 0
     do i=1,ngrids(1)
        temp_grid = cand_grids(:,:,i,1)
        det = determinant(temp_grid)
+       ! print *, "norms R", norms_real_vector_list(R)
+       ! print *, "norms K", norms_real_vector_list(temp_grid)
+       ! print *, "K/R", norms_real_vector_list(temp_grid)/norms_real_vector_list(R)
+       ! mean = sum(norms_real_vector_list(temp_grid)/norms_real_vector_list(R))/3.0_dp
+       ! variance = sum((norms_real_vector_list(temp_grid)/norms_real_vector_list(R) -mean)**2)/2
+       ! std = variance**(0.5_dp)
+       ! print *, "mean", mean
+       ! print *, "variance", variance
+       ! print *, "std", std
+       ! print *, "m/s", mean/std
+       ! print *, "det", det
        do j=1, size(offsets,1)
-          ! if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-          !    call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-          !         offsets(j,:), rdKlist, weights, (eps**2))
-          ! else 
-          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-               offsets(j,:), rdKlist, weights, eps)
-          ! end if
+          if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+                  offsets(j,:), rdKlist, weights, (eps*1))
+          else 
+             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+                  offsets(j,:), rdKlist, weights, eps)
+          end if
           if (j==1) then
              n_irreducible(i) = size(rdKlist,1)
              grid_offsets(i,:) = offsets(j,:)
@@ -322,14 +336,25 @@ CONTAINS
     do i=1,ngrids(2)
        temp_grid = cand_grids(:,:,i,2)
        det = determinant(temp_grid)
+       ! print *, "norms R", norms_real_vector_list(R)
+       ! print *, "norms K", norms_real_vector_list(temp_grid)
+       ! print *, "K/R", norms_real_vector_list(temp_grid)/norms_real_vector_list(R)
+       ! mean = sum(norms_real_vector_list(temp_grid)/norms_real_vector_list(R))/3.0_dp
+       ! variance = sum((norms_real_vector_list(temp_grid)/norms_real_vector_list(R) -mean)**2)/2
+       ! std = variance**(0.5_dp)
+       ! print *, "mean", mean
+       ! print *, "variance", variance
+       ! print *, "std", std
+       ! print *, "m/s", mean/std
+       ! print *, "det", det
        do j=1, size(offsets, 1)
-          ! if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-          !    call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-          !         offsets(j,:), rdKlist, weights, eps_=(eps**2))
-          ! else 
-          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-               offsets(j,:), rdKlist, weights, eps)
-          ! end if
+          if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+                  offsets(j,:), rdKlist, weights, (eps**1))
+          else 
+             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+                  offsets(j,:), rdKlist, weights, eps)
+          end if
           if (j==1) then
              n_irreducible(count+i) = size(rdKlist,1)
              grid_offsets(count+i,:) = offsets(j,:)

@@ -167,6 +167,7 @@ CONTAINS
     end if
 
   end SUBROUTINE get_offsets
+  
   !!<summary>Determines the best k-point grid to use near the target
   !!density.</summary>
   !!<parameter name="lat_vecs" regular="true">The parent cell lattice
@@ -175,8 +176,10 @@ CONTAINS
   !!density.</parameter>
   !!<parameter name="best_grid" regular="true">The best k-point grid
   !!found.</parameter>
-  !!<parameter name="eps_" regular="true">Floating point
-  !!tolerance.</parameter>
+  !!<parameter name="reps_" regular="true">Floating point
+  !!tolerance for relative comparison.</parameter>
+  !!<parameter name="aeps_" regular="true">Floating point
+  !!tolerance for relative comparison.</parameter>
   !!<parameter name="B_vecs" regular="true">The atomic basis
   !!vectors.</parameter>
   !!<parameter name="at" regular="true">The atom types in the
@@ -211,10 +214,11 @@ CONTAINS
        eps = 1E-3
     end if
 
-
     call id_cell(lat_vecs, Nu, Cu, O, No, Co, lat_id, s_range,eps_=eps)
     count = 0
 
+    print *, "lat_id", lat_id    
+    
     if (find_offset .eqv. .False.) then
        allocate(offsets(1,3))
        offsets(1,:) = offset
