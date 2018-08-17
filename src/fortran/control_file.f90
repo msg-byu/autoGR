@@ -27,7 +27,7 @@ CONTAINS
     open(1,file="POSCAR",status="old")
 
     read(1,'(a300)') line
-    read(1,'(a300)') lat_param
+    read(1, *) lat_param
     do i=1,3
        read(1,*) lattice(:,i)
     end do

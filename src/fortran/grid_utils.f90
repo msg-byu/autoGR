@@ -104,7 +104,7 @@ CONTAINS
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
     rmin = min(norms(1), norms(2), norms(3))
-    call generateIrredKpointList(lat_vecs, B_vecs, at, grid, R, shift, rdKlist, weights, eps_=eps)
+    call generateIrredKpointList(lat_vecs, B_vecs, at, grid, R, shift, rdKlist, weights, eps)
     n_irr = size(rdKlist,1)
 
   end SUBROUTINE grid_metrics
@@ -301,13 +301,13 @@ CONTAINS
        temp_grid = cand_grids(:,:,i,1)
        det = determinant(temp_grid)
        do j=1, size(offsets,1)
-          if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-                  offsets(j,:), rdKlist, weights, eps_=(eps**2))
-          else 
-             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-                  offsets(j,:), rdKlist, weights, eps_=eps)
-          end if
+          ! if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+          !    call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+          !         offsets(j,:), rdKlist, weights, (eps**2))
+          ! else 
+          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+               offsets(j,:), rdKlist, weights, eps)
+          ! end if
           if (j==1) then
              n_irreducible(i) = size(rdKlist,1)
              grid_offsets(i,:) = offsets(j,:)
@@ -323,13 +323,13 @@ CONTAINS
        temp_grid = cand_grids(:,:,i,2)
        det = determinant(temp_grid)
        do j=1, size(offsets, 1)
-          if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-                  offsets(j,:), rdKlist, weights, eps_=(eps**2))
-          else 
-             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-                  offsets(j,:), rdKlist, weights, eps_=eps)
-          end if
+          ! if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+          !    call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+          !         offsets(j,:), rdKlist, weights, eps_=(eps**2))
+          ! else 
+          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+               offsets(j,:), rdKlist, weights, eps)
+          ! end if
           if (j==1) then
              n_irreducible(count+i) = size(rdKlist,1)
              grid_offsets(count+i,:) = offsets(j,:)

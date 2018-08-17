@@ -22,14 +22,14 @@ PROGRAM lat_id_driver
        eps_=eps)
 
   det = determinant(grid)
-  if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-     call generateIrredKpointList(lat_vecs, B_vecs, at, grid, r_vecs, best_offset, &
-          IRKps, weights, eps_=(eps**2))
-  else
-     call generateIrredKpointList(lat_vecs, B_vecs, at, grid, r_vecs, best_offset, &
-          IRKps, weights, eps_=eps)
-  end if
-  call mapKptsIntoBZ(r_vecs, IRKps)
+  ! if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
+  !    call generateIrredKpointList(lat_vecs, B_vecs, at, grid, r_vecs, best_offset, &
+  !         IRKps, weights, eps_=(eps**2))
+  ! else
+  call generateIrredKpointList(lat_vecs, B_vecs, at, grid, r_vecs, best_offset, &
+       IRKps, weights, eps)
+  ! end if
+  call mapKptsIntoBZ(r_vecs, IRKps, eps)
 
   open(4,file="KPOINTS")
   ! write(4,'("Our new kpoint method. ",i6)') sum(weights)
