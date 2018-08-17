@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.6.3 (WSM)
+- Fixed most of the finite precision problems we've been having with
+  the interface with `kgridGen`.
+
 ## Revision 0.6.2 (WSM)
 - Fixed multiple allocations that were causing out of bounds errors.
 - Reduced the search space of offsets by taking into account the order
