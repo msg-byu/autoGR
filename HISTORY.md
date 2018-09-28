@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.6.4 (WMS)
+- Added a function tha checks that the point group matches the niggli
+  id and stops the code if it doesn't.
+
 ## Revision 0.6.3 (WSM)
 - Fixed most of the finite precision problems we've been having with
   the interface with `kgridGen`.

@@ -24,8 +24,7 @@ CONTAINS
   !!<parameter name="lattice" regular="true">The users lattice
   !!vectors.</parameter>
   !!<parameter name="eps" regular="true">Relative tolerance for
-  !!comparisons.</parameter>
- 
+  !!comparisons.</parameter> 
   !!<parameter name="offsets" regular="true">The symmetry preserving
   !!offsets for this case.</parameter>
   SUBROUTINE get_offsets(lat_id, lattice, eps, offsets)
@@ -167,6 +166,89 @@ CONTAINS
     end if
 
   end SUBROUTINE get_offsets
+
+  !!<summary>Checks that the symmetries found match the niggli basis
+  !!discovered.</summary>
+  !!<parameter name="lat_vecs" regular="true">The parent cell lattice
+  !!vectors.</parameter>
+  !!<parameter name="niggli_id" regular="true">The niggli basis
+  !!number.</parameter>
+  !!<parameter name="eps" regular="true">Floating point
+  !!tolerance.</parameter>
+  !!<parameter name="status" regular="true">Output of the check, True
+  !!if symmetry group matches the niggli basis number.</parameter>
+  SUBROUTINE check_sym(lat_vecs, niggli_id, eps, status, pg_size)
+    real(dp), intent(in) :: lat_vecs(3,3)
+    integer, intent(in) :: niggli_id
+    real(dp), intent(in) :: eps
+    logical, intent(out) :: status
+    integer, intent(out) :: pg_size
+    
+    real(dp), pointer :: pg(:,:,:)
+
+    call get_lattice_pointGroup(lat_vecs, pg, eps_=eps)
+    pg_size = size(pg,3)
+
+    if (pg_size == 48) then
+       if ((niggli_id == 1) .or. (niggli_id == 3) .or. (niggli_id == 5)) then
+          status = .True.
+       else
+          status = .False.
+       end if
+    else if (pg_size == 24) then
+       if ((niggli_id == 12) .or. (niggli_id == 22)) then
+          status = .True.
+       else
+          status = .False.
+       end if
+    else if (pg_size == 12) then
+       if ((niggli_id == 2) .or. (niggli_id == 4) .or. (niggli_id == 9) .or. &
+            (niggli_id == 24)) then
+          status = .True.
+       else
+          status = .False.
+       end if
+    else if (pg_size == 16) then
+       if ((niggli_id == 6) .or. (niggli_id == 7) .or. (niggli_id == 11) .or. &
+            (niggli_id == 15) .or. (niggli_id == 18) .or. (niggli_id == 21)) then
+          status = .True.
+       else
+          status = .False.
+       end if
+    else if (pg_size == 8) then
+       if ((niggli_id == 8) .or. (niggli_id == 13) .or. (niggli_id == 16) .or. &
+            (niggli_id == 19) .or. (niggli_id == 23) .or. (niggli_id == 26) .or. &
+            (niggli_id == 32) .or. (niggli_id == 40) .or. (niggli_id == 36) .or. &
+            (niggli_id == 38) .or. (niggli_id == 42)) then
+          status = .True.
+       else
+          status = .False.
+       end if
+    else if (pg_size == 4) then
+       if ((niggli_id == 10) .or. (niggli_id == 14) .or. (niggli_id == 17) .or. &
+            (niggli_id == 20) .or. (niggli_id == 25) .or. (niggli_id == 27) .or. &
+            (niggli_id == 28) .or. (niggli_id == 29) .or. (niggli_id == 30) .or. &
+            (niggli_id == 35) .or. (niggli_id == 33) .or. (niggli_id == 34) .or. &
+            (niggli_id == 41) .or. (niggli_id == 41) .or. (niggli_id == 37) .or. &
+            (niggli_id == 39) .or. (niggli_id == 43)) then
+          status = .True.
+       else
+          status = .False.
+       end if
+    else if (pg_size == 2) then
+       if ((niggli_id == 12) .or. (niggli_id == 22)) then
+          status = .True.
+       else
+          status = .False.
+       end if
+    else
+       write(*,*) "The point group symmetry found doesn't match any know&
+            & lattice. This is likely due to floating point errors. Please&
+            & change your floating point tolerance and try again."
+       stop
+    end if
+    
+  end SUBROUTINE check_sym
   
   !!<summary>Determines the best k-point grid to use near the target
   !!density.</summary>
@@ -207,6 +289,8 @@ CONTAINS
     real(dp) :: O(3,3), Nu(3,3), No(3,3), temp_grid(3,3)
     integer :: Cu(3,3), Co(3,3), min_kpn_loc(1), temp_nirr, temp_nhnfs, s_range
     real(dp) :: eps
+    logical :: sym_check
+    integer :: pg_size
     
     if (present(eps_)) then
        eps = eps_
@@ -217,7 +301,13 @@ CONTAINS
     call id_cell(lat_vecs, Nu, Cu, O, No, Co, lat_id, s_range,eps_=eps)
     count = 0
 
-    print *, "lat_id", lat_id    
+    print *, "lat_id", lat_id
+    call check_sym(lat_vecs, lat_id, eps, sym_check, pg_size)
+    if (.not. sym_check) then
+       write(*,*) "The point group doesn't match the niggli basis id."
+       write(*, '("Nigli basis number: ", i2)') lat_id
+       write(*, '("Lattice point group size: ", i2)') pg_size
+    end if
     
     if (find_offset .eqv. .False.) then
        allocate(offsets(1,3))
