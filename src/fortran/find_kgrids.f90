@@ -189,33 +189,33 @@ CONTAINS
     call get_lattice_pointGroup(lat_vecs, pg, eps_=eps)
     pg_size = size(pg,3)
 
-    if (pg_size == 48) then
+    if (pg_size == 48) then !3
        if ((niggli_id == 1) .or. (niggli_id == 3) .or. (niggli_id == 5)) then
           status = .True.
        else
           status = .False.
        end if
-    else if (pg_size == 24) then
+    else if (pg_size == 24) then !2
        if ((niggli_id == 12) .or. (niggli_id == 22)) then
           status = .True.
        else
           status = .False.
        end if
-    else if (pg_size == 12) then
+    else if (pg_size == 12) then !4
        if ((niggli_id == 2) .or. (niggli_id == 4) .or. (niggli_id == 9) .or. &
             (niggli_id == 24)) then
           status = .True.
        else
           status = .False.
        end if
-    else if (pg_size == 16) then
+    else if (pg_size == 16) then !6
        if ((niggli_id == 6) .or. (niggli_id == 7) .or. (niggli_id == 11) .or. &
             (niggli_id == 15) .or. (niggli_id == 18) .or. (niggli_id == 21)) then
           status = .True.
        else
           status = .False.
        end if
-    else if (pg_size == 8) then
+    else if (pg_size == 8) then !11
        if ((niggli_id == 8) .or. (niggli_id == 13) .or. (niggli_id == 16) .or. &
             (niggli_id == 19) .or. (niggli_id == 23) .or. (niggli_id == 26) .or. &
             (niggli_id == 32) .or. (niggli_id == 40) .or. (niggli_id == 36) .or. &
@@ -224,19 +224,19 @@ CONTAINS
        else
           status = .False.
        end if
-    else if (pg_size == 4) then
+    else if (pg_size == 4) then !17
        if ((niggli_id == 10) .or. (niggli_id == 14) .or. (niggli_id == 17) .or. &
             (niggli_id == 20) .or. (niggli_id == 25) .or. (niggli_id == 27) .or. &
             (niggli_id == 28) .or. (niggli_id == 29) .or. (niggli_id == 30) .or. &
             (niggli_id == 35) .or. (niggli_id == 33) .or. (niggli_id == 34) .or. &
-            (niggli_id == 41) .or. (niggli_id == 41) .or. (niggli_id == 37) .or. &
-            (niggli_id == 39) .or. (niggli_id == 43)) then
+            (niggli_id == 41) .or. (niggli_id == 43) .or. (niggli_id == 37) .or. &
+            (niggli_id == 39)) then
           status = .True.
        else
           status = .False.
        end if
-    else if (pg_size == 2) then
-       if ((niggli_id == 12) .or. (niggli_id == 22)) then
+    else if (pg_size == 2) then !2
+       if ((niggli_id == 44) .or. (niggli_id == 31)) then
           status = .True.
        else
           status = .False.
@@ -307,6 +307,7 @@ CONTAINS
        write(*,*) "The point group doesn't match the niggli basis id."
        write(*, '("Nigli basis number: ", i2)') lat_id
        write(*, '("Lattice point group size: ", i2)') pg_size
+       stop
     end if
     
     if (find_offset .eqv. .False.) then
