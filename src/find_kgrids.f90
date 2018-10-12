@@ -307,6 +307,8 @@ CONTAINS
        write(*,*) "The point group doesn't match the niggli basis id."
        write(*, '("Nigli basis number: ", i2)') lat_id
        write(*, '("Lattice point group size: ", i2)') pg_size
+       write(*,*) "This most likely means there is a rounding error in your POSCAR."
+       write(*,*) "We recommend either using a larger `eps` value or adjusting the lattice vectors of your POSCAR to be more precise."
        stop
     end if
     
