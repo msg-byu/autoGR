@@ -316,25 +316,9 @@ CONTAINS
     do i=1,ngrids(1)
        temp_grid = cand_grids(:,:,i,1)
        det = determinant(temp_grid)
-       ! print *, "norms R", norms_real_vector_list(R)
-       ! print *, "norms K", norms_real_vector_list(temp_grid)
-       ! print *, "K/R", norms_real_vector_list(temp_grid)/norms_real_vector_list(R)
-       ! mean = sum(norms_real_vector_list(temp_grid)/norms_real_vector_list(R))/3.0_dp
-       ! variance = sum((norms_real_vector_list(temp_grid)/norms_real_vector_list(R) -mean)**2)/2
-       ! std = variance**(0.5_dp)
-       ! print *, "mean", mean
-       ! print *, "variance", variance
-       ! print *, "std", std
-       ! print *, "m/s", mean/std
-       ! print *, "det", det
        do j=1, size(offsets,1)
-          if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-                  offsets(j,:), rdKlist, weights, (eps*1))
-          else 
-             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-                  offsets(j,:), rdKlist, weights, eps)
-          end if
+          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+               offsets(j,:), rdKlist, weights, eps)
           if (j==1) then
              n_irreducible(i) = size(rdKlist,1)
              grid_offsets(i,:) = offsets(j,:)
@@ -349,25 +333,9 @@ CONTAINS
     do i=1,ngrids(2)
        temp_grid = cand_grids(:,:,i,2)
        det = determinant(temp_grid)
-       ! print *, "norms R", norms_real_vector_list(R)
-       ! print *, "norms K", norms_real_vector_list(temp_grid)
-       ! print *, "K/R", norms_real_vector_list(temp_grid)/norms_real_vector_list(R)
-       ! mean = sum(norms_real_vector_list(temp_grid)/norms_real_vector_list(R))/3.0_dp
-       ! variance = sum((norms_real_vector_list(temp_grid)/norms_real_vector_list(R) -mean)**2)/2
-       ! std = variance**(0.5_dp)
-       ! print *, "mean", mean
-       ! print *, "variance", variance
-       ! print *, "std", std
-       ! print *, "m/s", mean/std
-       ! print *, "det", det
        do j=1, size(offsets, 1)
-          if (((det<eps) .and. (det >1E-10)) .or. (equal(det,eps,eps))) then
-             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-                  offsets(j,:), rdKlist, weights, (eps**1))
-          else 
-             call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-                  offsets(j,:), rdKlist, weights, eps)
-          end if
+          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+               offsets(j,:), rdKlist, weights, eps)
           if (j==1) then
              n_irreducible(count+i) = size(rdKlist,1)
              grid_offsets(count+i,:) = offsets(j,:)
