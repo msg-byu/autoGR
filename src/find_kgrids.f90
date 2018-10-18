@@ -282,14 +282,14 @@ CONTAINS
     real(dp), intent(out) :: best_grid(3,3), best_offset(3)
     logical, intent(in) :: find_offset
 
-    integer :: lat_id, a_kpd, c_kpd(3), i, count, mult
+    integer :: lat_id, a_kpd, c_kpd(3), i, count, mult, size
     integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:)
     integer, allocatable :: n_irr_kp(:), nhnfs(:), nt_kpts(:)
     real(dp), allocatable :: grids(:,:,:), ratio(:), offsets(:,:), grid_offsets(:,:)
     real(dp) :: O(3,3), Nu(3,3), No(3,3), temp_grid(3,3)
     integer :: Cu(3,3), Co(3,3), min_kpn_loc(1), temp_nirr, temp_nhnfs, s_range
     real(dp) :: eps
-    logical :: sym_check
+    logical :: sym_check, found_min
     integer :: pg_size
     
     if (present(eps_)) then
@@ -351,8 +351,12 @@ CONTAINS
        call get_kpd_tric(kpd, a_kpd, mult)
        allocate(sp_hnfs(3,3,1), n_irr_kp(1), nhnfs(1), grids(3,3,1), nt_kpts(1))
        allocate(grid_offsets(1,3))
-       call tric_31_44(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, mult, offsets, &
-            best_offset, temp_hnfs, grids(:,:,1), n_irr_kp(1), nhnfs(1), eps_=eps)
+       found_min = .False.
+       do while (found_min .eqv. .False.)
+          call tric_31_44(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, mult, offsets, &
+               best_offset, temp_hnfs, grids(:,:,1), n_irr_kp(1), nhnfs(1), eps_=eps)
+          a_kpd = a_kpd + 1
+       end do
        sp_hnfs = temp_hnfs*mult
        nt_kpts(1) = a_kpd*mult
        grid_offsets(1,:) = best_offset
@@ -366,7 +370,8 @@ CONTAINS
        n_irr_kp = 0
        nhnfs = 0
        grids = 0
-       do count = 1, s_range
+       count = 0
+       do size = 1, s_range
        ! do while ((count < s_range) .and. (a_kpd-kpd<=s_range))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
@@ -447,20 +452,22 @@ CONTAINS
              call basecm_43(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
                   best_offset, temp_hnfs, temp_grid, temp_nirr, temp_nhnfs, eps_=eps)
           end if
-          sp_hnfs(:,:,count) = temp_hnfs(:,:,1)
-          grids(:,:,count) = temp_grid
-          grid_offsets(count,:) = best_offset
-          n_irr_kp(count) = temp_nirr
-          nhnfs(count) = temp_nhnfs
-          nt_kpts(count) = a_kpd
-          ! count = count + 1
+          if  (any(nhnfs > 0) .and. any(temp_hnfs > 0)) then
+             count = count + 1
+             sp_hnfs(:,:,count) = temp_hnfs(:,:,1)
+             grids(:,:,count) = temp_grid
+             grid_offsets(count,:) = best_offset
+             n_irr_kp(count) = temp_nirr
+             nhnfs(count) = temp_nhnfs
+             nt_kpts(count) = a_kpd
+          end if
           a_kpd = a_kpd + 1
           deallocate(temp_hnfs)
        end do
     end if
 
-    allocate(ratio(size(nt_kpts)))
-    do i=1, size(nt_kpts)
+    allocate(ratio(count))
+    do i=1, count
        ratio(i) = real(n_irr_kp(i),dp)/real(nt_kpts(i),dp)
     end do
 

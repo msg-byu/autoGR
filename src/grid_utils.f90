@@ -149,11 +149,15 @@ CONTAINS
     real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3)
     real(dp) :: lat_trans(3,3)
     real(dp) :: eps
-    real(dp)              :: R(3,3)
+    real(dp) :: R(3,3)
     integer, allocatable :: ralloc_HNFs(:,:,:,:)
     real(dp), allocatable :: ralloc_grids(:,:,:,:)
     real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3)
+    real(dp) :: pi, pac_limit, pac_frac
 
+    pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164_dp
+    pac_limit = 0.3_dp
+    
     if (present(eps_)) then
        eps = eps_
     else
@@ -173,73 +177,82 @@ CONTAINS
 
     call transform_supercell(HNF, No, Nu, Co, Cu, O, supercell)
 
-    temp_grid_inv = transpose(supercell)
+    ! temp_grid_inv = transpose(supercell)
     call matrix_inverse(transpose(supercell), temp_grid)
-    lat_trans = transpose(lat_vecs)
-    call matrix_inverse(lat_trans, R)
-
-    call minkowski_reduce_basis(temp_grid, reduced_grid, eps)
-    norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
-    norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
-    norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
+    norms(1) = sqrt(dot_product(temp_grid(:,1), temp_grid(:,1)))
+    norms(2) = sqrt(dot_product(temp_grid(:,2), temp_grid(:,2)))
+    norms(3) = sqrt(dot_product(temp_grid(:,3), temp_grid(:,3)))
     temp_rmin = min(norms(1), norms(2), norms(3))
-    if (temp_rmin > (rmin(1)+temp_rmin*eps) .and. (.not. equal(temp_rmin, rmin(1), eps))) then
-       rmin(2) = rmin(1)
-       ngrids(2) = ngrids(1)
-       grids(:,:,:,2) = 0.0_dp
-       best_HNFs(:,:,:,2) = 0
-       best_HNFs(1:3,1:3,1:ngrids(2),2) = best_HNFs(1:3,1:3,1:ngrids(2),1)
-       grids(1:3,1:3,1:ngrids(2),2) = grids(1:3,1:3,1:ngrids(2),1)
-       
-       rmin(1) = temp_rmin
-       ngrids(1) = 1
-       grids(:,:,:,1) = 0.0_dp
-       best_HNFs(:,:,:,1) = 0
-       grids(:,:,ngrids(1),1) = reduced_grid
-       best_HNFs(:,:,ngrids(1),1) = HNF
+    pac_frac = ((4.0_dp*pi*(temp_rmin**3))/3.0_dp)/determinant(temp_grid)
+    ! lat_trans = transpose(lat_vecs)
+    ! call matrix_inverse(lat_trans, R)
 
-    else if ((temp_rmin > (rmin(2)+temp_rmin*eps)) .and. (.not. equal(temp_rmin, rmin(1), eps)) &
-         .and. (.not. equal(temp_rmin, rmin(2), eps))) then
-       rmin(2) = temp_rmin
-       ngrids(2) = 1
-       grids(:,:,:,2) = 0.0_dp
-       best_HNFs(:,:,:,2) = 0
-       grids(:,:,ngrids(2),2) = reduced_grid
-       best_HNFs(:,:,ngrids(2),2) = HNF
-    else if (equal(temp_rmin, rmin(1), eps)) then
-       if (size(grids,3) == ngrids(1)) then
-          allocate(ralloc_HNFs(3,3,ngrids(1),2), ralloc_grids(3,3,ngrids(1),2))
-          ralloc_HNFs = best_HNFs
-          ralloc_grids = grids
-          deallocate(best_HNFs, grids)
-          allocate(best_HNFs(3,3,2*ngrids(1),2), grids(3,3,2*ngrids(1),2))
-          best_HNFs = 0
-          grids = 0.0_dp
-          best_HNFs(1:3,1:3,1:ngrids(1),1) = ralloc_HNFs(1:3,1:3,1:ngrids(1),1)
-          grids(1:3,1:3,1:ngrids(1),1) = ralloc_grids(1:3,1:3,1:ngrids(1),1)
-          best_HNFs(1:3,1:3,1:ngrids(2),2) = ralloc_HNFs(1:3,1:3,1:ngrids(2),2)
-          grids(1:3,1:3,1:ngrids(2),2) = ralloc_grids(1:3,1:3,1:ngrids(2),2)
+    if (pac_frac >= pac_limit) then
+       
+       call minkowski_reduce_basis(temp_grid, reduced_grid, eps)
+       norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
+       norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
+       norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
+       temp_rmin = min(norms(1), norms(2), norms(3))
+       if (temp_rmin > (rmin(1)+temp_rmin*eps) .and. (.not. equal(temp_rmin, rmin(1), eps))) then
+          rmin(2) = rmin(1)
+          ngrids(2) = ngrids(1)
+          grids(:,:,:,2) = 0.0_dp
+          best_HNFs(:,:,:,2) = 0
+          best_HNFs(1:3,1:3,1:ngrids(2),2) = best_HNFs(1:3,1:3,1:ngrids(2),1)
+          grids(1:3,1:3,1:ngrids(2),2) = grids(1:3,1:3,1:ngrids(2),1)
+       
+          rmin(1) = temp_rmin
+          ngrids(1) = 1
+          grids(:,:,:,1) = 0.0_dp
+          best_HNFs(:,:,:,1) = 0
+          grids(:,:,ngrids(1),1) = reduced_grid
+          best_HNFs(:,:,ngrids(1),1) = HNF
+
+       else if ((temp_rmin > (rmin(2)+temp_rmin*eps)) .and. &
+            (.not. equal(temp_rmin, rmin(1), eps)) &
+            .and. (.not. equal(temp_rmin, rmin(2), eps))) then
+          rmin(2) = temp_rmin
+          ngrids(2) = 1
+          grids(:,:,:,2) = 0.0_dp
+          best_HNFs(:,:,:,2) = 0
+          grids(:,:,ngrids(2),2) = reduced_grid
+          best_HNFs(:,:,ngrids(2),2) = HNF
+       else if (equal(temp_rmin, rmin(1), eps)) then
+          if (size(grids,3) == ngrids(1)) then
+             allocate(ralloc_HNFs(3,3,ngrids(1),2), ralloc_grids(3,3,ngrids(1),2))
+             ralloc_HNFs = best_HNFs
+             ralloc_grids = grids
+             deallocate(best_HNFs, grids)
+             allocate(best_HNFs(3,3,2*ngrids(1),2), grids(3,3,2*ngrids(1),2))
+             best_HNFs = 0
+             grids = 0.0_dp
+             best_HNFs(1:3,1:3,1:ngrids(1),1) = ralloc_HNFs(1:3,1:3,1:ngrids(1),1)
+             grids(1:3,1:3,1:ngrids(1),1) = ralloc_grids(1:3,1:3,1:ngrids(1),1)
+             best_HNFs(1:3,1:3,1:ngrids(2),2) = ralloc_HNFs(1:3,1:3,1:ngrids(2),2)
+             grids(1:3,1:3,1:ngrids(2),2) = ralloc_grids(1:3,1:3,1:ngrids(2),2)
+          end if
+          ngrids(1) = ngrids(1) + 1
+          grids(:,:,ngrids(1),1) = reduced_grid
+          best_HNFs(:,:,ngrids(1),1) = HNF
+       else if (equal(temp_rmin, rmin(2), eps)) then
+          if (size(grids,3) == ngrids(2)) then
+             allocate(ralloc_HNFs(3,3,ngrids(2),2), ralloc_grids(3,3,ngrids(2),2))
+             ralloc_HNFs = best_HNFs
+             ralloc_grids = grids
+             deallocate(best_HNFs, grids)
+             allocate(best_HNFs(3,3,2*ngrids(2),2), grids(3,3,2*ngrids(2),2))
+             best_HNFs = 0
+             grids = 0.0_dp
+             best_HNFs(1:3,1:3,1:ngrids(1),1) = ralloc_HNFs(1:3,1:3,1:ngrids(1),1)
+             grids(1:3,1:3,1:ngrids(1),1) = ralloc_grids(1:3,1:3,1:ngrids(1),1)
+             best_HNFs(1:3,1:3,1:ngrids(2),2) = ralloc_HNFs(1:3,1:3,1:ngrids(2),2)
+             grids(1:3,1:3,1:ngrids(2),2) = ralloc_grids(1:3,1:3,1:ngrids(2),2)
+          end if
+          ngrids(2) = ngrids(2) + 1
+          grids(:,:,ngrids(2),2) = reduced_grid
+          best_HNFs(:,:,ngrids(2),2) = HNF
        end if
-       ngrids(1) = ngrids(1) + 1
-       grids(:,:,ngrids(1),1) = reduced_grid
-       best_HNFs(:,:,ngrids(1),1) = HNF
-    else if (equal(temp_rmin, rmin(2), eps)) then
-       if (size(grids,3) == ngrids(2)) then
-          allocate(ralloc_HNFs(3,3,ngrids(2),2), ralloc_grids(3,3,ngrids(2),2))
-          ralloc_HNFs = best_HNFs
-          ralloc_grids = grids
-          deallocate(best_HNFs, grids)
-          allocate(best_HNFs(3,3,2*ngrids(2),2), grids(3,3,2*ngrids(2),2))
-          best_HNFs = 0
-          grids = 0.0_dp
-          best_HNFs(1:3,1:3,1:ngrids(1),1) = ralloc_HNFs(1:3,1:3,1:ngrids(1),1)
-          grids(1:3,1:3,1:ngrids(1),1) = ralloc_grids(1:3,1:3,1:ngrids(1),1)
-          best_HNFs(1:3,1:3,1:ngrids(2),2) = ralloc_HNFs(1:3,1:3,1:ngrids(2),2)
-          grids(1:3,1:3,1:ngrids(2),2) = ralloc_grids(1:3,1:3,1:ngrids(2),2)
-       end if
-       ngrids(2) = ngrids(2) + 1
-       grids(:,:,ngrids(2),2) = reduced_grid
-       best_HNFs(:,:,ngrids(2),2) = HNF
     end if
 
   end SUBROUTINE compare_grids

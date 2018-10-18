@@ -488,9 +488,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
   end SUBROUTINE hex_12
 
@@ -632,9 +636,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
   end SUBROUTINE hex_22
 
@@ -805,9 +813,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE rhom_9_24
@@ -976,9 +988,13 @@ CONTAINS
       spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
    else
       allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE rhom_4_2
@@ -1144,9 +1160,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE st_11
@@ -1306,9 +1326,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE st_21
@@ -1467,9 +1491,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE bct_6_7_15_18
@@ -1620,9 +1648,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE so_32
@@ -1770,9 +1802,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE fco_26
@@ -1920,9 +1956,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE fco_16
@@ -2072,9 +2112,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE bco_19
@@ -2229,9 +2273,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE bco_8
@@ -2382,9 +2430,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE bco_42
@@ -2544,9 +2596,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE baseco_38_13
@@ -2710,9 +2766,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE baseco_23
@@ -2854,9 +2914,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE baseco_40
@@ -3027,9 +3091,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE baseco_36
@@ -3181,9 +3249,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE sm_33
@@ -3326,9 +3398,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE sm_34_35
@@ -3475,9 +3551,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE basecm_10_14_17_27_37_39_41
@@ -3627,9 +3707,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE basecm_20_25
@@ -3767,9 +3851,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE basecm_28
@@ -3909,9 +3997,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE basecm_29_30
@@ -4050,9 +4142,13 @@ CONTAINS
        spHNFs(:,:,1:nhnfs) = temp_HNFs(:,:,1:nhnfs)
     else
        allocate(spHNFs(3,3,1))
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     end if
 
   end SUBROUTINE basecm_43
@@ -4175,8 +4271,13 @@ CONTAINS
     enddo ! End loop over all unique triplets of target determinant (n)
 
     if (ihnf /= nhnfs) stop "HNF: not all the matrices were generated...(bug!)"
-    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-         grid, best_HNF, best_offset, n_irr, eps)
+    if (any(ngrids > 0)) then
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, best_HNF, best_offset, n_irr, eps)
+       spHNFs(:,:,1) = best_HNF
+    else
+       spHNFs = 0
+    end if
   end SUBROUTINE tric_31_44
 
   !!<summary>Finds all the possible diagonals of the HNF matrices of a
