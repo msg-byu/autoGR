@@ -155,6 +155,8 @@ CONTAINS
     real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3)
     real(dp) :: pi, pac_limit, pac_frac
 
+    integer :: i
+
     pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164_dp
     pac_limit = 0.3_dp
     
@@ -179,21 +181,14 @@ CONTAINS
 
     ! temp_grid_inv = transpose(supercell)
     call matrix_inverse(transpose(supercell), temp_grid)
-    norms(1) = sqrt(dot_product(temp_grid(:,1), temp_grid(:,1)))
-    norms(2) = sqrt(dot_product(temp_grid(:,2), temp_grid(:,2)))
-    norms(3) = sqrt(dot_product(temp_grid(:,3), temp_grid(:,3)))
+    call minkowski_reduce_basis(temp_grid, reduced_grid, eps)
+    norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
+    norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
+    norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
     temp_rmin = min(norms(1), norms(2), norms(3))
-    pac_frac = ((4.0_dp*pi*(temp_rmin**3))/3.0_dp)/determinant(temp_grid)
-    ! lat_trans = transpose(lat_vecs)
-    ! call matrix_inverse(lat_trans, R)
+    pac_frac = ((4.0_dp*pi*((temp_rmin/2.0_dp)**3))/3.0_dp)/determinant(reduced_grid)
 
     if (pac_frac >= pac_limit) then
-       
-       call minkowski_reduce_basis(temp_grid, reduced_grid, eps)
-       norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
-       norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
-       norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
-       temp_rmin = min(norms(1), norms(2), norms(3))
        if (temp_rmin > (rmin(1)+temp_rmin*eps) .and. (.not. equal(temp_rmin, rmin(1), eps))) then
           rmin(2) = rmin(1)
           ngrids(2) = ngrids(1)
@@ -299,8 +294,6 @@ CONTAINS
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
     
-    ! real (dp) :: mean, variance, std
-
     if (present(eps_)) then
        eps = eps_
     else
@@ -315,7 +308,6 @@ CONTAINS
     count = 0
     do i=1,ngrids(1)
        temp_grid = cand_grids(:,:,i,1)
-       det = determinant(temp_grid)
        do j=1, size(offsets,1)
           call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
                offsets(j,:), rdKlist, weights, eps)
@@ -332,7 +324,6 @@ CONTAINS
 
     do i=1,ngrids(2)
        temp_grid = cand_grids(:,:,i,2)
-       det = determinant(temp_grid)
        do j=1, size(offsets, 1)
           call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
                offsets(j,:), rdKlist, weights, eps)
@@ -357,6 +348,5 @@ CONTAINS
     end if
 
   end SUBROUTINE grid_selection
-
 
 end Module grid_utils
