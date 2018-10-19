@@ -65,17 +65,15 @@ CONTAINS
   !!k-points.</parameter>
   !!<parameter name="find_offset" regular="true">'True' if the use
   !!didn't provide an offset.</parameter>
-  !!<parameter name="reps" regular="true">The floating point
+  !!<parameter name="eps" regular="true">The floating point
   !!tollerance for relative comparison.</parameter>
-  !!<parameter name="aeps" regular="true">The floating point
-  !!tollerance for absolute comparison.</parameter>
-  SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, find_offset, reps, aeps)
+  SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, find_offset, eps)
     real(dp), intent(out) :: lattice(3,3), offset(3)
     real(dp), pointer :: atom_base(:,:)
     integer, allocatable, intent(out) :: atom_type(:)
     integer, intent(out) :: nkpts
     logical, intent(out) :: find_offset
-    real(dp), intent(out) :: reps, aeps
+    real(dp), intent(out) :: eps
     
     ! Input related variables
     character(len=100) :: buffer, label
@@ -135,11 +133,8 @@ CONTAINS
              nkpts = size(atom_base,2)*kppra
              nkpts_set = .True.
           case ('EPS')
-             read(buffer, *, iostat=ios) reps
+             read(buffer, *, iostat=ios) eps
              def_eps = .False.
-          case ('ABSEPS')
-             read(buffer, *, iostat=ios) aeps
-             def_aeps = .False.
           case ('NCORES')
              read(buffer, *, iostat=ios) ncores
           case default
@@ -154,10 +149,7 @@ CONTAINS
     ! call OMP_SET_NUM_THREADS(ncores)       
     
     if (def_eps .eqv. .True.) then
-       reps = 1E-3
-    end if
-    if (def_aeps .eqv. .True.) then
-       aeps = 1E-8
+       eps = 1E-3
     end if
 
     if (nkpts_set .eqv. .False.) stop "Number of kpoints not set. Exiting."
