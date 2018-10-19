@@ -22,7 +22,7 @@ PROGRAM lat_id_driver
   call find_grid(lat_vecs, nkpts, B_vecs, at, offset, find_offset, grid, best_offset, &
        eps_=eps)
 
-  call generateIrredKpointList(lat_vecs, B_vecs, at, grid, r_vecs, best_offset, &
+  call generateIrredKpointList(lat_vecs, B_vecs, at, grid, reduced_R, best_offset, &
        IRKps, weights, eps)
 
   call mapKptsIntoBZ(r_vecs, IRKps, eps)

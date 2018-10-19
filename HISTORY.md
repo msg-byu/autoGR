@@ -1,5 +1,12 @@
 # Revision History
 
+## Revision 0.6.5 (WSM)
+- Changed the code workflow so that the packing fraction is used to
+  rule out some grids.
+- Changed the code workflow so that at least 5 grids are compared for
+  non-cubic and non-triclinic cells.
+- Cleaned up the code so that it compiles cleanly.
+
 ## Revision 0.6.4 (WMS)
 - Added a function tha checks that the point group matches the niggli
   id and stops the code if it doesn't.
