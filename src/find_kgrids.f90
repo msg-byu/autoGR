@@ -372,7 +372,7 @@ CONTAINS
        grids = 0
        count = 0
        ! do size = 1, s_range
-       do while ((count < 5) .or. ((count >= 5) .and. (a_kpd-kpd<=s_range)))
+       do while ((count < 5) .or. ((count >= 5) .and. (a_kpd-kpd < s_range)))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
                   best_offset, temp_hnfs, temp_grid, temp_nirr, temp_nhnfs, eps_=eps)
