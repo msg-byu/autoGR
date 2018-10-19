@@ -298,7 +298,7 @@ CONTAINS
        eps = 1E-3
     end if
 
-    call id_cell(lat_vecs, Nu, Cu, O, No, Co, lat_id, s_range,eps_=eps)
+    call id_cell(lat_vecs, Nu, Cu, O, No, Co, lat_id, s_range, eps_=eps)
     count = 0
 
     print *, "lat_id", lat_id
@@ -371,8 +371,8 @@ CONTAINS
        nhnfs = 0
        grids = 0
        count = 0
-       do size = 1, s_range
-       ! do while ((count < s_range) .and. (a_kpd-kpd<=s_range))
+       ! do size = 1, s_range
+       do while ((count < 5) .or. ((count >= 5) .and. (a_kpd-kpd<=s_range)))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
                   best_offset, temp_hnfs, temp_grid, temp_nirr, temp_nhnfs, eps_=eps)
@@ -452,7 +452,7 @@ CONTAINS
              call basecm_43(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
                   best_offset, temp_hnfs, temp_grid, temp_nirr, temp_nhnfs, eps_=eps)
           end if
-          if  (any(nhnfs > 0) .and. any(temp_hnfs > 0)) then
+          if  (temp_nhnfs > 1 .and. any(temp_hnfs > 0)) then
              count = count + 1
              sp_hnfs(:,:,count) = temp_hnfs(:,:,1)
              grids(:,:,count) = temp_grid
