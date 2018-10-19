@@ -383,7 +383,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta13, beta11, gamma13, gamma11, gamma12, gamma21, gamma22
+    integer(li) :: beta13, beta11, gamma13, gamma11, gamma12, gamma21, gamma22
     integer :: es(2)
     real(dp) :: eps
     logical :: all_hnfs
@@ -553,7 +553,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma21, gamma22, gamma11, gamma12
+    integer(li) :: gamma21, gamma22, gamma11, gamma12
     real(dp) :: eps
     logical :: all_hnfs
 
@@ -703,7 +703,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta13, beta22, beta12, gamma11, gamma12, gamma21, gamma22
+    integer(li) :: beta13, beta22, beta12, gamma11, gamma12, gamma21, gamma22
     integer :: bs(2), nbs
     real(dp) :: eps
     logical :: all_hnfs
@@ -756,52 +756,43 @@ CONTAINS
 
           do j = 1, nbs
              b = bs(j)
-             if (MOD(b*f, a)==0) then
-                beta13 = f+b*f/a
-                if (MOD(beta13,c)==0) then
-                   e = 0
-                   do while (e <f)
-                      if ((MOD(b*e, a)==0) .and. (MOD(2*b*e, c)==0)) then
-                         beta22 = e + b*e/a
-                         gamma21 = c + 2*e
-                         gamma11 = b + 2*b*e/c
-                         if ((MOD(beta22, c)==0) .and. (MOD(gamma21, f)==0) .and. &
-                              (MOD(gamma11, f)==0)) then
-                            d = 0
-                            do while (d < f)
-                               if (MOD(d*b, a)==0) then
-                                  beta12 = -a + b + d + d*b/a
-                                  if ((MOD(d*d, a)==0) .and. (MOD(e*beta12, c)==0) .and. &
-                                       (MOD(d*e, a)==0) .and. (MOD(d*e, a)==0) .and. &
-                                       (MOD(e*beta22, c)==0)) then
-                                     gamma12 = -b -d + (d*d/a) - e*beta12/c
-                                     gamma22 = -c -2*e + (d*e/a) - e*beta22/c
-                                     if ((MOD(beta12, c)==0) .and. (MOD(gamma12, f)==0) .and. &
-                                          (MOD(gamma22, f)==0)) then
-                                        nhnfs = nhnfs + 1
-                                        if (all_hnfs) then
-                                           temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
-                                                0, c, e, &
-                                                0, 0, f/),(/3,3/))
-                                        else
-
-                                           temp_HNFs(:,:,1) = reshape((/ a, b, d, &
-                                                0, c, e, &
-                                                0, 0, f/),(/3,3/))
-                                           call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
-                                                Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                                ngrids, eps)
-                                        end if
-                                     end if
-                                  end if
+             beta13 = f+b*f/a
+             if (MOD(beta13,c)==0) then
+                e = 0
+                do while (e <f)
+                   beta22 = e + b*e/a
+                   gamma21 = c + 2*e
+                   gamma11 = b + 2*b*e/c
+                   if ((MOD(beta22, c)==0) .and. (MOD(gamma21, f)==0) .and. &
+                        (MOD(gamma11, f)==0)) then
+                      d = 0
+                      do while (d < f)
+                         beta12 = -a + b + d + d*b/a
+                         if (MOD(beta12, c)==0) then
+                            gamma12 = -b -d + (d*d/a) - e*beta12/c
+                            gamma22 = -c -2*e + (d*e/a) - e*beta22/c
+                            if ((MOD(gamma12, f)==0) .and. (MOD(gamma22, f)==0)) then
+                               nhnfs = nhnfs + 1
+                               if (all_hnfs) then
+                                  temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
+                                       0, c, e, &
+                                       0, 0, f/),(/3,3/))
+                               else
+                                  
+                                  temp_HNFs(:,:,1) = reshape((/ a, b, d, &
+                                       0, c, e, &
+                                       0, 0, f/),(/3,3/))
+                                  call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                       Co, Cu, O, cand_grids, rmin, cand_HNFs, &
+                                       ngrids, eps)
                                end if
-                               d = d + a
-                            end do
+                            end if
                          end if
-                      end if
-                      e = e+a
-                   end do
-                end if
+                         d = d + a
+                      end do
+                   end if
+                   e = e + a
+                end do
              end if
           end do
        end if
@@ -881,7 +872,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta32, beta22, beta12, gamma11, gamma12, gamma22, gamma21
+    integer(li) :: beta32, beta22, beta12, gamma11, gamma12, gamma22, gamma21
     integer :: nbs
     integer :: bs(2)
     real(dp) :: eps
@@ -1054,7 +1045,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta13, gamma13, gamma12, gamma23
+    integer(li) :: beta13, gamma13, gamma12, gamma23
     integer :: bs(2), es(2), nbs, nes
     real(dp) :: eps
     logical :: all_hnfs
@@ -1226,7 +1217,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta13, gamma13, gamma12, gamma23
+    integer(li) :: beta13, gamma13, gamma12, gamma23
     integer :: bs(2), es(2), nbs, nes
     real(dp) :: eps
     logical :: all_hnfs
@@ -1397,7 +1388,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma21, gamma13, beta12, gamma12
+    integer(li) :: gamma21, gamma13, beta12, gamma12
     integer :: es(2), nes
     real(dp) :: eps
     logical :: all_hnfs
@@ -1714,7 +1705,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma12, gamma13, gamma23
+    integer(li) :: gamma12, gamma13, gamma23
     integer :: bs(2), nbs
     real(dp) :: eps
     logical :: all_hnfs
@@ -1869,7 +1860,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma11, gamma12, gamma21
+    integer(li) :: gamma11, gamma12, gamma21
     integer :: bs(2), nbs
     real(dp) :: eps
     logical :: all_hnfs
@@ -2022,7 +2013,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma12, gamma13, beta13
+    integer(li) :: gamma12, gamma13, beta13
     integer :: es(2), nes
     real(dp) :: eps
     logical :: all_hnfs
@@ -2179,7 +2170,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta21, beta11, gamma21, gamma11, gamma13
+    integer(li) :: beta21, beta11, gamma21, gamma11, gamma13
     integer :: bs(2), nbs
     real(dp) :: eps
     logical :: all_hnfs
@@ -2340,7 +2331,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta11, gamma12, gamma11, gamma13
+    integer(li) :: beta11, gamma12, gamma11, gamma13
     integer :: es(2), nes
     real(dp) :: eps
     logical :: all_hnfs
@@ -2499,7 +2490,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma13, gamma23, beta13
+    integer(li) :: gamma13, gamma23, beta13
     integer :: es(2), ds(2), ne_ds
     real(dp) :: eps
     logical :: all_hnfs
@@ -2663,7 +2654,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta13, gamma13, gamma23
+    integer(li) :: beta13, gamma13, gamma23
     integer :: es(2), bs(2), nes, nbs
     real(dp) :: eps
     logical :: all_hnfs
@@ -2833,7 +2824,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta13, gamma13, gamma12, gamma22
+    integer(li) :: beta13, gamma13, gamma12, gamma22
     real(dp) :: eps
     logical :: all_hnfs
 
@@ -2980,7 +2971,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta12, beta22, beta32, gamma13, gamma12, gamma22
+    integer(li) :: beta12, beta22, beta32, gamma13, gamma12, gamma22
     integer :: bs(2), es(2), nes, nbs
     real(dp) :: eps
     logical :: all_hnfs
@@ -3157,7 +3148,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma12
+    integer(li) :: gamma12
     integer :: es(2), bs(2), nes, nbs
     real(dp) :: eps
     logical :: all_hnfs
@@ -3470,7 +3461,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma11
+    integer(li) :: gamma11
     integer :: es(2), nes
     real(dp) :: eps
     logical :: all_hnfs
@@ -3620,7 +3611,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma12, gamma22
+    integer(li) :: gamma12, gamma22
     integer :: bs(2), nbs
     real(dp) :: eps
     logical :: all_hnfs
@@ -3774,7 +3765,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma21, gamma11
+    integer(li) :: gamma21, gamma11
     real(dp) :: eps
     logical :: all_hnfs
 
@@ -3920,7 +3911,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: gamma21, gamma11
+    integer(li) :: gamma21, gamma11
     real(dp) :: eps
     logical :: all_hnfs
 
@@ -4064,7 +4055,7 @@ CONTAINS
     integer :: ngrids(2)
     real(dp) :: rmin(2)
 
-    integer :: beta12, gamma12, gamma22
+    integer(li) :: beta12, gamma12, gamma22
     real(dp) :: eps
     logical :: all_hnfs
 
