@@ -443,7 +443,7 @@ CONTAINS
   !!sizes to search over.</parameter>
   !!<parameter name="eps_" regular="true">Optional floating point
   !!tolerance.</parameter>
-  SUBROUTINE id_cell(U,Nu,Cu,O,No,Co,id,s_range,eps_)
+  SUBROUTINE id_cell(U, Nu, Cu, O, No, Co, id, s_range, eps_)
     real(dp), intent(in) :: U(3,3)
     real(dp), intent(in), optional :: eps_
     real(dp), intent(out) :: O(3,3), Nu(3,3), No(3,3)
