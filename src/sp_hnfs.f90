@@ -465,7 +465,7 @@ CONTAINS
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
-                                        call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                        call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                              Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                              ngrids, eps)
                                      end if
@@ -616,7 +616,7 @@ CONTAINS
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
-                                  call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                  call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                        Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                        ngrids, eps)
                                end if
@@ -782,7 +782,7 @@ CONTAINS
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
-                                  call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                  call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                        Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                        ngrids, eps)
                                end if
@@ -956,7 +956,7 @@ CONTAINS
                                            temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                                 0, c, e, &
                                                 0, 0, f/),(/3,3/))
-                                           call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                           call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                                 Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                                 ngrids, eps)
                                         end if
@@ -1129,7 +1129,7 @@ CONTAINS
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
-                                        call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                        call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                              Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                              ngrids, eps)
                                      end if
@@ -1298,7 +1298,7 @@ CONTAINS
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
-                               call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                               call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                     Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                     ngrids, eps)
                             end if
@@ -1461,7 +1461,7 @@ CONTAINS
                                      temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                           0, c, e, &
                                           0, 0, f/),(/3,3/))
-                                     call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                     call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                           Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                           ngrids, eps)
                                   end if
@@ -1623,7 +1623,7 @@ CONTAINS
                       temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
-                      call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                      call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                            Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                            ngrids, eps)
                    end if
@@ -1775,7 +1775,7 @@ CONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                            call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                  ngrids, eps)
                          end if
@@ -1929,7 +1929,7 @@ CONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                            call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                  ngrids, eps)
                          end if
@@ -2084,7 +2084,7 @@ CONTAINS
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
-                               call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                               call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                     Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                     ngrids, eps)
                             end if
@@ -2244,7 +2244,7 @@ CONTAINS
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
-                                  call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                  call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                        Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                        ngrids, eps)
                                end if
@@ -2402,7 +2402,7 @@ CONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                            call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                  ngrids, eps)
                          end if
@@ -2566,7 +2566,7 @@ CONTAINS
                                   temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                        0, c, e, &
                                        0, 0, f/),(/3,3/))
-                                  call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                  call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                        Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                        ngrids, eps)
                                end if
@@ -2736,7 +2736,7 @@ CONTAINS
                                      temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                           0, c, e, &
                                           0, 0, f/),(/3,3/))
-                                     call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                     call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                           Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                           ngrids, eps)
                                   end if
@@ -2886,7 +2886,7 @@ CONTAINS
                                temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                     0, c, e, &
                                     0, 0, f/),(/3,3/))
-                               call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                               call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                     Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                     ngrids, eps)
                             end if
@@ -3060,7 +3060,7 @@ CONTAINS
                                         temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                              0, c, e, &
                                              0, 0, f/),(/3,3/))
-                                        call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                                        call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                              Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                              ngrids, eps)
                                      end if
@@ -3223,7 +3223,7 @@ CONTAINS
                          temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                               0, c, e, &
                               0, 0, f/),(/3,3/))
-                         call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                         call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                               Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                               ngrids, eps)
                       end if
@@ -3374,7 +3374,7 @@ CONTAINS
                    temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                         0, c, e, &
                         0, 0, f/),(/3,3/))
-                   call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                   call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                         Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                         ngrids, eps)
                 end if
@@ -3526,7 +3526,7 @@ CONTAINS
                       temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                            0, c, e, &
                            0, 0, f/),(/3,3/))
-                      call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                      call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                            Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                            ngrids, eps)
                    end if
@@ -3680,7 +3680,7 @@ CONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                            call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                  ngrids, eps)
                          end if
@@ -3824,7 +3824,7 @@ CONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                            call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                  ngrids, eps)
                          end if
@@ -3970,7 +3970,7 @@ CONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                            call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                  ngrids, eps)
                          end if
@@ -4115,7 +4115,7 @@ CONTAINS
                             temp_HNFs(:,:,1) = reshape((/ a, b, d, &
                                  0, c, e, &
                                  0, 0, f/),(/3,3/))
-                            call compare_grids(U, temp_HNFs(:,:,1), No, Nu, &
+                            call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                                  ngrids, eps)
                          end if
@@ -4252,7 +4252,7 @@ CONTAINS
                         0, d(2,i), l, &
                         0, 0, d(3,i)/),(/3,3/))
                    spHNFs(:,:,1) = spHNFs(:,:,1)*mult
-                   call compare_grids(U, spHNFs(:,:,1), No, Nu, &
+                   call compare_grids(spHNFs(:,:,1), No, Nu, &
                         Co, Cu, O, cand_grids, rmin, cand_HNFs, &
                         ngrids, eps)
                 end if

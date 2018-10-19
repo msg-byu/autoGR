@@ -282,7 +282,7 @@ CONTAINS
     real(dp), intent(out) :: best_grid(3,3), best_offset(3)
     logical, intent(in) :: find_offset
 
-    integer :: lat_id, a_kpd, c_kpd(3), i, count, mult, size
+    integer :: lat_id, a_kpd, c_kpd(3), i, count, mult
     integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:)
     integer, allocatable :: n_irr_kp(:), nhnfs(:), nt_kpts(:)
     real(dp), allocatable :: grids(:,:,:), ratio(:), offsets(:,:), grid_offsets(:,:)

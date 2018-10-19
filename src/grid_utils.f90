@@ -113,8 +113,6 @@ CONTAINS
   !!has the better rmin or number of irreducible k-points.</summary>
   !!<summary>Finds the rmin and the number of irreducible k-points for
   !!lattice given an HNF.</summary>
-  !!<parameter name="lat_vecs" regular="true">The lattice vectors for
-  !!the crystal.</parameter>
   !!<parameter name="HNF" regular="true">The list of generating
   !!vectors for the candidate grids.</parameter>
   !!<parameter name="No" regular="true">Our niggli basis.</parameter>
@@ -134,9 +132,8 @@ CONTAINS
   !!this r_min.</parameter>
   !!<parameter name="ngrids" regular="true">The number of grids
   !!currently stored in the list of grids.</parameter>
-  SUBROUTINE compare_grids(lat_vecs, HNF, No, Nu, Co, Cu, O, grids, rmin, &
+  SUBROUTINE compare_grids(HNF, No, Nu, Co, Cu, O, grids, rmin, &
        best_HNFs, ngrids, eps_)
-    real(dp), intent(in) :: lat_vecs(3,3)
     real(dp), optional, intent(in) :: eps_
     integer, intent(in) :: HNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
@@ -147,15 +144,11 @@ CONTAINS
     integer, allocatable, intent(inout) :: best_HNFs(:,:,:,:)
 
     real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3)
-    real(dp) :: lat_trans(3,3)
     real(dp) :: eps
-    real(dp) :: R(3,3)
     integer, allocatable :: ralloc_HNFs(:,:,:,:)
     real(dp), allocatable :: ralloc_grids(:,:,:,:)
-    real(dp) :: temp_rmin, temp_grid(3,3), temp_grid_inv(3,3)
+    real(dp) :: temp_rmin, temp_grid(3,3)
     real(dp) :: pi, pac_limit, pac_frac
-
-    integer :: i
 
     pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164_dp
     pac_limit = 0.3_dp
@@ -288,7 +281,7 @@ CONTAINS
 
     real(dp) :: temp_grid(3,3), grid_offsets(sum(ngrids),3)
     integer :: i, n_irreducible(sum(ngrids)), n_ir_min(1), count, j
-    real(dp) :: eps, det
+    real(dp) :: eps
 
     real(dp)              :: R(3,3), invLat(3,3), temp_R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
