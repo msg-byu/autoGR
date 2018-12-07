@@ -87,6 +87,9 @@ lat_type.x: ${OBJS} lat_id_driver.o
 kpoints.x: ${OBJS} driver.o
 	${F90} ${LDFLAGS} -o $@ ${OBJS} driver.o ${LIBS}
 
+snf.x: ${OBJS} driver2.o
+	${F90} ${LDFLAGS} -o $@ ${OBJS} driver2.o ${LIBS}
+
 .f95.o : 
 	${F90} ${FFLAGS} -c $<
 .f90.o : 
