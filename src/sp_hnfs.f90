@@ -45,10 +45,13 @@ CONTAINS
   !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
+  !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
+  !!wanted.</parameter>
   SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, eps_)
+       n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
+    logical, optional, intent(in) :: all_hnfs_
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
@@ -65,6 +68,13 @@ CONTAINS
     integer :: temp_HNFs(3,3,1), ngrids(2)
     real(dp) :: eps
     real(dp) :: supercell(3,3)
+    logical :: all_hnfs
+
+    if (present(all_hnfs_)) then
+       all_hnfs = all_hnfs_
+    else
+       all_hnfs = .False.
+    end if
 
     if (present(eps_)) then
        eps = eps_
@@ -74,6 +84,8 @@ CONTAINS
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
     cand_grids = 0.0_dp
+    cand_HNFs = 0
+    temp_HNFs = 0
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -111,13 +123,22 @@ CONTAINS
        end if
     end do
     allocate(spHNFs(3,3,1))
-    call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
-    call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
-    cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
-    nhnfs = 1
-    ngrids = (/1,0/)
-    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-         grid, spHNFs, best_offset, n_irr, eps)
+    if (all_hnfs) then       
+       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       if (.not. all(spHNFs == 0)) then
+          nhnfs = 1
+       else
+          nhnfs = 0
+       end if
+    else 
+       call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
+       call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
+       cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
+       nhnfs = 1
+       ngrids = (/1,0/)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, spHNFs, best_offset, n_irr, eps)
+    end if
 
   end SUBROUTINE sc_3
 
@@ -152,10 +173,13 @@ CONTAINS
   !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
+  !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
+  !!wanted.</parameter>
   SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, eps_)
+       n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
+    logical, optional, intent(in) :: all_hnfs_
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
@@ -172,6 +196,13 @@ CONTAINS
     integer :: temp_HNFs(3,3,1), ngrids(2)
     real(dp) :: eps
     real(dp) :: supercell(3,3)
+    logical :: all_hnfs
+
+    if (present(all_hnfs_)) then
+       all_hnfs = all_hnfs_
+    else
+       all_hnfs = .False.
+    end if
     
     if (present(eps_)) then
        eps = eps_
@@ -181,6 +212,8 @@ CONTAINS
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
     cand_grids = 0.0_dp
+    cand_HNFs = 0
+    temp_HNFs = 0
 
     call get_HNF_diagonals(n,diagonals)
 
@@ -210,13 +243,22 @@ CONTAINS
        end if
     end do
     allocate(spHNFs(3,3,1))
-    call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
-    call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
-    cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
-    nhnfs = 1
-    ngrids = (/1,0/)
-    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets ,&
-         grid, spHNFs, best_offset, n_irr, eps)
+    if (all_hnfs) then
+       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       if (.not. all(spHNFs == 0)) then
+          nhnfs = 1
+       else
+          nhnfs = 0
+       end if
+    else 
+       call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
+       call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
+       cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
+       nhnfs = 1
+       ngrids = (/1,0/)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, spHNFs, best_offset, n_irr, eps)
+    end if
 
   end SUBROUTINE fcc_1
 
@@ -251,10 +293,13 @@ CONTAINS
   !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
+  !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
+  !!wanted.</parameter>
   SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, eps_)
+       n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
+    logical, optional, intent(in) :: all_hnfs_
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
@@ -271,6 +316,13 @@ CONTAINS
     integer :: temp_HNFs(3,3,1), ngrids(2)
     real(dp) :: eps
     real(dp) :: supercell(3,3)
+    logical :: all_hnfs
+
+    if (present(all_hnfs_)) then
+       all_hnfs = all_hnfs_
+    else
+       all_hnfs = .False.
+    end if
     
     if (present(eps_)) then
        eps = eps_
@@ -280,11 +332,12 @@ CONTAINS
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
     cand_grids = 0.0_dp
-
+    cand_HNFs = 0
+    temp_HNFs = 0
+    
     call get_HNF_diagonals(n,diagonals)
 
     nds = size(diagonals,2)
-
     do i =1,nds
        a = diagonals(1,i)
        c = diagonals(2,i)
@@ -318,13 +371,22 @@ CONTAINS
        end if
     end do
     allocate(spHNFs(3,3,1))
-    call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
-    call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
-    cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
-    nhnfs = 1
-    ngrids = (/1,0/)
-    call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-         grid, spHNFs, best_offset, n_irr, eps)
+    if (all_hnfs) then
+       spHNFs(:,:,1) = temp_HNFs(:,:,1)
+       if (.not. all(spHNFs == 0)) then
+          nhnfs = 1
+       else
+          nhnfs = 0
+       end if
+    else 
+       call transform_supercell(temp_HNFs(:,:,1), No, Nu, Co, Cu, O, supercell)
+       call matrix_inverse(transpose(supercell), cand_grids(:,:,1,1))
+       cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
+       nhnfs = 1
+       ngrids = (/1,0/)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, spHNFs, best_offset, n_irr, eps)
+    end if
 
   end SUBROUTINE bcc_5
 
