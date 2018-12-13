@@ -120,8 +120,8 @@ CONTAINS
           offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
           offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
           offsets(4,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
-          offsets(5,:) = (/-0.25_dp, 0.25_dp, 0.0_dp/)
-          offsets(6,:) = (/-0.25_dp, 0.25_dp, 0.5_dp/)
+          offsets(5,:) = (/0.75_dp, 0.25_dp, 0.0_dp/)
+          offsets(6,:) = (/0.75_dp, 0.25_dp, 0.5_dp/)
           offsets(7,:) = (/0.25_dp, 0.25_dp, 0.0_dp/)
           offsets(8,:) = (/0.25_dp, 0.25_dp, 0.5_dp/)
        elseif ((norms(2) < norms(1)) .and. (norms(2) < norms(3))) then
@@ -130,8 +130,8 @@ CONTAINS
           offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)
           offsets(3,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
           offsets(4,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)
-          offsets(5,:) = (/0.25_dp, -0.25_dp, 0.0_dp/)
-          offsets(6,:) = (/0.25_dp, -0.25_dp, 0.5_dp/)
+          offsets(5,:) = (/0.25_dp, 0.75_dp, 0.0_dp/)
+          offsets(6,:) = (/0.25_dp, 0.75_dp, 0.5_dp/)
           offsets(7,:) = (/0.25_dp, 0.25_dp, 0.0_dp/)
           offsets(8,:) = (/0.25_dp, 0.25_dp, 0.5_dp/)
        elseif ((norms(3) < norms(1)) .and. (norms(3) < norms(2))) then
@@ -140,8 +140,8 @@ CONTAINS
           offsets(2,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)
           offsets(3,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)
           offsets(4,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)
-          offsets(5,:) = (/0.0_dp, 0.25_dp, -0.25_dp/)
-          offsets(6,:) = (/0.5_dp, 0.25_dp, -0.25_dp/)
+          offsets(5,:) = (/0.0_dp, 0.25_dp, 0.75_dp/)
+          offsets(6,:) = (/0.5_dp, 0.25_dp, 0.75_dp/)
           offsets(7,:) = (/0.5_dp, 0.25_dp, 0.25_dp/)
           offsets(8,:) = (/0.5_dp, 0.25_dp, 0.25_dp/)
        else 
@@ -155,16 +155,15 @@ CONTAINS
           offsets(7,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)
        end if
     elseif ((lat_id==31) .or. (lat_id==44)) then
-       allocate(offsets(8,3))
+       allocate(offsets(2,3))
        offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
-       offsets(2,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)       
+       offsets(2,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)
     else
        write(*,*) "Failed to find offsets for this case. Please report this occurance. Attempting to use defaults."
        allocate(offsets(2,3))
        offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
        offsets(2,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)       
     end if
-
   end SUBROUTINE get_offsets
 
   !!<summary>Checks that the symmetries found match the niggli basis
@@ -282,7 +281,7 @@ CONTAINS
     real(dp), intent(out) :: best_grid(3,3), best_offset(3)
     logical, intent(in) :: find_offset
 
-    integer :: lat_id, a_kpd, c_kpd(3), i, count, mult
+    integer :: lat_id, a_kpd, c_kpd(10), i, count, mult
     integer, allocatable :: sp_hnfs(:,:,:), temp_hnfs(:,:,:)
     integer, allocatable :: n_irr_kp(:), nhnfs(:), nt_kpts(:)
     real(dp), allocatable :: grids(:,:,:), ratio(:), offsets(:,:), grid_offsets(:,:)
@@ -301,7 +300,6 @@ CONTAINS
     call id_cell(lat_vecs, Nu, Cu, O, No, Co, lat_id, s_range, eps_=eps)
     count = 0
 
-    print *, "lat_id", lat_id
     call check_sym(lat_vecs, lat_id, eps, sym_check, pg_size)
     if (.not. sym_check) then
        write(*,*) "The point group doesn't match the niggli basis id."
@@ -320,13 +318,15 @@ CONTAINS
     end if
     if ((lat_id==3) .or. (lat_id==5) .or. (lat_id==1)) then
        call get_kpd_cubic(lat_id,kpd,c_kpd)
-       allocate(sp_hnfs(3,3,3), n_irr_kp(3), nhnfs(3), grids(3,3,3), nt_kpts(3))
-       allocate(grid_offsets(3,3))
+       allocate(sp_hnfs(3,3,5), n_irr_kp(5), nhnfs(5), grids(3,3,5), nt_kpts(5))
+       allocate(grid_offsets(5,3))
        sp_hnfs = 0
        n_irr_kp = 0
        nhnfs = 0
        grids = 0
-       do i=1,3
+       count = 0
+       i = 1
+       do while ((count < 5) .and. (i <= 10))
           a_kpd = c_kpd(i)
           if (lat_id==3) then
              call sc_3(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
@@ -338,13 +338,16 @@ CONTAINS
              call fcc_1(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
                   best_offset, temp_hnfs, temp_grid, temp_nirr, temp_nhnfs, eps_=eps)
           end if
-          sp_hnfs(:,:,i) = temp_hnfs(:,:,1)
-          grids(:,:,i) = temp_grid
-          grid_offsets(i,:) = best_offset
-          n_irr_kp(i) = temp_nirr
-          nhnfs(i) = temp_nhnfs
-          nt_kpts(i) = a_kpd
-          count = count + 1
+          if (temp_nhnfs >= 1 .and. any(temp_hnfs > 0)) then
+             sp_hnfs(:,:,i) = temp_hnfs(:,:,1)
+             grids(:,:,i) = temp_grid
+             grid_offsets(i,:) = best_offset
+             n_irr_kp(i) = temp_nirr
+             nhnfs(i) = temp_nhnfs
+             nt_kpts(i) = a_kpd
+             count = count + 1
+          end if
+          i = i + 1   
           deallocate(temp_hnfs)
        end do
     else if ((lat_id==44) .or. (lat_id==31)) then
@@ -355,7 +358,11 @@ CONTAINS
        do while (found_min .eqv. .False.)
           call tric_31_44(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, mult, offsets, &
                best_offset, temp_hnfs, grids(:,:,1), n_irr_kp(1), nhnfs(1), eps_=eps)
-          a_kpd = a_kpd + 1
+          if (any(nhnfs > 0) .and. any(temp_hnfs > 0)) then
+             found_min = .True.
+          else 
+             a_kpd = a_kpd + 1
+          end if
        end do
        sp_hnfs = temp_hnfs*mult
        nt_kpts(1) = a_kpd*mult
@@ -371,7 +378,6 @@ CONTAINS
        nhnfs = 0
        grids = 0
        count = 0
-       ! do size = 1, s_range
        do while ((count < 5) .or. ((count >= 5) .and. (a_kpd-kpd < s_range)))
           if ((lat_id==2) .or. (lat_id==4)) then
              call rhom_4_2(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, offsets, &
@@ -466,14 +472,19 @@ CONTAINS
        end do
     end if
 
-    allocate(ratio(count))
-    do i=1, count
-       ratio(i) = real(n_irr_kp(i),dp)/real(nt_kpts(i),dp)
-    end do
+    if (count > 0) then
+       allocate(ratio(count))
+       do i=1, count
+          ratio(i) = real(n_irr_kp(i),dp)/real(nt_kpts(i),dp)
+       end do
 
-    min_kpn_loc = MINLOC(ratio)
-    best_grid = grids(:,:, min_kpn_loc(1))
-    best_offset = grid_offsets(min_kpn_loc(1),:)
+       min_kpn_loc = MINLOC(ratio)
+       best_grid = grids(:,:, min_kpn_loc(1))
+       best_offset = grid_offsets(min_kpn_loc(1),:)
+    else
+       write(*,*) "Unable to find a suitable grid within suitable range of target density."
+       stop
+    end if
   end SUBROUTINE find_grid
 
   !!<summary>Gets the trial range of kpoint densities for cubic
@@ -486,17 +497,16 @@ CONTAINS
   !!kpoint density.</parameter>
   SUBROUTINE get_kpd_cubic(lat_id,kpd,densities)
     integer, intent(in) :: lat_id, kpd
-    integer, intent(out) :: densities(3)
+    integer, intent(out) :: densities(10)
 
-    integer :: j, a, b, c , nb, nmax, nc, temp
+    integer :: j, nb, nmax, nc, temp, n_found, i, next_smallest(1), bumped
     integer :: mults(3)
 
     nb = ((int(real(kpd,dp)**(1.0_dp/3.0_dp)))/16)-1
-    nmax  = nb+500
-    a = 0
-    b = 0
-    c = 0
-
+    nmax  = nb+1000
+    densities = 0
+    n_found = 0
+    
     if (lat_id==1) then
        mults = (/1,4,16/)
     else
@@ -508,22 +518,23 @@ CONTAINS
        do j=1,3
           temp = mults(j)*nc
           if (temp >= kpd) then
-             if (((temp-kpd) < abs(a-kpd)) .or. (a==0)) then
-                c = b
-                b = a
-                a = temp
-             else if (((temp-kpd) < abs(b-kpd)) .or. (b==0)) then
-                c = b
-                b = temp
-             else if (((temp-kpd) < abs(c-kpd)) .or. (c==0)) then
-                c = temp
+             if (any(densities > temp)) then 
+                next_smallest = minloc(densities, densities > temp)
+                do i = next_smallest(1), n_found
+                   bumped = densities(i)
+                   densities(i) = temp
+                   temp = bumped
+                end do
+             end if
+
+             if (n_found < 10) then
+                n_found = n_found + 1
+                densities(n_found) = temp
              end if
           end if
        end do
        nb = nb + 1
     end do
-
-    densities = (/a,b,c/)
 
   end SUBROUTINE get_kpd_cubic
 
