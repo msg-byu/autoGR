@@ -276,7 +276,7 @@ CONTAINS
     real(dp), pointer :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in), allocatable :: cand_HNFs(:,:,:,:)
-    integer, intent(out) :: best_HNF(3,3),n_irr
+    integer, intent(out) :: best_HNF(3,3), n_irr
     integer, intent(in) :: ngrids(2)
 
     real(dp) :: temp_grid(3,3), grid_offsets(sum(ngrids),3)
@@ -286,6 +286,7 @@ CONTAINS
     real(dp)              :: R(3,3), invLat(3,3), temp_R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
+    integer :: err
     
     if (present(eps_)) then
        eps = eps_
@@ -303,13 +304,15 @@ CONTAINS
        temp_grid = cand_grids(:,:,i,1)
        do j=1, size(offsets,1)
           call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-               offsets(j,:), rdKlist, weights, eps)
-          if (j==1) then
-             n_irreducible(i) = size(rdKlist,1)
-             grid_offsets(i,:) = offsets(j,:)
-          elseif (size(rdKlist,1) < n_irreducible(i)) then
-             n_irreducible(i) = size(rdKlist,1)
-             grid_offsets(i,:) = offsets(j,:)
+               offsets(j,:), rdKlist, weights, eps, err_=err)
+          if (err==0) then
+             if (n_irreducible(i) == 0) then
+                n_irreducible(i) = size(rdKlist,1)
+                grid_offsets(i,:) = offsets(j,:)
+             elseif (size(rdKlist,1) < n_irreducible(i)) then
+                n_irreducible(i) = size(rdKlist,1)
+                grid_offsets(i,:) = offsets(j,:)
+             end if
           end if
        end do
        count = count + 1
@@ -319,25 +322,34 @@ CONTAINS
        temp_grid = cand_grids(:,:,i,2)
        do j=1, size(offsets, 1)
           call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-               offsets(j,:), rdKlist, weights, eps)
-          if (j==1) then
-             n_irreducible(count+i) = size(rdKlist,1)
-             grid_offsets(count+i,:) = offsets(j,:)
-          elseif (size(rdKlist,1) < n_irreducible(i)) then
-             n_irreducible(count+i) = size(rdKlist,1)
-             grid_offsets(count+i,:) = offsets(j,:)
+               offsets(j,:), rdKlist, weights, eps, err_=err)
+          if (err==0) then
+             if (n_irreducible(i) == 0) then
+                n_irreducible(count+i) = size(rdKlist,1)
+                grid_offsets(count+i,:) = offsets(j,:)
+             elseif (size(rdKlist,1) < n_irreducible(i)) then
+                n_irreducible(count+i) = size(rdKlist,1)
+                grid_offsets(count+i,:) = offsets(j,:)
+             end if
           end if
        end do
     end do
-    n_ir_min = minloc(n_irreducible)
-    n_irr = n_irreducible(n_ir_min(1))
-    best_offset = grid_offsets(n_ir_min(1),:)
-    if (n_ir_min(1) <= count) then
-       best_grid = cand_grids(:,:, n_ir_min(1),1)
-       best_HNF = cand_HNFs(:,:, n_ir_min(1),1)
+    if (any(n_irreducible > 0)) then
+       n_ir_min = minloc(n_irreducible, n_irreducible>0)
+       n_irr = n_irreducible(n_ir_min(1))
+       best_offset = grid_offsets(n_ir_min(1),:)
+       if (n_ir_min(1) <= count) then
+          best_grid = cand_grids(:,:, n_ir_min(1),1)
+          best_HNF = cand_HNFs(:,:, n_ir_min(1),1)
+       else
+          best_grid = cand_grids(:,:, n_ir_min(1)-count,2)
+          best_HNF = cand_HNFs(:,:, n_ir_min(1)-count,2)
+       end if
     else
-       best_grid = cand_grids(:,:, n_ir_min(1)-count,2)
-       best_HNF = cand_HNFs(:,:, n_ir_min(1)-count,2)
+       best_HNF = 0
+       best_grid = 0.0_dp
+       best_offset = 0.0_dp
+       n_irr = 0
     end if
 
   end SUBROUTINE grid_selection

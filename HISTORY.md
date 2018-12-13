@@ -1,5 +1,21 @@
 # Revision History
 
+## Revision 0.6.6 (WSM)
+- Changed the workflow to catch errors thrown by `kgridGen`.
+- Increased the number of cubic cases checked so that if errors occure
+  with `kgridGen` we have more than 3 cubic cases to use (this will
+  not happen very often but it's there just in case).
+- Changed all cases in `sp_hnfs.f90` so that if `grid_selection`
+  doesn't return a grid due to errors in `kgridGen` then the code
+  handles it properly.
+- Added a check at the end of `find_grid` so that if no grids are
+  found it prints an error and stops instead of segfaulting.
+- Fixed the offsets so that they no longer trigger warnings in
+  `kgridGen` and fixed the triclinic cells offsets (it was allocating
+  8 instead of 2).
+
+
+
 ## Revision 0.6.5 (WSM)
 - Changed the code workflow so that the packing fraction is used to
   rule out some grids.
