@@ -472,9 +472,10 @@ CONTAINS
     grid = 0.0_dp
 
     if (all_hnfs) then
-       do i = 1,nds
-          total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
-       end do
+       total_hnfs = 10000
+       !do i = 1,nds
+          !total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
+       !end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
        if (status/=0) stop "Failed to allocate memory in hex_12."
@@ -538,8 +539,8 @@ CONTAINS
                       end if
                    end do
                 end if
-                b = b + a
              end if
+             b = b + a
           end do
        end if
     end do
