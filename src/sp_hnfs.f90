@@ -553,7 +553,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -701,7 +705,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -869,7 +877,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -1044,7 +1056,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -1216,7 +1232,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -1382,7 +1402,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -1547,7 +1571,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -1704,7 +1732,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -1858,7 +1890,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -2012,7 +2048,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -2168,7 +2208,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -2329,7 +2373,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -2486,7 +2534,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -2652,7 +2704,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -2822,7 +2878,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -2970,7 +3030,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -3147,7 +3211,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -3305,7 +3373,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -3454,7 +3526,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -3607,7 +3683,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -3763,7 +3843,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -3907,7 +3991,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -4053,7 +4141,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -4198,7 +4290,11 @@ CONTAINS
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
                grid, best_HNF, best_offset, n_irr, eps)
-          spHNFs(:,:,1) = best_HNF
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
@@ -4327,7 +4423,11 @@ CONTAINS
     if (any(ngrids > 0)) then
        call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
             grid, best_HNF, best_offset, n_irr, eps)
-       spHNFs(:,:,1) = best_HNF
+       if (any(best_HNF > 0)) then
+          spHNFs(:,:,1) = best_HNF
+       else
+          spHNFs = 0
+       end if
     else
        spHNFs = 0
     end if
