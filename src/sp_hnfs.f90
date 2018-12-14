@@ -472,10 +472,9 @@ CONTAINS
     grid = 0.0_dp
 
     if (all_hnfs) then
-       total_hnfs = 10000
-       !do i = 1,nds
-          !total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
-       !end do
+       do i = 1,nds
+          total_hnfs = total_hnfs + diagonals(2,i)*diagonals(3,i)**2
+       end do
 
        allocate(temp_HNFs(3,3,total_hnfs), STAT=status)
        if (status/=0) stop "Failed to allocate memory in hex_12."
@@ -494,7 +493,7 @@ CONTAINS
              if (MOD(b*b, a)==0) then
                 beta13 = a+2*b
                 beta11 = 2*b+b*b/a
-                if ((MOD(beta13, c)==0) .and. (MOD(beta11, c)==0)) then
+                if ((MOD(beta13, int(c,li))==0) .and. (MOD(beta11, int(c,li))==0)) then
                    if (MOD(f, 2)==0) then
                       es = (/0, (f/2)/)
                       nes = 2
@@ -505,19 +504,21 @@ CONTAINS
                    do j = 1, nes
                       e = es(j)
                       gamma13 = (a+2*b)*e
-                      if (MOD(gamma13, c)==0) then
+                      if (MOD(gamma13, int(c,li))==0) then
                          gamma13 = gamma13/c
-                         if (MOD(gamma13, f)==0) then
+                         if (MOD(gamma13, int(f,li))==0) then
                             do d=0, (f-1)
-                               if ((MOD(b*d, a)==0) .and. (MOD(e*beta11, c)==0) .and. &
+                               if ((MOD(b*d, a)==0) .and. (MOD(e*beta11, int(c,li))==0) .and. &
                                     (MOD(b*e, a)==0) .and. (MOD(c*d, a)==0) .and. &
                                     (MOD(c*d-b*e, a)==0)) then
                                   gamma11 = b*d/a -e*beta11/c
                                   gamma12 = 2*d + b*d/a - e*beta11/c
                                   gamma21 = c*d/a - 2*e - b*e/a
                                   gamma22 = (c*d - b*e)/a
-                                  if ((MOD(gamma11,f)==0) .and. (MOD(gamma12,f)==0) .and. &
-                                       (MOD(gamma21,f)==0) .and. (MOD(gamma22,f) ==0)) then
+                                  if ((MOD(gamma11,int(f,li))==0) .and. &
+                                       (MOD(gamma12,int(f,li))==0) .and. &
+                                       (MOD(gamma21,int(f,li))==0) .and. &
+                                       (MOD(gamma22,int(f,li)) ==0)) then
                                      nhnfs = nhnfs + 1
                                      if (all_hnfs) then
                                         temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -666,13 +667,14 @@ CONTAINS
              if (MOD(e*e, c)==0) then
                 gamma21 = -c+(e*2)
                 gamma22 = -c+e-(e*e)/c
-                if ((MOD(gamma21, f)==0) .and. (MOD(gamma22, f)==0)) then
+                if ((MOD(gamma21, int(f,li))==0) .and. (MOD(gamma22, int(f,li))==0)) then
                    do b=0, (c-1)
                       do d=0, (f-1), c
                          if (MOD(d*e, c)==0) then
                             gamma11 = -b+d*2
                             gamma12 = -b+d-(d*e)/c
-                            if ((MOD(gamma11, f)==0) .and. (MOD(gamma12, f)==0)) then
+                            if ((MOD(gamma11, int(f,li))==0) .and. &
+                                 (MOD(gamma12, int(f,li))==0)) then
                                nhnfs = nhnfs + 1
                                if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -828,21 +830,22 @@ CONTAINS
           do j = 1, nbs
              b = bs(j)
              beta13 = f+b*f/a
-             if (MOD(beta13,c)==0) then
+             if (MOD(beta13,int(c,li))==0) then
                 e = 0
                 do while (e <f)
                    beta22 = e + b*e/a
                    gamma21 = c + 2*e
                    gamma11 = b + 2*b*e/c
-                   if ((MOD(beta22, c)==0) .and. (MOD(gamma21, f)==0) .and. &
-                        (MOD(gamma11, f)==0)) then
+                   if ((MOD(beta22, int(c,li))==0) .and. (MOD(gamma21, int(f,li))==0) .and. &
+                        (MOD(gamma11, int(f,li))==0)) then
                       d = 0
                       do while (d < f)
                          beta12 = -a + b + d + d*b/a
-                         if (MOD(beta12, c)==0) then
+                         if (MOD(beta12, int(c,li))==0) then
                             gamma12 = -b -d + (d*d/a) - e*beta12/c
                             gamma22 = -c -2*e + (d*e/a) - e*beta22/c
-                            if ((MOD(gamma12, f)==0) .and. (MOD(gamma22, f)==0)) then
+                            if ((MOD(gamma12, int(f,li))==0) .and. &
+                                 (MOD(gamma22, int(f,li))==0)) then
                                nhnfs = nhnfs + 1
                                if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -1003,24 +1006,25 @@ CONTAINS
              b = bs(j)
              if (MOD(b*f, a)==0) then
                 beta32 = -f+b*f/a
-                if(MOD(beta32, c)==0) then
+                if(MOD(beta32, int(c,li))==0) then
                    do e=0, (f-1)
                       if ((MOD(b*e, a)==0) .and. (MOD(2*b*e, c)==0)) then
                          beta22 = -e+b*e/a
                          gamma11 = b-2*b*e/c
                          gamma21 = c-2*e
-                         if((MOD(e, a)==0) .and. (MOD(beta22, c)==0) .and. &
-                              (MOD(gamma11, f)==0) .and. (MOD(gamma21, f)==0))then
+                         if((MOD(e, a)==0) .and. (MOD(beta22, int(c,li))==0) .and. &
+                              (MOD(gamma11, int(f,li))==0) .and. &
+                              (MOD(gamma21, int(f,li))==0))then
                             do d=0, (f-1)
                                if (MOD(b*d, a)==0) then
                                   beta12 = -a+b-d+b*d/a
-                                  if ((MOD(e*beta12, c)==0) .and. (MOD(d*d, a)==0) &
+                                  if ((MOD(e*beta12, int(c,li))==0) .and. (MOD(d*d, a)==0) &
                                        .and. (MOD(d*e, a)==0)) then
                                      gamma12 = (-a+d*d/a)-(e*beta12/c)
                                      gamma22 = (-e+d*e/a)-(e*beta22/c)
-                                     if((MOD(d, a)==0) .and. (MOD(beta12, c)==0) .and. &
-                                          (MOD(gamma12, f)==0) .and. &
-                                          (MOD(gamma22,f)==0))then
+                                     if((MOD(d, a)==0) .and. (MOD(beta12, int(c,li))==0) .and. &
+                                          (MOD(gamma12, int(f,li))==0) .and. &
+                                          (MOD(gamma22, int(f,li))==0))then
                                         nhnfs = nhnfs + 1
                                         if (all_hnfs) then
                                            temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -1186,18 +1190,19 @@ CONTAINS
              b = bs(j)
              if (MOD(b*b, a)==0) then
                 beta13 = -a + b*b/a
-                if (MOD(beta13, c)==0) then
+                if (MOD(beta13, int(c,li))==0) then
                    do k = 1, nes
                       e = es(k)
                       if (MOD(2*b*e, c)==0) then
                          gamma12 = 2*b*e/c
-                         if (MOD(gamma12, f)==0) then
+                         if (MOD(gamma12, int(f,li))==0) then
                             do d = 0, (f-1)
                                if ((MOD(d*b, a)==0) .and. (MOD(d*c, a)==0) &
                                     .and. (MOD(e*b, a)==0)) then
                                   gamma13 = -e*beta13/c + d*(b/a-1)
                                   gamma23 = -e*(b/a+1) +d*c/a
-                                  if ((MOD(gamma13,f)==0) .and. (MOD(gamma23,f)==0)) then
+                                  if ((MOD(gamma13, int(f,li))==0) .and. &
+                                       (MOD(gamma23, int(f,li))==0)) then
                                      nhnfs = nhnfs + 1
                                      if (all_hnfs) then
                                         temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -1362,15 +1367,16 @@ CONTAINS
              do k=1, nes
                 d = es(k)
                 beta13 = b-d
-                if (MOD(beta13, c)==0) then
+                if (MOD(beta13, int(c,li))==0) then
                    do z=1, nes
                       e = es(z)
                       if ((MOD(2*d*e, c)==0) .and. (MOD(e*e, c)==0)) then
                          gamma12 = 2*d-2*d*e/c
                          gamma13 = -b+d-e*beta13/c
                          gamma23 = -c+e*e/c
-                         if ((MOD(gamma12, f)==0) .and. (MOD(gamma13, f)==0) .and. &
-                              (MOD(gamma23, f)==0)) then
+                         if ((MOD(gamma12, int(f,li))==0) .and. &
+                              (MOD(gamma13, int(f,li))==0) .and. &
+                              (MOD(gamma23, int(f,li))==0)) then
                             nhnfs = nhnfs + 1
                             if (all_hnfs) then
                                temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -1529,15 +1535,15 @@ CONTAINS
              e = es(j)
              if (MOD(e, c)==0) then
                 gamma21 = -c+e*e/c
-                if (MOD(gamma21, f)==0) then
+                if (MOD(gamma21, int(f,li))==0) then
                    do d=0, (f-1)
                       gamma13 = a+2*d
-                      if (MOD(gamma13, f)==0) then
+                      if (MOD(gamma13, int(f,li))==0) then
                          do b=0, (c-1)
                             beta12 = b-d
-                            if (MOD(beta12, c)==0) then
+                            if (MOD(beta12, int(c,li))==0) then
                                gamma12 = -b+d-(e*beta12/c)
-                               if(MOD(gamma12, f)==0)then
+                               if(MOD(gamma12, int(f,li))==0)then
                                   nhnfs = nhnfs + 1
                                   if (all_hnfs) then
                                      temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -1856,10 +1862,10 @@ CONTAINS
              if (MOD(2*b*e, c) == 0) then
                 gamma23 = c +2*e
                 gamma12 = b + 2*b*e/c
-                if ((MOD(gamma23, f)==0) .and. (MOD(gamma12, f)==0)) then
+                if ((MOD(gamma23, int(f,li))==0) .and. (MOD(gamma12, int(f,li))==0)) then
                    do d = 0, (f-1)
                       gamma13 = a +b +2*d
-                      if (MOD(gamma13, f)==0) then
+                      if (MOD(gamma13, int(f,li))==0) then
                          nhnfs = nhnfs + 1
                          if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -2014,10 +2020,10 @@ CONTAINS
              if (MOD(2*b*e, c)==0) then
                 gamma11 = -b-2*b*e/c
                 gamma21 = c+2*e
-                if (MOD(gamma11, f)==0 .and. MOD(gamma21, f)==0) then
+                if (MOD(gamma11, int(f,li))==0 .and. MOD(gamma21, int(f,li))==0) then
                    do d=0, (f-1)
                       gamma12 = a+2*d-(2*b*e/c)
-                      if (MOD(gamma12, f)==0) then
+                      if (MOD(gamma12, int(f,li))==0) then
                          nhnfs = nhnfs + 1
                          if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -2168,15 +2174,15 @@ CONTAINS
 
        do b = 0, (c-1)
           beta13 = a +2*b
-          if (MOD(beta13, c)==0) then
+          if (MOD(beta13, int(c,li))==0) then
              do k=1, nes
                 e = es(k)
-                if (MOD(e*beta13, c)==0) then
+                if (MOD(e*beta13, int(c,li))==0) then
                    gamma13 = e*beta13/c
-                   if (MOD(gamma13, f)==0) then
+                   if (MOD(gamma13, int(f,li))==0) then
                       do d=0, (f-1)
                          gamma12 = a + 2*d
-                         if (MOD(gamma12, f)==0) then
+                         if (MOD(gamma12, int(f,li))==0) then
                             nhnfs = nhnfs + 1
                             if (all_hnfs) then
                                temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -2332,15 +2338,16 @@ CONTAINS
              b = bs(j)
              do e=0, (f-1)
                 beta21 = 2*e
-                if (MOD(beta21*e, c)==0) then
+                if (MOD(beta21*e, int(c,li))==0) then
                    gamma21 = -beta21+beta21*e/c
-                   if ((MOD(beta21, c)==0) .and. (MOD(gamma21, f)==0)) then
+                   if ((MOD(beta21, int(c,li))==0) .and. (MOD(gamma21, int(f,li))==0)) then
                       do d=0, (f-1)
                          beta11 = -a+(2*b)-2*d
-                         if (MOD(beta11, c)==0) then
+                         if (MOD(beta11, int(c,li))==0) then
                             gamma11 = -beta11*e/c
                             gamma13 = a+(2*d)-b*beta21/c
-                            if ((MOD(gamma11, f)==0) .and. (MOD(gamma13, f)==0)) then
+                            if ((MOD(gamma11, int(f,li))==0) .and. &
+                                 (MOD(gamma13, int(f,li))==0)) then
                                nhnfs = nhnfs + 1
                                if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -2496,13 +2503,13 @@ CONTAINS
           e = es(j)
           do b=0, (c-1)
              beta11 = -a+2*b
-             if (MOD(beta11*e, c)==0) then
+             if (MOD(beta11*e, int(c,li))==0) then
                 gamma12 = -beta11*e/c
-                if ((MOD(beta11, c)==0) .and. (MOD(gamma12, f)==0)) then
+                if ((MOD(beta11, int(c,li))==0) .and. (MOD(gamma12, int(f,li))==0)) then
                    do d=0, (f-1)
                       gamma11 = -a+(2*d)-e*beta11/c
                       gamma13 = -a+2*d
-                      if ((MOD(gamma11, f)==0) .and. (MOD(gamma13, f)==0)) then
+                      if ((MOD(gamma11, int(f,li))==0) .and. (MOD(gamma13, int(f,li))==0)) then
                          nhnfs = nhnfs + 1
                          if (all_hnfs) then
                             temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -2662,7 +2669,7 @@ CONTAINS
           do while (b<c)
              if (MOD(b*b, a)==0) then
                 beta13 = -a +b*b/a
-                if (MOD(beta13, c)==0) then
+                if (MOD(beta13, int(c,li))==0) then
                    do j = 1, ne_ds
                       e = es(j)
                       do k = 1, ne_ds
@@ -2670,7 +2677,8 @@ CONTAINS
                          if (MOD(b*d, a)==0) then
                             gamma13 = -d + b*d/a -e*beta13/c
                             gamma23 = c*d/a -e -b*e/a
-                            if ((MOD(gamma13, f)==0) .and. (MOD(gamma23, f)==0)) then
+                            if ((MOD(gamma13, int(f,li))==0) .and. &
+                                 (MOD(gamma23, int(f,li))==0)) then
                                nhnfs = nhnfs + 1
                                if (all_hnfs) then
                                   temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -2840,11 +2848,12 @@ CONTAINS
                       do d=0, (f-1), a
                          if ((MOD(b*d, a)==0)) then
                             beta13 = -b+b*d/a
-                            if (MOD(beta13*e, c)==0 .and. (MOD(d*d, a)==0)) then
+                            if (MOD(beta13*e, int(c,li))==0 .and. (MOD(d*d, a)==0)) then
                                gamma13 = -a+(d*d/a)-beta13*e/c
                                gamma23 = e+(d*e/a)-b*e*e/(a*c)
-                               if ((MOD(beta13, c)==0) .and. (MOD(gamma13, f)==0) .and. &
-                                    (MOD(gamma23, f)==0)) then
+                               if ((MOD(beta13, int(c,li))==0) .and. &
+                                    (MOD(gamma13, int(f,li))==0) .and. &
+                                    (MOD(gamma23, int(f,li))==0)) then
                                   nhnfs = nhnfs + 1
                                   if (all_hnfs) then
                                      temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -2991,14 +3000,15 @@ CONTAINS
        if (MOD(f, c)==0) then
           do e=0, (f-1), c
              gamma22 = 2*e-e*e/c
-             if (MOD(gamma22, f)==0) then
+             if (MOD(gamma22, int(f,li))==0) then
                 do d=0, (f-1), c
                    gamma12 = 2*d-d*e/c
-                   if (MOD(gamma12, f)==0) then
+                   if (MOD(gamma12, int(f,li))==0) then
                       do b=0, (c-1)
                          beta13 = 2*b-d
                          gamma13 = beta13*e/c
-                         if ((MOD(beta13, c)==0) .and. (MOD(gamma13, f)==0)) then
+                         if ((MOD(beta13, int(c,li))==0) .and. &
+                              (MOD(gamma13, int(f,li))==0)) then
                             nhnfs = nhnfs + 1
                             if (all_hnfs) then
                                temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -3159,7 +3169,7 @@ CONTAINS
           do j=1, nbs
              b = bs(j)
              beta32 = -b*f/a
-             if (MOD(beta32, c)==0) then
+             if (MOD(beta32, int(c,li))==0) then
                 do k=1, nes
                    e = es(k)
                    !The (MOD(e, a)==0) check is an actual condition
@@ -3168,15 +3178,16 @@ CONTAINS
                    if ((MOD(e, a)==0) .and. (MOD(b*e, c)==0)) then
                       beta22 = -b*e/a
                       gamma13 = -2*b*e/c
-                      if ((MOD(beta22, c)==0) .and. (MOD(gamma13, f)==0)) then
+                      if ((MOD(beta22, int(c,li))==0) .and. (MOD(gamma13, int(f,li))==0)) then
                          do d=0, (f-1)
                             if ((MOD(b*d, a)==0) .and. (MOD(d*d, a)==0)) then
                                beta12 = -b*d/a
-                               if (MOD(beta12*e, c)==0) then
+                               if (MOD(beta12*e, int(c,li))==0) then
                                   gamma12 = 2*d-(d*d/a)-beta12*e/c
                                   gamma22 = 2*e-(d*e/a)-beta22*e/c
-                                  if ((MOD(beta12, c)==0) .and. (MOD(gamma12, f)==0) &
-                                       .and. (MOD(gamma22, f)==0)) then
+                                  if ((MOD(beta12, int(c,li))==0) .and. &
+                                       (MOD(gamma12, int(f,li))==0) &
+                                       .and. (MOD(gamma22, int(f,li))==0)) then
                                      nhnfs = nhnfs + 1
                                      if (all_hnfs) then
                                         temp_HNFs(:,:,nhnfs) = reshape((/ a, b, d, &
@@ -3342,7 +3353,7 @@ CONTAINS
              e = es(k)
              if (MOD(2*b*e, c) == 0) then
                 gamma12 = 2*b*e/c
-                if (MOD(gamma12, f)==0) then
+                if (MOD(gamma12, int(f,li))==0) then
                    do d=0, (f-1)
                       nhnfs = nhnfs + 1
                       if (all_hnfs) then
@@ -3654,7 +3665,7 @@ CONTAINS
           do d=0, (f-1)
              e = es(j)
              gamma11 = -1*a + 2*d
-             if (MOD(gamma11,f)==0) then
+             if (MOD(gamma11,int(f,li))==0) then
                 do b=0, (c-1)
                    nhnfs = nhnfs + 1
                    if (all_hnfs) then
@@ -3806,12 +3817,12 @@ CONTAINS
 
        do e=0, (f-1)
           gamma22 = -c-2*e
-          if (MOD(gamma22, f)==0) then
+          if (MOD(gamma22, int(f,li))==0) then
              do k=1, nbs
                 b = bs(k)
                 if (MOD(2*b*e, c)==0) then
                    gamma12 = -b-2*b*e/c
-                   if (MOD(gamma12, f)==0) then
+                   if (MOD(gamma12, int(f,li))==0) then
                       do d=0, (f-1)
                          nhnfs = nhnfs + 1
                          if (all_hnfs) then
@@ -3956,10 +3967,10 @@ CONTAINS
        if (MOD(f, c)==0) then
           do e=0, (f-1), c
              gamma21 = 2*e+e*e/c
-             if (MOD(gamma21, f)==0) then
+             if (MOD(gamma21, int(f,li))==0) then
                 do d=0, (f-1), c
                    gamma11 = 2*d+d*e/c
-                   if (MOD(gamma11, f)==0) then
+                   if (MOD(gamma11, int(f,li))==0) then
                       do b=0, (c-1)
                          nhnfs = nhnfs + 1
                          if (all_hnfs) then
@@ -4106,10 +4117,10 @@ CONTAINS
        if (MOD(f, c)==0) then
           do e=0, (f-1), c
              gamma21 = 2*e+e*e/c
-             if (MOD(gamma21, f)==0) then
+             if (MOD(gamma21, int(f,li))==0) then
                 do d=0, (f-1), c
                    gamma11 = 2*d+d*e/c
-                   if (MOD(gamma11, f)==0) then
+                   if (MOD(gamma11, int(f,li))==0) then
                       do b=0, (c-1)
                          nhnfs = nhnfs + 1
                          if (all_hnfs) then
@@ -4254,11 +4265,11 @@ CONTAINS
        if (MOD(f, c)==0) then
           do e=0, (f-1), c
              gamma22 = 2*e-e*e/c
-             if (MOD(gamma22, f)==0) then
+             if (MOD(gamma22, int(f,li))==0) then
                 do d=0, (f-1)
                    beta12 = a+d
                    gamma12 = 2*a+2*d-beta12*e/c
-                   if ((MOD(beta12, c)==0) .and. (MOD(gamma12, f)==0)) then
+                   if ((MOD(beta12, int(c,li))==0) .and. (MOD(gamma12, int(f,li))==0)) then
                       do b=0, (c-1)
                          nhnfs = nhnfs + 1
                          if (all_hnfs) then
@@ -4421,16 +4432,18 @@ CONTAINS
     enddo ! End loop over all unique triplets of target determinant (n)
 
     if (ihnf /= nhnfs) stop "HNF: not all the matrices were generated...(bug!)"
-    if (any(ngrids > 0)) then
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, best_HNF, best_offset, n_irr, eps)
-       if (any(best_HNF > 0)) then
-          spHNFs(:,:,1) = best_HNF
+    if (.not. all_hnfs) then
+       if (any(ngrids > 0)) then
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, eps)
+          if (any(best_HNF > 0)) then
+             spHNFs(:,:,1) = best_HNF
+          else
+             spHNFs = 0
+          end if
        else
           spHNFs = 0
        end if
-    else
-       spHNFs = 0
     end if
   end SUBROUTINE tric_31_44
 

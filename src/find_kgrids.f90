@@ -503,7 +503,7 @@ CONTAINS
     integer :: mults(3)
 
     nb = ((int(real(kpd,dp)**(1.0_dp/3.0_dp)))/16)-1
-    nmax  = nb+1000
+    nmax  = nb+100
     densities = 0
     n_found = 0
     
