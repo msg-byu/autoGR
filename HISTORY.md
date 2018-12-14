@@ -1,5 +1,11 @@
 # Revision History
 
+## Revision 0.6.7 (WS)
+- Modified the mods in `sphnfs` to compare long ints to long ints so
+  the unit tests will run.
+- Fixed logic bug in the `tric` `sphnfs` that the unit tests found.
+- Fixed some unit tests.
+
 ## Revision 0.6.6 (WSM)
 - Changed the workflow to catch errors thrown by `kgridGen`.
 - Increased the number of cubic cases checked so that if errors occure
@@ -13,8 +19,6 @@
 - Fixed the offsets so that they no longer trigger warnings in
   `kgridGen` and fixed the triclinic cells offsets (it was allocating
   8 instead of 2).
-
-
 
 ## Revision 0.6.5 (WSM)
 - Changed the code workflow so that the packing fraction is used to

@@ -24,6 +24,7 @@
       <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
       <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
+      <assignment name="all_hnfs_" constant = ".True."/>
     </group>
   </decorates>
 
@@ -51,6 +52,7 @@
       <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
       <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
+      <assignment name="all_hnfs_" constant = ".True."/>
     </group>
   </decorates>
 
@@ -78,6 +80,7 @@
       <assignment name="B_vecs" constant = "reshape((/0,0,0/),(/3,1/))" allocate="3,1"/>
       <assignment name="at" constant = "(/0/)" allocate="1"/>
       <assignment name="eps_" constant = "1E-6"/>
+      <assignment name="all_hnfs_" constant = ".True."/>
     </group>
   </decorates>
 
