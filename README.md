@@ -1,5 +1,5 @@
-# opf_kgrids
-Notes for optimal packing fraction k-point grids
+# Generate Generalized Regular k-point Grids
+Implementation of an algorithm to generate generalized regular grids that have a high symmetry reduction and good packing fraction.
 
 # Notes
 
