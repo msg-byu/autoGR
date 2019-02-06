@@ -126,7 +126,7 @@ CONTAINS
              nkpts_set = .True.
           case ('KSPACING')
              read(buffer, *, iostat=ios) lkpd
-             nkpts = NINT(((1.0_dp/lkpd)**3)*r_vol)
+             nkpts = NINT(((1.0_dp/(2*pi*lkpd))**3)*r_vol)
              nkpts_set = .True.
           case ('KPPRA')
              read(buffer, *, iostat=ios) kppra
