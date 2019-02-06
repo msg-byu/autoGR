@@ -1,5 +1,123 @@
 # Revision History
 
+## Revision 0.6.7 (WS)
+- Modified the mods in `sphnfs` to compare long ints to long ints so
+  the unit tests will run.
+- Fixed logic bug in the `tric` `sphnfs` that the unit tests found.
+- Fixed some unit tests.
+
+## Revision 0.6.6 (WSM)
+- Changed the workflow to catch errors thrown by `kgridGen`.
+- Increased the number of cubic cases checked so that if errors occure
+  with `kgridGen` we have more than 3 cubic cases to use (this will
+  not happen very often but it's there just in case).
+- Changed all cases in `sp_hnfs.f90` so that if `grid_selection`
+  doesn't return a grid due to errors in `kgridGen` then the code
+  handles it properly.
+- Added a check at the end of `find_grid` so that if no grids are
+  found it prints an error and stops instead of segfaulting.
+- Fixed the offsets so that they no longer trigger warnings in
+  `kgridGen` and fixed the triclinic cells offsets (it was allocating
+  8 instead of 2).
+
+## Revision 0.6.5 (WSM)
+- Changed the code workflow so that the packing fraction is used to
+  rule out some grids.
+- Changed the code workflow so that at least 5 grids are compared for
+  non-cubic and non-triclinic cells.
+- Cleaned up the code so that it compiles cleanly.
+
+## Revision 0.6.4 (WMS)
+- Added a function tha checks that the point group matches the niggli
+  id and stops the code if it doesn't.
+
+## Revision 0.6.3 (WSM)
+- Fixed most of the finite precision problems we've been having with
+  the interface with `kgridGen`.
+
+## Revision 0.6.2 (WSM)
+- Fixed multiple allocations that were causing out of bounds errors.
+- Reduced the search space of offsets by taking into account the order
+  of the vectors that the user provided.
+- Started adding OpenMP functionality.
+- Fixed calculation of reciprocal lattice volume in control file.
+
+## Revision 0.6.1 (WSM)
+- Changed the search intervals for each crystal class.
+
+## Revision 0.6.0 (WSM)
+- Changed the contral file name to KPGEN.
+- Changed control file to use key words instead of line numbers for
+  greater flexibility.
+- Added the ability in the code to search over multiple k-point
+  offsets.
+- Made the users specified offset get passed all the way through the
+  code to ensure we get the best folding for that offset.
+- Added the offsets to search over by grid type.
+
+## Revision 0.5.5 (WSM)
+- Changed the code so that comparisons to the old rmin and new are
+  more flexible.
+
+## Revision 0.5.4 (WSM)
+- Changed the code so that it will consider the two largest rmin
+  values found in order to explore a larger regoin of the search
+  space, this is neccessary because in many cases we weren't finding
+  the "optimal" grid because it had a slightly smaller rmin but much
+  better folding.
+- Changed the default eps value to 1E-3 instead of 1E-6, this makes
+  more sence is practice and should be sufficient for our purposes.
+- Increased the eps value passed to the k-point folding code in cases
+  where the determinant of the new grid is approximately the size of
+  the eps value, or when it is smaller than eps but still larger than
+  1E-10.
+
+## Revision 0.5.3 (WSM)
+- Implemented a faster selection implementation in which a minimal set
+  of grids is folded.
+
+## Revision 0.5.2 (WSM)
+- Implemented changes that John suggested to fix/improve the
+  algorithms.
+- Debugged new triclinic case.
+- Fixed bugs in sm_34_35 inroduced by refactor.
+- Fixed bugs in tric_31_44 introduced by refactor.
+- Fixed bugs in bco_8 introduced by refactor.
+- Fixed bugs in bcc_5 introduced by refactor.
+- Fixed bugs in stet_21 introduced by refactor.
+- Fixed bugs in fco_16 introduced by refactor.
+- Fixed basis for sm_34 in python and fortran niggli id routines.
+- Added the python script used to make test output for fortran to the
+  repo in testing_codes/make_output.py.
+- Added plotting notebook and some plots.
+- Reformatted niggli.f90 to make it a little easier to read.
+- Fixed a bug in fing_kgrids.f90 in which the count variable wasn't
+  getting set.
+
+## Revision 0.5.1 (WSM)
+- Fixed lots of compiler errors in sp_hnfs.f90 and grid_utils.f90.
+- Added grid_utils.f90 to the Makefile.
+- Removed `smallest_prime` from sp_hnfs.f90.
+- Refactored find_grids.f90 to match new code format.
+- Rewrote driver.
+- Fixed a bug in the cubic k-point number finding algorithm that was
+  causing it to skip values at large N.
+- Made cubic algorithms integer only, somehow they got missed before.
+- Fixed allocations and other problems.
+- Added the reciprocal lattice calculation to the comparison routines.
+
+## Revision 0.5.0 (WSM)
+- Changed sp_hnfs.f90 to use integers instead of reals.
+- Changed sp_hnfs.f90 to return only one grid per determinant size
+  unless the `all` bool is set to true in which case it returns all
+  the HNFs and no grids. Basically the first round of grid selection
+  is now done as the HNFs are being constructed.
+
+## Revision 0.4.1 (WSM)
+- Fixed a bug in the fortran driver where a negative determinant was
+  being used to find the number of k-points wanted.
+- Update basis 2 and 4 with better algorithm.
+
 ## Revision 0.4.0 (WSM)
 - Fixed the driver to work with the new code setup.
 - Fixed the issues in the makefile.
