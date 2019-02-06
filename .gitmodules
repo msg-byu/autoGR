@@ -1,3 +1,9 @@
 [submodule "testing_codes/symlib"]
 	path = testing_codes/symlib
 	url = https://github.com/msg-byu/symlib
+[submodule "symlib"]
+	path = symlib
+	url = git@github.com:msg-byu/symlib.git
+[submodule "kgridGen"]
+	path = kgridGen
+	url = git@github.com:msg-byu/kgridGen.git
