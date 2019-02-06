@@ -274,7 +274,7 @@ CONTAINS
   SUBROUTINE find_grid(lat_vecs, kpd, B_vecs, at, offset, find_offset, best_grid, &
        best_offset, eps_)
     real(dp), intent(in) :: lat_vecs(3,3), offset(3)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(in) :: kpd
     integer, intent(inout) :: at(:)
     real(dp), optional, intent(in) :: eps_

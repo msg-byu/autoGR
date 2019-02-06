@@ -17,7 +17,7 @@ CONTAINS
   !!parameter.</parameter>
   SUBROUTINE read_POSCAR(lattice, atom_base, atom_type, lat_param)
     integer, allocatable, intent(out) :: atom_type(:)
-    real(dp), pointer :: atom_base(:,:)
+    real(dp), allocatable :: atom_base(:,:)
     real(dp), intent(out) :: lattice(3,3), lat_param
 
     character(300) :: line
@@ -69,7 +69,7 @@ CONTAINS
   !!tollerance for relative comparison.</parameter>
   SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, find_offset, eps)
     real(dp), intent(out) :: lattice(3,3), offset(3)
-    real(dp), pointer :: atom_base(:,:)
+    real(dp), allocatable :: atom_base(:,:)
     integer, allocatable, intent(out) :: atom_type(:)
     integer, intent(out) :: nkpts
     logical, intent(out) :: find_offset

@@ -13,7 +13,8 @@ PROGRAM lat_id_driver
   logical :: find_offset
   integer :: nkpts, i
   integer, allocatable :: at(:)
-  real(dp), pointer :: IRKps(:,:), B_vecs(:,:)
+  real(dp), pointer :: IRKps(:,:)
+  real(dp), allocatable :: B_vecs(:,:)
   integer, pointer :: weights(:)
 
   call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, eps)

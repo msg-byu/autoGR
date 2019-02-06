@@ -7,8 +7,8 @@
 SHELL		= /bin/bash
 
 # enumlib library paths
-LBD1 = ../../symlib/src
-LBD2 = ../../kgridGen/src
+LBD1 = ../symlib/src
+LBD2 =../kgridGen/src
 
 FOUND = false
 ifeq (${F90},gfortran)  # gfortran compiler
@@ -74,6 +74,9 @@ LIBS =  $(LBD2)/libkptgen.a $(LBD1)/libcomparestructs.a $(LBD1)/libutils.a $(LBD
 .SUFFIXES :  
 .SUFFIXES :  .f .f90 .f95 .o
 
+pre_comp:
+	+$(MAKE) -C ../symlib/src
+	+$(MAKE) -C ../kgridGen/src
 
 libsphnf.a: ${OBJS}
 	ar ru $@ $?
@@ -81,13 +84,13 @@ libsphnf.a: ${OBJS}
 
 all: libsphnf.a lat_type.x kpoints.x
 
-lat_type.x: ${OBJS} lat_id_driver.o
+lat_type.x: pre_comp ${OBJS} lat_id_driver.o
 	${F90} ${LDFLAGS} -o $@ ${OBJS} lat_id_driver.o ${LIBS}
 
-kpoints.x: ${OBJS} driver.o
+kpoints.x: pre_comp ${OBJS} driver.o
 	${F90} ${LDFLAGS} -o $@ ${OBJS} driver.o ${LIBS}
 
-snf.x: ${OBJS} driver2.o
+snf.x: pre_comp ${OBJS} driver2.o
 	${F90} ${LDFLAGS} -o $@ ${OBJS} driver2.o ${LIBS}
 
 .f95.o : 
@@ -101,7 +104,11 @@ snf.x: ${OBJS} driver2.o
 
 CLEAN  = *.o *.mod *.a *.x svn-commit.*
 clean :
+	+$(MAKE) clean -C ../symlib/src
+	+$(MAKE) clean -C ../kgridGen/src
 	rm -f ${CLEAN}
 clobber : 
+	+$(MAKE) clobber -C ../symlib/src
+	+$(MAKE) clobber -C ../kgridGen/src
 	rm -f  ${CLEAN}  *~ \#*
 	make

@@ -69,7 +69,7 @@ CONTAINS
   SUBROUTINE grid_metrics(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
     real(dp), optional, intent(in) :: eps_
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: HNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
@@ -273,7 +273,7 @@ CONTAINS
     real(dp), allocatable, intent(in) :: cand_grids(:,:,:,:)
     real(dp), optional, intent(in) :: eps_
     real(dp), intent(out) :: best_grid(3,3), best_offset(3)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in), allocatable :: cand_HNFs(:,:,:,:)
     integer, intent(out) :: best_HNF(3,3), n_irr
