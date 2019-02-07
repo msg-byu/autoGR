@@ -10,7 +10,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -38,7 +37,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -66,7 +64,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -94,7 +91,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -122,7 +118,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -150,7 +145,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -178,7 +172,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -206,7 +199,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -234,7 +226,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -262,7 +253,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -290,7 +280,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -318,7 +307,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -346,7 +334,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -374,7 +361,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -402,7 +388,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -430,7 +415,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -458,7 +442,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -486,7 +469,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -514,7 +496,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -542,7 +523,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -570,7 +550,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -598,7 +577,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -626,7 +604,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -654,7 +631,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -682,7 +658,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -710,7 +685,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -738,7 +712,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>
@@ -766,7 +739,6 @@
 	<target name="spHNFs" compareto="spHNFs.out"
 		varfile="spHNFs.out" when="each"/>
       </test>
-      <global name="B_vecs" type="real(dp)" modifiers="pointer" dimensions=":,:"/>
       <assignment name="n" value="nfile">
 	<value identifier="nfile" file="n.in.{}"
 	       folder="./tests/spHNFs" rename="n.in"/>

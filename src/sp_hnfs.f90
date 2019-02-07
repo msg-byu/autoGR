@@ -52,7 +52,7 @@ CONTAINS
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -180,7 +180,7 @@ CONTAINS
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -300,7 +300,7 @@ CONTAINS
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -428,7 +428,7 @@ CONTAINS
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -603,7 +603,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -758,7 +758,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -932,7 +932,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -1110,7 +1110,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -1287,7 +1287,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -1463,7 +1463,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -1627,7 +1627,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -1788,7 +1788,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -1947,7 +1947,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -2104,7 +2104,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -2265,7 +2265,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -2431,7 +2431,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -2594,7 +2594,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -2763,7 +2763,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -2938,7 +2938,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -3090,7 +3090,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -3272,7 +3272,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -3436,7 +3436,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -3593,7 +3593,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -3747,7 +3747,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -3905,7 +3905,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -4055,7 +4055,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -4203,7 +4203,7 @@ CONTAINS
        n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
@@ -4354,7 +4354,7 @@ CONTAINS
        spHNFs, grid, n_irr, nhnfs, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
-    real(dp), pointer :: B_vecs(:,:)
+    real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), mult
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
