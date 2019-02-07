@@ -1,9 +1,10 @@
-# GRkgridgen
+# Generate Generalized Regular k-point Grids
 
-`GRkgridgen` is a code that will generate general regular k-point
-grids automatically. It works for all crystals that are on an ideal
-lattice but will occassionally fail on relaxed systems due to rounding
-errors. An update that will fix this known issue is being developed.
+Implementation of an algorithm to generate generalized regular grids
+that have a high symmetry reduction and good packing fraction.  It
+works for all crystals that are on an ideal lattice but will
+occassionally fail on relaxed systems due to rounding errors. An
+update that will fix this known issue is being developed.
 
 ## Compiling the code
 
