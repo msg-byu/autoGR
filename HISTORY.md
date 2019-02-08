@@ -1,6 +1,10 @@
 # Revision History
 
-## Revision 0.6.7 (WS)
+## Revision 0.6.8 (GLWH)
+- Updated `README.md`
+
+
+## Revision 0.6.7 (WSM)
 - Modified the mods in `sphnfs` to compare long ints to long ints so
   the unit tests will run.
 - Fixed logic bug in the `tric` `sphnfs` that the unit tests found.
