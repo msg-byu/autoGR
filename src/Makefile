@@ -68,8 +68,8 @@ endif
 SRC = grid_utils.f90 sp_hnfs.f90 niggli.f90 find_kgrids.f90 control_file.f90
 
 OBJS = ${SRC:.f90=.o} 
-LIBS =  $(LBD2)/libkptgen.a $(LBD1)/libcomparestructs.a $(LBD1)/libutils.a $(LBD1)/libsym.a \
-         $(LBD1)/librational.a $(LBD1)/libcombinatorics.a 
+LIBS =  $(LBD2)/libkptgen.a $(LBD1)/libcomparestructs.a $(LBD1)/libsym.a \
+         $(LBD1)/librational.a $(LBD1)/libcombinatorics.a $(LBD1)/libutils.a
 
 .SUFFIXES :  
 .SUFFIXES :  .f .f90 .f95 .o

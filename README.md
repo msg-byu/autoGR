@@ -3,12 +3,11 @@
 Implementation of an algorithm to generate _generalized regular_ k-point grids. The algorithm searches over many GR grids that meet a specified k-point density and returns the one with the highest high symmetry reduction and a good packing fraction.
 More information can be found in the following references:
 
-* GR on-the-fly paper
-* Wiley's first kpoint paper
-* kpoint folding
-* Moreno and Soler
-* Wisesa...Mueller
-
+* [GR on-the-fly](https://arxiv.org/abs/1902.03257) paper
+* [GR vs MP performance](https://www.sciencedirect.com/science/article/pii/S0927025618304105?via%3Dihub) paper
+* [K-point folding](https://arxiv.org/abs/1809.10261) paper
+* [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler
+* [K-point Server](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.93.155109) by Wisesa, McGill and Mueller.
 
 The algorithm works for all crystal classes but it can occasionally fail when the user-provided structural information is "sloppy" resulting in finite precision errors. An update that will fix this known issue is being developed.
 
@@ -86,3 +85,10 @@ Once `POSCAR` and `KPGEN` file have been provided by the user, the
 `KPOINTS` file can be generated using the `kpoints.x`. The executable
 does not have any optional arguments since all relevant options have
 been included in the `KPGEN` file.
+
+
+## Plots
+
+All the data and scripts used to generate the plots and analysis for
+the * [GR on-the-fly](https://arxiv.org/abs/1902.03257) paper can be
+found in the `paper` folder.
