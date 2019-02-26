@@ -1,0 +1,9 @@
+Server version 2018.02.28. K-point grid has 3 total points and 2 distinct points. Actual minimum periodic distance is 6.906675376040197 Angstroms. Grid includes gamma point. 
+2
+Fractional
+0.00000000000000 0.00000000000000 0.00000000000000 1.0 ! 1
+0.33333333333333 0.33333333333333 1.00000000000000 2.0 ! 2
+Tetrahedra
+2    0.05555555555555555
+6    1   1   2   2   
+12    1   2   2   2   
