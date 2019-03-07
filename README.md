@@ -9,7 +9,7 @@ More information can be found in the following references:
 * [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler
 * [K-point Server](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.93.155109) by Wisesa, McGill and Mueller.
 
-The algorithm works for all crystal classes but it can occasionally fail when the user-provided structural information is "sloppy" resulting in finite precision errors. An update that will fix this known issue is being developed.
+The algorithm works for all crystal classes, but it can fail occasionally when the user-provided structural information is "sloppy", resulting in finite precision errors. An update that will fix this known issue is being developed.
 
 ## Compiling the code
 
@@ -18,6 +18,8 @@ To compile the executable, first clone this repository:
 ```
 git clone --recursive git@github.com:msg-byu/GRkgridgen.git
 ```
+
+(If you have trouble with the recursive cloning, it is probably because you don't have ssh keys set up on github for your local machine. Try this: [Adding a new SSH key to your GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account))
 
 The `--recursive` is required so that the dependent repos are also cloned.
 
