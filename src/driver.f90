@@ -10,21 +10,21 @@ PROGRAM lat_id_driver
 
   real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3), reduced_R(3,3)
   real(dp) :: Rinv(3,3), point(3), eps, best_offset(3)
-  logical :: find_offset
-  integer :: nkpts, i
+  logical :: find_offset, min_kpts
+  integer :: nkpts, i, symm_flag
   integer, allocatable :: at(:)
   real(dp), pointer :: IRKps(:,:)
   real(dp), allocatable :: B_vecs(:,:)
   integer, pointer :: weights(:)
 
-  call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, eps)
+  call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, symm_flag, min_kpts, eps)
   call matrix_inverse(transpose(lat_vecs),r_vecs)
   call minkowski_reduce_basis(r_vecs, reduced_R, eps)
   call find_grid(lat_vecs, nkpts, B_vecs, at, offset, find_offset, grid, best_offset, &
-       eps_=eps)
+       symm_flag_=symm_flag, min_kpts_=min_kpts, eps_=eps)
 
   call generateIrredKpointList(lat_vecs, B_vecs, at, grid, reduced_R, best_offset, &
-       IRKps, weights, eps)
+       IRKps, weights, reps_=eps, symm_=symm_flag)
 
   call mapKptsIntoBZ(r_vecs, IRKps, eps)
 

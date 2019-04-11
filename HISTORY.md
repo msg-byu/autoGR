@@ -1,8 +1,16 @@
 # Revision History
 
+## Revision 0.7.0 (WSM)
+- Added `RMIN` as an input option to determine the number of k-points.
+- Added symmetry options to the inputs that restrict the number of
+  symmetry operations used.
+- Added an option to force the minimum number of k-points be returned.
+- Added code so that if fewer than 500 k-points are wanted then the
+  code will loop over all the grids possible and select the one with the
+  fewest points.
+
 ## Revision 0.6.8 (GLWH)
 - Updated `README.md`
-
 
 ## Revision 0.6.7 (WSM)
 - Modified the mods in `sphnfs` to compare long ints to long ints so

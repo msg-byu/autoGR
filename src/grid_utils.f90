@@ -66,12 +66,15 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="grid" regular="true">The grid from the HNF.</parameter>
-  SUBROUTINE grid_metrics(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grid, rmin, n_irr, eps_)
+  !!<parameter name="symm_flag" regular="true">Flag that indicates the
+  !!symmetries to use.</parameter>
+  SUBROUTINE grid_metrics(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grid, rmin, &
+       n_irr, symm_flag, eps_)
     real(dp), intent(in) :: lat_vecs(3,3)
     real(dp), optional, intent(in) :: eps_
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
-    integer, intent(in) :: HNF(3,3)
+    integer, intent(in) :: HNF(3,3), symm_flag
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
     real(dp), intent(out) :: rmin, grid(3,3)
@@ -104,7 +107,8 @@ CONTAINS
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
     rmin = min(norms(1), norms(2), norms(3))
-    call generateIrredKpointList(lat_vecs, B_vecs, at, grid, R, shift, rdKlist, weights, reps_=eps)
+    call generateIrredKpointList(lat_vecs, B_vecs, at, grid, R, shift, rdKlist, weights, &
+         reps_=eps, symm_=symm_flag)
     n_irr = size(rdKlist,1)
 
   end SUBROUTINE grid_metrics
@@ -267,8 +271,10 @@ CONTAINS
   !!of best_grid</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
+  !!<parameter name="symm_flag" regular="true">Flag that indicates the
+  !!symmetries to use.</parameter>
   SUBROUTINE grid_selection(lat_vecs, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-       offsets, best_grid, best_HNF, best_offset, n_irr, eps_)
+       offsets, best_grid, best_HNF, best_offset, n_irr, symm_flag, eps_)
     real(dp), intent(in) :: lat_vecs(3,3), offsets(:,:)
     real(dp), allocatable, intent(in) :: cand_grids(:,:,:,:)
     real(dp), optional, intent(in) :: eps_
@@ -277,7 +283,7 @@ CONTAINS
     integer, intent(inout) :: at(:)
     integer, intent(in), allocatable :: cand_HNFs(:,:,:,:)
     integer, intent(out) :: best_HNF(3,3), n_irr
-    integer, intent(in) :: ngrids(2)
+    integer, intent(in) :: ngrids(2), symm_flag
 
     real(dp) :: temp_grid(3,3), grid_offsets(sum(ngrids),3)
     integer :: i, n_irreducible(sum(ngrids)), n_ir_min(1), count, j
@@ -304,7 +310,8 @@ CONTAINS
        temp_grid = cand_grids(:,:,i,1)
        do j=1, size(offsets,1)
           call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-               offsets(j,:), rdKlist, weights, eps, err_=err)
+               offsets(j,:), rdKlist, weights, reps_=eps, symm_=symm_flag, &
+               err_=err)
           if (err==0) then
              if (n_irreducible(i) == 0) then
                 n_irreducible(i) = size(rdKlist,1)
@@ -322,7 +329,8 @@ CONTAINS
        temp_grid = cand_grids(:,:,i,2)
        do j=1, size(offsets, 1)
           call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-               offsets(j,:), rdKlist, weights, eps, err_=err)
+               offsets(j,:), rdKlist, weights, reps_=eps, symm_=symm_flag, &
+               err_=err)
           if (err==0) then
              if (n_irreducible(i) == 0) then
                 n_irreducible(count+i) = size(rdKlist,1)
