@@ -9,7 +9,7 @@ More information can be found in the following references:
 * [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler
 * [K-point Server](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.93.155109) by Wisesa, McGill and Mueller.
 
-The algorithm works for all crystal classes but it can occasionally fail when the user-provided structural information is "sloppy" resulting in finite precision errors. An update that will fix this known issue is being developed.
+The algorithm works for all crystal classes, but it can fail occasionally when the user-provided structural information is "sloppy", resulting in large finite precision errors. An update that will fix this known issue is being developed.
 
 ## Compiling the code
 
@@ -18,6 +18,8 @@ To compile the executable, first clone this repository:
 ```
 git clone --recursive git@github.com:msg-byu/GRkgridgen.git
 ```
+
+(If you have trouble with the recursive cloning, it is probably because you don't have ssh keys set up on github for your local machine. Try this: [Adding a new SSH key to your GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).)
 
 The `--recursive` is required so that the dependent repos are also cloned.
 
@@ -55,7 +57,7 @@ the grid:
 Only one of these keywords needs to be specified for the code to run.
 
 If a specific offset for the k-point grid is desired then the
-following keyword can be used. If this is not specified, the code will select the best shift. If an unshifted grid is desired, specify a zero shift, `SHIFT= 0.0 0.0 0.0`.
+following optional keyword can be used. If this is not specified, the code will select the best shift. If an unshifted grid is desired, specify a zero shift, `SHIFT= 0.0 0.0 0.0`.
 
 - `SHIFT`: the shift away from the origin for the k-point grid
   (expressed in fractions of the reciprocal lattice vectors).
@@ -63,7 +65,7 @@ following keyword can be used. If this is not specified, the code will select th
 
 ### Example input files
 
-To generate a grid with a k-point density of 5000 k-points/Å^3 and have the code determine the best offset,
+To generate a grid with a k-point density of 5000 k-points/Å<sup>^-3</sup> and have the code determine the best offset,
 the `KPGEN` input file would be:
 
 ```
