@@ -23,6 +23,7 @@ CONTAINS
     character(300) :: line
     integer :: count, j, i, z
     integer, allocatable :: concs(:)
+    real(dp), lat_inv(3,3)
 
     open(1,file="POSCAR",status="old")
 
@@ -39,6 +40,13 @@ CONTAINS
        read(1,*) atom_base(:,i)
     end do
     close(1)
+    if (('c'==adjustl(trim(line))(1)) .or. ('C'==adjustl(trim(line))(1)) &
+         .or. ('k'==adjustl(trim(line))(1)) .or.('K'==adjustl(trim(line))(1))) then
+       call matrix_inv(lat_param*lattice,lat_inv)
+       do i=1, sum(concs)
+          atom_base(:,i) = matmul(lat_inv, atom_base(:,i))
+       end do
+    end if
 
     z = 1
     do i=1,count
@@ -74,12 +82,12 @@ CONTAINS
   !!selected rather than the grid with the best folding
   !!ratio.</parameter>
   SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, &
-       find_offset, symm_flag, min_kpts_flag, eps)
+       find_offset, symm_flag, min_kpts_flag, delint_flag, eps)
     real(dp), intent(out) :: lattice(3,3), offset(3)
     real(dp), allocatable :: atom_base(:,:)
     integer, allocatable, intent(out) :: atom_type(:)
     integer, intent(out) :: nkpts, symm_flag
-    logical, intent(out) :: find_offset, min_kpts_flag
+    logical, intent(out) :: find_offset, min_kpts_flag, delint_flag
     real(dp), intent(out) :: eps
     
     ! Input related variables
@@ -113,6 +121,7 @@ CONTAINS
 
     symm_flag = 0
     min_kpts_flag = .false.
+    delint_flag = .true.
     do while (ios == 0)
        read(fh, '(A)', iostat=ios) buffer
        if (ios == 0) then
@@ -148,6 +157,10 @@ CONTAINS
           case ('EPS')
              read(buffer, *, iostat=ios) eps
              def_eps = .False.
+          case ('DELINT')
+             if ("FALSE" == adjustl(trim(buffer))) then
+                delint_flag = .false.
+             end if             
           case ('USE_SYMMETRY')
              if ("NONE" == adjustl(trim(buffer))) then
                 symm_flag = 3

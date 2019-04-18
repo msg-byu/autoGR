@@ -4,20 +4,27 @@ PROGRAM lat_id_driver
   use control_file, only: get_inputs
   use vector_matrix_utilities, only: matrix_inverse, determinant, minkowski_reduce_basis
   use numerical_utilities, only: equal
+  use delinter, only: delint
   use num_types
 
   implicit none
 
   real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3), reduced_R(3,3)
   real(dp) :: Rinv(3,3), point(3), eps, best_offset(3)
-  logical :: find_offset, min_kpts
+  logical :: find_offset, min_kpts, delint_flag
   integer :: nkpts, i, symm_flag
   integer, allocatable :: at(:)
   real(dp), pointer :: IRKps(:,:)
   real(dp), allocatable :: B_vecs(:,:)
   integer, pointer :: weights(:)
 
-  call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, symm_flag, min_kpts, eps)
+  call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, symm_flag, min_kpts, &
+       delint_flag, eps)
+
+  if (delint_flag) then
+     
+  end if
+  
   call matrix_inverse(transpose(lat_vecs),r_vecs)
   call minkowski_reduce_basis(r_vecs, reduced_R, eps)
   call find_grid(lat_vecs, nkpts, B_vecs, at, offset, find_offset, grid, best_offset, &
