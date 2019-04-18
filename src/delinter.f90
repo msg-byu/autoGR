@@ -54,7 +54,7 @@ CONTAINS
     real(dp), intent(in) :: vec1(3), vec2(3)
     real(dp), intent(out) :: ang
 
-    ang = dot_product(vec1, vec2)/(norm(vec1,vec1)*norm(vec2,vec2))    
+    ang = dot_product(vec1, vec2)/(sqrt(dot_product(vec1,vec1))*sqrt(dot_product(vec2,vec2)))
   end SUBROUTINE cosangs
   
   !!<summary>Converts crystall basis to cell parameters.</summary>
@@ -67,10 +67,10 @@ CONTAINS
     real(dp), intent(out) :: params(6)
 
     integer :: i
-    real(dp) :: alhpa, beta, gamma
+    real(dp) :: alpha, beta, gamma
 
     do i=1,3
-       params(i) = norm(vecs(:,i),vecs(:,i))
+       params(i) = sqrt(dot_product(vecs(:,i),vecs(:,i)))
     end do
 
     call cosangs(vecs(:,2), vecs(:,3), alpha)
@@ -89,10 +89,12 @@ CONTAINS
   !!number.</parameter>
   !!<parameter name="out_params" regular="true">The output symmetrized
   !!parameters.</parameter>
-  SUBROUTINE symmetrize(in_params, case, out_params)
+  !!<parameter name="eps" regular="true">Floating point tolerance.</parameter>
+  SUBROUTINE symmetrize(in_params, case, out_params, eps)
     real(dp), intent(in) :: in_params(6)
     integer, intent(in) :: case
     real(dp), intent(out) :: out_params(6)
+    real(dp), intent(in) :: eps
 
     real(dp) :: a0, b0, c0, alpha0, beta0, gamma0
     real(dp) :: a, b, c, alpha, beta, gamma
@@ -105,7 +107,7 @@ CONTAINS
        a = temp
        b = temp
        c = temp
-       alhpa = pi/3.0_dp
+       alpha = pi/3.0_dp
        beta= pi/3.0_dp
        gamma = pi/3.0_dp
     else if ((case==2) .or. (case==4)) then
@@ -156,7 +158,7 @@ CONTAINS
        a = temp
        b = temp
        c = temp
-       alpha = acos((((a**2+b**2)/2.0_dp)-cos(gamm0)*a*c-cos(beta0)*a*b)/(b*c))
+       alpha = acos((((a**2+b**2)/2.0_dp)-cos(gamma0)*a*c-cos(beta0)*a*b)/(b*c))
        beta = beta0
        gamma = gamma0
     else if (case==9) then
@@ -289,7 +291,7 @@ CONTAINS
        c = temp
        beta = acos(-(a*a)/(3*a*c))
        gamma = acos(-(a*a)/(3*a*b))
-       alpha = acos(((a*a+b*b)2.0_dp -cos(gamma)*a*c-cos(beta)*a*b)/(b*c))
+       alpha = acos(((a*a+b*b)*2.0_dp -cos(gamma)*a*c-cos(beta)*a*b)/(b*c))
     else if (case==26) then
        a = a0
        b = b0
@@ -436,9 +438,9 @@ CONTAINS
   !!<parameter name="eps_" regular="true">The floating point
   !!tollerance.</parameter>
   SUBROUTINE delint(in_vecs, case, out_vecs, eps_)
-    real(dp), intent(in) :: in_vecs
+    real(dp), intent(in) :: in_vecs(3,3)
     integer, intent(in) :: case
-    real(dp), intent(out) :: out_vecs
+    real(dp), intent(out) :: out_vecs(3,3)
     real(dp), optional, intent(in) :: eps_
 
     real(dp) :: eps
@@ -446,7 +448,7 @@ CONTAINS
     real(dp) :: rot_test(3,3), cb_inv(3,3), ident(3,3), c_params(6)
     real(dp) :: fixed_basis(3,3)
 
-    ident = reshape((/1.0_dp,0.0_dp,0.0_dp, 0.0_dp,1.0_dp,0.0_dp, 0.0_dp,0.0_dp,1.0_dpt/),(/3,3/))
+    ident = reshape((/1.0_dp,0.0_dp,0.0_dp, 0.0_dp,1.0_dp,0.0_dp, 0.0_dp,0.0_dp,1.0_dp/),(/3,3/))
 
     if (present(eps_)) then
        eps = eps_
@@ -458,17 +460,17 @@ CONTAINS
     call cell2basis(in_params, canonical_basis)
     call matrix_inverse(canonical_basis, cb_inv)
     
-    rot_mat = matmul(in_vecs, bc_inv)
-    rot_test = matmul(rot, transpose(rot))
+    rot_mat = matmul(in_vecs, cb_inv)
+    rot_test = matmul(rot_mat, transpose(rot_mat))
     if (.not. equal(rot_test, ident, eps)) then
        write(*,*) "Error generating rotation matrix in delinter."
        stop
     end if
 
-    call symmetrize(in_params, case, c_params)
+    call symmetrize(in_params, case, c_params, eps)
     call cell2basis(c_params, fixed_basis)
 
-    out_vecs = matmul(rot, fixed_basis)
+    out_vecs = matmul(rot_mat, fixed_basis)
     
   end SUBROUTINE delint
   

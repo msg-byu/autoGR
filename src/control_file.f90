@@ -23,7 +23,7 @@ CONTAINS
     character(300) :: line
     integer :: count, j, i, z
     integer, allocatable :: concs(:)
-    real(dp), lat_inv(3,3)
+    real(dp) :: lat_inv(3,3)
 
     open(1,file="POSCAR",status="old")
 
@@ -40,9 +40,10 @@ CONTAINS
        read(1,*) atom_base(:,i)
     end do
     close(1)
-    if (('c'==adjustl(trim(line))(1)) .or. ('C'==adjustl(trim(line))(1)) &
-         .or. ('k'==adjustl(trim(line))(1)) .or.('K'==adjustl(trim(line))(1))) then
-       call matrix_inv(lat_param*lattice,lat_inv)
+    line = adjustl(trim(line))
+    if (('c'==line(:1)) .or. ('C'==line(:1)) &
+         .or. ('k'==line(:1)) .or.('K'==line(:1))) then
+       call matrix_inverse(lat_param*lattice,lat_inv)
        do i=1, sum(concs)
           atom_base(:,i) = matmul(lat_inv, atom_base(:,i))
        end do

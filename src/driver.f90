@@ -19,7 +19,7 @@ PROGRAM lat_id_driver
   real(dp), allocatable :: B_vecs(:,:)
   integer, pointer :: weights(:)
   real(dp) :: Nu(3,3), No(3,3), O(3,3)
-  integer :: case, Cu(3,3), Co(3,3), s_range, i
+  integer :: case, Cu(3,3), Co(3,3), s_range
 
   call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, symm_flag, min_kpts, &
        delint_flag, eps)
@@ -32,12 +32,12 @@ PROGRAM lat_id_driver
      write(5,*) "Delinted POSCAR"
      write(5,*) 1
      do i=1,3
-        write(5,'3(F16.6,A1)') lat_vecs(:,i)
+        write(5,'(F16.6,A1,F16.6,A1,F16.6,A1)') lat_vecs(:,i)
      end do
      write(5,*) size(B_vecs,2)
      write(5,*) "Direct"
      do i=1,size(B_vecs,2)
-        write(5, '3(F16.6, A1)') B_vecs(:,i)
+        write(5, '(F16.6, A1,F16.6,A1,F16.6,A1)') B_vecs(:,i)
      end do
      close(5)        
   end if
