@@ -546,17 +546,17 @@ CONTAINS
     end if
 
     if (count > 0) then
-       if ((.not. min_kpts) .and. (kpd > 500)) then
-          allocate(ratio(count))
-          do i=1, count
-             ratio(i) = real(n_irr_kp(i),dp)/real(nt_kpts(i),dp)
-          end do
+       allocate(ratio(count))
+       do i=1, count
+          ratio(i) = real(n_irr_kp(i),dp)/real(nt_kpts(i),dp)
+       end do
 
+       if ((.not. min_kpts) .and. (kpd > 500)) then
           min_kpn_loc = MINLOC(ratio)
           best_grid = grids(:,:, min_kpn_loc(1))
           best_offset = grid_offsets(min_kpn_loc(1),:)
        else
-          min_kpn_loc = MINLOC(n_irr_kp)
+          min_kpn_loc = MINLOC(n_irr_kp, n_irr_kp > 0)
           best_grid = grids(:,:, min_kpn_loc(1))
           best_offset = grid_offsets(min_kpn_loc(1),:)
        end if
@@ -567,7 +567,6 @@ CONTAINS
 
     if ((symm_flag == 0) .or. (symm_flag == 1)) then
        call get_spaceGroup(lat_vecs, at, B_vecs, sg_ops, sg_fract, .true., eps)
-
        if (size(sg_ops, 3)*0.7 > 1.0_dp/ratio(min_kpn_loc(1))) then
           write(*,'("Folding ratio is only: ", (F1.3), " when it should be closer to: " F4.3)') ratio(min_kpn_loc), 1.0_dp/size(sg_ops,3)
        end if

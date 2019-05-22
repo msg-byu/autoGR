@@ -34,6 +34,10 @@ CONTAINS
     end do
     read(1,'(a300)') line
     call parse_line_for_numbers(line,count,concs)
+    if (count==0) then
+       read(1,'(a300)') line
+       call parse_line_for_numbers(line,count,concs)
+    end if
     allocate(atom_type(sum(concs)), atom_base(3,sum(concs)))
     read(1,'(a300)') line
     do i=1,sum(concs)

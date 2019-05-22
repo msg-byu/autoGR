@@ -23,7 +23,6 @@ PROGRAM lat_id_driver
 
   call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, symm_flag, min_kpts, &
        delint_flag, eps)
-
   if (delint_flag) then
      call system("mv POSCAR POSCAR_orig")
      call id_cell(lat_vecs, Nu, Cu, O, No, Co, case, s_range, eps_=eps)
@@ -32,14 +31,14 @@ PROGRAM lat_id_driver
      write(5,*) "Delinted POSCAR"
      write(5,*) 1
      do i=1,3
-        write(5,'(F16.6,A1,F16.6,A1,F16.6,A1)') lat_vecs(:,i)
+        write(5,'(F16.6, F16.6, F16.6)') lat_vecs(:,i)
      end do
      write(5,*) size(B_vecs,2)
      write(5,*) "Direct"
      do i=1,size(B_vecs,2)
-        write(5, '(F16.6, A1,F16.6,A1,F16.6,A1)') B_vecs(:,i)
+        write(5, '(F16.6, F16.6, F16.6)') B_vecs(:,i)
      end do
-     close(5)        
+     close(5)
   end if
   
   call matrix_inverse(transpose(lat_vecs),r_vecs)

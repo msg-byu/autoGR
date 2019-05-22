@@ -1,5 +1,12 @@
 # Revision History
 
+## Revision 0.7.1 (WSM)
+- Added a check for new POSCAR formats.
+- Fixed un-initialized variables in delinter.
+- Fixed delinter POSCAR writing formats.
+- Fixed allocation of ratio array for fining grids with the fewest
+  k-points.
+
 ## Revision 0.7.0 (WSM)
 - Added `RMIN` as an input option to determine the number of k-points.
 - Added symmetry options to the inputs that restrict the number of

@@ -102,6 +102,13 @@ CONTAINS
 
     pi = 3.1415926535897931_dp
 
+    a0 = in_params(1)
+    b0 = in_params(2)
+    c0 = in_params(3)
+    alpha0 = in_params(4)
+    beta0 = in_params(5)
+    gamma0 = in_params(6)
+    
     if (case==1) then
        temp = (a0+b0+c0)/3.0_dp
        a = temp
@@ -425,6 +432,13 @@ CONTAINS
           alpha = acos(temp/(b*c))
        end if
     end if
+
+    out_params(1) = a
+    out_params(2) = b
+    out_params(3) = c
+    out_params(4) = alpha
+    out_params(5) = beta
+    out_params(6) = gamma
   end SUBROUTINE symmetrize
   
   !!<summary>Fixes a POSCAR so that it perfectly matches the expected
