@@ -92,5 +92,5 @@ been included in the `KPGEN` file.
 ## Plots
 
 All the data and scripts used to generate the plots and analysis for
-the * [GR on-the-fly](https://arxiv.org/abs/1902.03257) paper can be
+the [Generalized Regular Grids On-The-Fly](https://arxiv.org/abs/1902.03257) paper can be
 found in the `paper` folder.
