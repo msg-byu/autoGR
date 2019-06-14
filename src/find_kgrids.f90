@@ -517,6 +517,7 @@ CONTAINS
        end if
     else
        a_kpd = kpd
+       s_range = 5
        allocate(sp_hnfs(3,3,s_range), n_irr_kp(s_range), nhnfs(s_range))
        allocate(grids(3,3,s_range), nt_kpts(s_range))
        allocate(grid_offsets(s_range,3))
@@ -527,7 +528,7 @@ CONTAINS
        grids = 0
        count = 0
        mult = 1
-       do while ((count < 5) .or. ((count >= 5) .and. (a_kpd-kpd < s_range)))
+       do while (a_kpd-kpd < s_range)
           call tric_31_44(a_kpd, No, Nu, Co, Cu, O, lat_vecs, B_vecs, at, mult, offsets, &
                best_offset, temp_hnfs, temp_grid, temp_nirr, temp_nhnfs, symm_flag, &
                eps_=eps)
@@ -567,12 +568,12 @@ CONTAINS
 
     if ((symm_flag == 0) .or. (symm_flag == 1)) then
        call get_spaceGroup(lat_vecs, at, B_vecs, sg_ops, sg_fract, .true., eps)
-       if (size(sg_ops, 3)*0.7 > 1.0_dp/ratio(min_kpn_loc(1))) then
-          write(*,'("Folding ratio is only: ", (F1.3), " when it should be closer to: " F4.3)') ratio(min_kpn_loc), 1.0_dp/size(sg_ops,3)
+       if ((size(sg_ops, 3)*0.7 > 1.0_dp/ratio(min_kpn_loc(1))) .and. (kpd > 500)) then
+          write(*,'("Folding ratio is only: ", (F4.3), " when it should be closer to: " F4.3)') ratio(min_kpn_loc), 1.0_dp/size(sg_ops,3)
        end if
     else if (symm_flag == 2) then
-       if (1.4 > (1.0_dp/ratio(min_kpn_loc(1)))) then
-          write(*,'("Folding ratio is only: ", (F1.3), " when it should be closer to: " F4.3)') ratio(min_kpn_loc), 1.0_dp/2
+       if ((1.4 > (1.0_dp/ratio(min_kpn_loc(1)))) .and. (kpd > 500))then
+          write(*,'("Folding ratio is only: ", (F4.3), " when it should be closer to: " F4.3)') ratio(min_kpn_loc), 1.0_dp/2
        end if
     end if
     
