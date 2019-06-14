@@ -397,6 +397,7 @@ CONTAINS
        alpha = acos(-(b*b)/(2*b*c))
        beta = acos(-(a*a)/(2*a*c))
        gamma = pi/2.0_dp
+              
     else if (case==41) then
        a = a0
        b = b0
@@ -461,6 +462,7 @@ CONTAINS
     real(dp) :: in_params(6), canonical_basis(3,3), rot_mat(3,3)
     real(dp) :: rot_test(3,3), cb_inv(3,3), ident(3,3), c_params(6)
     real(dp) :: fixed_basis(3,3)
+    integer :: i
 
     ident = reshape((/1.0_dp,0.0_dp,0.0_dp, 0.0_dp,1.0_dp,0.0_dp, 0.0_dp,0.0_dp,1.0_dp/),(/3,3/))
 
@@ -483,7 +485,6 @@ CONTAINS
 
     call symmetrize(in_params, case, c_params, eps)
     call cell2basis(c_params, fixed_basis)
-
     out_vecs = matmul(rot_mat, fixed_basis)
     
   end SUBROUTINE delint

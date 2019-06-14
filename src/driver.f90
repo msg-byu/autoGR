@@ -23,34 +23,39 @@ PROGRAM lat_id_driver
 
   call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, symm_flag, min_kpts, &
        delint_flag, eps)
-  if (delint_flag) then
-     call system("mv POSCAR POSCAR_orig")
-     call id_cell(lat_vecs, Nu, Cu, O, No, Co, case, s_range, eps_=eps)
-     call delint(lat_vecs, case, lat_vecs, eps_=eps)
-     open(5, file="POSCAR")
-     write(5,*) "Delinted POSCAR"
-     write(5,*) 1
-     do i=1,3
-        write(5,'(F16.6, F16.6, F16.6)') lat_vecs(:,i)
-     end do
-     write(5,*) size(B_vecs,2)
-     write(5,*) "Direct"
-     do i=1,size(B_vecs,2)
-        write(5, '(F16.6, F16.6, F16.6)') B_vecs(:,i)
-     end do
-     close(5)
-  end if
-  
+
+!  if (delint_flag) then
+!     print *, "H2.1"
+!     call system("mv POSCAR POSCAR_orig")
+!     print *, "H2.2"
+!     call id_cell(lat_vecs, Nu, Cu, O, No, Co, case, s_range, eps_=eps)
+!     print *, "H2.3", case
+!     call delint(lat_vecs, case, lat_vecs, eps_=eps)
+!     print *, "H2.4"
+!     open(5, file="POSCAR")
+!     write(5,*) "Delinted POSCAR"
+!     write(5,*) 1
+!     do i=1,3
+!        write(5,'(F16.6, F16.6, F16.6)') lat_vecs(:,i)
+!     end do
+!     write(5,*) size(B_vecs,2)
+!     write(5,*) "Direct"
+!     do i=1,size(B_vecs,2)
+!        write(5, '(F16.6, F16.6, F16.6)') B_vecs(:,i)
+!     end do
+!     close(5)
+!  end if
+
   call matrix_inverse(transpose(lat_vecs),r_vecs)
   call minkowski_reduce_basis(r_vecs, reduced_R, eps)
+  
   call find_grid(lat_vecs, nkpts, B_vecs, at, offset, find_offset, grid, best_offset, &
        symm_flag_=symm_flag, min_kpts_=min_kpts, eps_=eps)
 
   call generateIrredKpointList(lat_vecs, B_vecs, at, grid, reduced_R, best_offset, &
        IRKps, weights, reps_=eps, symm_=symm_flag)
-
   call mapKptsIntoBZ(r_vecs, IRKps, eps)
-
+  
   open(4,file="KPOINTS")
   write(4,'(A69, I12, A1, I6)')"Dynamic K-point generation: number of irreducible / number reducible: ", size(IRKps,1), '/', sum(weights)
   write(4,*) size(IRKps,1)
