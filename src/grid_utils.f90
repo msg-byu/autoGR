@@ -130,6 +130,8 @@ CONTAINS
   !!<parameter name="rmin" regular="true">The rmin for these grids.</parameter>
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
+  !!<parameter name="pac_limit_" regular="true">Minimal packing
+  !!fraction grid must meet.</parameter>
   !!<parameter name="grids" regular="true">A list of grids with the best
   !!r_min.</parameter>
   !!<parameter name="best_hnfs" regular="true">The HNFs for the grids with
@@ -137,8 +139,7 @@ CONTAINS
   !!<parameter name="ngrids" regular="true">The number of grids
   !!currently stored in the list of grids.</parameter>
   SUBROUTINE compare_grids(HNF, No, Nu, Co, Cu, O, grids, rmin, &
-       best_HNFs, ngrids, eps_)
-    real(dp), optional, intent(in) :: eps_
+       best_HNFs, ngrids, pac_limit_, eps_)
     integer, intent(in) :: HNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
@@ -146,6 +147,7 @@ CONTAINS
     real(dp), allocatable, intent(inout) :: grids(:,:,:,:)
     integer, intent(inout) :: ngrids(2)
     integer, allocatable, intent(inout) :: best_HNFs(:,:,:,:)
+    real(dp), optional, intent(in) :: eps_, pac_limit_
 
     real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3)
     real(dp) :: eps
@@ -155,12 +157,17 @@ CONTAINS
     real(dp) :: pi, pac_limit, pac_frac
 
     pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164_dp
-    pac_limit = 0.3_dp
     
     if (present(eps_)) then
        eps = eps_
     else
        eps = 1E-3
+    end if
+
+    if (present(eps_)) then
+       pac_limit = pac_limit_
+    else
+       pac_limit = 0.3_dp
     end if
 
     shift = 0.0_dp

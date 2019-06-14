@@ -4480,7 +4480,7 @@ CONTAINS
                    spHNFs(:,:,1) = spHNFs(:,:,1)*mult
                    call compare_grids(spHNFs(:,:,1), No, Nu, &
                         Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                        ngrids, eps)
+                        ngrids, pac_limit_=0.5_dp, eps_=eps)
                 end if
              enddo
           enddo
