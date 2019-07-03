@@ -1,5 +1,12 @@
 # Revision History
 
+## Revision 0.7.2 (WSM)
+- Moved the location of code that selects possible offsets.
+- Changed the code so that it searches for offsets based off the grid
+  generating vectors and not the parent lattic.
+- Moved space group generating to earlier in the code to reduce number
+  of calls to the subroutine.
+
 ## Revision 0.7.1 (WSM)
 - Added a check for new POSCAR formats.
 - Fixed un-initialized variables in delinter.
