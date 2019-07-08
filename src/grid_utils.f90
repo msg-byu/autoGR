@@ -502,6 +502,15 @@ CONTAINS
           allocate(offsets(1,3))
           offsets(1,:) = offset
        else
+          allocate(offsets(8,3))
+          offsets(1,:) = (/0.0_dp, 0.0_dp, 0.0_dp/)
+          offsets(2,:) = (/0.0_dp, 0.0_dp, 0.5_dp/)       
+          offsets(3,:) = (/0.0_dp, 0.5_dp, 0.0_dp/)       
+          offsets(4,:) = (/0.5_dp, 0.0_dp, 0.0_dp/)       
+          offsets(5,:) = (/0.5_dp, 0.5_dp, 0.0_dp/)       
+          offsets(6,:) = (/0.5_dp, 0.0_dp, 0.5_dp/)       
+          offsets(7,:) = (/0.0_dp, 0.5_dp, 0.5_dp/)       
+          offsets(8,:) = (/0.5_dp, 0.5_dp, 0.5_dp/)       
           call get_offsets(lat_id, temp_grid, eps, offsets)
        end if
        
