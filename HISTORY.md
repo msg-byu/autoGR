@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.7.3 (WSM)
+- Changed search domains to adapt with grid size.
+- Changed offests to just be permutations of 0.5 and 0.
+
 ## Revision 0.7.2 (WSM)
 - Moved the location of code that selects possible offsets.
 - Changed the code so that it searches for offsets based off the grid
