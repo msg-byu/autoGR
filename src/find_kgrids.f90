@@ -148,7 +148,7 @@ CONTAINS
     integer :: Cu(3,3), Co(3,3), min_kpn_loc(1), temp_nirr, temp_nhnfs, s_range
     real(dp) :: eps
     logical :: sym_check, found_min, min_kpts
-    integer :: pg_size, symm_flag
+    integer :: pg_size, symm_flag, count_range
 
     real(dp), allocatable ::  sg_ops(:,:,:), sg_fract(:,:)
     
@@ -170,7 +170,7 @@ CONTAINS
 
     call id_cell(lat_vecs, Nu, Cu, O, No, Co, lat_id, s_range, eps_=eps)
     count = 0
-
+    print *, "lat_id", lat_id
     call check_sym(lat_vecs, lat_id, eps, sym_check, pg_size)
     if (.not. sym_check) then
        write(*,*) "The point group doesn't match the niggli basis id."
@@ -364,7 +364,14 @@ CONTAINS
        end if
     else
        a_kpd = kpd
-       s_range = 50
+       if (size(sg_ops, 3) > 4) then
+          s_range = 50
+          count_range = 5
+       else
+          s_range = 5
+          count_range = 2
+       end if
+       
        allocate(sp_hnfs(3,3,s_range), n_irr_kp(s_range), nhnfs(s_range))
        allocate(grids(3,3,s_range), nt_kpts(s_range))
        allocate(grid_offsets(s_range,3))
