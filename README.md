@@ -3,11 +3,11 @@
 Implementation of an algorithm to generate _generalized regular_ k-point grids. The algorithm searches over many GR grids that meet a specified k-point density and returns the one with the highest high symmetry reduction and a good packing fraction.
 More information can be found in the following references:
 
-* [GR on-the-fly](https://arxiv.org/abs/1902.03257) paper
-* [GR vs MP performance](https://www.sciencedirect.com/science/article/pii/S0927025618304105?via%3Dihub) paper
-* [K-point folding](https://arxiv.org/abs/1809.10261) paper
-* [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler
-* [K-point Server](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.93.155109) by Wisesa, McGill and Mueller.
+* [Generalized Regular Grids On-The-Fly](https://arxiv.org/abs/1902.03257) describes the algorithm and method of the code in this repository. It describes how the combinatorial explosion of searching over all possible grids is tamed by generating only symmetry-preserving grids.
+* [Performance of Generalized Regular Grids vs Monkhorst-Pack Grids](https://www.sciencedirect.com/science/article/pii/S0927025618304105?via%3Dihub) using over 7,000 calculations of different unit cells and different metallice elements that GR grids are 60% more efficient than MP grids on average. Supplements the work of  Wisesa, McGill and Mueller (2016) listed below.
+* [Efficient Algorithm For K-Point Folding](https://arxiv.org/abs/1809.10261) discusses in detail an _O(N)_ algorithm for k-point symmetry reduction. This algorithm is essential to enable the on-the-fly method in the paper above.
+* [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler (1992). The original proposal to use Generalized Regular grids to accelerate DFT calculations.
+* [K-point Server](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.93.155109) by Wisesa, McGill and Mueller (2016). The first practical implementation of Moreno and Soler's idea.
 
 The algorithm works for all crystal classes, but it can fail occasionally when the user-provided structural information is "sloppy", resulting in large finite precision errors. An update that will fix this known issue is being developed.
 
@@ -104,5 +104,5 @@ been included in the `KPGEN` file.
 ## Plots
 
 All the data and scripts used to generate the plots and analysis for
-the * [GR on-the-fly](https://arxiv.org/abs/1902.03257) paper can be
+the [Generalized Regular Grids On-The-Fly](https://arxiv.org/abs/1902.03257) paper can be
 found in the `paper` folder.
