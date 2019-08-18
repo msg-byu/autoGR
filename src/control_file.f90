@@ -102,13 +102,12 @@ CONTAINS
     integer :: ios, line_count, pos
     
     ! Control file variables
-    real(dp) :: pi, lkpd, kpd, r_vecs(3,3), r_vol, lat_param, vol
+    real(dp) :: pi, lkpd, kpd, r_vecs(3,3), r_vol, lat_param, vol, rmin
     integer :: kppra
     logical :: def_eps, nkpts_set, def_aeps
 
     ios = 0
     line_count = 0
-    ncores = 0
     pi = 3.1415926535897932385_dp
     find_offset = .True.
     def_eps = .True.
@@ -182,11 +181,6 @@ CONTAINS
           end select
        end if
     end do
-
-    if (ncores == 0) then
-       ncores = 1
-    end if
-    ! call OMP_SET_NUM_THREADS(ncores)       
     
     if (def_eps .eqv. .True.) then
        eps = 1E-3

@@ -297,9 +297,7 @@ CONTAINS
     integer :: Cu(3,3), Co(3,3), min_kpn_loc(1), temp_nirr, temp_nhnfs, s_range
     real(dp) :: eps
     logical :: sym_check, found_min, min_kpts
-    integer :: pg_size, symm_flag, count_range
-
-    real(dp), allocatable ::  sg_ops(:,:,:), sg_fract(:,:)
+    integer :: pg_size, symm_flag
     
     if (present(eps_)) then
        eps = eps_

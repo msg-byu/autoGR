@@ -56,7 +56,7 @@ CONTAINS
     logical, optional, intent(in) :: all_hnfs_
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
-    integer, intent(in) :: Co(3,3), Cu(3,3)
+    integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
