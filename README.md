@@ -52,6 +52,7 @@ the grid:
 - `KPDENSITY`: the desired target k-point density.
 - `KSPACING`: the linear space desired between k-points (same as CASTEP inputs).
 - `KPPRA`: the desired number of k-points per reciprocal atom.
+- `RMIN`: the minimal distance between points in real space desired.
 
 (We recommend `KPDENSITY` or `KSPACING`.)
 Only one of these keywords needs to be specified for the code to run.
@@ -62,6 +63,17 @@ following optional keyword can be used. If this is not specified, the code will 
 - `SHIFT`: the shift away from the origin for the k-point grid
   (expressed in fractions of the reciprocal lattice vectors).
 
+The code's default behavior is to find multiple candidate grids then select the grid that has the best ratio of irreducible points to reducible points. Alternatively the following flag can be used to have the code return the grid that has the fewest number of k-points:
+
+```
+MIN_IRR_KPTS = TRUE
+```
+
+- `MIN_IRR_KPTS`: when set to `TRUE` the grid with the fewest irreducible k-points will be returned.
+
+It is also possible to restrict the symmetry operations used to fold the k-points using the `USE_SYMMETRY' key word.
+
+- `USE_SYMMETRY`: can take the key words `ALL`, `STRUCTURAL`, `TIME_REVERSAL`, `NONE` where each key word indicates the level of symmetry to restrict the symmetry operations used to fold the k-point grid. `All`, the default, indicates that all the symmetry operations of the reciprocal cell should be used, `STRUCTURAL` indicates that time reversal symmetry should be excluded, `TIME_REVERSAL` indicates that the spacial symmetry operations should be ommited and only time reversal symmetry should be used, `NONE` indicates that the grid should not be folded at all.
 
 ### Example input files
 

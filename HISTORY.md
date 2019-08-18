@@ -1,5 +1,13 @@
 # Revision History
 
+## Revision 0.7.4 (WSM)
+- Reverted lots of changes to the initial 0.7.0 release.
+- Disabled delinter for now.
+- Moved offset selection back to original location in `find_grids.f90`.
+- Reverted how offsets are selected.
+- Reverted behavior for cases with fewer number of k-points so that they
+  are not handled differently, this was a mistake.
+
 ## Revision 0.7.3 (WSM)
 - Changed search domains to adapt with grid size.
 - Changed offests to just be permutations of 0.5 and 0.
