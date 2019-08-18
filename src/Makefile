@@ -65,7 +65,7 @@ endif
 #     python irevision.py derivative_structure_generator.f90 version.enum	
 # fi
 
-SRC = grid_utils.f90 sp_hnfs.f90 niggli.f90 find_kgrids.f90 delinter.f90 control_file.f90
+SRC = grid_utils.f90 sp_hnfs.f90 niggli.f90 find_kgrids.f90 control_file.f90
 
 OBJS = ${SRC:.f90=.o} 
 LIBS =  $(LBD2)/libkptgen.a $(LBD1)/libcomparestructs.a $(LBD1)/libsym.a \

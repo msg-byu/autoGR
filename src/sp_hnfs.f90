@@ -41,31 +41,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+  SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
-    integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag, lat_id
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    integer, intent(in) :: Co(3,3), Cu(3,3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     real(dp), allocatable :: cand_grids(:,:,:,:)
@@ -143,8 +138,8 @@ CONTAINS
        cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
        nhnfs = 1
        ngrids = (/1,0/)
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-            find_offset, lat_id, grid, spHNFs, best_offset, n_irr, symm_flag, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, spHNFs, best_offset, n_irr, symm_flag, eps)
     end if
 
   end SUBROUTINE sc_3
@@ -176,31 +171,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     real(dp), allocatable :: cand_grids(:,:,:,:)
@@ -270,8 +260,8 @@ CONTAINS
        cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
        nhnfs = 1
        ngrids = (/1,0/)
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-            find_offset, lat_id, grid, spHNFs, best_offset, n_irr, symm_flag, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, spHNFs, best_offset, n_irr, symm_flag, eps)
     end if
 
   end SUBROUTINE fcc_1
@@ -303,31 +293,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     real(dp), allocatable :: cand_grids(:,:,:,:)
@@ -405,8 +390,8 @@ CONTAINS
        cand_HNFs(:,:,1,1) = temp_HNFs(:,:,1)
        nhnfs = 1
        ngrids = (/1,0/)
-       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-            find_offset, lat_id, grid, spHNFs, best_offset, n_irr, symm_flag, eps)
+       call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+            grid, spHNFs, best_offset, n_irr, symm_flag, eps)
     end if
 
   end SUBROUTINE bcc_5
@@ -438,31 +423,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE hex_12(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE hex_12(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -581,9 +561,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -622,31 +601,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE hex_22(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE hex_22(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -742,9 +716,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -785,31 +758,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE rhom_9_24(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE rhom_9_24(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -923,9 +891,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -967,31 +934,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE rhom_4_2(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE rhom_4_2(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1111,9 +1073,8 @@ CONTAINS
    else
       allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1153,31 +1114,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE st_11(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE st_11(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1296,9 +1252,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1338,31 +1293,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE st_21(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE st_21(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1475,9 +1425,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1522,31 +1471,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE bct_6_7_15_18(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE bct_6_7_15_18(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1652,9 +1596,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1694,31 +1637,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE so_32(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE so_32(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1821,9 +1759,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1863,31 +1800,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE fco_26(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE fco_26(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1987,8 +1919,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2029,31 +1961,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE fco_16(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE fco_16(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2152,9 +2079,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2194,31 +2120,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE bco_19(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE bco_19(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2320,9 +2241,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2363,31 +2283,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE bco_8(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE bco_8(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2494,8 +2409,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2536,31 +2451,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE bco_42(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE bco_42(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2662,8 +2572,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2706,31 +2616,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE baseco_38_13(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE baseco_38_13(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2840,8 +2745,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2882,31 +2787,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE baseco_23(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE baseco_23(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3022,8 +2922,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3064,31 +2964,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE baseco_40(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE baseco_40(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3182,8 +3077,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3223,31 +3118,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE baseco_36(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE baseco_36(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3371,9 +3261,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3413,31 +3302,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE sm_33(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE sm_33(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3541,8 +3425,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3584,31 +3468,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE sm_34_35(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE sm_34_35(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3701,8 +3580,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3748,31 +3627,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE basecm_10_14_17_27_37_39_41(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, &
-       find_offset, lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE basecm_10_14_17_27_37_39_41(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3865,8 +3739,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3909,31 +3783,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE basecm_20_25(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE basecm_20_25(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -4032,8 +3901,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offset, &
-               find_offset, lat_id, grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4074,31 +3943,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE basecm_28(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE basecm_28(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -4187,9 +4051,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4232,31 +4095,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE basecm_29_30(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE basecm_29_30(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -4345,9 +4203,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4388,31 +4245,26 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE basecm_43(n, No, Nu, Co, Cu, O, U, B_vecs, at, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE basecm_43(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
+       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -4502,9 +4354,8 @@ CONTAINS
     else
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4547,37 +4398,30 @@ CONTAINS
   !!<parameter name="eps_" regular="true">Floating point
   !!tolerance.</parameter>
   !!<parameter name="nhnfs" regular="true">The number of HNFs found.</parameter>
-  !!<parameter name="offset" regular="true">The offset for the
-  !!k-points grid.</parameter>
-  !!<parameter name="find_offset" regular="true">'True' if the offset
-  !!needs to be determined by the algorithm.</parameter>
-  !!<parameter name="lat_id" regular="true">The niggli lattice
-  !!id.</parameter>
+  !!<parameter name="offsets" regular="true">The offsets to try with
+  !!the grids.</parameter>
   !!<parameter name="best_offset" regular="true">The offset that works
   !!with the best grid.</parameter>
   !!<parameter name="all_hnfs_" regular="true">True if all HNFs are
   !!wanted.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, offset, find_offset, &
-       lat_id, best_offset, spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_, &
-       space_group_)
-    integer, intent(in) :: n, lat_id
+  SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, offsets, best_offset, &
+       spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+    integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
-    integer, intent(in) :: Co(3,3), Cu(3,3), symm_flag, mult
-    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offset(3)
+    integer, intent(in) :: Co(3,3), Cu(3,3), mult, symm_flag
+    real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
     real(dp), optional, intent(in) :: eps_
-    logical, intent(in) :: find_offset
-    integer, optional, intent(in) :: space_group_
 
     integer, allocatable :: cand_HNFs(:,:,:,:)
     real(dp), allocatable :: cand_grids(:,:,:,:)
-    integer :: ngrids(2), space_group
+    integer :: ngrids(2)
     real(dp) :: rmin(2)
 
     integer, pointer    :: d(:,:) => null()
@@ -4594,12 +4438,6 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(space_group_)) then
-       space_group = space_group_
-    else
-       space_group = 1
-    end if
-    
     if (present(eps_)) then
        eps = eps_
     else
@@ -4642,7 +4480,7 @@ CONTAINS
                    spHNFs(:,:,1) = spHNFs(:,:,1)*mult
                    call compare_grids(spHNFs(:,:,1), No, Nu, &
                         Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                        ngrids, pac_limit_=0.5_dp, eps_=eps, U_=U, space_group_=space_group)
+                        ngrids, eps)
                 end if
              enddo
           enddo
@@ -4652,9 +4490,8 @@ CONTAINS
     if (ihnf /= nhnfs) stop "HNF: not all the matrices were generated...(bug!)"
     if (.not. all_hnfs) then
        if (any(ngrids > 0)) then
-          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-               offset, find_offset, lat_id, grid, best_HNF, best_offset, n_irr, &
-               symm_flag, eps)
+          call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
+               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
