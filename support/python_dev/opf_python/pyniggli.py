@@ -85,7 +85,7 @@ class reduced_cell(object):
         """
 
         mat = np.dot(self.original,self.C)
-
+        print("mat",mat)
         a = mat[:,0]
         b = mat[:,1]
         c = mat[:,2]

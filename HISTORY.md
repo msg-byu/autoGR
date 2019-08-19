@@ -1,8 +1,42 @@
 # Revision History
 
+## Revision 0.7.4 (WSM)
+- Reverted lots of changes to the initial 0.7.0 release.
+- Disabled delinter for now.
+- Moved offset selection back to original location in `find_grids.f90`.
+- Reverted how offsets are selected.
+- Reverted behavior for cases with fewer number of k-points so that they
+  are not handled differently, this was a mistake.
+
+## Revision 0.7.3 (WSM)
+- Changed search domains to adapt with grid size.
+- Changed offests to just be permutations of 0.5 and 0.
+
+## Revision 0.7.2 (WSM)
+- Moved the location of code that selects possible offsets.
+- Changed the code so that it searches for offsets based off the grid
+  generating vectors and not the parent lattic.
+- Moved space group generating to earlier in the code to reduce number
+  of calls to the subroutine.
+
+## Revision 0.7.1 (WSM)
+- Added a check for new POSCAR formats.
+- Fixed un-initialized variables in delinter.
+- Fixed delinter POSCAR writing formats.
+- Fixed allocation of ratio array for fining grids with the fewest
+  k-points.
+
+## Revision 0.7.0 (WSM)
+- Added `RMIN` as an input option to determine the number of k-points.
+- Added symmetry options to the inputs that restrict the number of
+  symmetry operations used.
+- Added an option to force the minimum number of k-points be returned.
+- Added code so that if fewer than 500 k-points are wanted then the
+  code will loop over all the grids possible and select the one with the
+  fewest points.
+
 ## Revision 0.6.8 (GLWH)
 - Updated `README.md`
-
 
 ## Revision 0.6.7 (WSM)
 - Modified the mods in `sphnfs` to compare long ints to long ints so
