@@ -102,7 +102,7 @@ CONTAINS
     lat_trans = transpose(lat_vecs)
     call matrix_inverse(lat_trans, R)
 
-    call minkowski_reduce_basis(grid, reduced_grid, eps)
+    call minkowski_reduce_basis(grid, reduced_grid, eps, aeps_=1E-10_dp)
     norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
@@ -178,7 +178,7 @@ CONTAINS
 
     ! temp_grid_inv = transpose(supercell)
     call matrix_inverse(transpose(supercell), temp_grid)
-    call minkowski_reduce_basis(temp_grid, reduced_grid, eps)
+    call minkowski_reduce_basis(temp_grid, reduced_grid, eps, aeps_=1e-10_dp)
     norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))

@@ -1,5 +1,9 @@
 # Revision History
 
+## Revision 0.7.5
+- Modified code so that when grids are rudeced by the minkowski method
+  a smaller absolute tolerance is used.
+
 ## Revision 0.7.4 (WSM)
 - Reverted lots of changes to the initial 0.7.0 release.
 - Disabled delinter for now.
