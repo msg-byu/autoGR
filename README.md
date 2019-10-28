@@ -16,7 +16,7 @@ The algorithm works for all crystal classes, but it can fail occasionally when t
 To compile the executable, first clone this repository:
 
 ```
-git clone --recursive git@github.com:msg-byu/GRkgridgen.git
+git clone --recursive git@github.com:msg-byu/autoGR.git
 ```
 
 (If you have trouble with the recursive cloning, it is probably because you don't have ssh keys set up on github for your local machine. Try this: [Adding a new SSH key to your GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).)
@@ -26,7 +26,7 @@ The `--recursive` is required so that the dependent repos are also cloned.
 To compile the executable, navigate to the `src` directory:
 
 ```
-cd GRkgridgen/src
+cd autoGR/src
 ```
 
 Compile the executable using:
