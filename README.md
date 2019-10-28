@@ -19,7 +19,17 @@ To compile the executable, first clone this repository:
 git clone --recursive git@github.com:msg-byu/autoGR.git
 ```
 
-(If you have trouble with the recursive cloning, it is probably because you don't have ssh keys set up on github for your local machine. Try this: [Adding a new SSH key to your GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).)
+(If you have trouble with the recursive cloning, it is probably because you don't have ssh keys set up on github for your local machine.
+```
+Cloning into 'autoGR'...
+Warning: Permanently added the RSA host key for IP address '140.82.113.3' to the list of known hosts.
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+Try this: [Adding a new SSH key to your GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).)
 
 The `--recursive` is required so that the dependent repos are also cloned.
 
