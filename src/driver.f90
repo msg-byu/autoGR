@@ -37,7 +37,7 @@ PROGRAM lat_id_driver
   call matrix_inverse(r_vecs,Rinv)
   do i = 1,size(IRKps,1)
      point = matmul(Rinv,IRKps(i,:))
-     write(4,'(F16.14,A1,F16.14,A1,F16.14,A1,I5.1)') point(1), " ",point(2), " ",point(3), " ", weights(i)
+     write(4,'(F32.14,A1,F32.14,A1,F32.14,A1,I5.1)') point(1), " ",point(2), " ",point(3), " ", weights(i)
   end do
 
 end PROGRAM lat_id_driver
