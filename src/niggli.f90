@@ -761,6 +761,11 @@ CONTAINS
        end if
     end if
 
+
+    !! see table 9.2.5.1 in the international tables (pdf in autoGR/support/documents)
+    open(5,file="autoGR.out")
+    write(5,'("Niggli cell id: ",I2)') id
+
     call reduce_cell(O,No,Co,eps_=eps)
 
   end SUBROUTINE id_cell
@@ -768,7 +773,7 @@ CONTAINS
   !!<summary>Matches the numpy allclose function for single floats.</summary>
   !!<parameter name="A" regular="true">The first value to compare.</parameter>
   !!<parameter name="B" regular="true">The second value to compare.</parameter>
-  !!<parameter name="rtol_" regular="true">Relative tollerance.</parameter>
+  !!<parameter name="rtol_" regular="true">Relative tolerance.</parameter>
   !!<parameter name="atol_" regular="true">Absolute tolerance.</parameter>
   Function isclose(A,B,rtol_,atol_)
     logical :: isclose

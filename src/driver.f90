@@ -30,14 +30,20 @@ PROGRAM lat_id_driver
   call mapKptsIntoBZ(r_vecs, IRKps, eps)
 
   open(4,file="KPOINTS")
-  write(4,'(A69, I12, A1, I6)')"Dynamic K-point generation: number of irreducible / number reducible: ", size(IRKps,1), '/', sum(weights)
+  write(4,'("Dynamic K-point generation: irreducible/reducible: ", I12, "/", I6)'), size(IRKps,1), sum(weights)
   write(4,*) size(IRKps,1)
   write(4,*) "Fractional"
+
+  !! Write the folding ratio to the output file.
+  write(5,'("# reducible K-points:  ",I6)') sum(weights)
+  write(5,'("# irreducible K-points:",I6)') size(IRKps,1)
+  write(5,'("folding ratio:  ",F5.2)') real(sum(weights),dp) / size(IRKps,1)
+  close(5)
 
   call matrix_inverse(r_vecs,Rinv)
   do i = 1,size(IRKps,1)
      point = matmul(Rinv,IRKps(i,:))
-     write(4,'(F16.14,A1,F16.14,A1,F16.14,A1,I5.1)') point(1), " ",point(2), " ",point(3), " ", weights(i)
+     write(4,'(3(F15.12,1X),I5)') point(1), point(2), point(3), weights(i)
   end do
 
 end PROGRAM lat_id_driver
