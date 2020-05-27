@@ -657,6 +657,10 @@ CONTAINS
                 s_range = 10
                 O = reshape((/-1.464824_dp,0.464824_dp,1.907413_dp,-0.153209_dp,0.153209_dp, &
                      -2.907413_dp,1.0_dp,1.0_dp,0.0_dp/),(/3,3/))
+             else ! Default to Triclinic (same behavior as VASP)
+                id = 44
+                s_range = 1
+                O = U
              end if
           else
              if (isclose((A/2.0_dp),E,atol_=eps) .and. isclose((2.0_dp*D),F,atol_=eps)) then
