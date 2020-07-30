@@ -461,6 +461,7 @@ CONTAINS
     end if
 
     call reduce_cell(U,Nu,Cu,eps_=eps)
+    !! Integer transformation check TODO
 
     temp_a = Nu(:,1)
     temp_b = Nu(:,2)
@@ -479,121 +480,120 @@ CONTAINS
     end if
 
     id = (-1)
-    if (isclose(A,B,atol_=eps) .and. isclose(B,C,atol_=eps)) then
-       if (positive .eqv. .True.) then
-          if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps)) then
+    if (isclose(A,B,atol_=eps) .and. isclose(B,C,atol_=eps)) then !!lengths the same
+       if (positive .eqv. .True.) then !! all angles acute?
+          if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps)) then !!all angles the same?
              if (isclose((A/2.0_dp),D,atol_=eps)) then
-                id = 1
+                id = 1 !! fcc
                 s_range = 1
                 O = reshape((/0.0_dp, 1.0_dp, 1.0_dp, 1.0_dp, 0.0_dp, 1.0_dp, 1.0_dp, &
                      1.0_dp, 0.0_dp/),(/3,3/))
              else
-                id = 2
+                id = 2 !! Acute Rhombohedral, angles not 90 or 60 but all the same
                 s_range = 25
                 O = reshape((/-1.11652_dp, -0.610985_dp, 0.616515_dp, 0.0_dp, &
                      -1.32288_dp, -0.5_dp, 1.0_dp, 1.32288_dp, 1.5_dp/),(/3,3/))
              end if
           end if
-       else
-          if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps)) then
-             if (isclose(0.0_dp,D,atol_=eps)) then
-                id = 3
+       else !! not acute angles.
+          if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps)) then !! all angles the same.
+             if (isclose(0.0_dp,D,atol_=eps)) then !! all angles close to 0.
+                id = 3 !! simple cubic.
                 s_range = 1
                 O = reshape((/1.0_dp, 0.0_dp, 0.0_dp, 0.0_dp, 1.0_dp, 0.0_dp, 0.0_dp, &
                      0.0_dp, 1.0_dp/),(/3,3/))
              else if (isclose((-A/3.0_dp),D,atol_=eps)) then
-                id = 5
+                id = 5 !! bcc
                 s_range = 1
                 O = reshape((/-1.0_dp, 1.0_dp, 1.0_dp, 1.0_dp, -1.0_dp, 1.0_dp, &
                      1.0_dp, 1.0_dp, -1.0_dp/),(/3,3/))
              else
-                id = 4
+                id = 4 !! Obtuse Rhombohedral, angles not 90 or 60 but all the same
                 s_range = 25
                 O = reshape((/-0.548584_dp, 0.774292_dp, 1.04858_dp, 0.0_dp, &
                      -1.32288_dp, 0.5_dp, 1.0_dp, 1.32288_dp, 0.5_dp/),(/3,3/))
              end if
-          else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
+          else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then !! not all angles the same.
              if (isclose(D,E,atol_=eps)) then
-                id = 6
+                id = 6 !! body-centered Tetragonal
                 s_range = 25
                 O = reshape((/1.80278_dp, -1.47253_dp, 0.762655_dp, 2.80278_dp, &
                      0.13535_dp, -0.791285_dp, 0.80278_dp, -0.47253_dp, 2.762655_dp/),(/3,3/))
              else if (isclose(E,F,atol_=eps)) then
-                id = 7
+                id = 7 !! body-centered Tetragonal
                 s_range = 25
                 O = reshape((/1.95095_dp, 1.19163_dp, 0.879663_dp, 0.0_dp, &
                      2.60788_dp, 0.44606_dp, 0.95095_dp, -0.41625_dp, 2.433603_dp/),(/3,3/))
              else
-                id = 8
+                id = 8 !! body-centered Orthorhombic
                 s_range = 15
                 O = reshape((/1.41144_dp, 0.0885622_dp, -2.0_dp, -0.99868_dp, 2.21232_dp,&
                      1.268178_dp, 3.41012_dp, -1.1237578_dp, -1.268178_dp/),(/3,3/))
              end if
-          end if
-       end if
-    end if
+          end if !! 2|D+E+F|==(A+B)
+       end if !! are the angles acute?
+    end if !! are all the lattice vector lengths the same?
 
-    if (isclose(A,B,atol_=eps) .and. (id==(-1))) then
-       if (positive .eqv. .True.) then
+    if (isclose(A,B,atol_=eps) .and. (id==(-1))) then !! A==B!=C
+       if (positive .eqv. .True.) then !! all angles acute.
           if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps) .and. &
-               isclose((A/2.0_dp),D,atol_=eps)) then
-             id = 9
+               isclose((A/2.0_dp),D,atol_=eps)) then !! all angles the same and 60 degrees.
+             id = 9 !! Hexagonal Rhombohedral
              s_range = 25
              O = reshape((/1.0_dp, 2.0_dp, 2.0_dp, 2.0_dp, 1.0_dp, 2.0_dp, 4.0_dp, &
                   3.0_dp, 3.0_dp/),(/3,3/))
           else if (isclose(D,E,atol_=eps)) then
-             id = 10
+             id = 10 !! base-centered Monoclinic
              s_range = 10
              O = reshape((/1.0_dp, -1.0_dp, 1.0_dp, -1.46391_dp, 0.0_dp, 1.96391_dp, &
                   0.0_dp, 2.0_dp, 0.0_dp/),(/3,3/))
           end if
-       else
-
+       else !! some angles obtuse.
           if (isclose(D,E,atol_=eps) .and. isclose(D,F,atol_=eps) .and. &
-               isclose(0.0_dp,D,atol_=eps)) then
-             id = 11
+               isclose(0.0_dp,D,atol_=eps)) then !! all angles close to 0.
+             id = 11 !! Primitive Tetragonal
              s_range = 25
              O = reshape((/1.0_dp, 0.0_dp, 0.0_dp, 0.0_dp, 1.0_dp, 0.0_dp, 0.0_dp, &
                   0.0_dp, 2.0_dp/),(/3,3/))
-          else if (isclose(D,E,atol_=eps)) then
-             if (isclose(0.0_dp,D,atol_=eps) .and. isclose((-A/2.0_dp),F,atol_=eps)) then
-                id = 12
+          else if (isclose(D,E,atol_=eps)) then !! two angles the same
+             if (isclose(0.0_dp,D,atol_=eps) .and. isclose((-A/2.0_dp),F,atol_=eps)) then !! D==E==0 and F==120
+                id = 12 !! Primitive Hexagonal 120 degrees.
                 s_range = 25
                 O = reshape((/1.0_dp, 0.0_dp, 0.0_dp, 0.5_dp, -0.8660254037844386_dp, &
                      0.0_dp, 0.0_dp, 0.0_dp, 2.0_dp/),(/3,3/))
-             else if (isclose((-A/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,F,atol_= eps)) then
-                id = 15
+             else if (isclose((-A/2.0_dp),D,atol_=eps) .and. isclose(0.0_dp,F,atol_= eps)) then !! D==E==120 and F==0
+                id = 15 !! body-centered Tetragonal
                 s_range = 25
                 O = reshape((/-1.0_dp, -1.0_dp, 2.0_dp, 0.0_dp, -2.0_dp, 0.0_dp, -2.0_dp, &
                      0.0_dp, 0.0_dp/),(/3,3/))
-             else if (isclose(0.0_dp,D,atol_=eps)) then
-                id = 13
+             else if (isclose(0.0_dp,D,atol_=eps)) then !! D==E==0 and no constraint on F.
+                id = 13 !! base-centered Orthorhombic
                 s_range = 15
                 O = reshape((/1.0_dp, 1.0_dp, 1.0_dp, 1.0_dp, -1.0_dp, -1.0_dp, 0.0_dp, &
                      -1.73205_dp, 1.73205_dp/),(/3,3/))
-             else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
-                id = 16
+             else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then !! 2|D+E+F|==(A+B)
+                id = 16 !! face-centered Orthorhombic
                 s_range = 20
                 O = reshape((/1.04442_dp, 1.43973_dp, 1.68415_dp, 0.779796_dp, -1.1789_dp, &
                      1.0_dp, 1.779796_dp, -0.1789_dp, 0.0_dp/),(/3,3/))
              else
-                id = 14
+                id = 14 !! base-centered Monoclinic
                 s_range = 10
                 O = reshape((/-1.0_dp, 1.0_dp, 0.0_dp, 0.5_dp, 0.0_dp, 2.0_dp, 0.0_dp, &
                      -2.0_dp, 0.0_dp/),(/3,3/))
              end if
           else if (isclose((2.0_dp*ABS(D+E+F)),(A+B),atol_=eps)) then
-             id = 17
+             id = 17 !! base-centered Monoclinic
              s_range = 10
              O = reshape((/-1.05387_dp, -1.61088_dp, 1.51474_dp, -0.244302_dp, -2.77045_dp, &
                   0.51474_dp, 1.809568_dp, -0.15957_dp, 0.0_dp/),(/3,3/))
           end if
-       end if
-    end if
+       end if !! acute or obtuse angles.
+    end if !! A==B!=C
 
-    if (isclose(B,C,atol_=eps) .and. (id==(-1))) then
-       if (positive .eqv. .True.) then
-          if (isclose(E,F,atol_=eps)) then
+    if (isclose(B,C,atol_=eps) .and. (id==(-1))) then !! B==C!=A
+       if (positive .eqv. .True.) then !! all angles acute
+          if (isclose(E,F,atol_=eps)) then !! E==F
              if (isclose((A/4.0_dp),D,atol_=eps) .and. isclose((A/2.0_dp),E,atol_=eps)) then
                 id = 18
                 s_range = 25
@@ -647,6 +647,7 @@ CONTAINS
     if (id==(-1)) then
        if (positive .eqv. .True.) then
           if (isclose(E,F,atol_=eps)) then
+             !! Why did we not use isclose()? TODO
              if ((ABS((A/4.0_dp)-D)<= ABS(eps*D)) .and. (ABS((A/2.0_dp)-E)<= ABS(eps*E))) then
                 id = 26
                 s_range = 20
@@ -658,11 +659,11 @@ CONTAINS
                 O = reshape((/-1.464824_dp,0.464824_dp,1.907413_dp,-0.153209_dp,0.153209_dp, &
                      -2.907413_dp,1.0_dp,1.0_dp,0.0_dp/),(/3,3/))
              else ! Default to Triclinic (same behavior as VASP)
-                id = 44
+                id = 31
                 s_range = 1
                 O = U
              end if
-          else
+          else !! E==F
              if (isclose((A/2.0_dp),E,atol_=eps) .and. isclose((2.0_dp*D),F,atol_=eps)) then
                 id = 28
                 s_range = 10
