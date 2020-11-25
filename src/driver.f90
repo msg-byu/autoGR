@@ -30,7 +30,7 @@ PROGRAM lat_id_driver
   call mapKptsIntoBZ(r_vecs, IRKps, eps)
 
   open(4,file="KPOINTS")
-  write(4,'("Dynamic K-point generation: irreducible/reducible: ", I12, "/", I6)') size(IRKps,1), sum(weights)
+  write(4,'("autoGR kpoint generation:",I6," (irred),  ",I8," (total),  ",f5.2," (folding), ",f6.4," (ratio)")') size(IRKps,1), sum(weights), 1._dp/size(IRKps,1)*sum(weights), 1._dp*size(IRKps,1)/sum(weights)
   write(4,*) size(IRKps,1)
   write(4,*) "Fractional"
 
