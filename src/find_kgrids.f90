@@ -302,7 +302,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
     if (present(symm_flag_)) then
        symm_flag = symm_flag_

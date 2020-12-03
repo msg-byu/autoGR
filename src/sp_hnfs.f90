@@ -81,7 +81,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
@@ -211,7 +211,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
@@ -333,7 +333,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
@@ -467,7 +467,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -644,7 +644,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -802,7 +802,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -979,7 +979,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1158,7 +1158,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1337,7 +1337,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1515,7 +1515,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1680,7 +1680,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1844,7 +1844,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2005,7 +2005,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2164,7 +2164,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2327,7 +2327,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2495,7 +2495,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2660,7 +2660,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2831,7 +2831,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3007,7 +3007,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3162,7 +3162,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3346,7 +3346,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3511,7 +3511,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3671,7 +3671,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3827,7 +3827,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3986,7 +3986,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -4138,7 +4138,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -4288,7 +4288,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -4441,7 +4441,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     call get_HNF_diagonals(n,d)

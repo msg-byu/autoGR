@@ -183,7 +183,7 @@ CONTAINS
     end do
     
     if (def_eps .eqv. .True.) then
-       eps = 1E-3
+       eps = 1E-8_dp
     end if
 
     if (nkpts_set .eqv. .False.) stop "Number of kpoints not set. Exiting."
