@@ -17,7 +17,7 @@ Module find_kgrids
 
 CONTAINS
 
-  !!<summary>Returns the possible symmetry preserving offsets given
+  !!<summary>Returns the possible symmetry-preserving offsets given
   !!the niggli number.</summary>
   !!<parameter name="lat_id" regular="true">The niggli lattice
   !!id.</parameter>
@@ -25,7 +25,7 @@ CONTAINS
   !!vectors.</parameter>
   !!<parameter name="eps" regular="true">Relative tolerance for
   !!comparisons.</parameter> 
-  !!<parameter name="offsets" regular="true">The symmetry preserving
+  !!<parameter name="offsets" regular="true">The symmetry-preserving
   !!offsets for this case.</parameter>
   SUBROUTINE get_offsets(lat_id, lattice, eps, offsets)
     integer, intent(in) :: lat_id
@@ -241,7 +241,7 @@ CONTAINS
           status = .False.
        end if
     else
-       write(*,*) "The point group symmetry found doesn't match any know&
+       write(*,*) "The point group symmetry found doesn't match any known&
             & lattice. This is likely due to floating point errors. Please&
             & change your floating point tolerance and try again."
        stop
@@ -321,7 +321,7 @@ CONTAINS
     call check_sym(lat_vecs, lat_id, eps, sym_check, pg_size)
     if (.not. sym_check) then
        write(*,*) "The point group doesn't match the niggli basis id."
-       write(*, '("Nigli basis number: ", i2)') lat_id
+       write(*, '("Niggli basis number: ", i2)') lat_id
        write(*, '("Lattice point group size: ", i2)') pg_size
        write(*,*) "This most likely means there is a rounding error in your POSCAR."
        write(*,*) "We recommend either using a larger `eps` value or adjusting the lattice vectors of your POSCAR to be more precise."
