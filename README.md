@@ -5,9 +5,9 @@ More information can be found in the following references:
 
 * [Generalized Regular Grids On-The-Fly](https://msg.byu.edu/docs/papers/autoGR.pdf) describes the algorithm and method of the code in this repository. It describes how the combinatorial explosion of searching over all possible grids is tamed by generating only symmetry-preserving grids.
 * [Performance of Generalized Regular Grids vs Monkhorst-Pack Grids](https://msg.byu.edu/docs/papers/GR-kpoint-grids-CMS-153-2018.pdf) using over 7,000 calculations of different unit cells and different metallic elements that GR grids are 60% more efficient than MP grids on average. Supplements the work of  Wisesa, McGill and Mueller (2016) listed below.
-* [Efficient Algorithm For K-Point Folding](https://arxiv.org/abs/1809.10261) discusses in detail an _O(N)_ algorithm for k-point symmetry reduction. This algorithm is essential to enable the on-the-fly method in the paper above.
+* [Efficient Algorithm For K-Point Folding](https://msg.byu.edu/docs/papers/kpointFolding-J-Phys-Comm-3-065009.pdf) discusses in detail an _O(N)_ algorithm for k-point symmetry reduction. This algorithm is essential to enable the on-the-fly method in the paper above.
 * [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler (1992). The original proposal to use Generalized Regular grids to accelerate DFT calculations.
-* [K-point Server](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.93.155109) by Wisesa, McGill and Mueller (2016). The first practical implementation of Moreno and Soler's idea.
+* [K-point Server](http://muellergroup.jhu.edu/K-Points.html) by Wisesa, McGill and Mueller (2016). The first practical implementation of Moreno and Soler's idea. Now available offline as well.
 
 The algorithm works for all crystal classes, but it can fail occasionally when the user-provided structural information is "sloppy", resulting in large finite precision errors. An update that will fix this known issue is being developed.
 
