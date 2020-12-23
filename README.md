@@ -4,7 +4,7 @@ Implementation of an algorithm to generate _generalized regular_ k-point grids. 
 More information can be found in the following references:
 
 * [Generalized Regular Grids On-The-Fly](https://msg.byu.edu/docs/papers/autoGR.pdf) describes the algorithm and method of the code in this repository. It describes how the combinatorial explosion of searching over all possible grids is tamed by generating only symmetry-preserving grids.
-* [Performance of Generalized Regular Grids vs Monkhorst-Pack Grids](https://www.sciencedirect.com/science/article/pii/S0927025618304105?via%3Dihub) using over 7,000 calculations of different unit cells and different metallic elements that GR grids are 60% more efficient than MP grids on average. Supplements the work of  Wisesa, McGill and Mueller (2016) listed below.
+* [Performance of Generalized Regular Grids vs Monkhorst-Pack Grids](https://msg.byu.edu/docs/papers/GR-kpoint-grids-CMS-153-2018.pdf) using over 7,000 calculations of different unit cells and different metallic elements that GR grids are 60% more efficient than MP grids on average. Supplements the work of  Wisesa, McGill and Mueller (2016) listed below.
 * [Efficient Algorithm For K-Point Folding](https://arxiv.org/abs/1809.10261) discusses in detail an _O(N)_ algorithm for k-point symmetry reduction. This algorithm is essential to enable the on-the-fly method in the paper above.
 * [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler (1992). The original proposal to use Generalized Regular grids to accelerate DFT calculations.
 * [K-point Server](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.93.155109) by Wisesa, McGill and Mueller (2016). The first practical implementation of Moreno and Soler's idea.
