@@ -1,12 +1,11 @@
 # Generate Generalized Regular k-point Grids
 
-Implementation of an algorithm to generate _generalized regular_ k-point grids. The algorithm searches over many GR grids that meet a specified k-point density and returns the one with the highest high symmetry reduction and a good packing fraction.
-More information can be found in the following references:
+Implementation of an algorithm to generate _generalized regular_ k-point grids. The algorithm searches over many GR grids that meet a specified k-point density and returns the one with the highest high symmetry reduction and a good packing fraction. On average, this will yield about a 60% speed-up over the standard Monkhorst-Pack k-point grids. More information can be found in the following:
 
 * [Generalized Regular Grids On-The-Fly](https://msg.byu.edu/docs/papers/autoGR.pdf) describes the algorithm and method of the code in this repository. It describes how the combinatorial explosion of searching over all possible grids is tamed by generating only symmetry-preserving grids.
 * [Performance of Generalized Regular Grids vs Monkhorst-Pack Grids](https://msg.byu.edu/docs/papers/GR-kpoint-grids-CMS-153-2018.pdf) using over 7,000 calculations of different unit cells and different metallic elements that GR grids are 60% more efficient than MP grids on average. Supplements the work of  Wisesa, McGill and Mueller (2016) listed below.
 * [Efficient Algorithm For K-Point Folding](https://msg.byu.edu/docs/papers/kpointFolding-J-Phys-Comm-3-065009.pdf) discusses in detail an _O(N)_ algorithm for k-point symmetry reduction. This algorithm is essential to enable the on-the-fly method in the paper above.
-* [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler (1992). The original proposal to use Generalized Regular grids to accelerate DFT calculations.
+* [Optimal Meshes](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.45.13891) by Moreno and Soler (1992). The original proposal to use Generalized Regular grids to accelerate DFT calculations. [Common Grids](https://doi.org/10.1103/PhysRevB.39.3168) Froyen (1989) had essentially the same idea earlier but applied it to a specific use case.
 * [K-point Server](http://muellergroup.jhu.edu/K-Points.html) by Wisesa, McGill and Mueller (2016). The first practical implementation of Moreno and Soler's idea. Now available offline as well.
 
 The algorithm works for all crystal classes, but it can fail occasionally when the user-provided structural information is "sloppy", resulting in large finite precision errors. An update that will fix this known issue is being developed.
