@@ -82,7 +82,10 @@ MIN_IRR_KPTS = TRUE
 
 It is also possible to restrict the symmetry operations used to fold the k-points using the `USE_SYMMETRY' key word.
 
-- `USE_SYMMETRY`: can take the key words `ALL`, `STRUCTURAL`, `TIME_REVERSAL`, `NONE` where each key word indicates the level of symmetry to restrict the symmetry operations used to fold the k-point grid. `All`, the default, indicates that all the symmetry operations of the reciprocal cell should be used, `STRUCTURAL` indicates that time reversal symmetry should be excluded, `TIME_REVERSAL` indicates that the spacial symmetry operations should be ommited and only time reversal symmetry should be used, `NONE` indicates that the grid should not be folded at all.
+- `USE_SYMMETRY`: can take the key words `ALL`, `STRUCTURAL`, `TIME_REVERSAL`, `NONE` where each key word indicates the level of symmetry to restrict the symmetry operations used to fold the k-point grid. `All`, the default, indicates that all the symmetry operations of the reciprocal cell should be used, `STRUCTURAL` indicates that time reversal symmetry should be excluded, `TIME_REVERSAL` indicates that the spacial symmetry operations should be omitted and only time reversal symmetry should be used, `NONE` indicates that the grid should not be folded at all.
+
+
+Finite precision parameters can be adjusted from the default values using the `REPS` and `AEPS` keywords, for the relative and absolute tolerances, respectively.
 
 ### Example input files
 
