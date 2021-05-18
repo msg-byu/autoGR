@@ -41,7 +41,7 @@ cd autoGR/src
 Compile the executable using:
 
 ```
-make F90=gfortran kpoints.x
+make F90=gfortran DEBUG=false kpoints.x
 ```
 
 The makefile is set up so that the dependencies are also compiled.
