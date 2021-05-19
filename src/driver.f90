@@ -9,7 +9,7 @@ PROGRAM lat_id_driver
   implicit none
 
   real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3), reduced_R(3,3)
-  real(dp) :: Rinv(3,3), point(3), eps, best_offset(3)
+  real(dp) :: Rinv(3,3), point(3), reps, aeps, best_offset(3)
   logical :: find_offset, min_kpts
   integer :: nkpts, i, symm_flag
   integer, allocatable :: at(:)
@@ -17,17 +17,18 @@ PROGRAM lat_id_driver
   real(dp), allocatable :: B_vecs(:,:)
   integer, pointer :: weights(:)
 
+  
   call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, symm_flag, &
-       min_kpts, eps)
+       min_kpts, reps, aeps)
   call matrix_inverse(transpose(lat_vecs),r_vecs)
-  call minkowski_reduce_basis(r_vecs, reduced_R, eps)
+  call minkowski_reduce_basis(r_vecs, reduced_R, reps)
+
   call find_grid(lat_vecs, nkpts, B_vecs, at, offset, find_offset, grid, best_offset, &
-       symm_flag_=symm_flag, min_kpts_=min_kpts, eps_=eps)
-
+       symm_flag_=symm_flag, min_kpts_=min_kpts, eps_=reps)
   call generateIrredKpointList(lat_vecs, B_vecs, at, grid, reduced_R, best_offset, &
-       IRKps, weights, reps_=eps, symm_=symm_flag)
+       IRKps, weights, reps_=reps, aeps_=aeps, symm_=symm_flag)
 
-  call mapKptsIntoBZ(r_vecs, IRKps, eps)
+  call mapKptsIntoBZ(r_vecs, IRKps, reps)
 
   open(4,file="KPOINTS")
   write(4,'("autoGR kpoint generation:",I6," (irred),  ",I8," (total),  ",f5.2," (folding), ",f6.4," (ratio)")') size(IRKps,1), sum(weights), 1._dp/size(IRKps,1)*sum(weights), 1._dp*size(IRKps,1)/sum(weights)
