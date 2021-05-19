@@ -46,5 +46,14 @@ PROGRAM lat_id_driver
      point = matmul(Rinv,IRKps(i,:))
      write(4,'(3(F15.12,1X),I5)') point(1), point(2), point(3), weights(i)
   end do
+  close(4)
+
+  open(4,file="autoGR.gen")
+  write(4,'("autoGR kpoint generation:",I6," (irred),  ",I8," (total),  ",f5.2," (folding), ",f6.4," (ratio)")') size(IRKps,1), sum(weights), 1._dp/size(IRKps,1)*sum(weights), 1._dp*size(IRKps,1)/sum(weights)
+  write(4,'(A)') "0"
+  write(4,'(A)') "Cartesian"
+  write(4,'(F15.12,X,F15.12,X,F15.12)') grid
+  write(4,'(F15.12,X,F15.12,X,F15.12)') best_offset
+  close(4)
 
 end PROGRAM lat_id_driver
