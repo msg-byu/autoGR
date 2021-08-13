@@ -1,10 +1,15 @@
+## compiled libraries
+*.a
+
+## Python pip files
+.pytest_cache
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
 *.log
 *.lot
 *.fls
-*.out
 *.toc
 *.fmt
 *.fot
@@ -60,18 +65,18 @@ acs-*.bib
 #(r)(e)ledmac/(r)(e)ledpar
 *.end
 *.?end
-*.[1-9]
-*.[1-9][0-9]
-*.[1-9][0-9][0-9]
-*.[1-9]R
-*.[1-9][0-9]R
-*.[1-9][0-9][0-9]R
-*.eledsec[1-9]
-*.eledsec[1-9]R
-*.eledsec[1-9][0-9]
-*.eledsec[1-9][0-9]R
-*.eledsec[1-9][0-9][0-9]
-*.eledsec[1-9][0-9][0-9]R
+# *.[1-9]
+# *.[1-9][0-9]
+# *.[1-9][0-9][0-9]
+# *.[1-9]R
+# *.[1-9][0-9]R
+# *.[1-9][0-9][0-9]R
+# *.eledsec[1-9]
+# *.eledsec[1-9]R
+# *.eledsec[1-9][0-9]
+# *.eledsec[1-9][0-9]R
+# *.eledsec[1-9][0-9][0-9]
+# *.eledsec[1-9][0-9][0-9]R
 
 # glossaries
 *.acn
@@ -178,3 +183,19 @@ TSWLatexianTemp*
 
 # KBibTeX
 *~[0-9]*
+
+# Other
+*~
+*.o
+*.mod
+*.x
+*.pyc
+*.ipynb_ch*
+*#*
+*.#*
+*.tox*
+*.cache*
+*.coverage*
+dist/
+*.egg-info*
+htmlcov/
