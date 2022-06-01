@@ -1,4 +1,4 @@
-# Generate Generalized Regular k-point Grids
+# autoGR: Generate Generalized Regular k-point Grids
 
 Implementation of an algorithm to generate _generalized regular_ k-point grids. The algorithm searches over many GR grids that meet a specified k-point density and returns the one with the highest high symmetry reduction and a good packing fraction. On average, this will yield about a 60% speed-up over the standard Monkhorst-Pack k-point grids. More information can be found in the following:
 
