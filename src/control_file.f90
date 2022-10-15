@@ -88,13 +88,13 @@ CONTAINS
   !!selected rather than the grid with the best folding
   !!ratio.</parameter>
   SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, &
-       find_offset, symm_flag, min_kpts_flag, eps)
+       find_offset, symm_flag, min_kpts_flag, aeps, reps)
     real(dp), intent(out) :: lattice(3,3), offset(3)
     real(dp), allocatable :: atom_base(:,:)
     integer, allocatable, intent(out) :: atom_type(:)
     integer, intent(out) :: nkpts, symm_flag
     logical, intent(out) :: find_offset, min_kpts_flag
-    real(dp), intent(out) :: eps
+    real(dp), intent(out) :: aeps, reps
     
     ! Input related variables
     character(len=100) :: buffer, label
@@ -104,13 +104,13 @@ CONTAINS
     ! Control file variables
     real(dp) :: pi, lkpd, kpd, r_vecs(3,3), r_vol, lat_param, vol, rmin
     integer :: kppra
-    logical :: def_eps, nkpts_set, def_aeps
+    logical :: def_reps, nkpts_set, def_aeps
 
     ios = 0
     line_count = 0
     pi = 3.1415926535897932385_dp
     find_offset = .True.
-    def_eps = .True.
+    def_reps = .True.
     def_aeps = .True.
     nkpts_set = .False.
     open(fh, file='KPGEN')
@@ -173,17 +173,23 @@ CONTAINS
              if ("TRUE" == adjustl(trim(buffer))) then
                 min_kpts_flag = .true.
              end if
-          case ('EPS')
-             read(buffer, *, iostat=ios) eps
-             def_eps = .False.
+          case ('REPS')
+             read(buffer, *, iostat=ios) reps
+             def_reps = .False.
+          case ('AEPS')
+             read(buffer, *, iostat=ios) aeps
+             def_aeps = .False.
           case default
              print *, 'Skipping invalid label at line', line_count, label
           end select
        end if
     end do
     
-    if (def_eps .eqv. .True.) then
-       eps = 1E-8_dp
+    if (def_reps .eqv. .True.) then
+       reps = 1E-8_dp
+    end if
+    if (def_aeps .eqv. .True.) then
+       aeps = 1E-8_dp
     end if
 
     if (nkpts_set .eqv. .False.) stop "Number of kpoints not set. Exiting."
