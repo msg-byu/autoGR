@@ -80,7 +80,7 @@ CONTAINS
   !!<parameter name="find_offset" regular="true">'True' if the use
   !!didn't provide an offset.</parameter>
   !!<parameter name="eps" regular="true">The floating point
-  !!tollerance for relative comparison.</parameter>
+  !!tolerance for relative comparison.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   !!<parameter name="min_kpts_flag" regular="true">Flag that indicates
@@ -88,13 +88,13 @@ CONTAINS
   !!selected rather than the grid with the best folding
   !!ratio.</parameter>
   SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, &
-       find_offset, symm_flag, min_kpts_flag, aeps, reps)
+       find_offset, symm_flag, min_kpts_flag, reps, aeps)
     real(dp), intent(out) :: lattice(3,3), offset(3)
     real(dp), allocatable :: atom_base(:,:)
     integer, allocatable, intent(out) :: atom_type(:)
     integer, intent(out) :: nkpts, symm_flag
     logical, intent(out) :: find_offset, min_kpts_flag
-    real(dp), intent(out) :: aeps, reps
+    real(dp), intent(out) :: reps, aeps
     
     ! Input related variables
     character(len=100) :: buffer, label
@@ -186,10 +186,13 @@ CONTAINS
     end do
     
     if (def_reps .eqv. .True.) then
-       reps = 1E-8_dp
+       reps = 1E-6_dp
+       !print*,"KPGEN file does not have setting for relative epsilon. Using default."
     end if
+
     if (def_aeps .eqv. .True.) then
-       aeps = 1E-8_dp
+      aeps = 5E-4_dp
+      !print*,"KPGEN file does not have setting for absolute epsilon. Using default."
     end if
 
     if (nkpts_set .eqv. .False.) stop "Number of kpoints not set. Exiting."

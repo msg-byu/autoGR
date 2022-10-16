@@ -469,7 +469,7 @@ CONTAINS
     if (present(eps_)) then
        eps = eps_
     else
-       eps = 1E-8_dp
+       eps = 1E-6_dp
     end if
 
     call basis2cell(in_vecs, in_params)

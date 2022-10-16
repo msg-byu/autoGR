@@ -1,4 +1,4 @@
-PROGRAM lat_id_driver
+PROGRAM driver
   use find_kgrids, only: find_grid
   use kpointgeneration, only: generateIrredKpointList, mapKptsIntoBZ
   use control_file, only: get_inputs
@@ -22,9 +22,10 @@ PROGRAM lat_id_driver
        min_kpts, reps, aeps)
   call matrix_inverse(transpose(lat_vecs),r_vecs)
   call minkowski_reduce_basis(r_vecs, reduced_R, reps)
-
+  
   call find_grid(lat_vecs, nkpts, B_vecs, at, offset, find_offset, grid, best_offset, &
-       symm_flag_=symm_flag, min_kpts_=min_kpts, eps_=reps)
+       symm_flag_=symm_flag, min_kpts_=min_kpts, reps_=reps, aeps_=aeps)
+
   call generateIrredKpointList(lat_vecs, B_vecs, at, grid, reduced_R, best_offset, &
        IRKps, weights, reps_=reps, aeps_=aeps, symm_=symm_flag)
 
@@ -56,4 +57,4 @@ PROGRAM lat_id_driver
   write(4,'(F15.12,X,F15.12,X,F15.12)') best_offset
   close(4)
 
-end PROGRAM lat_id_driver
+end PROGRAM

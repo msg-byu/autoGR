@@ -69,9 +69,9 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE grid_metrics(lat_vecs, B_vecs, at, HNF, No, Nu, Co, Cu, O, grid, rmin, &
-       n_irr, symm_flag, eps_)
+       n_irr, symm_flag, reps_, aeps_)
     real(dp), intent(in) :: lat_vecs(3,3)
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
     integer, intent(in) :: HNF(3,3), symm_flag
@@ -82,15 +82,20 @@ CONTAINS
 
     real(dp) :: supercell(3,3), shift(3), norms(3), reduced_grid(3,3)
     real(dp) :: grid_inv(3,3), lat_trans(3,3)
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     real(dp)              :: R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     shift = 0.0_dp
@@ -102,13 +107,13 @@ CONTAINS
     lat_trans = transpose(lat_vecs)
     call matrix_inverse(lat_trans, R)
 
-    call minkowski_reduce_basis(grid, reduced_grid, eps, aeps_=1E-10_dp)
+    call minkowski_reduce_basis(grid, reduced_grid, reps, aeps_=1E-10_dp)
     norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
     rmin = min(norms(1), norms(2), norms(3))
     call generateIrredKpointList(lat_vecs, B_vecs, at, grid, R, shift, rdKlist, weights, &
-         reps_=eps, symm_=symm_flag)
+         reps_=reps, aeps_=aeps, symm_=symm_flag)
     n_irr = size(rdKlist,1)
 
   end SUBROUTINE grid_metrics
@@ -137,8 +142,8 @@ CONTAINS
   !!<parameter name="ngrids" regular="true">The number of grids
   !!currently stored in the list of grids.</parameter>
   SUBROUTINE compare_grids(HNF, No, Nu, Co, Cu, O, grids, rmin, &
-       best_HNFs, ngrids, eps_)
-    real(dp), optional, intent(in) :: eps_
+       best_HNFs, ngrids, reps_, aeps_)
+    real(dp), optional, intent(in) :: reps_, aeps_
     integer, intent(in) :: HNF(3,3)
     integer, intent(in) :: Co(3,3), Cu(3,3)
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3)
@@ -148,19 +153,24 @@ CONTAINS
     integer, allocatable, intent(inout) :: best_HNFs(:,:,:,:)
 
     real(dp) :: supercell(3,3), shift(3), reduced_grid(3,3), norms(3)
-    real(dp) :: eps
+    real(dp) :: reps, aeps 
     integer, allocatable :: ralloc_HNFs(:,:,:,:)
     real(dp), allocatable :: ralloc_grids(:,:,:,:)
     real(dp) :: temp_rmin, temp_grid(3,3)
     real(dp) :: pi, pac_limit, pac_frac
 
-    pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164_dp
+    pi = 3.141592653589793_dp
     pac_limit = 0.3_dp
     
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     shift = 0.0_dp
@@ -178,7 +188,7 @@ CONTAINS
 
     ! temp_grid_inv = transpose(supercell)
     call matrix_inverse(transpose(supercell), temp_grid)
-    call minkowski_reduce_basis(temp_grid, reduced_grid, eps, aeps_=1e-10_dp)
+    call minkowski_reduce_basis(temp_grid, reduced_grid, reps, aeps_=1e-10_dp)
     norms(1) = sqrt(dot_product(reduced_grid(:,1), reduced_grid(:,1)))
     norms(2) = sqrt(dot_product(reduced_grid(:,2), reduced_grid(:,2)))
     norms(3) = sqrt(dot_product(reduced_grid(:,3), reduced_grid(:,3)))
@@ -186,7 +196,7 @@ CONTAINS
     pac_frac = ((4.0_dp*pi*((temp_rmin/2.0_dp)**3))/3.0_dp)/determinant(reduced_grid)
 
     if (pac_frac >= pac_limit) then
-       if (temp_rmin > (rmin(1)+temp_rmin*eps) .and. (.not. equal(temp_rmin, rmin(1), eps))) then
+       if (temp_rmin > (rmin(1)+temp_rmin*reps) .and. (.not. equal(temp_rmin, rmin(1), reps))) then
           rmin(2) = rmin(1)
           ngrids(2) = ngrids(1)
           grids(:,:,:,2) = 0.0_dp
@@ -201,16 +211,16 @@ CONTAINS
           grids(:,:,ngrids(1),1) = reduced_grid
           best_HNFs(:,:,ngrids(1),1) = HNF
 
-       else if ((temp_rmin > (rmin(2)+temp_rmin*eps)) .and. &
-            (.not. equal(temp_rmin, rmin(1), eps)) &
-            .and. (.not. equal(temp_rmin, rmin(2), eps))) then
+       else if ((temp_rmin > (rmin(2)+temp_rmin*reps)) .and. &
+            (.not. equal(temp_rmin, rmin(1), reps)) &
+            .and. (.not. equal(temp_rmin, rmin(2), reps))) then
           rmin(2) = temp_rmin
           ngrids(2) = 1
           grids(:,:,:,2) = 0.0_dp
           best_HNFs(:,:,:,2) = 0
           grids(:,:,ngrids(2),2) = reduced_grid
           best_HNFs(:,:,ngrids(2),2) = HNF
-       else if (equal(temp_rmin, rmin(1), eps)) then
+       else if (equal(temp_rmin, rmin(1), reps)) then
           if (size(grids,3) == ngrids(1)) then
              allocate(ralloc_HNFs(3,3,ngrids(1),2), ralloc_grids(3,3,ngrids(1),2))
              ralloc_HNFs = best_HNFs
@@ -227,7 +237,7 @@ CONTAINS
           ngrids(1) = ngrids(1) + 1
           grids(:,:,ngrids(1),1) = reduced_grid
           best_HNFs(:,:,ngrids(1),1) = HNF
-       else if (equal(temp_rmin, rmin(2), eps)) then
+       else if (equal(temp_rmin, rmin(2), reps)) then
           if (size(grids,3) == ngrids(2)) then
              allocate(ralloc_HNFs(3,3,ngrids(2),2), ralloc_grids(3,3,ngrids(2),2))
              ralloc_HNFs = best_HNFs
@@ -274,10 +284,10 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE grid_selection(lat_vecs, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
-       offsets, best_grid, best_HNF, best_offset, n_irr, symm_flag, eps_)
+       offsets, best_grid, best_HNF, best_offset, n_irr, symm_flag, reps_, aeps_)
     real(dp), intent(in) :: lat_vecs(3,3), offsets(:,:)
     real(dp), allocatable, intent(in) :: cand_grids(:,:,:,:)
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
     real(dp), intent(out) :: best_grid(3,3), best_offset(3)
     real(dp), allocatable :: B_vecs(:,:)
     integer, intent(inout) :: at(:)
@@ -287,22 +297,27 @@ CONTAINS
 
     real(dp) :: temp_grid(3,3), grid_offsets(sum(ngrids),3)
     integer :: i, n_irreducible(sum(ngrids)), n_ir_min(1), count, j
-    real(dp) :: eps
+    real(dp) :: reps, aeps
 
     real(dp)              :: R(3,3), invLat(3,3), temp_R(3,3)
     real(dp), pointer     :: rdKlist(:,:)
     integer, pointer      :: weights(:)
     integer :: err
     
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call matrix_inverse(lat_vecs, invLat)
     temp_R = transpose(invLat)
-    call minkowski_reduce_basis(temp_R, R, eps)
+    call minkowski_reduce_basis(temp_R, R, reps)
 
     n_irreducible = 0
     count = 0
@@ -310,7 +325,7 @@ CONTAINS
        temp_grid = cand_grids(:,:,i,1)
        do j=1, size(offsets,1)
           call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-               offsets(j,:), rdKlist, weights, reps_=eps, symm_=symm_flag, &
+               offsets(j,:), rdKlist, weights, reps_=reps, aeps_=aeps, symm_=symm_flag, &
                err_=err)
           if (err==0) then
              if (n_irreducible(i) == 0) then
@@ -329,7 +344,7 @@ CONTAINS
        temp_grid = cand_grids(:,:,i,2)
        do j=1, size(offsets, 1)
           call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
-               offsets(j,:), rdKlist, weights, eps, err_=err)
+               offsets(j,:), rdKlist, weights, reps_=reps, aeps_=aeps, err_=err)
           if (err==0) then
              if (n_irreducible(i) == 0) then
                 n_irreducible(count+i) = size(rdKlist,1)

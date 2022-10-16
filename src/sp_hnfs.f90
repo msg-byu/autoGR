@@ -50,7 +50,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE sc_3(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
@@ -60,7 +60,7 @@ CONTAINS
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     real(dp), allocatable :: cand_grids(:,:,:,:)
@@ -68,7 +68,7 @@ CONTAINS
     integer :: a,b,c,d,e,f
     integer :: nds, i
     integer :: temp_HNFs(3,3,1), ngrids(2)
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     real(dp) :: supercell(3,3)
     logical :: all_hnfs
 
@@ -78,10 +78,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
@@ -139,7 +144,7 @@ CONTAINS
        nhnfs = 1
        ngrids = (/1,0/)
        call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
     end if
 
   end SUBROUTINE sc_3
@@ -180,7 +185,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE fcc_1(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
@@ -190,7 +195,7 @@ CONTAINS
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     real(dp), allocatable :: cand_grids(:,:,:,:)
@@ -198,7 +203,7 @@ CONTAINS
     integer :: a,b,c,d,e,f
     integer :: nds, i
     integer :: temp_HNFs(3,3,1), ngrids(2)
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     real(dp) :: supercell(3,3)
     logical :: all_hnfs
 
@@ -208,10 +213,15 @@ CONTAINS
        all_hnfs = .False.
     end if
     
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
@@ -261,7 +271,7 @@ CONTAINS
        nhnfs = 1
        ngrids = (/1,0/)
        call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
     end if
 
   end SUBROUTINE fcc_1
@@ -302,7 +312,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE bcc_5(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
@@ -312,7 +322,7 @@ CONTAINS
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     real(dp), allocatable :: cand_grids(:,:,:,:)
@@ -320,7 +330,7 @@ CONTAINS
     integer :: a,b,c,d,e,f
     integer :: nds, i
     integer :: temp_HNFs(3,3,1), ngrids(2)
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     real(dp) :: supercell(3,3)
     logical :: all_hnfs
 
@@ -330,10 +340,15 @@ CONTAINS
        all_hnfs = .False.
     end if
     
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     allocate(cand_grids(3,3,1,2), cand_HNFs(3,3,1,2))
@@ -391,7 +406,7 @@ CONTAINS
        nhnfs = 1
        ngrids = (/1,0/)
        call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
     end if
 
   end SUBROUTINE bcc_5
@@ -432,7 +447,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE hex_12(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     logical, optional, intent(in) :: all_hnfs_
@@ -442,7 +457,7 @@ CONTAINS
     real(dp), intent(in) :: No(3,3), Nu(3,3), O(3,3), U(3,3), offsets(:,:)
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -455,7 +470,7 @@ CONTAINS
 
     integer(li) :: beta13, beta11, gamma13, gamma11, gamma12, gamma21, gamma22
     integer :: es(2)
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -464,10 +479,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -539,7 +559,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                              Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                             ngrids, eps)
+                                             ngrids, reps_=reps, aeps_=aeps)
                                      end if
                                   end if
                                end if
@@ -562,7 +582,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -610,7 +630,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE hex_22(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -620,7 +640,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -632,7 +652,7 @@ CONTAINS
     real(dp) :: rmin(2)
 
     integer(li) :: gamma21, gamma22, gamma11, gamma12
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -641,10 +661,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -697,7 +722,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                        Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                       ngrids, eps)
+                                       ngrids, reps_=reps, aeps_=aeps)
                                end if
                             end if
                          end if
@@ -717,7 +742,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -767,7 +792,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE rhom_9_24(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -777,7 +802,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -790,7 +815,7 @@ CONTAINS
 
     integer(li) :: beta13, beta22, beta12, gamma11, gamma12, gamma21, gamma22
     integer :: bs(2), nbs
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -799,10 +824,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -870,7 +900,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                        Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                       ngrids, eps)
+                                       ngrids, reps_=reps, aeps_=aeps)
                                end if
                             end if
                          end if
@@ -892,7 +922,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -943,7 +973,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE rhom_4_2(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -953,7 +983,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -967,7 +997,7 @@ CONTAINS
     integer(li) :: beta32, beta22, beta12, gamma11, gamma12, gamma22, gamma21
     integer :: nbs
     integer :: bs(2)
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -976,10 +1006,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1051,7 +1086,7 @@ CONTAINS
                                                 0, 0, f/),(/3,3/))
                                            call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                                 Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                                ngrids, eps)
+                                                ngrids, reps_=reps, aeps_=aeps)
                                         end if
                                      end if
                                   end if
@@ -1074,7 +1109,7 @@ CONTAINS
       allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1123,7 +1158,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE st_11(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -1133,7 +1168,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1146,7 +1181,7 @@ CONTAINS
 
     integer(li) :: beta13, gamma13, gamma12, gamma23
     integer :: bs(2), es(2), nbs, nes
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -1155,10 +1190,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1231,7 +1271,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                              Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                             ngrids, eps)
+                                             ngrids, reps_=reps, aeps_=aeps)
                                      end if
                                   end if
                                end if
@@ -1253,7 +1293,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1302,7 +1342,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE st_21(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -1312,7 +1352,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1325,7 +1365,7 @@ CONTAINS
 
     integer(li) :: beta13, gamma13, gamma12, gamma23
     integer :: bs(2), es(2), nbs, nes
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -1334,10 +1374,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1407,7 +1452,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                     Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                    ngrids, eps)
+                                    ngrids, reps_=reps, aeps_=aeps)
                             end if
                          end if
                       end if
@@ -1426,7 +1471,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1480,7 +1525,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE bct_6_7_15_18(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -1490,7 +1535,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1503,7 +1548,7 @@ CONTAINS
 
     integer(li) :: gamma21, gamma13, beta12, gamma12
     integer :: es(2), nes
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -1512,10 +1557,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1576,7 +1626,7 @@ CONTAINS
                                           0, 0, f/),(/3,3/))
                                      call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                           Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                          ngrids, eps)
+                                          ngrids, reps_=reps, aeps_=aeps)
                                   end if
                                end if
                             end if
@@ -1597,7 +1647,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1646,7 +1696,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE so_32(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -1656,7 +1706,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1668,7 +1718,7 @@ CONTAINS
     real(dp) :: rmin(2)
 
     integer :: bs(2), es(2), ds(2), nbs, ne_ds
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -1677,10 +1727,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1744,7 +1799,7 @@ CONTAINS
                            0, 0, f/),(/3,3/))
                       call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                            Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                           ngrids, eps)
+                           ngrids, reps_=reps, aeps_=aeps)
                    end if
                 end do
              end if
@@ -1760,7 +1815,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1809,7 +1864,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE fco_26(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -1819,7 +1874,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1832,7 +1887,7 @@ CONTAINS
 
     integer(li) :: gamma12, gamma13, gamma23
     integer :: bs(2), nbs
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -1841,10 +1896,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -1902,7 +1962,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                 ngrids, eps)
+                                 ngrids, reps_=reps, aeps_=aeps)
                          end if
                       end if
                    end do
@@ -1920,7 +1980,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1970,7 +2030,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE fco_16(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -1980,7 +2040,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -1993,7 +2053,7 @@ CONTAINS
 
     integer(li) :: gamma11, gamma12, gamma21
     integer :: bs(2), nbs
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -2002,10 +2062,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2062,7 +2127,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                 ngrids, eps)
+                                 ngrids, reps_=reps, aeps_=aeps)
                          end if
                       end if
                    end do
@@ -2080,7 +2145,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2129,7 +2194,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE bco_19(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -2139,7 +2204,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2152,7 +2217,7 @@ CONTAINS
 
     integer(li) :: gamma12, gamma13, beta13
     integer :: es(2), nes
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -2161,10 +2226,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2223,7 +2293,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                     Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                    ngrids, eps)
+                                    ngrids, reps_=reps, aeps_=aeps)
                             end if
                          end if
                       end do
@@ -2242,7 +2312,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2292,7 +2362,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE bco_8(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -2302,7 +2372,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2315,7 +2385,7 @@ CONTAINS
 
     integer(li) :: beta21, beta11, gamma21, gamma11, gamma13
     integer :: bs(2), nbs
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -2324,10 +2394,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2390,7 +2465,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                        Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                       ngrids, eps)
+                                       ngrids, reps_=reps, aeps_=aeps)
                                end if
                             end if
                          end if
@@ -2410,7 +2485,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2460,7 +2535,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE bco_42(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -2470,7 +2545,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2483,7 +2558,7 @@ CONTAINS
 
     integer(li) :: beta11, gamma12, gamma11, gamma13
     integer :: es(2), nes
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -2492,10 +2567,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2554,7 +2634,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                 ngrids, eps)
+                                 ngrids, reps_=reps, aeps_=aeps)
                          end if
                       end if
                    end do
@@ -2573,7 +2653,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2625,7 +2705,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE baseco_38_13(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -2635,7 +2715,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2648,7 +2728,7 @@ CONTAINS
 
     integer(li) :: gamma13, gamma23, beta13
     integer :: es(2), ds(2), ne_ds
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -2657,10 +2737,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2725,7 +2810,7 @@ CONTAINS
                                        0, 0, f/),(/3,3/))
                                   call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                        Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                       ngrids, eps)
+                                       ngrids, reps_=reps, aeps_=aeps)
                                end if
                             end if
                          end if
@@ -2746,7 +2831,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2796,7 +2881,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE baseco_23(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -2806,7 +2891,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2819,7 +2904,7 @@ CONTAINS
 
     integer(li) :: beta13, gamma13, gamma23
     integer :: es(2), bs(2), nes, nbs
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -2828,10 +2913,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -2902,7 +2992,7 @@ CONTAINS
                                           0, 0, f/),(/3,3/))
                                      call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                           Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                          ngrids, eps)
+                                          ngrids, reps_=reps, aeps_=aeps)
                                   end if
                                end if
                             end if
@@ -2923,7 +3013,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2973,7 +3063,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE baseco_40(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -2983,7 +3073,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -2995,7 +3085,7 @@ CONTAINS
     real(dp) :: rmin(2)
 
     integer(li) :: beta13, gamma13, gamma12, gamma22
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -3004,10 +3094,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3059,7 +3154,7 @@ CONTAINS
                                     0, 0, f/),(/3,3/))
                                call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                     Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                    ngrids, eps)
+                                    ngrids, reps_=reps, aeps_=aeps)
                             end if
                          end if
                       end do
@@ -3078,7 +3173,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3127,7 +3222,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE baseco_36(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -3137,7 +3232,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3150,7 +3245,7 @@ CONTAINS
 
     integer(li) :: beta12, beta22, beta32, gamma13, gamma12, gamma22
     integer :: bs(2), es(2), nes, nbs
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -3159,10 +3254,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3240,7 +3340,7 @@ CONTAINS
                                              0, 0, f/),(/3,3/))
                                         call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                              Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                             ngrids, eps)
+                                             ngrids, reps_=reps, aeps_=aeps)
                                      end if
                                   end if
                                end if
@@ -3262,7 +3362,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3311,7 +3411,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE sm_33(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -3321,7 +3421,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3334,7 +3434,7 @@ CONTAINS
 
     integer(li) :: gamma12
     integer :: es(2), bs(2), nes, nbs
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -3343,10 +3443,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3409,7 +3514,7 @@ CONTAINS
                               0, 0, f/),(/3,3/))
                          call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                               Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                              ngrids, eps)
+                              ngrids, reps_=reps, aeps_=aeps)
                       end if
                    end do
                 end if
@@ -3426,7 +3531,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3477,7 +3582,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE sm_34_35(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -3487,7 +3592,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3499,7 +3604,7 @@ CONTAINS
     real(dp) :: rmin(2)
 
     integer :: ds(2), es(2), nd_es
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -3508,10 +3613,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3566,7 +3676,7 @@ CONTAINS
                         0, 0, f/),(/3,3/))
                    call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                         Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                        ngrids, eps)
+                        ngrids, reps_=reps, aeps_=aeps)
                 end if
              end do
           end do
@@ -3581,7 +3691,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3636,7 +3746,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE basecm_10_14_17_27_37_39_41(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -3646,7 +3756,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3659,7 +3769,7 @@ CONTAINS
 
     integer(li) :: gamma11
     integer :: es(2), nes
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -3668,10 +3778,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3724,7 +3839,7 @@ CONTAINS
                            0, 0, f/),(/3,3/))
                       call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                            Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                           ngrids, eps)
+                           ngrids, reps_=reps, aeps_=aeps)
                    end if
                 end do
              end if
@@ -3740,7 +3855,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3792,7 +3907,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE basecm_20_25(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -3802,7 +3917,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3815,7 +3930,7 @@ CONTAINS
 
     integer(li) :: gamma12, gamma22
     integer :: bs(2), nbs
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -3824,10 +3939,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -3884,7 +4004,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                 ngrids, eps)
+                                 ngrids, reps_=reps, aeps_=aeps)
                          end if
                       end do
                    end if
@@ -3902,7 +4022,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3952,7 +4072,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE basecm_28(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -3962,7 +4082,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -3974,7 +4094,7 @@ CONTAINS
     real(dp) :: rmin(2)
 
     integer(li) :: gamma21, gamma11
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -3983,10 +4103,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -4034,7 +4159,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                 ngrids, eps)
+                                 ngrids, reps_=reps, aeps_=aeps)
                          end if
                       end do
                    end if
@@ -4052,7 +4177,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4104,7 +4229,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE basecm_29_30(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -4114,7 +4239,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -4126,7 +4251,7 @@ CONTAINS
     real(dp) :: rmin(2)
 
     integer(li) :: gamma21, gamma11
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -4135,10 +4260,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -4186,7 +4316,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                 ngrids, eps)
+                                 ngrids, reps_=reps, aeps_=aeps)
                          end if
                       end do
                    end if
@@ -4204,7 +4334,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4254,7 +4384,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE basecm_43(n, No, Nu, Co, Cu, O, U, B_vecs, at, offsets, best_offset, spHNFs, grid, &
-       n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -4264,7 +4394,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, pointer :: diagonals(:,:) => null()
     integer :: a,b,c,d,e,f, best_HNF(3,3)
@@ -4276,7 +4406,7 @@ CONTAINS
     real(dp) :: rmin(2)
 
     integer(li) :: beta12, gamma12, gamma22
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -4285,10 +4415,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,diagonals)
@@ -4337,7 +4472,7 @@ CONTAINS
                                  0, 0, f/),(/3,3/))
                             call compare_grids(temp_HNFs(:,:,1), No, Nu, &
                                  Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                                 ngrids, eps)
+                                 ngrids, reps_=reps, aeps_=aeps)
                          end if
                       end do
                    end if
@@ -4355,7 +4490,7 @@ CONTAINS
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4365,7 +4500,6 @@ CONTAINS
           spHNFs = 0
        end if
     end if
-
   end SUBROUTINE basecm_43
 
   !!<summary>Finds the symmetry preserving HNFs for the triclinic
@@ -4407,7 +4541,7 @@ CONTAINS
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
   SUBROUTINE tric_31_44(n, No, Nu, Co, Cu, O, U, B_vecs, at, mult, offsets, best_offset, &
-       spHNFs, grid, n_irr, nhnfs, symm_flag, eps_, all_hnfs_)
+       spHNFs, grid, n_irr, nhnfs, symm_flag, reps_, aeps_, all_hnfs_)
     integer, intent(in) :: n
     integer, allocatable, intent(out) :: spHNFs(:,:,:)
     real(dp), allocatable :: B_vecs(:,:)
@@ -4417,7 +4551,7 @@ CONTAINS
     integer, intent(out) :: n_irr, nhnfs
     real(dp), intent(out) :: grid(3,3), best_offset(3)
     logical, optional, intent(in) :: all_hnfs_
-    real(dp), optional, intent(in) :: eps_
+    real(dp), optional, intent(in) :: reps_, aeps_
 
     integer, allocatable :: cand_HNFs(:,:,:,:)
     real(dp), allocatable :: cand_grids(:,:,:,:)
@@ -4429,7 +4563,7 @@ CONTAINS
     integer             :: Nds, ihnf ! # of triplets, HNF counter
     integer             :: status
     integer :: best_HNF(3,3)
-    real(dp) :: eps
+    real(dp) :: reps, aeps
     logical :: all_hnfs
 
     if (present(all_hnfs_)) then
@@ -4438,10 +4572,15 @@ CONTAINS
        all_hnfs = .False.
     end if
 
-    if (present(eps_)) then
-       eps = eps_
+    if (present(reps_)) then
+       reps = reps_
     else
-       eps = 1E-8_dp
+       reps = 1E-6_dp
+    end if
+if (present(aeps_)) then
+       aeps = aeps_
+    else
+       aeps = 1E-6_dp
     end if
 
     call get_HNF_diagonals(n,d)
@@ -4480,7 +4619,7 @@ CONTAINS
                    spHNFs(:,:,1) = spHNFs(:,:,1)*mult
                    call compare_grids(spHNFs(:,:,1), No, Nu, &
                         Co, Cu, O, cand_grids, rmin, cand_HNFs, &
-                        ngrids, eps)
+                        ngrids, reps_=reps, aeps_=aeps)
                 end if
              enddo
           enddo
@@ -4491,7 +4630,7 @@ CONTAINS
     if (.not. all_hnfs) then
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-               grid, best_HNF, best_offset, n_irr, symm_flag, eps)
+            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else

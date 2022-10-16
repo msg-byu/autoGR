@@ -12,11 +12,11 @@ LBD2 =../kgridGen/src
 
 FOUND = false
 ifeq (${F90},gfortran)  # gfortran compiler
-  ifeq (${DEBUG},false)
-     FFLAGS = -fopenmp -O3 -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}
+  ifeq (${DEBUG},true)
+     FFLAGS = -fPIC -g -fbounds-check -Wall -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}
      FOUND = true
   else
-     FFLAGS = -fPIC -g -fbounds-check -Wall -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}
+     FFLAGS = -fopenmp -O3 -ffree-line-length-none -fno-underscoring -I${LBD1} -I${LBD2}
      FOUND = true
   endif
 endif
@@ -27,12 +27,12 @@ ifeq (${F90},ifc)  # Intel compiler
 endif
 
 ifeq (${F90},ifort)  # Intel compiler
-  ifeq (${DEBUG},false)
-     FFLAGS =  -fPIC -O3 -I${LBD1} 
+  ifeq (${DEBUG},true)
+     FFLAGS =  -fPIC -g -debug -error-limit 7 -heap-arrays -traceback -check bounds -warn -I${LBD1} -I${LBD2}
      FOUND = true
   else
 #  F90 =  /opt/intel/fc/10.0.016/bin/ifort
-     FFLAGS =  -fPIC -g -debug -error-limit 7 -heap-arrays -traceback -check bounds -warn -I${LBD1} -I${LBD2}
+     FFLAGS =  -fPIC -O3 -I${LBD1} 
      FOUND = true
 #-prof-use -prof-dir .
    endif
