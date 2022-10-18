@@ -32,7 +32,7 @@ ifeq (${F90},ifort)  # Intel compiler
      FOUND = true
   else
 #  F90 =  /opt/intel/fc/10.0.016/bin/ifort
-     FFLAGS =  -fPIC -O3 -I${LBD1} 
+     FFLAGS =  -fPIC -O3 -I${LBD1} -I${LBD2}
      FOUND = true
 #-prof-use -prof-dir .
    endif
