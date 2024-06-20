@@ -283,14 +283,14 @@ if (present(aeps_)) then
   !!tolerance.</parameter>
   !!<parameter name="symm_flag" regular="true">Flag that indicates the
   !!symmetries to use.</parameter>
-  SUBROUTINE grid_selection(lat_vecs, B_vecs, at, cand_grids, cand_HNFs, ngrids, &
+  SUBROUTINE grid_selection(cand_grids, cand_HNFs, ngrids, &
        offsets, best_grid, best_HNF, best_offset, n_irr, symm_flag, reps_, aeps_)
-    real(dp), intent(in) :: lat_vecs(3,3), offsets(:,:)
+    use input_structure, only: n_atoms, lattice, atom_type, atom_base
+    implicit none
+    real(dp), intent(in) :: offsets(:,:)
     real(dp), allocatable, intent(in) :: cand_grids(:,:,:,:)
     real(dp), optional, intent(in) :: reps_, aeps_
     real(dp), intent(out) :: best_grid(3,3), best_offset(3)
-    real(dp), allocatable :: B_vecs(:,:)
-    integer, intent(inout) :: at(:)
     integer, intent(in), allocatable :: cand_HNFs(:,:,:,:)
     integer, intent(out) :: best_HNF(3,3), n_irr
     integer, intent(in) :: ngrids(2), symm_flag
@@ -315,7 +315,7 @@ if (present(aeps_)) then
        aeps = 1E-6_dp
     end if
 
-    call matrix_inverse(lat_vecs, invLat)
+    call matrix_inverse(lattice, invLat)
     temp_R = transpose(invLat)
     call minkowski_reduce_basis(temp_R, R, reps)
 
@@ -324,7 +324,7 @@ if (present(aeps_)) then
     do i=1,ngrids(1)
        temp_grid = cand_grids(:,:,i,1)
        do j=1, size(offsets,1)
-          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+          call generateIrredKpointList(lattice, atom_base, atom_type, temp_grid, R, &
                offsets(j,:), rdKlist, weights, reps_=reps, aeps_=aeps, symm_=symm_flag, &
                err_=err)
           if (err==0) then
@@ -343,7 +343,7 @@ if (present(aeps_)) then
     do i=1,ngrids(2)
        temp_grid = cand_grids(:,:,i,2)
        do j=1, size(offsets, 1)
-          call generateIrredKpointList(lat_vecs, B_vecs, at, temp_grid, R, &
+          call generateIrredKpointList(lattice, atom_base, atom_type, temp_grid, R, &
                offsets(j,:), rdKlist, weights, reps_=reps, aeps_=aeps, err_=err)
           if (err==0) then
              if (n_irreducible(i) == 0) then
