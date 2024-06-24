@@ -44,10 +44,6 @@ install(TARGETS autoGR
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-INSTALL(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  PATTERN "*.mod")
-
 install(EXPORT autoGRConfig NAMESPACE autoGR:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/autoGR)
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
@@ -82,6 +78,7 @@ target_sources(autoGR PRIVATE
 )
 
 target_sources(autoGR PRIVATE
+    src/autoGR.f90
     src/input_structure.f90
     src/grid_utils.f90
     src/sp_hnfs.f90
