@@ -19,6 +19,10 @@ mark_as_advanced(CLEAR
   CMAKE_Fortran_FLAGS
 )
 
+SET(CMAKE_Fortran_MODULE_DIRECTORY "${PROJECT_BINARY_DIR}/include")
+MESSAGE(${CMAKE_Fortran_MODULE_DIRECTORY})
+
+
 add_library(autoGR)
 
 set_target_properties(autoGR
@@ -31,17 +35,20 @@ set_target_properties(autoGR PROPERTIES LINKER_LANGUAGE Fortran)
 
 set_target_properties(autoGR PROPERTIES OUTPUT_NAME autoGR)
 
-set_target_properties(autoGR PROPERTIES
-  Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/modules)
-target_include_directories(autoGR PRIVATE ${PROJECT_BINARY_DIR}/modules)
+TARGET_INCLUDE_DIRECTORIES(autoGR PRIVATE
+  ${CMAKE_Fortran_MODULE_DIRECTORY})
 
 install(TARGETS autoGR
   EXPORT autoGRConfig
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib)
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-install(EXPORT autoGRConfig NAMESPACE autoGR:: DESTINATION lib/cmake/autoGR)
+INSTALL(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  PATTERN "*.mod")
+
+install(EXPORT autoGRConfig NAMESPACE autoGR:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/autoGR)
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
   ${CMAKE_CURRENT_BINARY_DIR}/autoGRConfigVersion.cmake
@@ -53,8 +60,6 @@ target_include_directories(autoGR INTERFACE
   $<BUILD_INTERFACE:${CMAKE_Fortran_MODULE_DIRECTORY}>)
 export(EXPORT autoGRConfig NAMESPACE autoGR::
   FILE ${PROJECT_BINARY_DIR}/autoGRConfig.cmake)
-
-target_include_directories(autoGR PRIVATE ${PROJECT_BINARY_DIR})
 
 target_sources(autoGR PRIVATE
     symlib/src/num_types.f90
