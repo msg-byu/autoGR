@@ -12,7 +12,39 @@ module autoGR
 
 contains
 
-    subroutine get_k_grid_from_autoGR(n_atoms_in,  lattice_in, atom_type_in, &
+  !!<summary>High-level wrapper around autoGR to use when build 
+  !!as library.</summary>
+  !!<parameter name="n_atoms_in" regular="true">The number of atoms in the input 
+  !!structure.</parameter>
+  !!<parameter name="lattice_in" regular="true">The real space lattice
+  !!vectors.</parameter>
+  !!<parameter name="atom_type_in" regular="true">The type of each atom
+  !!in the basis.</parameter>
+  !!<parameter name="atom_base_in" regular="true">The atomic basis
+  !!vectors.</parameter>
+  !!<parameter name="nkpts" regular="true">The number of k-points to
+  !!search for.</parameter>
+  !!<parameter name="offset" regular="true">The offset for the
+  !!k-points grid.</parameter>
+  !!<parameter name="find_offset" regular="true">'True' if the offset
+  !!needs to be determined by the algorithm.</parameter>
+  !!<parameter name="best_grid" regular="true">The best k-point grid
+  !!found.</parameter>
+  !!<parameter name="best_offset" regular="true">The best offset from
+  !!those checked for the final grid.</parameter>
+  !!<parameter name="lat_id" regular="true">The ID of the niggli reduced
+  !!bravais lattice.</parameter>
+  !!<parameter regular="true" name="IrrKpList"> List of symmetry-reduced k-points in
+  !!Cartesian coordinates. </parameter>
+  !!<parameter regular="true" name="weights"> "Weights" of k-points (length of each orbit).
+  !!</parameter>
+  !!<parameter name="symm_flag" regular="true">Flag that indicates the
+  !!symmetries to use.</parameter>
+  !!<parameter name="min_kpts_flag" regular="true">Flag that indicates
+  !!that the grid with the minimum number of k-points should be
+  !!selected rather than the grid with the best folding
+  !!ratio.</parameter>
+  subroutine get_k_grid_from_autoGR(n_atoms_in,  lattice_in, atom_type_in, &
         atom_base_in, nkpts, offset, find_offset, best_grid, best_offset, &
         lat_id, IRKps, weights, symm_flag, min_kpts)
 
@@ -45,6 +77,6 @@ contains
     
     nkpts = size(IRKps,1)
     
-    end subroutine get_k_grid_from_autoGR
+  end subroutine get_k_grid_from_autoGR
     
 end module autoGR

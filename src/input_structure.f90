@@ -16,6 +16,15 @@ module input_structure
 
 contains
 
+  !!<summary>Initializes the input structure.</summary>
+  !!<parameter name="n_atoms_in" regular="true">The number of atoms in the 
+  !!input structure.</parameter>
+  !!<parameter name="lattice_in" regular="true">The real space lattice
+  !!vectors.</parameter>
+  !!<parameter name="atom_type_in" regular="true">The type of each atom
+  !!in the basis.</parameter>
+  !!<parameter name="atom_base_in" regular="true">The atomic basis
+  !!vectors.</parameter>
   subroutine init_input_structure(n_atoms_in,  lattice_in, atom_type_in, atom_base_in)
 
     integer, intent(in) :: n_atoms_in
