@@ -582,7 +582,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -742,7 +742,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -922,7 +922,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1109,7 +1109,7 @@ if (present(aeps_)) then
       allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1293,7 +1293,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1471,7 +1471,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1647,7 +1647,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1815,7 +1815,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -1980,7 +1980,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2145,7 +2145,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2312,7 +2312,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2485,7 +2485,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2653,7 +2653,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -2831,7 +2831,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3013,7 +3013,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3173,7 +3173,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3362,7 +3362,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3531,7 +3531,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3691,7 +3691,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -3855,7 +3855,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4022,7 +4022,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4177,7 +4177,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4334,7 +4334,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4490,7 +4490,7 @@ if (present(aeps_)) then
        allocate(spHNFs(3,3,1))
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
@@ -4630,7 +4630,7 @@ if (present(aeps_)) then
     if (.not. all_hnfs) then
        if (any(ngrids > 0)) then
           call grid_selection(U, B_vecs, at, cand_grids, cand_HNFs, ngrids, offsets, &
-            grid, spHNFs, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
+            grid, best_HNF, best_offset, n_irr, symm_flag, reps_=reps, aeps_=aeps)
           if (any(best_HNF > 0)) then
              spHNFs(:,:,1) = best_HNF
           else
