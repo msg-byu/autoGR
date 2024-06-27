@@ -133,7 +133,7 @@ mkdir build; cd build
 Create a file `initial_cache.cmake` with the following content:
 ```
 set(CMAKE_Fortran_COMPILER "mpif90" CACHE STRING "" FORCE)
-set(CMAKE_Fortran_FLAGS "-O3 -fallow-argument-mismatch -ffree-line-length-none -Wno-argument-mismatch -framework accelerate" CACHE STRING "" FORCE)
+set(CMAKE_Fortran_FLAGS "-O3 -fallow-argument-mismatch -ffree-line-length-none -fno-underscoring" CACHE STRING "" FORCE)
 ```
 After that enter:
 ```
