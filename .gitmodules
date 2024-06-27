@@ -3,7 +3,7 @@
 	url = https://github.com/msg-byu/symlib
 [submodule "symlib"]
 	path = symlib
-	url = git@github.com:msg-byu/symlib.git
+	url = https://github.com/msg-byu/symlib.git
 [submodule "kgridGen"]
 	path = kgridGen
-	url = git@github.com:msg-byu/kgridGen.git
+	url = https://github.com/msg-byu/kgridGen.git

@@ -118,3 +118,47 @@ been included in the `KPGEN` file.
 All the data and scripts used to generate the plots and analysis for
 the [Generalized Regular Grids On-The-Fly](https://arxiv.org/abs/1902.03257) paper can be
 found in the `paper` folder.
+
+
+## Compiling autoGR as library
+
+autoGR can be compiled as library using CMake and, thus, easily integrated into other software projects.
+
+### How to build the library
+
+Create a folder named `build` and change into it:
+```
+mkdir build; cd build
+```
+Create a file `initial_cache.cmake` with the following content:
+```
+set(CMAKE_Fortran_COMPILER "mpif90" CACHE STRING "" FORCE)
+set(CMAKE_Fortran_FLAGS "-O3 -fallow-argument-mismatch -ffree-line-length-none -fno-underscoring" CACHE STRING "" FORCE)
+```
+After that enter:
+```
+cmake -C initial_cache.cmake ../.
+```
+where `../.` points to the root directory of autoGR. After CMake has finished, enter:
+```
+make
+```
+After `make` succeeded, you will find a library called `libautoGR.a` in the build directory.
+
+### How to use the library
+
+When you link your (Fortran) software project to libautoGR you can obtain gr k-grids like this:
+
+```
+[... some code ...]
+
+use autoGR
+implicit none
+
+[... some code ...]
+
+call get_k_grid_from_autoGR(n_atoms, lattice_vector, species, &
+  coords, n_k_points, offset, find_offset, best_grid, best_offset, &
+  lat_id, IRKps, weights, symm_flag, min_kpts)
+```
+

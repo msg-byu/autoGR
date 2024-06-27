@@ -2,6 +2,7 @@ Module control_file
   use num_types
   use omp_lib
   use vector_matrix_utilities, only: matrix_inverse, determinant
+  use input_structure, only: n_atoms, lattice, atom_type, atom_base
   implicit none
 CONTAINS
 
@@ -15,10 +16,8 @@ CONTAINS
   !!in the basis.</parameter>
   !!<parameter name="lat_param" regular="true">The lattice
   !!parameter.</parameter>
-  SUBROUTINE read_POSCAR(lattice, atom_base, atom_type, lat_param)
-    integer, allocatable, intent(out) :: atom_type(:)
-    real(dp), allocatable :: atom_base(:,:)
-    real(dp), intent(out) :: lattice(3,3), lat_param
+  SUBROUTINE read_POSCAR(lat_param)
+    real(dp), intent(out) :: lat_param
 
     character(300) :: line
     integer :: count, j, i, z
@@ -38,9 +37,10 @@ CONTAINS
        read(1, '(a300)') line
        call parse_line_for_numbers(line, count, concs)
     end if
-    allocate(atom_type(sum(concs)), atom_base(3, sum(concs)))
+    n_atoms = sum(concs)
+    allocate(atom_type(n_atoms), atom_base(3, n_atoms))
     read(1,'(a300)') line
-    do i=1,sum(concs)
+    do i=1,n_atoms
        read(1,*) atom_base(:,i)
     end do
     close(1)
@@ -49,7 +49,7 @@ CONTAINS
     if (('c'==line(:1)) .or. ('C'==line(:1)) &
          .or. ('k'==line(:1)) .or. ('K'==line(:1))) then
        call matrix_inverse(lat_param*lattice, lat_inv)
-       do i=1, sum(concs)
+       do i=1, n_atoms
           atom_base(:,i) = matmul(lat_inv, atom_base(:,i))
        end do
     end if
@@ -87,11 +87,8 @@ CONTAINS
   !!that the grid with the minimum number of k-points should be
   !!selected rather than the grid with the best folding
   !!ratio.</parameter>
-  SUBROUTINE get_inputs(nkpts, lattice, atom_type, atom_base, offset, &
-       find_offset, symm_flag, min_kpts_flag, reps, aeps)
-    real(dp), intent(out) :: lattice(3,3), offset(3)
-    real(dp), allocatable :: atom_base(:,:)
-    integer, allocatable, intent(out) :: atom_type(:)
+  SUBROUTINE get_inputs(nkpts, offset, find_offset, symm_flag, min_kpts_flag, reps, aeps)
+    real(dp), intent(out) :: offset(3)
     integer, intent(out) :: nkpts, symm_flag
     logical, intent(out) :: find_offset, min_kpts_flag
     real(dp), intent(out) :: reps, aeps
@@ -115,7 +112,7 @@ CONTAINS
     nkpts_set = .False.
     open(fh, file='KPGEN')
 
-    call read_POSCAR(lattice, atom_base, atom_type, lat_param)
+    call read_POSCAR(lat_param)
     vol = abs(determinant(lat_param*lattice))
 
     call matrix_inverse(transpose(lat_param*lattice),r_vecs)
