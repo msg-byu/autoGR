@@ -5,42 +5,43 @@ PROGRAM driver
   use vector_matrix_utilities, only: matrix_inverse, determinant, minkowski_reduce_basis
   use numerical_utilities, only: equal
   use num_types
+  use input_structure, only: n_atoms, lattice, atom_type, atom_base
 
   implicit none
 
-  real(dp) :: lat_vecs(3,3), grid(3,3), offset(3), r_vecs(3,3), reduced_R(3,3)
+  real(dp) :: grid(3,3), offset(3), r_vecs(3,3), reduced_R(3,3)
   real(dp) :: Rinv(3,3), point(3), reps, aeps, best_offset(3)
   logical :: find_offset, min_kpts
-  integer :: nkpts, i, symm_flag
-  integer, allocatable :: at(:)
+  integer :: nkpts, i, symm_flag, lat_id
   real(dp), pointer :: IRKps(:,:)
-  real(dp), allocatable :: B_vecs(:,:)
   integer, pointer :: weights(:)
 
   
-  call get_inputs(nkpts, lat_vecs, at, B_vecs, offset, find_offset, symm_flag, &
-       min_kpts, reps, aeps)
-  call matrix_inverse(transpose(lat_vecs),r_vecs)
+  call get_inputs(nkpts, offset, find_offset, symm_flag, min_kpts, reps, aeps)
+  call matrix_inverse(transpose(lattice),r_vecs)
   call minkowski_reduce_basis(r_vecs, reduced_R, reps)
   
-  call find_grid(lat_vecs, nkpts, B_vecs, at, offset, find_offset, grid, best_offset, &
-       symm_flag_=symm_flag, min_kpts_=min_kpts, reps_=reps, aeps_=aeps)
+  call find_grid(nkpts, offset, find_offset, grid, best_offset, &
+       lat_id, symm_flag_=symm_flag, min_kpts_=min_kpts, reps_=reps, aeps_=aeps)
 
-  call generateIrredKpointList(lat_vecs, B_vecs, at, grid, reduced_R, best_offset, &
+  call generateIrredKpointList(lattice, atom_base, atom_type, grid, reduced_R, best_offset, &
        IRKps, weights, reps_=reps, aeps_=aeps, symm_=symm_flag)
 
   call mapKptsIntoBZ(r_vecs, IRKps, reps)
+
+  !! Write the folding ratio to the output file.
+  !! see table 9.2.5.1 in the international tables (pdf in autoGR/support/documents)
+  open(5,file="autoGR.out")
+  write(5,'("Niggli cell id: ",I2)') lat_id
+  write(5,'("# reducible K-points:  ",I6)') sum(weights)
+  write(5,'("# irreducible K-points:",I6)') size(IRKps,1)
+  write(5,'("folding ratio:  ",F5.2)') real(sum(weights),dp) / size(IRKps,1)
+  close(5)
 
   open(4,file="KPOINTS")
   write(4,'("autoGR kpoint generation:",I6," (irred),  ",I8," (total),  ",f5.2," (folding), ",f6.4," (ratio)")') size(IRKps,1), sum(weights), 1._dp/size(IRKps,1)*sum(weights), 1._dp*size(IRKps,1)/sum(weights)
   write(4,*) size(IRKps,1)
   write(4,*) "Fractional"
-
-  !! Write the folding ratio to the output file.
-  write(5,'("# reducible K-points:  ",I6)') sum(weights)
-  write(5,'("# irreducible K-points:",I6)') size(IRKps,1)
-  write(5,'("folding ratio:  ",F5.2)') real(sum(weights),dp) / size(IRKps,1)
-  close(5)
 
   call matrix_inverse(r_vecs,Rinv)
   do i = 1,size(IRKps,1)

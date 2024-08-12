@@ -199,3 +199,4 @@ TSWLatexianTemp*
 dist/
 *.egg-info*
 htmlcov/
+build/*

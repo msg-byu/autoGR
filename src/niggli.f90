@@ -766,11 +766,6 @@ CONTAINS
        end if
     end if
 
-
-    !! see table 9.2.5.1 in the international tables (pdf in autoGR/support/documents)
-    open(5,file="autoGR.out")
-    write(5,'("Niggli cell id: ",I2)') id
-
     call reduce_cell(O,No,Co,eps_=eps)
 
   end SUBROUTINE id_cell
